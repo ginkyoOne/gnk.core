@@ -1,0 +1,216 @@
+.disable-pull-to-refresh {
+    overscroll-behavior: contain;
+}
+
+//REMOVE CLICK HILLIGHT
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+//VUE JS CLOACK SHORTHAND
+[v-cloack] {
+    display: none;
+}
+
+/* SCROLLBAR THEMING */
+::-webkit-scrollbar {
+    @media (hover: hover) and (pointer: fine) {
+        width: 10px;
+        height: 15px;
+    }
+
+    @media (hover: none) {
+        width: 5px !important;
+        height: 5px !important;
+        /* ... */
+    }
+
+    background:transparent !important;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background: transparent !important;
+    border: unset;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--COLOR-4000);
+    border-radius: calc(var(--BORDER-RADIUS) /2);
+
+    &:hover {
+        background-color: var(--ACCENT);
+        border-radius: calc(var(--BORDER-RADIUS) /2);
+    }
+}
+
+
+/* REMOVE TEXT SELECTION */
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+/* All of our custom controls should be what we expect them to be */
+input,
+textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/*
+Show overflow in Edge
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+
+button,
+input {
+    overflow: visible;
+}
+
+/*
+Remove inner border and padding from Firefox
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    padding: 0;
+    border-style: none;
+}
+
+/*
+Remove padding in IE 10-
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+input[type="radio"],
+input[type="checkbox"] {
+    padding: 0;
+}
+
+/*
+Remove the default appearance of temporal inputs to avoid a Mobile Safari bug where setting a custom line-height prevents text from being vertically
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+See https://bugs.webkit.org/show_bug.cgi?id=139848
+*/
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"] {
+    -webkit-appearance: listbox;
+}
+
+/*
+1. Remove default vertical scrollbar in IE
+2. Textareas should really only resize vertically so they don't break their (horizontal) containers
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+ */
+textarea {
+    overflow: auto;
+    /* 1 */
+    resize: vertical;
+    /* 2 */
+}
+
+/*
+Correct cursor style of increment and decrement buttons in Chrome
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+}
+
+/*
+Overrides extra rounded corners on search inputs in iOS
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+[type="search"] {
+    outline-offset: -2px;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+}
+
+/*
+Remove inner padding and cancel buttons in Chrome and Safari on macOS
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+*/
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/*
+1. Correct inability to style clickable types in iOS and Safari
+2. Change font properties to `inherit` in Safari
+Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+ */
+::-webkit-file-upload-button {
+    font: inherit;
+    /* 2 */
+    -webkit-appearance: button;
+    /* 1 */
+}
+
+/*
+ * Remove IE/ Edge clear "X" & eye icons
+ */
+input::-ms-clear,
+input::-ms-reveal {
+    display: none;
+}
+
+/* Remove Safari contacts icon */
+input::-webkit-contacts-auto-fill-button {
+    display: none;
+}
+
+/* Remove Safari password & caps lock icons */
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-caps-lock-indicator {
+    display: none;
+}
+
+/*
+ * Disable WebKit's banana-yellow input fields
+ * Combination of techniques from:
+ * https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete
+ */
+
+@-webkit-keyframes autofill {
+    to {
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    -webkit-transition-delay: 9999s;
+    -webkit-transition-property: background-color, color;
+}

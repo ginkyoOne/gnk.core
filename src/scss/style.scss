@@ -1,0 +1,49 @@
+@import 'base';
+
+
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+html,
+body{
+    height: 100%;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    background-color: -color('BACKGROUND', 1) !important;
+    color: -color('TEXT', 1);
+    font-family: var(--FONT-FAMILY);
+    font-size: var(--FONT-SIZE);
+    line-height: var(--LINE-HEIGHT);
+    text-align: justify;
+    transition: background-color 0.4s ease, color 0.2s ease;
+
+}
+
+#app{
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+

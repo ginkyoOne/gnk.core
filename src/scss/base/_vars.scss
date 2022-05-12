@@ -1,0 +1,16 @@
+:root{
+
+    --SHADOW-OPACITY: 0.05;
+    --BACKGROUND-OPACITY: 0.20;
+
+    --BORDER-RADIOS: 8px;
+    --BORDER-SIZE: 2px;
+
+    @for $i from 1 through 5 {
+        --Z-INDEX-#{$i} : ( 100000 - ($i*1000));
+    }
+
+    --BLUR-OPACITY: 0.5;
+    --BLUR: blur(25px);
+
+} 

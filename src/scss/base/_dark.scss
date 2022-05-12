@@ -1,0 +1,63 @@
+[gnk-theme="dark"] {
+
+
+    --COLOR-PRIMARY: 26, 92, 255;
+    --COLOR-WARN: 255, 185, 5;
+    --COLOR-DANGER: 255, 64, 58;
+    --COLOR-SUCCESS: 70, 201, 58;
+    --COLOR-DARK:  0, 0, 0;
+    --COLOR-LIGHT: 24, 25, 28;
+    --COLOR-BASE: 17,18,20;
+
+    --COLOR-BACKGROUND: 30, 32, 35;
+    --COLOR-TEXT: 255, 255, 255;
+    --COLOR-GRAY-1: 24, 25, 28;
+    --COLOR-GRAY-2: 20, 20, 23;
+    --COLOR-GRAY-3: 15, 16, 19;
+    --COLOR-GRAY-4: 10, 11, 14;
+
+    --SHADOW-OPACITY: 0.30;
+    --BACKGROUND-OPACITY: 0.60;
+
+
+
+    .gnk-ripple {
+        --COLOR-BASE: 0, 0, 0;
+    }
+
+/* 
+    .gnk-pagination-content {
+        &.gnk-component-dark {
+            .gnk-pagination__active {
+                vs-color: 255, 255, 255;
+                color: -color('gray-3');
+            }
+        }
+    }
+
+    .gnk-loading {
+        vs-background: 0, 0, 0;
+    }
+
+    .gnk-input-parent--state-dark {
+        vs-dark: 255, 255, 255 !important;
+
+        .gnk-input {
+            background: #000 !important;
+        }
+    }
+
+    .gnk-component-dark {
+        vs-color: 0, 0, 0 !important;
+
+        .gnk-avatar {
+            color: #fff !important;
+        }
+
+        &.gnk-alert {
+            vs-color: 0, 0, 0 !important;
+            background: -color('color', 1) !important;
+            color: -color('text', 1) !important;
+        }
+    } */
+} 
