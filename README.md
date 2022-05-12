@@ -10,61 +10,61 @@ vue gnk.core v0.1 alfa
 * 💕 Love
 
 
-[x].core.autoLoader(FULL)
-[ ].core.autoLoader(mobile)
-[ ].core.autoLoader(WEB)
-[ ].core.configs
-[x].core.grid
-[ ].core.theme
-[ ]Alert
-[ ]Avatar
-[ ]Backdrop
-[ ]Breadcrumb
-[x]Button
-[ ]Calendar/Date picker
-[x]Card/Expandable Card
-[ ]Checkbox
-[ ]Chip
-[ ]Collapse
-[ ]Contacts List
-[ ]Data Table
-[ ]Dialogs
-[ ]Divider
-[ ]Dropdown
-[ ]Editable
-[ ]Export pdf/xls
-[ ]Images
-[ ]Input
-[ ]List
-[ ]Loading
-[ ]Navbar
-[ ]Notification
-[ ]Number Input
-[ ]Pagination
-[ ]Picker
-[ ]PopOver
-[ ]Popup
-[x]Progress
-[ ]Properties Grid
-[ ]Radio
-[ ]SearchBar
-[ ]Select
-[ ]Sheet Modal
-[ ]Sidebar
-[ ]Skeleton
-[ ]Slide Pannel
-[ ]Slider
-[ ]Sortable/Drag list
-[ ]Swipeout
-[ ]Swiper
-[ ]Switch
-[ ]Tabs
-[ ]Textarea
-[ ]Timeline
-[ ]Tooltip
-[ ]Treeview
-[ ]Upload
-[ ]Video player
+[x] .core.autoLoader(FULL)
+[ ] .core.autoLoader(mobile)
+[ ] .core.autoLoader(WEB)
+[ ] .core.configs
+[x] .core.grid
+[ ] .core.theme
+[ ] Alert
+[ ] Avatar
+[ ] Backdrop
+[ ] Breadcrumb
+[x] Button
+[ ] Calendar/Date picker
+[x] Card/Expandable Card
+[ ] Checkbox
+[ ] Chip
+[ ] Collapse
+[ ] Contacts List
+[ ] Data Table
+[ ] Dialogs
+[ ] Divider
+[ ] Dropdown
+[ ] Editable
+[ ] Export pdf/xls
+[ ] Images
+[ ] Input
+[ ] List
+[ ] Loading
+[ ] Navbar
+[ ] Notification
+[ ] Number Input
+[ ] Pagination
+[ ] Picker
+[ ] PopOver
+[ ] Popup
+[x] Progress
+[ ] Properties Grid
+[ ] Radio
+[ ] SearchBar
+[ ] Select
+[ ] Sheet Modal
+[ ] Sidebar
+[ ] Skeleton
+[ ] Slide Pannel
+[ ] Slider
+[ ] Sortable/Drag list
+[ ] Swipeout
+[ ] Swiper
+[ ] Switch
+[ ] Tabs
+[ ] Textarea
+[ ] Timeline
+[ ] Tooltip
+[ ] Treeview
+[ ] Upload
+[ ] Video player 
 
 
 <!-- GETTING STARTED -->
