@@ -79,16 +79,13 @@ To get a local copy up and running follow these simple steps.
 ### Installation
  
 1. Clone the repo
-```sh
+`
 git clone https://github.com/ginkyoOne/gnk.core/
-```
+`
 
-```sh
-git clone https://github.com/NicolasBrondin/basic-readme-template
-```
 2. Open VS Code
 3. On your project main.js
-```sh
+`
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -106,7 +103,7 @@ GNK.registerModuleComponents(APP, GNK)
 
 //MOUNT APP
 APP.mount('#app')
-```
+`
 
 
 
@@ -116,13 +113,13 @@ APP.mount('#app')
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-```sh
+`
     <gnkButton label="Outlined" primary size="xl" > xl</gnkButton>
     <gnkButton label="Outlined" info size="xl" > xl</gnkButton>
     <gnkButton label="Outlined" warning size="l"> l </gnkButton>
     <gnkButton label="Outlined" danger size="default"> default </gnkButton>
     <gnkButton label="Outlined" success size="small"> small </gnkButton>
-```
+`
 
 <!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
