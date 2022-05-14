@@ -1,7 +1,25 @@
 <template>
-    <div class="container gnk-card">
-        <div class="columns --title" v-if="!!this.$slots.title">
-            <div class="col-12 gap-5  flex">
+    <div class="container gnk-card" :class="[componentClassObject , componentGeneralClasses]">
+        <div class="columns" v-if="mediaHeight != 0 " >
+            <div class="col-12 gap-5 flex" :class="{'--has-media' : mediaHeight != 0 }" 
+                                            :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">
+                <div class="--stats" v-if="!!stats">
+                    {{ stats }}
+                </div>
+                <div class="--media-lable" v-if="!!mediaLable">
+                    {{ mediaLable }}
+                </div>
+            </div>
+        </div>
+        <div class="columns --subtitle" v-if="!!this.$slots.subtitle" >
+            <div class="col-12 gap-5 flex">
+                <slot name="subtitle">
+                    
+                </slot>
+            </div>
+        </div>
+        <div class="columns --title" v-if="!!this.$slots.title" >
+            <div class="col-12 gap-5 flex">
                 <slot name="title" >
 
                 </slot>
@@ -38,6 +56,7 @@
 <script>
 import gnk from "../../index"
 import mixin from "../../mixin/gnkComponent"
+import imageData from "../../utils/imageData"
 
 export default {
     name: 'gnkCard',
@@ -46,41 +65,54 @@ export default {
 
     data() {
         return {
-            isVisible: false,
+            mediaSrc: "",
+            mediaAlt: "",
+            mediaHeight: "",
+            mediaWidth: "",
+            mediaDirection: "",
+
             }
         },
+
     props: {
+        media: {
+            type: String,
+            default: '',
+        },
+        mediaLable: {
+            type: String,
+            default: '',
+        },
+        stats: {
+            type: Number,
+            default: null,
+        },
 
 
 
         },
     computed: {
+            
+            
+
         },
-    emits: {
-            // no validation
-        click: null,
-            // with validation
-        submit: payload => {
-            if (payload.email && payload.password) {
-                return true
-                } else {
-                console.warn(`Invalid submit event payload!`)
-                return false
-                }
-            }
-        },
+    
+    emits: ['click'],
+
     methods: {
-        show() {
-            this.isVisible = true
-            },
-        hide() {
-            this.isVisible = false
-            },
-        },
-    mounted() { 
-        },
+        
 
-
+        },
+    async mounted() { 
+        
+                let imageMeta = await imageData.getImageMeta(this.media)
+                this.mediaSrc = imageMeta.src
+                this.mediaAlt = ''
+                this.mediaHeight = imageMeta.height
+                this.mediaWidth = imageMeta.width
+                this.mediaDirection = ((this.mediaWidth > this.mediaHeight) ? ((this.mediaHeight < 300 ) ? '100% auto' :  'auto 100%' ) : 'auto 100%')
+    
+        },
 }
 </script>
 
@@ -95,13 +127,15 @@ export default {
     overflow: hidden;
 
     .--title {
+        width: 100%;
         position: relative;
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
         text-align: left;
-        
-        padding: 8px 12px 0px 12px;
+
+        padding: 0px 20px 10px 25px !important;
+
         &::after{
             content: '';
             display: block;
@@ -115,10 +149,58 @@ export default {
             
             background-color: -color('GRAY-3', 1);
         }
+    }
 
-        .--image{
-            aspect-ratio: 16/9;
-        }
+    .--subtitle {
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        text-align: left;
+
+        color: -color('BASE', 1);
+
+        padding: 10px 20px 5px 20px !important;
+    }
+
+    .--has-media{
+        position: relative;
+        height:300px !important;
+        background-position: center;
+        background-repeat: no-repeat;
+        aspect-ratio: 16/9;
+        width: 100%;
+
+    }
+
+    .--stats{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        background: -color('BASE');
+        border-radius: 50%;
+        
+        position: absolute;
+        padding: 5px;
+        height:40px;
+        width : 40px;
+        top: 20px;
+        right: 40px ;
+        
+        
+    }
+
+    .--media-lable{
+        background: -color('BASE');
+        border-radius: 0px var(--BORDER-RADIOS) 0px 0px;
+        position: absolute;
+        height: fit-content;
+        padding: 5px 20px;
+        bottom: 0px;
+        left: 0px;
     }
 
     .--content{
@@ -126,18 +208,13 @@ export default {
         flex-direction: columns;
         flex-wrap: wrap;
         width: 100%;
-        padding: 8px 12px;
+        padding: 20px !important;
     }
 
     .--footer{
 
         position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: space-between;
-        text-align: left;
-        padding: 8px 12px 8px 12px;
+        padding: 1px 20px 1px 20px !important;
         background-color: -color('BASE', 1);
 
         &::after{
@@ -157,8 +234,6 @@ export default {
 
 
     }
-
-
 }
 
 

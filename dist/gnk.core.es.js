@@ -1,4 +1,4 @@
-import { openBlock, createElementBlock, normalizeClass, createElementVNode, renderSlot, createCommentVNode, createTextVNode, mergeProps, withKeys, withModifiers, toDisplayString, pushScopeId, popScopeId, createBlock, Teleport, createVNode, Transition, withCtx, markRaw, resolveComponent, resolveDynamicComponent, normalizeStyle, Fragment, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
+import { openBlock, createElementBlock, normalizeClass, createElementVNode, renderSlot, createCommentVNode, createTextVNode, normalizeStyle, toDisplayString, mergeProps, withKeys, withModifiers, pushScopeId, popScopeId, createBlock, Teleport, createVNode, Transition, withCtx, markRaw, resolveComponent, resolveDynamicComponent, Fragment, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
 function createRipple(event) {
   const TARGET = event.currentTarget;
   const RIPPLE = TARGET.getElementsByClassName("gnk-RIPPLE")[0];
@@ -294,82 +294,131 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   ], 10, _hoisted_1$a);
 }
 var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+async function getImageMeta(src) {
+  return await new Promise((resolve, reject) => {
+    let img = new Image();
+    img.onload = () => resolve({ src, height: img.height, width: img.width });
+    img.onerror = () => resolve({ src: "", height: 0, width: 0 });
+    img.src = src;
+  });
+}
+var imageData = {
+  getImageMeta
+};
 var Card_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$c = {
   name: "gnkCard",
   mixins: [gnkComponent$1.gnkComponent],
   data() {
     return {
-      isVisible: false
+      mediaSrc: "",
+      mediaAlt: "",
+      mediaHeight: "",
+      mediaWidth: "",
+      mediaDirection: ""
     };
   },
-  props: {},
-  computed: {},
-  emits: {
-    click: null,
-    submit: (payload) => {
-      if (payload.email && payload.password) {
-        return true;
-      } else {
-        console.warn(`Invalid submit event payload!`);
-        return false;
-      }
-    }
-  },
-  methods: {
-    show() {
-      this.isVisible = true;
+  props: {
+    media: {
+      type: String,
+      default: ""
     },
-    hide() {
-      this.isVisible = false;
+    mediaLable: {
+      type: String,
+      default: ""
+    },
+    stats: {
+      type: Number,
+      default: null
     }
   },
-  mounted() {
+  computed: {},
+  emits: ["click"],
+  methods: {},
+  async mounted() {
+    let imageMeta = await imageData.getImageMeta(this.media);
+    this.mediaSrc = imageMeta.src;
+    this.mediaAlt = "";
+    this.mediaHeight = imageMeta.height;
+    this.mediaWidth = imageMeta.width;
+    this.mediaDirection = this.mediaWidth > this.mediaHeight ? this.mediaHeight < 300 ? "100% auto" : "auto 100%" : "auto 100%";
   }
 };
-const _hoisted_1$9 = { class: "container gnk-card" };
+const _hoisted_1$9 = {
+  key: 0,
+  class: "columns"
+};
 const _hoisted_2$5 = {
   key: 0,
-  class: "columns --title"
+  class: "--stats"
 };
-const _hoisted_3$3 = { class: "col-12 gap-5 flex" };
+const _hoisted_3$3 = {
+  key: 1,
+  class: "--media-lable"
+};
 const _hoisted_4$1 = {
   key: 1,
-  class: "columns --content"
+  class: "columns --subtitle"
 };
 const _hoisted_5 = { class: "col-12 gap-5 flex" };
 const _hoisted_6 = {
   key: 2,
+  class: "columns --title"
+};
+const _hoisted_7 = { class: "col-12 gap-5 flex" };
+const _hoisted_8 = {
+  key: 3,
+  class: "columns --content"
+};
+const _hoisted_9 = { class: "col-12 gap-5 flex" };
+const _hoisted_10 = {
+  key: 4,
   class: "columns --expandable"
 };
-const _hoisted_7 = { class: "col-12 flex" };
-const _hoisted_8 = { class: "col-12 flex" };
+const _hoisted_11 = { class: "col-12 flex" };
+const _hoisted_12 = { class: "col-12 flex" };
 function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", _hoisted_1$9, [
-    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$5, [
-      createElementVNode("div", _hoisted_3$3, [
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass(["container gnk-card", [_ctx.componentClassObject, _ctx.componentGeneralClasses]])
+  }, [
+    $data.mediaHeight != 0 ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
+      createElementVNode("div", {
+        class: normalizeClass(["col-12 gap-5 flex", { "--has-media": $data.mediaHeight != 0 }]),
+        style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
+      }, [
+        !!$props.stats ? (openBlock(), createElementBlock("div", _hoisted_2$5, toDisplayString($props.stats), 1)) : createCommentVNode("", true),
+        !!$props.mediaLable ? (openBlock(), createElementBlock("div", _hoisted_3$3, toDisplayString($props.mediaLable), 1)) : createCommentVNode("", true)
+      ], 6)
+    ])) : createCommentVNode("", true),
+    !!this.$slots.subtitle ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
+      createElementVNode("div", _hoisted_5, [
+        renderSlot(_ctx.$slots, "subtitle")
+      ])
+    ])) : createCommentVNode("", true),
+    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_6, [
+      createElementVNode("div", _hoisted_7, [
         renderSlot(_ctx.$slots, "title")
       ])
     ])) : createCommentVNode("", true),
-    !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
-      createElementVNode("div", _hoisted_5, [
+    !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_8, [
+      createElementVNode("div", _hoisted_9, [
         renderSlot(_ctx.$slots, "default")
       ])
     ])) : createCommentVNode("", true),
-    !!this.$slots.expandable ? (openBlock(), createElementBlock("div", _hoisted_6, [
-      createElementVNode("div", _hoisted_7, [
+    !!this.$slots.expandable ? (openBlock(), createElementBlock("div", _hoisted_10, [
+      createElementVNode("div", _hoisted_11, [
         renderSlot(_ctx.$slots, "expandable")
       ])
     ])) : createCommentVNode("", true),
     !!this.$slots.footer ? (openBlock(), createElementBlock("div", {
-      key: 3,
+      key: 5,
       class: normalizeClass(["columns --footer", _ctx.footerClass])
     }, [
-      createElementVNode("div", _hoisted_8, [
+      createElementVNode("div", _hoisted_12, [
         renderSlot(_ctx.$slots, "footer")
       ])
     ], 2)) : createCommentVNode("", true)
-  ]);
+  ], 2);
 }
 var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var Checkbox_vue_vue_type_style_index_0_scoped_true_lang = "";
