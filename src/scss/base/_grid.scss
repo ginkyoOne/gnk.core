@@ -108,36 +108,42 @@
     justify-content: center;
 }
 
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
 //GRID
 
 
 .container {
     margin-left: auto;
     margin-right: auto;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
     width: 100%;
 
     --grid-spacing: calc((0.4 /(0.4 * 0 + 1)) * var(--FONT-SIZE));
 
     &.grid-xl {
-        max-width: calc(var(--grid-spacing) * 2 + map_get($breakpoints, 'desktop'));
+        max-width: calc( map_get($breakpoints, 'desktop'));
     }
 
     &.grid-lg {
-        max-width: calc(var(--grid-spacing) * 2 + map_get($breakpoints, 'tablet-wide'));
+        max-width: calc( map_get($breakpoints, 'tablet-wide'));
     }
 
     &.grid-md {
-        max-width: calc(var(--grid-spacing) * 2 + map_get($breakpoints, 'tablet'));
+        max-width: calc( map_get($breakpoints, 'tablet'));
     }
 
     &.grid-sm {
-        max-width: calc(var(--grid-spacing) * 2 + map_get($breakpoints, 'tablet-small'));
+        max-width: calc( map_get($breakpoints, 'tablet-small'));
     }
 
     &.grid-xs {
-        max-width: calc(var(--grid-spacing) * 2 + map_get($breakpoints, 'phablet'));
+        max-width: calc( map_get($breakpoints, 'phablet'));
     }
 }
 
@@ -155,19 +161,12 @@
 .columns {
     display: flex;
     flex-wrap: wrap;
-    margin-left: -0.4rem;
-    margin-right: -0.4rem;
 
-    &.col-gapless {
-        margin-left: 0;
-        margin-right: 0;
 
-        &>.column {
-            padding-left: 0;
-            padding-right: 0;
-        }
+    &.col-oneline {
+        flex-wrap: nowrap;
+        overflow-x: auto;
     }
-
     &.col-oneline {
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -202,25 +201,6 @@
     .col-#{$i} {
         width: calc(100%/12*$i);
     }
-}
-
-.col-auto {
-    flex: 0 0 auto;
-    max-width: none;
-    width: auto;
-}
-
-.col-mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.col-ml-auto {
-    margin-left: auto;
-}
-
-.col-mr-auto {
-    margin-right: auto;
 }
 
 

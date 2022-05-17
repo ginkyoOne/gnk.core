@@ -1,4 +1,4 @@
-import { openBlock, createElementBlock, normalizeClass, createElementVNode, renderSlot, createCommentVNode, createTextVNode, normalizeStyle, toDisplayString, mergeProps, withKeys, withModifiers, pushScopeId, popScopeId, createBlock, Teleport, createVNode, Transition, withCtx, markRaw, resolveComponent, resolveDynamicComponent, Fragment, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
+import { openBlock, createElementBlock, normalizeClass, createElementVNode, renderSlot, createCommentVNode, createTextVNode, resolveComponent, Fragment, withModifiers, normalizeStyle, createVNode, Transition, withCtx, createBlock, mergeProps, withKeys, toDisplayString, pushScopeId, popScopeId, Teleport, markRaw, resolveDynamicComponent, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
 function createRipple(event) {
   const TARGET = event.currentTarget;
   const RIPPLE = TARGET.getElementsByClassName("gnk-RIPPLE")[0];
@@ -113,6 +113,10 @@ const _sfc_main$d = {
   },
   watch: {},
   props: {
+    disableRipple: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       required: false,
@@ -259,7 +263,8 @@ const _sfc_main$d = {
   },
   methods: {
     onClick(event) {
-      createRipple$1.createRipple(event);
+      if (!this.disableRipple)
+        createRipple$1.createRipple(event);
       this.active = !this.active;
       this.$emit("click", event);
     }
@@ -311,11 +316,14 @@ const _sfc_main$c = {
   mixins: [gnkComponent$1.gnkComponent],
   data() {
     return {
-      mediaSrc: "",
-      mediaAlt: "",
-      mediaHeight: "",
-      mediaWidth: "",
-      mediaDirection: ""
+      uid: ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)),
+      mediaSrc: null,
+      mediaAlt: null,
+      mediaHeight: null,
+      mediaWidth: null,
+      mediaDirection: null,
+      expanded: false,
+      modalPosition: null
     };
   },
   props: {
@@ -326,99 +334,239 @@ const _sfc_main$c = {
     mediaLable: {
       type: String,
       default: ""
-    },
-    stats: {
-      type: Number,
-      default: null
     }
   },
-  computed: {},
-  emits: ["click"],
-  methods: {},
+  computed: {
+    componentClassObject() {
+      return {};
+    },
+    modalPositionObject() {
+      return {
+        "--top": this.modalPosition["top"],
+        "--left": this.modalPosition["left"],
+        "--width": this.modalPosition["width"],
+        "--height": this.modalPosition["height"]
+      };
+    }
+  },
+  emits: ["open", "close", "click"],
+  methods: {
+    onClick(event) {
+      console.log(event);
+      this.$emit("click", event);
+    },
+    open() {
+      if (!this.expanded && !!this.$slots.expanded) {
+        this.expanded = true;
+        this.$emit("open", this.uid);
+      }
+    },
+    close() {
+      this.expanded = false;
+      this.$emit("close", this.uid);
+    },
+    getModalPosition() {
+      let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
+      this.modalPosition = {
+        top: modalPosition.top + "px",
+        left: modalPosition.left + "px",
+        width: modalPosition.width + "px",
+        height: modalPosition.height + "px"
+      };
+    },
+    async getMediaInfo() {
+      try {
+        let imageMeta = await imageData.getImageMeta(this.media);
+        this.mediaSrc = imageMeta.src;
+        this.mediaAlt = "";
+        this.mediaHeight = imageMeta.height;
+        this.mediaWidth = imageMeta.width;
+        this.mediaCenter = this.mediaWidth > this.mediaHeight ? this.mediaHeight < 300 ? "100% auto" : "auto 100%" : "auto 100%";
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    onBeforeEnter(el) {
+      console.log("onBeforeEnter");
+      if (this.expanded) {
+        let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
+        this.modalPosition = {
+          top: modalPosition.top + "px",
+          left: modalPosition.left + "px",
+          width: modalPosition.width + "px",
+          height: modalPosition.height + "px"
+        };
+      }
+    },
+    onAfterEnter(el) {
+      console.log("onAfterEnter");
+      if (this.expanded) {
+        this.modalPosition = {
+          top: "0px",
+          left: "0px",
+          width: "100%",
+          height: "100%"
+        };
+      }
+    },
+    onBeforeLeave(el) {
+      console.log("onBeforeLeave");
+      if (!this.expanded) {
+        let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
+        this.modalPosition = {
+          top: modalPosition.top + "px",
+          left: modalPosition.left + "px",
+          width: modalPosition.width + "px",
+          height: modalPosition.height + "px"
+        };
+      }
+    },
+    onAfterLeave(el) {
+    }
+  },
   async mounted() {
-    let imageMeta = await imageData.getImageMeta(this.media);
-    this.mediaSrc = imageMeta.src;
-    this.mediaAlt = "";
-    this.mediaHeight = imageMeta.height;
-    this.mediaWidth = imageMeta.width;
-    this.mediaDirection = this.mediaWidth > this.mediaHeight ? this.mediaHeight < 300 ? "100% auto" : "auto 100%" : "auto 100%";
+    this.getModalPosition();
+    this.getMediaInfo();
   }
 };
-const _hoisted_1$9 = {
-  key: 0,
-  class: "columns"
-};
-const _hoisted_2$5 = {
-  key: 0,
-  class: "--stats"
-};
+const _hoisted_1$9 = { class: "--card-container" };
+const _hoisted_2$5 = { class: "--card-header" };
 const _hoisted_3$3 = {
   key: 1,
-  class: "--media-lable"
+  class: "--card-title col-12 pad-lr-15 flex"
 };
 const _hoisted_4$1 = {
-  key: 1,
-  class: "columns --subtitle"
+  key: 0,
+  class: "row --card-body"
 };
-const _hoisted_5 = { class: "col-12 gap-5 flex" };
+const _hoisted_5 = { class: "--card-content col-12 pad-10 pad-t-5 flex" };
 const _hoisted_6 = {
+  key: 1,
+  class: "row"
+};
+const _hoisted_7 = { class: "columns" };
+const _hoisted_8 = { class: "--card-footer col-12 flex position-centered pad-1" };
+const _hoisted_9 = { class: "row --card-container" };
+const _hoisted_10 = { class: "row --card-header" };
+const _hoisted_11 = /* @__PURE__ */ createElementVNode("b", null, "x", -1);
+const _hoisted_12 = {
   key: 2,
-  class: "columns --title"
+  class: "--card-title col-12 pad-lr-15 flex"
 };
-const _hoisted_7 = { class: "col-12 gap-5 flex" };
-const _hoisted_8 = {
-  key: 3,
-  class: "columns --content"
+const _hoisted_13 = { class: "row --card-body" };
+const _hoisted_14 = {
+  key: 0,
+  class: "--card-content col-12 pad-10 pad-t-5"
 };
-const _hoisted_9 = { class: "col-12 gap-5 flex" };
-const _hoisted_10 = {
-  key: 4,
-  class: "columns --expandable"
+const _hoisted_15 = { class: "--card-content-expanded col-12 pad-10 pad-t-5 flex" };
+const _hoisted_16 = {
+  key: 0,
+  class: "row"
 };
-const _hoisted_11 = { class: "col-12 flex" };
-const _hoisted_12 = { class: "col-12 flex" };
+const _hoisted_17 = { class: "columns" };
+const _hoisted_18 = { class: "--card-footer col-12 flex position-centered pad-1" };
 function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", {
-    class: normalizeClass(["container gnk-card", [_ctx.componentClassObject, _ctx.componentGeneralClasses]])
-  }, [
-    $data.mediaHeight != 0 ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
-      createElementVNode("div", {
-        class: normalizeClass(["col-12 gap-5 flex", { "--has-media": $data.mediaHeight != 0 }]),
-        style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
-      }, [
-        !!$props.stats ? (openBlock(), createElementBlock("div", _hoisted_2$5, toDisplayString($props.stats), 1)) : createCommentVNode("", true),
-        !!$props.mediaLable ? (openBlock(), createElementBlock("div", _hoisted_3$3, toDisplayString($props.mediaLable), 1)) : createCommentVNode("", true)
-      ], 6)
-    ])) : createCommentVNode("", true),
-    !!this.$slots.subtitle ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
-      createElementVNode("div", _hoisted_5, [
-        renderSlot(_ctx.$slots, "subtitle")
-      ])
-    ])) : createCommentVNode("", true),
-    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_6, [
-      createElementVNode("div", _hoisted_7, [
-        renderSlot(_ctx.$slots, "title")
-      ])
-    ])) : createCommentVNode("", true),
-    !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_8, [
-      createElementVNode("div", _hoisted_9, [
-        renderSlot(_ctx.$slots, "default")
-      ])
-    ])) : createCommentVNode("", true),
-    !!this.$slots.expandable ? (openBlock(), createElementBlock("div", _hoisted_10, [
-      createElementVNode("div", _hoisted_11, [
-        renderSlot(_ctx.$slots, "expandable")
-      ])
-    ])) : createCommentVNode("", true),
-    !!this.$slots.footer ? (openBlock(), createElementBlock("div", {
-      key: 5,
-      class: normalizeClass(["columns --footer", _ctx.footerClass])
+  const _component_gnkButton = resolveComponent("gnkButton");
+  return openBlock(), createElementBlock(Fragment, null, [
+    createElementVNode("div", {
+      onClick: _cache[0] || (_cache[0] = withModifiers((...args) => $options.open && $options.open(...args), ["stop"])),
+      ref: "cardConteiner",
+      class: normalizeClass(["gnk-card container", [_ctx.componentGeneralClasses]])
     }, [
-      createElementVNode("div", _hoisted_12, [
-        renderSlot(_ctx.$slots, "footer")
+      createElementVNode("div", _hoisted_1$9, [
+        createElementVNode("div", _hoisted_2$5, [
+          !!this.media ? (openBlock(), createElementBlock("div", {
+            key: 0,
+            style: normalizeStyle({ backgroundImage: "url(../../assets/placeholder-1024x512.png)", backgroundSize: "cover" })
+          }, [
+            createElementVNode("div", {
+              class: "--media col-12",
+              style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
+            }, null, 4)
+          ], 4)) : createCommentVNode("", true),
+          !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_3$3, [
+            createElementVNode("h4", null, [
+              renderSlot(_ctx.$slots, "title")
+            ])
+          ])) : createCommentVNode("", true)
+        ]),
+        !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
+          createElementVNode("div", _hoisted_5, [
+            renderSlot(_ctx.$slots, "default")
+          ])
+        ])) : createCommentVNode("", true),
+        !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_6, [
+          createElementVNode("div", _hoisted_7, [
+            createElementVNode("div", _hoisted_8, [
+              renderSlot(_ctx.$slots, "footer")
+            ])
+          ])
+        ])) : createCommentVNode("", true)
       ])
-    ], 2)) : createCommentVNode("", true)
-  ], 2);
+    ], 2),
+    createVNode(Transition, {
+      onBeforeEnter: $options.onBeforeEnter,
+      onAfterEnter: $options.onAfterEnter,
+      onBeforeLeave: $options.onBeforeLeave,
+      onAfterLeave: $options.onAfterLeave,
+      "enter-active-class": "modal_open",
+      "leave-active-class": "modal_close"
+    }, {
+      default: withCtx(() => [
+        $data.expanded ? (openBlock(), createElementBlock("div", {
+          key: 0,
+          ref: "cardConteinerFull",
+          class: normalizeClass(["gnk-card --card-expanded container", [_ctx.componentGeneralClasses]]),
+          style: normalizeStyle($options.modalPositionObject)
+        }, [
+          createElementVNode("div", _hoisted_9, [
+            createElementVNode("div", _hoisted_10, [
+              $data.expanded ? (openBlock(), createBlock(_component_gnkButton, {
+                key: 0,
+                disableRipple: "true",
+                "data-animation-offset": "10",
+                circular: "",
+                light: "",
+                class: "--close-expanded-card fadeIn",
+                onClick: withModifiers($options.close, ["stop"])
+              }, {
+                default: withCtx(() => [
+                  _hoisted_11
+                ]),
+                _: 1
+              }, 8, ["onClick"])) : createCommentVNode("", true),
+              !!this.mediaHeight ? (openBlock(), createElementBlock("div", {
+                key: 1,
+                class: "row --media",
+                style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
+              }, null, 4)) : createCommentVNode("", true),
+              !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_12, [
+                createElementVNode("h4", null, [
+                  renderSlot(_ctx.$slots, "title")
+                ])
+              ])) : createCommentVNode("", true)
+            ]),
+            createElementVNode("div", _hoisted_13, [
+              !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_14, [
+                renderSlot(_ctx.$slots, "default")
+              ])) : createCommentVNode("", true),
+              createElementVNode("div", _hoisted_15, [
+                renderSlot(_ctx.$slots, "expanded")
+              ])
+            ]),
+            !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_16, [
+              createElementVNode("div", _hoisted_17, [
+                createElementVNode("div", _hoisted_18, [
+                  renderSlot(_ctx.$slots, "footer")
+                ])
+              ])
+            ])) : createCommentVNode("", true)
+          ])
+        ], 6)) : createCommentVNode("", true)
+      ]),
+      _: 3
+    }, 8, ["onBeforeEnter", "onAfterEnter", "onBeforeLeave", "onAfterLeave"])
+  ], 64);
 }
 var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var Checkbox_vue_vue_type_style_index_0_scoped_true_lang = "";

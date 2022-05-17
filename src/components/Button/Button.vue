@@ -38,6 +38,10 @@ export default {
   },
 
   props: {
+    disableRipple:{
+      type: Boolean,
+      default: false
+    },
         
     title: {
       type: String,
@@ -213,7 +217,7 @@ export default {
   methods: {
 
     onClick(event) {
-      createRipple.createRipple(event)
+      if(!this.disableRipple) createRipple.createRipple(event)
       this.active = !this.active
       this.$emit('click', event)
     },
@@ -258,6 +262,8 @@ export default {
   transform: translateY(0);
 
   z-index: 1;
+
+  cursor: pointer;
 
   .--content{
     gap : 5px;
