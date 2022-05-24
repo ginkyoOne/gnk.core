@@ -1,8 +1,8 @@
-import { openBlock, createElementBlock, normalizeClass, createElementVNode, renderSlot, createCommentVNode, createTextVNode, resolveComponent, Fragment, withModifiers, normalizeStyle, createVNode, Transition, withCtx, createBlock, mergeProps, withKeys, toDisplayString, pushScopeId, popScopeId, Teleport, markRaw, resolveDynamicComponent, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
+import { openBlock, createElementBlock, normalizeClass, withModifiers, createElementVNode, renderSlot, createCommentVNode, createTextVNode, resolveComponent, createVNode, withCtx, normalizeStyle, Transition, createBlock, mergeProps, withKeys, toDisplayString, pushScopeId, popScopeId, Teleport, markRaw, resolveDynamicComponent, Fragment, renderList, withDirectives, vModelRadio, vModelCheckbox, reactive } from "vue";
 function createRipple(event) {
   const TARGET = event.currentTarget;
-  const RIPPLE = TARGET.getElementsByClassName("gnk-RIPPLE")[0];
-  if (RIPPLE)
+  const RIPPLE = TARGET.querySelector(".gnk-ripple");
+  if (!!RIPPLE)
     RIPPLE.remove();
   const TARGET_INFO = TARGET.getBoundingClientRect();
   const RIPPLE_SPAN = document.createElement("span");
@@ -17,12 +17,33 @@ var createRipple$1 = {
   createRipple
 };
 const gnkComponent = {
-  mounted() {
-    console.info("gnkComponent mounted");
+  inject: {
+    registerChild: {
+      default: null
+    }
+  },
+  data() {
+    return {
+      store: EVENTS.Configs
+    };
   },
   methods: {
     hello() {
       console.log("hello from mixin!");
+    },
+    componentElementClientRect() {
+      let modalPosition = this.$el.getBoundingClientRect();
+      return {
+        top: modalPosition.top,
+        left: modalPosition.left,
+        width: modalPosition.width,
+        height: modalPosition.height
+      };
+    },
+    objectToArray(obj) {
+      return Object.keys(obj).map(function(key) {
+        return obj[key];
+      });
     }
   },
   props: {
@@ -66,6 +87,21 @@ const gnkComponent = {
       required: false,
       default: false
     },
+    circular: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    block: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     disabled: {
       type: Boolean,
       required: false,
@@ -73,6 +109,9 @@ const gnkComponent = {
     }
   },
   computed: {
+    componentId() {
+      return `${this.$options.name}_${([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))}`;
+    },
     componentGeneralClasses() {
       return {
         "--info": this.info,
@@ -89,6 +128,9 @@ const gnkComponent = {
         "--disabled": this.disabled
       };
     }
+  },
+  mounted() {
+    typeof this.registerChild === "function" && this.type === "toggle" ? this.registerChild(this) : null;
   }
 };
 var gnkComponent$1 = {
@@ -102,17 +144,20 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$d = {
+const _sfc_main$f = {
   name: "gnkButton",
   mixins: [gnkComponent$1.gnkComponent],
+  emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
-      store: EVENTS.Configs,
-      active: false
+      checked: false
     };
   },
-  watch: {},
   props: {
+    notSync: {
+      type: Boolean,
+      default: false
+    },
     disableRipple: {
       type: Boolean,
       default: false
@@ -121,22 +166,6 @@ const _sfc_main$d = {
       type: String,
       required: false,
       default: void 0
-    },
-    tooltip: {
-      type: Boolean,
-      required: false,
-      default: false,
-      validator(type) {
-        return [true, false].includes(type);
-      }
-    },
-    tooltip_trigger: {
-      type: String,
-      required: false,
-      default: "hover",
-      validator(type) {
-        return ["hover", "click"].includes(type);
-      }
     },
     border: {
       type: Boolean,
@@ -163,16 +192,6 @@ const _sfc_main$d = {
       required: false,
       default: false
     },
-    circular: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    square: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     size: {
       type: String,
       required: false,
@@ -191,15 +210,10 @@ const _sfc_main$d = {
       required: false,
       default: "default",
       validator(type) {
-        return ["slide-up", "slide-left", "fade", "scale", "rotate"].includes(type);
+        return ["slide-up", "slide-left", "fade", "scale", "rotate", "default"].includes(type);
       }
     },
     animateInactive: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    block: {
       type: Boolean,
       required: false,
       default: false
@@ -223,7 +237,6 @@ const _sfc_main$d = {
       }
     }
   },
-  emits: ["click"],
   computed: {
     buttonType() {
       switch (this.type) {
@@ -238,7 +251,9 @@ const _sfc_main$d = {
       }
     },
     componentClassObject() {
+      var _a;
       return {
+        "--toggle": this.type === "toggle",
         "--floating": this.floating,
         "--flat": this.flat,
         "--border": this.border,
@@ -250,55 +265,64 @@ const _sfc_main$d = {
         "--size-l": this.size === "l",
         "--size-small": this.size === "small",
         "--size-mini": this.size === "mini",
-        "--animate": this.$slots.animate ? true : false,
+        "--animate": ((_a = this.$slots) == null ? void 0 : _a.animate) ? true : false,
         "--animate-slide-up": this.animate === "slide-up" && !this.loading && !this.animateInactive ? true : false,
         "--animate-slide-left": this.animate === "slide-left" && !this.loading && !this.animateInactive ? true : false,
         "--animate-fade": this.animate === "fade" && !this.loading && !this.animateInactive ? true : false,
         "--animate-scale": this.animate === "scale" && !this.loading && !this.animateInactive ? true : false,
         "--animate-rotate": this.animate === "rotate" && !this.loading && !this.animateInactive ? true : false,
-        "--loading": this.loading || this.busy,
-        "--active": this.active & this.type == "toggle"
+        "--loading": this.loading,
+        "--active": this.checked & this.type == "toggle"
       };
     }
   },
   methods: {
     onClick(event) {
-      if (!this.disableRipple)
+      event.preventDefault();
+      if (!this.disableRipple && !!event)
         createRipple$1.createRipple(event);
-      this.active = !this.active;
-      this.$emit("click", event);
+      if (this.type === "toggle") {
+        this.checked = !this.checked;
+        this.$emit("onchange", new CustomEvent("onchange", { detail: { target: this.$el, component: this, newValue: this.checked, oldValue: !this.checked, event } }));
+        this.$el.dispatchEvent(new CustomEvent("onchange", { detail: { target: this.$el, component: this, newValue: this.checked, oldValue: !this.checked, event } }));
+      }
+      this.$emit("onclick", new CustomEvent("onclick", { detail: { target: this.$el, component: this, event } }));
+      this.$el.dispatchEvent(new CustomEvent("onclick", { detail: { target: this.$el, component: this, event } }));
     }
   },
   mounted() {
   }
 };
-const _hoisted_1$a = ["title", "aria-label", "disabled", "type"];
-const _hoisted_2$6 = { class: "--content" };
-const _hoisted_3$4 = /* @__PURE__ */ createTextVNode("gnkButton");
+const _hoisted_1$c = ["id", "title", "aria-label", "disabled", "type", "checked"];
+const _hoisted_2$7 = { class: "--content" };
+const _hoisted_3$5 = /* @__PURE__ */ createTextVNode("gnkButton");
 const _hoisted_4$2 = {
   key: 0,
   class: "--content-animate"
 };
-function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("button", {
+    ref: _ctx.componentId,
+    id: _ctx.componentId,
     class: normalizeClass(["gnk-button --primary", [$options.componentClassObject, _ctx.componentGeneralClasses]]),
     title: $props.title,
     "aria-label": $props.title,
     disabled: _ctx.disabled,
     type: $options.buttonType,
-    onClick: _cache[0] || (_cache[0] = ($event) => $options.onClick($event))
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onClick($event), ["stop"])),
+    checked: $data.checked
   }, [
-    createElementVNode("div", _hoisted_2$6, [
+    createElementVNode("div", _hoisted_2$7, [
       renderSlot(_ctx.$slots, "default", {}, () => [
-        _hoisted_3$4
+        _hoisted_3$5
       ])
     ]),
     !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_4$2, [
       renderSlot(_ctx.$slots, "animate")
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$a);
+  ], 10, _hoisted_1$c);
 }
-var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
 async function getImageMeta(src) {
   return await new Promise((resolve, reject) => {
     let img = new Image();
@@ -310,13 +334,107 @@ async function getImageMeta(src) {
 var imageData = {
   getImageMeta
 };
+var ButtonGroup_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$e = {
+  name: "gnkButtonGroup",
+  mixins: [gnkComponent$1.gnkComponent],
+  data() {
+    return {
+      childButtons: [],
+      selectedItems: [],
+      selectedItem: null
+    };
+  },
+  props: {
+    toggle: {
+      type: String,
+      default: "default",
+      validator: function(value) {
+        return ["single", "multiple", "default"].includes(value);
+      }
+    },
+    direction: {
+      type: String,
+      default: "horizontal",
+      validator(type) {
+        return ["horizontal", "vertical"].includes(type);
+      }
+    },
+    draggable: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--draggable": this.draggable,
+        "--vertical": this.direction === "vertical"
+      };
+    }
+  },
+  watch: {},
+  emits: [],
+  methods: {
+    childValueChange(e) {
+      switch (this.toggle) {
+        case "single":
+          this.selectedItem = e.detail.component;
+          this.childButtons = this.childButtons.map((button) => {
+            if (button.uid == e.detail.component.uid)
+              button.checked = true;
+            else
+              button.checked = false;
+            return button;
+          });
+          break;
+        case "multiple":
+          if (e.detail.component.checked)
+            this.selectedItems.push(e.detail.component);
+          else
+            this.selectedItems = this.selectedItems.filter((item) => item.uid != e.detail.component.uid);
+          break;
+      }
+    },
+    registerChildToggle(element) {
+      this.childButtons.push(element);
+      element.$el.addEventListener("onchange", this.childValueChange);
+    }
+  },
+  provide() {
+    return {
+      registerChild: this.registerChildToggle
+    };
+  },
+  mounted() {
+  }
+};
+const _hoisted_1$b = ["id"];
+const _hoisted_2$6 = { class: "--title" };
+const _hoisted_3$4 = { class: "--buttons" };
+function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass(["gnkButtonGroup", [$options.componentClassObject, _ctx.componentGeneralClasses]]),
+    ref: _ctx.componentId,
+    id: _ctx.componentId
+  }, [
+    createElementVNode("div", _hoisted_2$6, [
+      createElementVNode("h4", null, [
+        renderSlot(_ctx.$slots, "title")
+      ])
+    ]),
+    createElementVNode("div", _hoisted_3$4, [
+      renderSlot(_ctx.$slots, "default")
+    ])
+  ], 10, _hoisted_1$b);
+}
+var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
 var Card_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$c = {
+const _sfc_main$d = {
   name: "gnkCard",
   mixins: [gnkComponent$1.gnkComponent],
   data() {
     return {
-      uid: ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)),
       mediaSrc: null,
       mediaAlt: null,
       mediaHeight: null,
@@ -352,18 +470,28 @@ const _sfc_main$c = {
   emits: ["open", "close", "click"],
   methods: {
     onClick(event) {
-      console.log(event);
       this.$emit("click", event);
     },
     open() {
       if (!this.expanded && !!this.$slots.expanded) {
         this.expanded = true;
-        this.$emit("open", this.uid);
+        this.$emit("open", this.componentId);
       }
     },
     close() {
       this.expanded = false;
-      this.$emit("close", this.uid);
+      this.$emit("close", this.componentId);
+    },
+    closing(direction, start2, end2, distance, time) {
+      if (direction == "down") {
+        let modalPosition = this.$refs.cardConteinerFull.getBoundingClientRect();
+        this.modalPosition = {
+          top: modalPosition.top - distance.y + "px",
+          left: modalPosition.left + "px",
+          width: modalPosition.width + "px",
+          height: modalPosition.height - distance.y + "px"
+        };
+      }
     },
     getModalPosition() {
       let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
@@ -383,11 +511,10 @@ const _sfc_main$c = {
         this.mediaWidth = imageMeta.width;
         this.mediaCenter = this.mediaWidth > this.mediaHeight ? this.mediaHeight < 300 ? "100% auto" : "auto 100%" : "auto 100%";
       } catch (e) {
-        console.log(e);
+        console.debug(e);
       }
     },
     onBeforeEnter(el) {
-      console.log("onBeforeEnter");
       if (this.expanded) {
         let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
         this.modalPosition = {
@@ -399,7 +526,6 @@ const _sfc_main$c = {
       }
     },
     onAfterEnter(el) {
-      console.log("onAfterEnter");
       if (this.expanded) {
         this.modalPosition = {
           top: "0px",
@@ -410,7 +536,6 @@ const _sfc_main$c = {
       }
     },
     onBeforeLeave(el) {
-      console.log("onBeforeLeave");
       if (!this.expanded) {
         let modalPosition = this.$refs.cardConteiner.getBoundingClientRect();
         this.modalPosition = {
@@ -429,148 +554,161 @@ const _sfc_main$c = {
     this.getMediaInfo();
   }
 };
-const _hoisted_1$9 = { class: "--card-container" };
-const _hoisted_2$5 = { class: "--card-header" };
-const _hoisted_3$3 = {
+const _hoisted_1$a = ["id"];
+const _hoisted_2$5 = { class: "--card-container" };
+const _hoisted_3$3 = { class: "--card-header" };
+const _hoisted_4$1 = {
   key: 1,
   class: "--card-title col-12 pad-lr-15 flex"
 };
-const _hoisted_4$1 = {
+const _hoisted_5 = {
   key: 0,
   class: "row --card-body"
 };
-const _hoisted_5 = { class: "--card-content col-12 pad-10 pad-t-5 flex" };
-const _hoisted_6 = {
+const _hoisted_6 = { class: "--card-content col-12 pad-10 pad-t-5 flex" };
+const _hoisted_7 = {
   key: 1,
   class: "row"
 };
-const _hoisted_7 = { class: "columns" };
-const _hoisted_8 = { class: "--card-footer col-12 flex position-centered pad-1" };
-const _hoisted_9 = { class: "row --card-container" };
-const _hoisted_10 = { class: "row --card-header" };
-const _hoisted_11 = /* @__PURE__ */ createElementVNode("b", null, "x", -1);
-const _hoisted_12 = {
+const _hoisted_8 = { class: "columns" };
+const _hoisted_9 = { class: "--card-footer col-12 flex position-centered pad-1" };
+const _hoisted_10 = { class: "row --card-container" };
+const _hoisted_11 = { class: "row --card-header" };
+const _hoisted_12 = /* @__PURE__ */ createElementVNode("b", null, "x", -1);
+const _hoisted_13 = {
   key: 2,
   class: "--card-title col-12 pad-lr-15 flex"
 };
-const _hoisted_13 = { class: "row --card-body" };
-const _hoisted_14 = {
+const _hoisted_14 = { class: "row --card-body" };
+const _hoisted_15 = {
   key: 0,
   class: "--card-content col-12 pad-10 pad-t-5"
 };
-const _hoisted_15 = { class: "--card-content-expanded col-12 pad-10 pad-t-5 flex" };
-const _hoisted_16 = {
+const _hoisted_16 = { class: "--card-content-expanded col-12 pad-10 pad-t-5 flex" };
+const _hoisted_17 = {
   key: 0,
   class: "row"
 };
-const _hoisted_17 = { class: "columns" };
-const _hoisted_18 = { class: "--card-footer col-12 flex position-centered pad-1" };
-function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_18 = { class: "columns" };
+const _hoisted_19 = { class: "--card-footer col-12 flex position-centered pad-1" };
+function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnkButton = resolveComponent("gnkButton");
-  return openBlock(), createElementBlock(Fragment, null, [
-    createElementVNode("div", {
-      onClick: _cache[0] || (_cache[0] = withModifiers((...args) => $options.open && $options.open(...args), ["stop"])),
-      ref: "cardConteiner",
-      class: normalizeClass(["gnk-card container", [_ctx.componentGeneralClasses]])
-    }, [
-      createElementVNode("div", _hoisted_1$9, [
-        createElementVNode("div", _hoisted_2$5, [
-          !!this.media ? (openBlock(), createElementBlock("div", {
-            key: 0,
-            style: normalizeStyle({ backgroundImage: "url(../../assets/placeholder-1024x512.png)", backgroundSize: "cover" })
-          }, [
-            createElementVNode("div", {
-              class: "--media col-12",
-              style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
-            }, null, 4)
-          ], 4)) : createCommentVNode("", true),
-          !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_3$3, [
-            createElementVNode("h4", null, [
-              renderSlot(_ctx.$slots, "title")
-            ])
-          ])) : createCommentVNode("", true)
-        ]),
-        !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
-          createElementVNode("div", _hoisted_5, [
-            renderSlot(_ctx.$slots, "default")
-          ])
-        ])) : createCommentVNode("", true),
-        !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_6, [
-          createElementVNode("div", _hoisted_7, [
-            createElementVNode("div", _hoisted_8, [
-              renderSlot(_ctx.$slots, "footer")
-            ])
-          ])
-        ])) : createCommentVNode("", true)
-      ])
-    ], 2),
-    createVNode(Transition, {
-      onBeforeEnter: $options.onBeforeEnter,
-      onAfterEnter: $options.onAfterEnter,
-      onBeforeLeave: $options.onBeforeLeave,
-      onAfterLeave: $options.onAfterLeave,
-      "enter-active-class": "modal_open",
-      "leave-active-class": "modal_close"
+  const _component_gnkSwipeManager = resolveComponent("gnkSwipeManager");
+  return openBlock(), createElementBlock("div", {
+    id: _ctx.componentId,
+    ref: _ctx.componentId
+  }, [
+    createVNode(_component_gnkSwipeManager, {
+      onSwipedDown: _cache[1] || (_cache[1] = ($event) => $options.close()),
+      onSwiping: $options.closing
     }, {
       default: withCtx(() => [
-        $data.expanded ? (openBlock(), createElementBlock("div", {
-          key: 0,
-          ref: "cardConteinerFull",
-          class: normalizeClass(["gnk-card --card-expanded container", [_ctx.componentGeneralClasses]]),
-          style: normalizeStyle($options.modalPositionObject)
+        createElementVNode("div", {
+          onClick: _cache[0] || (_cache[0] = withModifiers((...args) => $options.open && $options.open(...args), ["stop"])),
+          ref: "cardConteiner",
+          class: normalizeClass(["gnk-card container col-12 --LEVEL-4", [_ctx.componentGeneralClasses]])
         }, [
-          createElementVNode("div", _hoisted_9, [
-            createElementVNode("div", _hoisted_10, [
-              $data.expanded ? (openBlock(), createBlock(_component_gnkButton, {
+          createElementVNode("div", _hoisted_2$5, [
+            createElementVNode("div", _hoisted_3$3, [
+              !!this.media ? (openBlock(), createElementBlock("div", {
                 key: 0,
-                disableRipple: "true",
-                "data-animation-offset": "10",
-                circular: "",
-                light: "",
-                class: "--close-expanded-card fadeIn",
-                onClick: withModifiers($options.close, ["stop"])
-              }, {
-                default: withCtx(() => [
-                  _hoisted_11
-                ]),
-                _: 1
-              }, 8, ["onClick"])) : createCommentVNode("", true),
-              !!this.mediaHeight ? (openBlock(), createElementBlock("div", {
-                key: 1,
-                class: "row --media",
-                style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
-              }, null, 4)) : createCommentVNode("", true),
-              !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_12, [
+                style: normalizeStyle({ backgroundImage: "url(../../assets/placeholder-1024x512.png)", backgroundSize: "cover" })
+              }, [
+                createElementVNode("div", {
+                  class: "--media col-12",
+                  style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
+                }, null, 4)
+              ], 4)) : createCommentVNode("", true),
+              !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
                 createElementVNode("h4", null, [
                   renderSlot(_ctx.$slots, "title")
                 ])
               ])) : createCommentVNode("", true)
             ]),
-            createElementVNode("div", _hoisted_13, [
-              !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_14, [
+            !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_5, [
+              createElementVNode("div", _hoisted_6, [
                 renderSlot(_ctx.$slots, "default")
-              ])) : createCommentVNode("", true),
-              createElementVNode("div", _hoisted_15, [
-                renderSlot(_ctx.$slots, "expanded")
               ])
-            ]),
-            !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_16, [
-              createElementVNode("div", _hoisted_17, [
-                createElementVNode("div", _hoisted_18, [
+            ])) : createCommentVNode("", true),
+            !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_7, [
+              createElementVNode("div", _hoisted_8, [
+                createElementVNode("div", _hoisted_9, [
                   renderSlot(_ctx.$slots, "footer")
                 ])
               ])
             ])) : createCommentVNode("", true)
           ])
-        ], 6)) : createCommentVNode("", true)
+        ], 2),
+        createVNode(Transition, {
+          onBeforeEnter: $options.onBeforeEnter,
+          onAfterEnter: $options.onAfterEnter,
+          onBeforeLeave: $options.onBeforeLeave,
+          onAfterLeave: $options.onAfterLeave,
+          "enter-active-class": "modal_open",
+          "leave-active-class": "modal_close"
+        }, {
+          default: withCtx(() => [
+            $data.expanded ? (openBlock(), createElementBlock("div", {
+              key: 0,
+              ref: "cardConteinerFull",
+              class: normalizeClass(["gnk-card --card-expanded container col-12 --LEVEL-4", [_ctx.componentGeneralClasses]]),
+              style: normalizeStyle($options.modalPositionObject)
+            }, [
+              createElementVNode("div", _hoisted_10, [
+                createElementVNode("div", _hoisted_11, [
+                  $data.expanded ? (openBlock(), createBlock(_component_gnkButton, {
+                    key: 0,
+                    disableRipple: true,
+                    "data-animation-offset": "10",
+                    circular: "",
+                    dark: "",
+                    class: "--close-expanded-card fadeIn",
+                    onClick: withModifiers($options.close, ["stop"])
+                  }, {
+                    default: withCtx(() => [
+                      _hoisted_12
+                    ]),
+                    _: 1
+                  }, 8, ["onClick"])) : createCommentVNode("", true),
+                  !!this.mediaHeight ? (openBlock(), createElementBlock("div", {
+                    key: 1,
+                    class: "row --media",
+                    style: normalizeStyle({ backgroundImage: "url(" + $data.mediaSrc + ")", backgroundSize: "cover" })
+                  }, null, 4)) : createCommentVNode("", true),
+                  !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_13, [
+                    createElementVNode("h4", null, [
+                      renderSlot(_ctx.$slots, "title")
+                    ])
+                  ])) : createCommentVNode("", true)
+                ]),
+                createElementVNode("div", _hoisted_14, [
+                  !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_15, [
+                    renderSlot(_ctx.$slots, "default")
+                  ])) : createCommentVNode("", true),
+                  createElementVNode("div", _hoisted_16, [
+                    renderSlot(_ctx.$slots, "expanded")
+                  ])
+                ]),
+                !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_17, [
+                  createElementVNode("div", _hoisted_18, [
+                    createElementVNode("div", _hoisted_19, [
+                      renderSlot(_ctx.$slots, "footer")
+                    ])
+                  ])
+                ])) : createCommentVNode("", true)
+              ])
+            ], 6)) : createCommentVNode("", true)
+          ]),
+          _: 3
+        }, 8, ["onBeforeEnter", "onAfterEnter", "onBeforeLeave", "onAfterLeave"])
       ]),
       _: 3
-    }, 8, ["onBeforeEnter", "onAfterEnter", "onBeforeLeave", "onAfterLeave"])
-  ], 64);
+    }, 8, ["onSwiping"])
+  ], 8, _hoisted_1$a);
 }
-var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
 var Checkbox_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$b = {
+const _sfc_main$c = {
   name: "gnkCheckbox",
   props: {
     modelValue: {
@@ -618,13 +756,13 @@ const _sfc_main$b = {
   }
 };
 const _withScopeId$2 = (n) => (pushScopeId("data-v-4360f646"), n = n(), popScopeId(), n);
-const _hoisted_1$8 = ["disabled", "checked"];
+const _hoisted_1$9 = ["disabled", "checked"];
 const _hoisted_2$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createElementVNode("div", { class: "c-Checkbox__element" }, null, -1));
 const _hoisted_3$2 = {
   key: 0,
   class: "c-Checkbox__label"
 };
-function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("label", mergeProps({ class: "c-Checkbox" }, $options.checkboxAttributes, {
     onKeydown: _cache[1] || (_cache[1] = withKeys(withModifiers(() => {
     }, ["prevent"]), ["space"])),
@@ -640,14 +778,14 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
       disabled: $props.disabled,
       checked: $data.state,
       onChange: _cache[0] || (_cache[0] = ($event) => $data.state = $event.target.checked)
-    }, null, 40, _hoisted_1$8),
+    }, null, 40, _hoisted_1$9),
     _hoisted_2$4,
     $props.label ? (openBlock(), createElementBlock("span", _hoisted_3$2, toDisplayString($props.label), 1)) : createCommentVNode("", true)
   ], 16);
 }
-var Checkbox = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b], ["__scopeId", "data-v-4360f646"]]);
+var Checkbox = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c], ["__scopeId", "data-v-4360f646"]]);
 var Input_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$a = {
+const _sfc_main$b = {
   name: "gnkInput",
   props: {
     modelValue: {
@@ -711,9 +849,9 @@ const _sfc_main$a = {
     }
   }
 };
-const _hoisted_1$7 = ["value", "name", "required", "disabled", "aria-label", "placeholder"];
+const _hoisted_1$8 = ["value", "name", "required", "disabled", "aria-label", "placeholder"];
 const _hoisted_2$3 = ["title"];
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass(["c-Input", $options.inputClassObject])
   }, [
@@ -728,7 +866,7 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
       "aria-label": $props.label,
       placeholder: $props.placeholder,
       onInput: _cache[0] || (_cache[0] = ($event) => $data.text = $event.target.value)
-    }, null, 40, _hoisted_1$7),
+    }, null, 40, _hoisted_1$8),
     createElementVNode("span", {
       class: "c-Input__label",
       title: $props.label,
@@ -736,9 +874,9 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     }, toDisplayString($props.label), 41, _hoisted_2$3)
   ], 2);
 }
-var Input = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a], ["__scopeId", "data-v-24a71b0e"]]);
+var Input = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b], ["__scopeId", "data-v-24a71b0e"]]);
 var Link_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$9 = {
+const _sfc_main$a = {
   name: "Link",
   props: {
     label: {
@@ -787,8 +925,8 @@ const _sfc_main$9 = {
     }
   }
 };
-const _hoisted_1$6 = { class: "c-Link__label" };
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$7 = { class: "c-Link__label" };
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("a", mergeProps({ class: "c-Link" }, $options.linkAttributes, {
     onClick: _cache[0] || (_cache[0] = ($event) => $options.onClick()),
     onKeydown: _cache[1] || (_cache[1] = withKeys(withModifiers(() => {
@@ -798,10 +936,10 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
       _cache[3] || (_cache[3] = withKeys(($event) => $options.onClick(), ["space"]))
     ]
   }), [
-    createElementVNode("span", _hoisted_1$6, toDisplayString($props.label), 1)
+    createElementVNode("span", _hoisted_1$7, toDisplayString($props.label), 1)
   ], 16);
 }
-var Link = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9], ["__scopeId", "data-v-212477e8"]]);
+var Link = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a], ["__scopeId", "data-v-212477e8"]]);
 /*!
 * tabbable 5.3.1
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
@@ -1033,7 +1171,7 @@ var Modal_vue_vue_type_style_index_0_scoped_true_lang = "";
 const ESCAPE_KEY$3 = 27;
 const TAB_KEY$1 = 9;
 let previouslyFocusedElement$1;
-const _sfc_main$8 = {
+const _sfc_main$9 = {
   name: "Modal",
   props: {
     isOpen: {
@@ -1097,7 +1235,7 @@ const _sfc_main$8 = {
     }
   }
 };
-const _hoisted_1$5 = {
+const _hoisted_1$6 = {
   key: 0,
   ref: "modal",
   css: false,
@@ -1106,7 +1244,7 @@ const _hoisted_1$5 = {
   tabindex: "0",
   "aria-modal": "true"
 };
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createBlock(Teleport, { to: "body" }, [
     createVNode(Transition, { name: "fade" }, {
       default: withCtx(() => [
@@ -1127,7 +1265,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
       onAfterLeave: _cache[4] || (_cache[4] = ($event) => $options.afterModalClose())
     }, {
       default: withCtx(() => [
-        $props.isOpen ? (openBlock(), createElementBlock("div", _hoisted_1$5, [
+        $props.isOpen ? (openBlock(), createElementBlock("div", _hoisted_1$6, [
           renderSlot(_ctx.$slots, "default", {}, void 0, true)
         ], 512)) : createCommentVNode("", true)
       ]),
@@ -1135,9 +1273,9 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     })
   ]);
 }
-var Modal = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8], ["__scopeId", "data-v-9bcdc338"]]);
+var Modal = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9], ["__scopeId", "data-v-9bcdc338"]]);
 const ESCAPE_KEY$2 = 27;
-const _sfc_main$7 = {
+const _sfc_main$8 = {
   components: { Modal: EVENTS },
   data() {
     return {
@@ -1167,7 +1305,7 @@ const _sfc_main$7 = {
     }
   }
 };
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_Modal = resolveComponent("Modal");
   return openBlock(), createBlock(_component_Modal, {
     "is-open": Boolean($data.component),
@@ -1179,9 +1317,9 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
   }, 8, ["is-open", "onClose"]);
 }
-var ModalManager = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+var ModalManager = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
 var Progress_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$7 = {
   name: "gnkProgress",
   mixins: [gnkComponent$1.gnkComponent],
   props: {
@@ -1194,22 +1332,6 @@ const _sfc_main$6 = {
       type: [Number, String],
       required: false,
       default: 100
-    },
-    tooltip: {
-      type: Boolean,
-      required: false,
-      default: false,
-      validator(type) {
-        return [true, false].includes(type);
-      }
-    },
-    tooltip_trigger: {
-      type: String,
-      required: false,
-      default: "hover",
-      validator(type) {
-        return ["hover", "click"].includes(type);
-      }
     },
     border: {
       type: Boolean,
@@ -1297,13 +1419,13 @@ const _sfc_main$6 = {
         "--size-l": this.size === "l",
         "--size-small": this.size === "small",
         "--size-mini": this.size === "mini",
-        "--loading": this.loading || this.busy
+        "--loading": this.loading
       };
     }
   }
 };
-const _hoisted_1$4 = ["title", "aria-valuemax", "aria-valuenow"];
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$5 = ["title", "aria-valuemax", "aria-valuenow"];
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([[$options.componentClassObject, _ctx.componentGeneralClasses], "gnkProgress --primary"]),
     role: "progressbar",
@@ -1315,11 +1437,11 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       style: normalizeStyle(`width: ${$options.progressPercentage}%`)
     }, null, 4)
-  ], 10, _hoisted_1$4);
+  ], 10, _hoisted_1$5);
 }
-var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
 var Radio_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$5 = {
+const _sfc_main$6 = {
   name: "Radio",
   props: {
     modelValue: {
@@ -1377,14 +1499,14 @@ const _sfc_main$5 = {
   }
 };
 const _withScopeId$1 = (n) => (pushScopeId("data-v-b5e91534"), n = n(), popScopeId(), n);
-const _hoisted_1$3 = ["onKeyup"];
+const _hoisted_1$4 = ["onKeyup"];
 const _hoisted_2$2 = ["name", "value", "disabled"];
 const _hoisted_3$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createElementVNode("div", { class: "c-Radio__element" }, null, -1));
 const _hoisted_4 = {
   key: 0,
   class: "c-Radio__label"
 };
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(true), createElementBlock(Fragment, null, renderList($props.items, (item, index) => {
     return openBlock(), createElementBlock("label", mergeProps({
       key: `radio-${index}`,
@@ -1410,15 +1532,15 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
       ]),
       _hoisted_3$1,
       item.label ? (openBlock(), createElementBlock("span", _hoisted_4, toDisplayString(item.label), 1)) : createCommentVNode("", true)
-    ], 16, _hoisted_1$3);
+    ], 16, _hoisted_1$4);
   }), 128);
 }
-var Radio = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5], ["__scopeId", "data-v-b5e91534"]]);
+var Radio = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6], ["__scopeId", "data-v-b5e91534"]]);
 var Sidebar_vue_vue_type_style_index_0_scoped_true_lang = "";
 const ESCAPE_KEY$1 = 27;
 const TAB_KEY = 9;
 let previouslyFocusedElement;
-const _sfc_main$4 = {
+const _sfc_main$5 = {
   name: "Sidebar",
   props: {
     isOpen: {
@@ -1501,7 +1623,7 @@ const _sfc_main$4 = {
     }
   }
 };
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock(Fragment, null, [
     createVNode(Transition, { name: "fade" }, {
       default: withCtx(() => [
@@ -1537,9 +1659,9 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     }, 8, ["name"])
   ], 64);
 }
-var Sidebar = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4], ["__scopeId", "data-v-b8d71d72"]]);
+var Sidebar = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5], ["__scopeId", "data-v-b8d71d72"]]);
 const ESCAPE_KEY = 27;
-const _sfc_main$3 = {
+const _sfc_main$4 = {
   components: { Sidebar: EVENTS },
   data() {
     return {
@@ -1569,7 +1691,7 @@ const _sfc_main$3 = {
     }
   }
 };
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_Sidebar = resolveComponent("Sidebar");
   return openBlock(), createBlock(_component_Sidebar, {
     "is-open": Boolean($data.component),
@@ -1581,9 +1703,9 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
   }, 8, ["is-open", "onClose"]);
 }
-var SidebarManager = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var SidebarManager = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
 var Switch_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$2 = {
+const _sfc_main$3 = {
   name: "Switch",
   props: {
     modelValue: {
@@ -1631,13 +1753,13 @@ const _sfc_main$2 = {
   }
 };
 const _withScopeId = (n) => (pushScopeId("data-v-57ac28fd"), n = n(), popScopeId(), n);
-const _hoisted_1$2 = ["disabled"];
+const _hoisted_1$3 = ["disabled"];
 const _hoisted_2$1 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("div", { class: "c-Switch__slider" }, null, -1));
 const _hoisted_3 = {
   key: 0,
   class: "c-Switch__label"
 };
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("label", mergeProps({ class: "c-Switch" }, $options.switchAttributes, {
     onKeydown: _cache[2] || (_cache[2] = withKeys(withModifiers(() => {
     }, ["prevent"]), ["space"])),
@@ -1653,16 +1775,16 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
       type: "checkbox",
       disabled: $props.disabled,
       onClick: _cache[1] || (_cache[1] = ($event) => $options.onTrigger())
-    }, null, 8, _hoisted_1$2), [
+    }, null, 8, _hoisted_1$3), [
       [vModelCheckbox, $data.state]
     ]),
     _hoisted_2$1,
     $props.label ? (openBlock(), createElementBlock("span", _hoisted_3, toDisplayString($props.label), 1)) : createCommentVNode("", true)
   ], 16);
 }
-var Switch = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2], ["__scopeId", "data-v-57ac28fd"]]);
+var Switch = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3], ["__scopeId", "data-v-57ac28fd"]]);
 var Textarea_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$1 = {
+const _sfc_main$2 = {
   name: "Textarea",
   props: {
     modelValue: {
@@ -1746,9 +1868,9 @@ const _sfc_main$1 = {
     }
   }
 };
-const _hoisted_1$1 = ["value", "name", "required", "disabled", "aria-label", "placeholder"];
+const _hoisted_1$2 = ["value", "name", "required", "disabled", "aria-label", "placeholder"];
 const _hoisted_2 = ["title"];
-function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass(["c-Textarea", $options.textareaClassObject])
   }, [
@@ -1762,7 +1884,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       "aria-label": $props.label,
       placeholder: $props.placeholder,
       onInput: _cache[0] || (_cache[0] = ($event) => $data.text = $event.target.value)
-    }, null, 40, _hoisted_1$1),
+    }, null, 40, _hoisted_1$2),
     createElementVNode("span", {
       class: "c-Textarea__label",
       title: $props.label,
@@ -1770,7 +1892,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     }, toDisplayString($props.label), 41, _hoisted_2)
   ], 2);
 }
-var Textarea = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-41154f19"]]);
+var Textarea = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2], ["__scopeId", "data-v-41154f19"]]);
 var top = "top";
 var bottom = "bottom";
 var right = "right";
@@ -4230,7 +4352,7 @@ tippy$1.setDefaultProps({
 });
 var tippy = "";
 var Tooltip_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main = {
+const _sfc_main$1 = {
   name: "Tooltip",
   props: {
     content: {
@@ -4244,16 +4366,147 @@ const _sfc_main = {
     });
   }
 };
-const _hoisted_1 = {
+const _hoisted_1$1 = {
   class: "c-Tooltip",
   tabindex: "0"
 };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", _hoisted_1, [
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", _hoisted_1$1, [
     renderSlot(_ctx.$slots, "default", {}, void 0, true)
   ]);
 }
-var Tooltip = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-1d80bce5"]]);
+var Tooltip = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-1d80bce5"]]);
+const _sfc_main = {
+  name: "gnkSwipeManager",
+  mixins: [gnkComponent$1.gnkComponent],
+  data() {
+    return {
+      swipe: {
+        direction: "",
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: 0 },
+        distance: { x: 0, y: 0 },
+        time: {
+          start: 0,
+          end: 0,
+          elapsed: 0
+        }
+      }
+    };
+  },
+  props: {
+    threshold: {
+      type: Number,
+      default: 100
+    },
+    restraint: {
+      type: Number,
+      default: 100
+    },
+    allowedTime: {
+      type: Number,
+      default: 300
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {};
+    }
+  },
+  watch: {},
+  emits: [
+    "swiped",
+    "swiping",
+    "swipedLeft",
+    "swipedRight",
+    "swipedUp",
+    "swipedDown",
+    "touchDown",
+    "touchUp",
+    "touchMove"
+  ],
+  methods: {
+    observeSwipe(element, callback = null) {
+      element.addEventListener("touchstart", (e) => {
+        this.swipe.direction = "";
+        this.swipe.start.x = e.touches[0].clientX;
+        this.swipe.start.y = e.touches[0].clientY;
+        this.swipe.time.start = new Date().getTime();
+        this.$emit("touchDown", ...this.objectToArray(this.swipe));
+      }, { passive: true });
+      element.addEventListener("touchmove", (e) => {
+        this.swipe.end.x = e.touches[0].clientX;
+        this.swipe.end.y = e.touches[0].clientY;
+        this.swipe.distance.x = this.swipe.end.x - this.swipe.start.x;
+        this.swipe.distance.y = this.swipe.end.y - this.swipe.start.y;
+        this.swipe.time.end = new Date().getTime();
+        this.swipe.time.elapsed = this.swipe.time.end - this.swipe.time.start;
+        if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "right";
+          this.$emit("swipedRight", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "left";
+          this.$emit("swipedLeft", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "down";
+          this.$emit("swipedDown", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "up";
+          this.$emit("swipedUp", ...this.objectToArray(this.swipe));
+        }
+        this.$emit("touchMove", ...this.objectToArray(this.swipe));
+        this.$emit("swiping", ...this.objectToArray(this.swipe));
+      }, { passive: true });
+      element.addEventListener("touchend", (e) => {
+        this.swipe.time.end = new Date().getTime();
+        this.swipe.time.elapsed = this.swipe.time.end - this.swipe.time.start;
+        if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "right";
+          this.$emit("swipedRight", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "left";
+          this.$emit("swipedLeft", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "down";
+          this.$emit("swipedDown", ...this.objectToArray(this.swipe));
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "up";
+          this.$emit("swipedUp", ...this.objectToArray(this.swipe));
+        }
+        if (this.swipe.direction) {
+          this.$emit("touchUp", ...this.objectToArray(this.swipe));
+          this.$emit("swiped", ...this.objectToArray(this.swipe));
+          if (!callback)
+            callback(this.swipe.direction);
+        }
+        this.swipe = {
+          direction: "",
+          start: { x: 0, y: 0 },
+          end: { x: 0, y: 0 },
+          distance: { x: 0, y: 0 },
+          time: {
+            start: 0,
+            end: 0,
+            elapsed: 0
+          }
+        };
+      }, { passive: true });
+    }
+  },
+  mounted() {
+    this.observeSwipe(this.$el);
+  }
+};
+const _hoisted_1 = ["id"];
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass(["gnkSwipeManager", [$options.componentClassObject, _ctx.componentGeneralClasses]]),
+    id: _ctx.componentId
+  }, [
+    renderSlot(_ctx.$slots, "default")
+  ], 10, _hoisted_1);
+}
+var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 var EVENTS$1 = {
   OPEN_MODAL: "OPEN_MODAL",
   CLOSE_MODAL: "CLOSE_MODAL",
@@ -4388,7 +4641,9 @@ const Configs = reactive({
 var EVENTS = {
   Configs,
   gnkComponent: gnkComponent$1,
+  gnkSwipeManager,
   gnkButton,
+  gnkButtonGroup,
   gnkCard,
   Checkbox,
   Input,

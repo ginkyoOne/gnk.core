@@ -12,13 +12,12 @@
   </div>
 </template>
 <script>
-import gnk from "../../index"
-import createRipple from "../../utils/ripple"
 import mixin from "../../mixin/gnkComponent"
 
 export default {
   name: 'gnkProgress',
   mixins:[mixin.gnkComponent],
+
   props: {
     value: {
       type: [Number, String],
@@ -30,25 +29,6 @@ export default {
       required: false,
       default: 100,
     },
-
-
-    tooltip: {
-      type: Boolean,
-      required: false,
-      default: false,
-      validator(type) {
-        return [true, false].includes(type)
-      },
-    },
-    tooltip_trigger: {
-      type: String,
-      required: false,
-      default: 'hover',
-      validator(type) {
-        return ['hover', 'click'].includes(type)
-      },
-    },
-
 
 
     border:{
@@ -119,7 +99,9 @@ export default {
     },
 
   },
+
   computed: {
+
     progressPercentage() {
       const value = Number(this.value)
       const max = Number(this.max)
@@ -148,10 +130,11 @@ export default {
         '--size-mini': this.size === 'mini',
 
         
-        '--loading': this.loading || this.busy,
+        '--loading': this.loading,
       }
     },
   },
+  
 }
 </script>
 <style lang="scss">

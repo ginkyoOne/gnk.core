@@ -1,24 +1,4 @@
-<template>
-    <button
-    class="gnk-button --primary"
-      :class="[componentClassObject , componentGeneralClasses]"
-      :title="title"
-      :aria-label="title"
-      :disabled="disabled"
-      :type="buttonType"
-      @click="onClick($event)"
-    >
-      <div class="--content">
-        <slot>gnkButton</slot> 
-      </div>
-      <div class="--content-animate" v-if="!!this.$slots.animate">
-          <slot name="animate"></slot>
-      </div>
-    </button>
-</template>
-
 <script>
-import gnk from "../../index"
 import createRipple from "../../utils/ripple"
 import mixin from "../../mixin/gnkComponent"
 
@@ -26,18 +6,23 @@ import mixin from "../../mixin/gnkComponent"
 export default {
   name: 'gnkButton',
   mixins: [mixin.gnkComponent],
+  emits: ['onsubmit','onchange', 'onclick','ondblclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onwheel', 'onfocus', 'onblur','onkeydown','onkeypress','onkeyup'],
+
+
+
+
 
   data() {
     return {
-      store: gnk.Configs,
-      active: false,
+      checked: false,
     }
-  },
-  watch:{
-
   },
 
   props: {
+    notSync: {
+      type: Boolean,
+      default: false,
+    },
     disableRipple:{
       type: Boolean,
       default: false
@@ -50,22 +35,6 @@ export default {
     },
 
 
-    tooltip: {
-      type: Boolean,
-      required: false,
-      default: false,
-      validator(type) {
-        return [true, false].includes(type)
-      },
-    },
-    tooltip_trigger: {
-      type: String,
-      required: false,
-      default: 'hover',
-      validator(type) {
-        return ['hover', 'click'].includes(type)
-      },
-    },
 
 
 
@@ -96,16 +65,7 @@ export default {
     },
 
 
-    circular: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    square: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+
     size:{
       type: String,      
       required: false,
@@ -124,7 +84,7 @@ export default {
       required: false,
       default: 'default',
       validator(type) {
-        return ['slide-up','slide-left', 'fade', 'scale', 'rotate'].includes(type)
+        return ['slide-up','slide-left', 'fade', 'scale', 'rotate', 'default'].includes(type)
       },
     },
     
@@ -134,11 +94,6 @@ export default {
       default: false,
     },
 
-    block:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     floating:{
       type: Boolean,
       required: false,
@@ -160,8 +115,6 @@ export default {
 
 
   },
-
-  emits: ['click'],
 
   computed: {
     buttonType() {
@@ -185,6 +138,7 @@ export default {
     componentClassObject() {
       return {
 
+        '--toggle': this.type === 'toggle',
         '--floating': this.floating,
 
         '--flat': this.flat,
@@ -199,7 +153,7 @@ export default {
         '--size-small': this.size === 'small',
         '--size-mini': this.size === 'mini',
 
-        '--animate': this.$slots.animate  ? true : false,
+        '--animate': this.$slots?.animate  ? true : false,
 
         '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.animateInactive ? true : false,
         '--animate-slide-left': this.animate === 'slide-left'  && !this.loading && !this.animateInactive? true : false,
@@ -207,28 +161,64 @@ export default {
         '--animate-scale': this.animate === 'scale'  && !this.loading && !this.animateInactive? true : false,
         '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.animateInactive? true : false,
         
-        '--loading': this.loading || this.busy,
+        '--loading': this.loading,
 
-        '--active': this.active & this.type == 'toggle' ,
+        '--active': this.checked & this.type == 'toggle' ,
 
       }
     },
   },
+
+
   methods: {
 
     onClick(event) {
-      if(!this.disableRipple) createRipple.createRipple(event)
-      this.active = !this.active
-      this.$emit('click', event)
+        event.preventDefault()
+
+        if(!this.disableRipple && !!event) createRipple.createRipple(event)
+        
+        if(this.type === 'toggle') {
+          this.checked = !this.checked 
+          this.$emit('onchange', new CustomEvent('onchange', {detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event }}))
+          this.$el.dispatchEvent( new CustomEvent('onchange',{detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event  }}))
+        }
+        
+        this.$emit('onclick', new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
+        this.$el.dispatchEvent( new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
+
     },
+
   },
+
   mounted() {
-    
 
   },
 
 }
 </script>
+
+<template>
+    <button
+      :ref="componentId"
+      :id="componentId"
+      class="gnk-button --primary"
+      :class="[componentClassObject , componentGeneralClasses]"
+      :title="title"
+      :aria-label="title"
+      :disabled="disabled"
+      :type="buttonType"
+      @click.stop="onClick($event)"
+      :checked="checked"
+    >
+      <div class="--content">
+        <slot>gnkButton</slot> 
+      </div>
+      <div class="--content-animate" v-if="!!this.$slots.animate">
+          <slot name="animate"></slot>
+      </div>
+    </button>
+</template>
+
 <style lang="scss">
 @import "../../scss/base";
 
@@ -247,7 +237,7 @@ export default {
   min-width: fit-content;
 
   margin: 5px;
-  padding: 0px;
+  padding: 8px 8px;
 
   align-items: center;
   justify-content: center;
@@ -256,7 +246,7 @@ export default {
   border-radius: var(--BORDER-RADIOS);
   
   background-color: -color('BASE', 1);
-  color: -color('BUTTON-TEXT',1);
+  color: -color('TEXT',1);
 
   transition: transform 0.2s ease;
   transform: translateY(0);
@@ -334,6 +324,7 @@ export default {
   }
 
   &:is(:hover):not(.--active){
+    color: -color('BUTTON-TEXT',1) !important;
     background-color: -color('BASE',0.4);
   }
 
@@ -546,10 +537,10 @@ export default {
     height: 17px;
     box-sizing: border-box;
 
-    border: 2px solid -color('BUTTON-TEXT', 1);
-    border-top: 2px solid -color('BUTTON-TEXT', 1);
-    border-bottom: 2px solid -color('BUTTON-TEXT', 0);
-    border-right: 2px solid -color('BUTTON-TEXT', 0);
+    border: 2px solid -color('TEXT', 1);
+    border-top: 2px solid -color('TEXT', 1);
+    border-bottom: 2px solid -color('TEXT', 0);
+    border-right: 2px solid -color('TEXT', 0);
     border-radius: 50%;
 
     animation: cnkButton-loading .6s ease infinite;
@@ -772,9 +763,6 @@ export default {
   }
 
 }
-
-
-
 
 
 

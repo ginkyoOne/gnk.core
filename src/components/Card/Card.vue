@@ -1,5 +1,5 @@
 <script>
-import gnk from "../../index"
+
 import mixin from "../../mixin/gnkComponent"
 import imageData from "../../utils/imageData"
 
@@ -10,7 +10,6 @@ export default {
 
     data() {
         return {
-            uid: ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>(c ^(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)),
             mediaSrc: null,
             mediaAlt: null,
             mediaHeight: null,
@@ -21,7 +20,6 @@ export default {
             modalPosition:null,
             }
         },
-
     props: {
         media: {
             type: String,
@@ -35,6 +33,7 @@ export default {
 
         },
     computed: {
+
             componentClassObject(){
                 return {
 
@@ -54,19 +53,32 @@ export default {
 
     methods: {
         onClick(event) {
-            console.log(event)
             this.$emit('click', event)
         },
         
         open(){
             if(!this.expanded && !!this.$slots.expanded){
                 this.expanded = true
-                this.$emit('open', this.uid)
+                this.$emit('open', this.componentId)
             }   
         },
         close(){
             this.expanded = false;
-            this.$emit('close', this.uid)
+            this.$emit('close',  this.componentId)
+        },
+
+
+        closing(direction, start,end,distance,time){
+            if(direction == 'down'){
+
+                let modalPosition = this.$refs.cardConteinerFull.getBoundingClientRect()
+                this.modalPosition = {
+                    top: (modalPosition.top - distance.y) + 'px',
+                    left: modalPosition.left + 'px',
+                    width: modalPosition.width + 'px',
+                    height: (modalPosition.height - distance.y) + 'px',
+                }
+            }  
         },
 
 
@@ -91,13 +103,12 @@ export default {
                 this.mediaCenter = ((this.mediaWidth > this.mediaHeight) ? ((this.mediaHeight < 300 ) ? '100% auto' :  'auto 100%' ) : 'auto 100%')
             
             }catch(e){
-                console.log(e)
+                console.debug(e)
             }
         },
 
 
         onBeforeEnter(el) {
-            console.log('onBeforeEnter')
             
             if(this.expanded){
                 let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
@@ -111,7 +122,6 @@ export default {
         },
 
         onAfterEnter(el) {
-            console.log('onAfterEnter')
 
             if(this.expanded){
                 this.modalPosition= {
@@ -124,7 +134,6 @@ export default {
         },
 
         onBeforeLeave(el) {
-            console.log('onBeforeLeave')
 
             if(!this.expanded){
                 let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
@@ -134,7 +143,7 @@ export default {
                     width: modalPosition.width + 'px',
                     height: modalPosition.height + 'px',
                 }
-                //console.log(this.modalPosition)
+                //console.debug(this.modalPosition)
             }
         },
 
@@ -147,7 +156,6 @@ export default {
     },
 
 
-
     async mounted() { 
         //GET ELEMENT POSITION
         this.getModalPosition()
@@ -156,103 +164,108 @@ export default {
         this.getMediaInfo()
     },
 }
+
 </script>
 
 <template>
+    <div :id="componentId" :ref="componentId">
 
+        <gnkSwipeManager @swipedDown="close()" @swiping="closing">
 
-    <div @click.stop="open" ref="cardConteiner" class="gnk-card container" :class="[componentGeneralClasses]">
-        
-        <div class=" --card-container">
-            
-            <div class=" --card-header">
-                <div v-if="!!this.media" :style="{ backgroundImage: 'url(../../assets/placeholder-1024x512.png)', backgroundSize: 'cover' }">
-                    <div class=" --media col-12 " :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">            
-                    </div>
-                </div>
-                <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                    <h4>
-                        <slot name="title"> 
-                        </slot>
-                    </h4>
-                </div>
-            
-            </div>
-            <div class="row --card-body" v-if="!!this.$slots.default">
-                <div class="--card-content col-12  pad-10 pad-t-5 flex">
-                    <slot>
-
-                    </slot>
-                </div>
-            </div>
-            <div class="row"  v-if="!!this.$slots.footer">
-
-                <div class="columns">
-                    <div class="--card-footer col-12 flex position-centered pad-1">
-                        <slot name="footer">    
-                        </slot>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <transition
-    @before-enter="onBeforeEnter"
-    @after-enter="onAfterEnter"
-    @before-leave="onBeforeLeave"
-    @after-leave="onAfterLeave"
-    enter-active-class="modal_open" 
-    leave-active-class="modal_close">
-        
-        <div ref="cardConteinerFull" v-if="expanded" class="gnk-card --card-expanded container" :style="modalPositionObject" :class="[componentGeneralClasses]">
-            
-            <div class="row --card-container">
+            <div @click.stop="open" ref="cardConteiner" class="gnk-card container col-12 --LEVEL-4" :class="[componentGeneralClasses]">
                 
-                <div class="row --card-header">
-
-                    <gnkButton v-if="expanded" disableRipple="true" data-animation-offset="10" circular light class="--close-expanded-card fadeIn" @click.stop="close">
-                            <b>x</b>
-                    </gnkButton>
-
-                    <div v-if="!!this.mediaHeight" class="row --media" :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">                        
-                    </div>
+                <div class=" --card-container">
                     
-                    <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                        <h4>
-                            <slot name="title"> 
+                    <div class=" --card-header">
+                        <div v-if="!!this.media" :style="{ backgroundImage: 'url(../../assets/placeholder-1024x512.png)', backgroundSize: 'cover' }">
+                            <div class=" --media col-12 " :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">            
+                            </div>
+                        </div>
+                        <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
+                            <h4>
+                                <slot name="title"> 
+                                </slot>
+                            </h4>
+                        </div>
+                    
+                    </div>
+                    <div class="row --card-body" v-if="!!this.$slots.default">
+                        <div class="--card-content col-12  pad-10 pad-t-5 flex">
+                            <slot>
+
                             </slot>
-                        </h4>
+                        </div>
                     </div>
-                
-                </div>
-                <div class="row --card-body" >
-                    <div v-if="!!this.$slots.default" class="--card-content col-12  pad-10 pad-t-5">
-                        <slot>
-                        </slot>
-                    </div>
-                    <div class="--card-content-expanded col-12  pad-10 pad-t-5 flex">
-                        <slot name="expanded">
+                    <div class="row"  v-if="!!this.$slots.footer">
 
-
-                        </slot>
-                    </div>
-                </div>
-                <div class="row"  v-if="!!this.$slots.footer">
-
-                    <div class="columns">
-                        <div class="--card-footer col-12 flex position-centered pad-1">
-                            <slot name="footer">
-
-                                
-                            </slot>
+                        <div class="columns">
+                            <div class="--card-footer col-12 flex position-centered pad-1">
+                                <slot name="footer">    
+                                </slot>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </transition>
+
+
+            <transition
+            @before-enter="onBeforeEnter"
+            @after-enter="onAfterEnter"
+            @before-leave="onBeforeLeave"
+            @after-leave="onAfterLeave"
+            enter-active-class="modal_open" 
+            leave-active-class="modal_close">
+                
+                <div ref="cardConteinerFull" v-if="expanded" class="gnk-card --card-expanded container col-12 --LEVEL-4" :style="modalPositionObject" :class="[componentGeneralClasses]">
+                    
+                    <div class="row --card-container">
+                        
+                        <div class="row --card-header">
+
+                            <gnkButton v-if="expanded" :disableRipple="true" data-animation-offset="10" circular dark class="--close-expanded-card fadeIn" @click.stop="close">
+                                    <b>x</b>
+                            </gnkButton>
+
+                            <div v-if="!!this.mediaHeight" class="row --media" :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">                        
+                            </div>
+                            
+                            <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
+                                <h4>
+                                    <slot name="title"> 
+                                    </slot>
+                                </h4>
+                            </div>
+                        
+                        </div>
+                        <div class="row --card-body" >
+                            <div v-if="!!this.$slots.default" class="--card-content col-12  pad-10 pad-t-5">
+                                <slot>
+                                </slot>
+                            </div>
+                            <div class="--card-content-expanded col-12  pad-10 pad-t-5 flex">
+                                <slot name="expanded">
+
+
+                                </slot>
+                            </div>
+                        </div>
+                        <div class="row"  v-if="!!this.$slots.footer">
+
+                            <div class="columns">
+                                <div class="--card-footer col-12 flex position-centered pad-1">
+                                    <slot name="footer">
+
+                                        
+                                    </slot>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </gnkSwipeManager>
+    </div>
 
 </template>
 
@@ -268,7 +281,7 @@ export default {
     max-height: 100% !important;
 
     &.--card-expanded{
-
+        pointer-events: visible;
         transition: all 1s ease-in-out;
         position: absolute ;
         z-index: 9999;
@@ -328,11 +341,11 @@ export default {
 
         .--card-content{
             border-radius: var(--BORDER-RADIOS);
-            background-color: -color('GRAY-1');
+            background-color: -color('LEVEL-1');
         }
         .--card-content-expanded{
             border-radius: var(--BORDER-RADIOS);
-            background-color: -color('GRAY-1');
+            background-color: -color('LEVEL-1');
             height:100%;
         }
     }
@@ -381,7 +394,7 @@ export default {
         left:var(--left);
         height:var(--height);
         width:var(--width);
-        opacity: 1;
+        opacity: 0;
         z-index: -1;
     }
 }

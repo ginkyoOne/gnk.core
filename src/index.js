@@ -1,5 +1,7 @@
 
 import gnkButton from './components/Button/Button.vue'
+import gnkButtonGroup from './components/ButtonGroup/ButtonGroup.vue'
+
 import gnkCard from './components/Card/Card.vue'
 import Checkbox  from './components/Checkbox/Checkbox.vue'
 import Input  from './components/Input/Input.vue'
@@ -12,7 +14,9 @@ import Sidebar  from './components/Sidebar/Sidebar.vue'
 import SidebarManager  from './components/SidebarManager/SidebarManager.vue'
 import Switch  from './components/Switch/Switch.vue'
 import Textarea  from './components/Textarea/Textarea.vue'
-import Tooltip  from './components/Tooltip/Tooltip.vue'
+import Tooltip from './components/Tooltip/Tooltip.vue'
+
+import gnkSwipeManager from './components/SwipeManager/gnkSwipeManager.vue'
 
 
 import EVENTS  from './utils/events'
@@ -27,11 +31,10 @@ import gnkComponent from './mixin/gnkComponent'
 
 const Configs = reactive({
     darkmode: false,
-
 })
 
 
 export default {
-    Configs, gnkComponent, gnkButton, gnkCard, Checkbox, Input, Link, Modal, ModalManager, gnkProgress, Radio, Sidebar, SidebarManager, Switch, Textarea, Tooltip, EVENTS, EventBus, lockScroll, unlockScroll, registerModuleComponents
+    Configs, gnkComponent, gnkSwipeManager, gnkButton, gnkButtonGroup, gnkCard, Checkbox, Input, Link, Modal, ModalManager, gnkProgress, Radio, Sidebar, SidebarManager, Switch, Textarea, Tooltip, EVENTS, EventBus, lockScroll, unlockScroll, registerModuleComponents
 }
 

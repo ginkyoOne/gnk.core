@@ -16,10 +16,10 @@
     --COLOR-WARNING: 255, 185, 5;
     --COLOR-DANGER: 255, 64, 58;
     --COLOR-BUG: 192, 57, 43;
-    --COLOR-DARK: 30, 32, 35;
-    --COLOR-LIGHT: 244,247,248;
+    --COLOR-DARK: var(--COLOR-LEVEL-0);
+    --COLOR-LIGHT: var(--COLOR-LEVEL-4);
     --COLOR-BASE: 17,18,20;
-    --COLOR-BUTTON-TEXT: 255, 255, 255;
+
 
 
     [class*="--primary"] {
@@ -58,14 +58,28 @@
         --COLOR-BASE: var(--COLOR-LIGHT);
     }
 
+    [class*="--level-0"] {
+        --COLOR-BASE: var(--COLOR-LEVEL-0);
+    }
+    [class*="--level-1"] {
+        --COLOR-BASE: var(--COLOR-LEVEL-1);
+    }
+    [class*="--level-2"] {
+        --COLOR-BASE: var(--COLOR-LEVEL-2);
+    }
+    [class*="--level-3"] {
+        --COLOR-BASE: var(--COLOR-LEVEL-3);
+    }
+    [class*="--level-4"] {
+        --COLOR-BASE: var(--COLOR-LEVEL-4);
+    }
 
-
-    --COLOR-BACKGROUND: 244, 247, 248;
     --COLOR-TEXT: 44, 62, 80;
-    --COLOR-GRAY-1: 249, 252, 253;
-    --COLOR-GRAY-2: 249, 252, 253;
-    --COLOR-GRAY-3: 240, 243, 244;
-    --COLOR-GRAY-4: 230, 233, 234;
+    --COLOR-LEVEL-0: 244, 247, 248;
+    --COLOR-LEVEL-1: 249, 252, 253;
+    --COLOR-LEVEL-2: 249, 252, 253;
+    --COLOR-LEVEL-3: 240, 243, 244;
+    --COLOR-LEVEL-4: 230, 233, 234;
 
 
     --COLOR-RED: #d53131;

@@ -162,11 +162,6 @@
     display: flex;
     flex-wrap: wrap;
 
-
-    &.col-oneline {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
     &.col-oneline {
         flex-wrap: nowrap;
         overflow-x: auto;

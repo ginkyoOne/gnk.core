@@ -5,16 +5,17 @@
     --COLOR-WARN: 255, 185, 5;
     --COLOR-DANGER: 255, 64, 58;
     --COLOR-SUCCESS: 70, 201, 58;
-    --COLOR-DARK:  0, 0, 0;
-    --COLOR-LIGHT: 24, 25, 28;
+    --COLOR-DARK: var(--COLOR-LEVEL-0);
+    --COLOR-LIGHT: var(--COLOR-LEVEL-4);
     --COLOR-BASE: 17,18,20;
 
-    --COLOR-BACKGROUND: 30, 32, 35;
     --COLOR-TEXT: 255, 255, 255;
-    --COLOR-GRAY-1: 24, 25, 28;
-    --COLOR-GRAY-2: 20, 20, 23;
-    --COLOR-GRAY-3: 15, 16, 19;
-    --COLOR-GRAY-4: 10, 11, 14;
+    
+    --COLOR-LEVEL-0:  0, 0, 0;    
+    --COLOR-LEVEL-1: 30, 32, 35;
+    --COLOR-LEVEL-2: 20, 20, 23;
+    --COLOR-LEVEL-3: 15, 16, 19;
+    --COLOR-LEVEL-4: 10, 11, 14;
 
     --SHADOW-OPACITY: 0.30;
     --BACKGROUND-OPACITY: 0.60;
@@ -30,7 +31,7 @@
         &.gnk-component-dark {
             .gnk-pagination__active {
                 vs-color: 255, 255, 255;
-                color: -color('gray-3');
+                color: -color('LEVEL-3');
             }
         }
     }

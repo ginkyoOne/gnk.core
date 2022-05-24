@@ -1,10 +1,12 @@
 function createRipple(event) {
  
     const TARGET = event.currentTarget;
+    
     //CHECK IF SPAN ALREADY EXISTS
-    const RIPPLE = TARGET.getElementsByClassName("gnk-RIPPLE")[0];
+    const RIPPLE = TARGET.querySelector(".gnk-ripple");
+
     //REMOVE IT
-    if (RIPPLE) RIPPLE.remove();
+    if (!!RIPPLE) RIPPLE.remove();
 
     //GET TARGET INFO
     const TARGET_INFO = TARGET.getBoundingClientRect();
