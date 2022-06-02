@@ -14,7 +14,7 @@ let previousBodyHeight
 let previousBodyPosition
 let previousScrollTop
 
-const isMobileOS = (userAgent) => {
+const isMobile = (userAgent) => {
   const ua = userAgent || navigator.userAgent
   const ipad = /(iPad).*OS\s([\d_]+)/.test(ua)
   const iphone = !ipad && /(iPhone\sOS)\s([\d_]+)/.test(ua)
@@ -107,7 +107,7 @@ const unlockScrollMobile = () => {
 }
 
 const lockScroll = () => {
-  if (isMobileOS()) {
+  if (isMobile()) {
     lockScrollMobile()
   }
 
@@ -115,11 +115,11 @@ const lockScroll = () => {
 }
 
 const unlockScroll = () => {
-  if (isMobileOS()) {
+  if (isMobile()) {
     unlockScrollMobile()
   }
 
   unlockScrollPC()
 }
 
-export { lockScroll, unlockScroll }
+export { lockScroll, unlockScroll, isMobile }

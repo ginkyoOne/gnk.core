@@ -1,6 +1,6 @@
 <template>
   <label
-    class="c-Switch"
+    class="gnkSwitch"
     v-bind="switchAttributes"
     @keydown.space.prevent
     @keyup.enter="onTrigger()"
@@ -9,20 +9,20 @@
     <input
       v-model="state"
       aria-hidden="true"
-      class="c-Switch__input"
+      class="gnkSwitch__input"
       type="checkbox"
       :disabled="disabled"
       @click="onTrigger()"
     />
-    <div class="c-Switch__slider" />
-    <span v-if="label" class="c-Switch__label">
+    <div class="gnkSwitch__slider" />
+    <span v-if="label" class="gnkSwitch__label">
       {{ label }}
     </span>
   </label>
 </template>
 <script>
 export default {
-  name: 'Switch',
+  name: 'gnkSwitch',
   props: {
     modelValue: {
       type: Boolean,
@@ -40,7 +40,7 @@ export default {
       default: false,
     },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'onChanged'],
   data() {
     return {
       state: this.modelValue,
@@ -60,17 +60,20 @@ export default {
     },
     state(newValue) {
       this.$emit('update:modelValue', newValue)
+      this.$emit('onChanged', this.state, newValue)
     },
   },
   methods: {
     onTrigger() {
       this.state = !this.state
+      console.log('click', this.state)
+      this.$emit('onChanged', this.state)
     },
   },
 }
 </script>
 <style scoped>
-.c-Switch {
+.gnkSwitch {
   cursor: pointer;
   position: relative;
   display: flex;
@@ -79,11 +82,11 @@ export default {
   width: fit-content;
 }
 
-.c-Switch input {
+.gnkSwitch input {
   display: none;
 }
 
-.c-Switch__slider {
+.gnkSwitch__slider {
   position: relative;
   display: block;
   width: 48px;
@@ -94,7 +97,7 @@ export default {
   transition: 0.15s;
 }
 
-.c-Switch__slider:before {
+.gnkSwitch__slider:before {
   content: '';
   border-radius: 24px;
   position: absolute;
@@ -107,50 +110,50 @@ export default {
   transition: 0.15s;
 }
 
-.c-Switch__label {
+.gnkSwitch__label {
   user-select: none;
   margin-left: 8px;
 }
 
 /* Checked */
 
-.c-Switch__input:checked + .c-Switch__slider {
+.gnkSwitch__input:checked + .gnkSwitch__slider {
   border-color: #101010;
   background-color: #101010;
 }
 
-.c-Switch__input:focus + .c-Switch__slider {
+.gnkSwitch__input:focus + .gnkSwitch__slider {
   box-shadow: 0 0 1px #101010;
 }
 
-.c-Switch__input:checked + .c-Switch__slider:before {
+.gnkSwitch__input:checked + .gnkSwitch__slider:before {
   background-color: white;
   transform: translate(24px);
 }
 
 /* Disabled */
 
-.c-Switch[aria-disabled='true'] {
+.gnkSwitch[aria-disabled='true'] {
   cursor: not-allowed;
 }
 
-.c-Switch[aria-disabled='true'] .c-Switch__slider {
+.gnkSwitch[aria-disabled='true'] .gnkSwitch__slider {
   border: 2px solid #757575;
   background-color: #e0e0e0;
 }
 
-.c-Switch[aria-disabled='true'] .c-Switch__input:checked + .c-Switch__slider {
+.gnkSwitch[aria-disabled='true'] .gnkSwitch__input:checked + .gnkSwitch__slider {
   border: 2px solid #757575;
   background-color: #757575;
 }
 
-.c-Switch[aria-disabled='true'] .c-Switch__slider:before {
+.gnkSwitch[aria-disabled='true'] .gnkSwitch__slider:before {
   background-color: #757575;
 }
 
-.c-Switch[aria-disabled='true']
-  .c-Switch__input:checked
-  + .c-Switch__slider:before {
+.gnkSwitch[aria-disabled='true']
+  .gnkSwitch__input:checked
+  + .gnkSwitch__slider:before {
   background-color: #e0e0e0;
   transform: translate(24px);
 }

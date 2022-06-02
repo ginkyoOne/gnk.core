@@ -1,5 +1,4 @@
-@import 'base';
-
+@import  'base/mixings/', 'base/theme/', 'base/ripple/', 'base/animations/', 'base/vendor/',  'base/grid/';
 
 
 * {
@@ -30,7 +29,7 @@ body{
 }
 
 #app{
-    overflow-y: auto;
+    overflow: hidden;
     height: 100%;
     width: 100%;
     display: block;

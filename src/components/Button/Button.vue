@@ -1,6 +1,6 @@
 <script>
 import createRipple from "../../utils/ripple"
-import mixin from "../../mixin/gnkComponent"
+import mixin from "../ComponentBase/gnkComponent"
 
 
 export default {
@@ -138,6 +138,7 @@ export default {
     componentClassObject() {
       return {
 
+        '--primary' : true,
         '--toggle': this.type === 'toggle',
         '--floating': this.floating,
 
@@ -179,12 +180,10 @@ export default {
         
         if(this.type === 'toggle') {
           this.checked = !this.checked 
-          this.$emit('onchange', new CustomEvent('onchange', {detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event }}))
-          this.$el.dispatchEvent( new CustomEvent('onchange',{detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event  }}))
+          this.componentRaiseEvent('onchange',{newValue: this.checked , oldValue: !this.checked, event: event})
         }
         
-        this.$emit('onclick', new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
-        this.$el.dispatchEvent( new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
+        this.componentRaiseEvent('onclick',{event: event})
 
     },
 
@@ -201,8 +200,7 @@ export default {
     <button
       :ref="componentId"
       :id="componentId"
-      class="gnk-button --primary"
-      :class="[componentClassObject , componentGeneralClasses]"
+      :class="[componentName, componentClassObject , componentGeneralClasses]"
       :title="title"
       :aria-label="title"
       :disabled="disabled"
@@ -220,13 +218,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import "../../scss/base";
-
-
-
-
-
-.gnk-button {
+.gnkButton {
   transition: flex 0.3s ease-out;
   cursor:         pointer;
   position:       relative;
@@ -237,30 +229,30 @@ export default {
   min-width: fit-content;
 
   margin: 5px;
-  padding: 8px 8px;
+  padding: 0 !important;
 
   align-items: center;
   justify-content: center;
 
-  border: var(--OUTLINE-SIZE) solid -color('PRIMARY', 0);
-  border-radius: var(--BORDER-RADIOS);
+  border: var(--BORDER-SIZE) none  -color('BASE');
+  border-radius: var(--BORDER-RADIUS);
   
   background-color: -color('BASE', 1);
-  color: -color('TEXT',1);
+  color: -color('BASE-TEXT',1);
 
   transition: transform 0.2s ease;
   transform: translateY(0);
 
   z-index: 1;
 
-  cursor: pointer;
 
   .--content{
     gap : 5px;
     text-decoration: none;
-    padding: 8px 12px;
+    padding: 10px 12px;
     position:       relative;
     overflow:       hidden;
+
 
     width: 100%;
     display: flex;
@@ -315,7 +307,7 @@ export default {
 
   &:is(.--active){
     background-color: -color('BASE',1);
-    color: -color('BUTTON-TEXT',1);
+    color: -color('BASE-TEXT',1);
   }
 
   &:not(.--active){
@@ -324,12 +316,12 @@ export default {
   }
 
   &:is(:hover):not(.--active){
-    color: -color('BUTTON-TEXT',1) !important;
+    color: -color('BASE-TEXT',1) !important;
     background-color: -color('BASE',0.4);
   }
 
   &:is(:active){
-    color: -color('BUTTON-TEXT',1) !important;
+    color: -color('BASE-TEXT',1) !important;
     background-color: -color('BASE',0.9);
   }
 
@@ -342,7 +334,7 @@ export default {
   
 
   &:is(:hover):not(.--active){
-    border: var(--BORDER-SIZE)  solid -color('BASE', 0.6);
+    outline: var(--BORDER-SIZE)  solid -color('BASE', 0.6);
     &:not(.disabled, .--flat,.--relief){
       transition: transform 0.2s ease;
       transform: translateY(-2px);
@@ -351,7 +343,7 @@ export default {
 
 
   &:not(.--active){
-    border: var(--BORDER-SIZE)  solid -color('BASE', 1);
+    outline: var(--BORDER-SIZE)  solid -color('BASE', 1);
     background-color: transparent ;
     color: -color('BASE',1);
   }
@@ -363,54 +355,31 @@ export default {
 
 }
 &.--gradient:not(.--loading){
-  transition: opacity 0.2s ease, color 0.2s ease;
-
-  &::after{
-    content: '';
+  
+  background-image: linear-gradient(30deg, -color('BASE',0) 30%, -color('BASE', 1 , 45 , 15 , 10) 80%);
+  
+  &::after {
+    transition: opacity 0.5s linear;
     position: absolute;
-    
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-
-    background: linear-gradient(30deg, -color('BASE',0) 33%, -color('BASE', 1) 100%);
-    
-    filter: hue-rotate(-40deg);
-
+    content: "";
+    inset: 0;
+    background-image: linear-gradient(30deg, -color('BASE',1,0,0,-5) 0%, -color('BASE', 1 , 45 , 15 , 10) 60%);
     z-index: -1;
-          
-    border-radius: inherit;
-    pointer-events: none;
-    box-sizing: border-box;
+    opacity: 0;
   }
 
-  &:is(.--primary, .--success){
-    &::after{
-      filter: hue-rotate(40deg);
-    }
-  }
-
-
-  &:is(:hover):not(.--active){
-    background: -color('BASE', 1) ;
-    &::after{
-      opacity: 0.5;
-    }
-  }
-
-  &:is(:active){
-    background: -color('BASE', 0.9) ;
-    &::after{
-      opacity: 0.5;
-    }
+  &:is(:hover, .--active)::after{
+    opacity: 1;
   }
 
 }
+
+
+
 &.--relief{
   
   background: -color('BASE');
-  color: -color('BUTTON-TEXT');
+  color: -color('BASE-TEXT',1);
   overflow: hidden;
   
   transition: all 0.3s ease;
@@ -433,7 +402,7 @@ export default {
     border-radius: inherit;
     box-sizing: border-box;
     
-    z-index: 2;
+    z-index: 1;
   }
 
   &:is(.--active){
@@ -459,12 +428,12 @@ export default {
 
   &:is(:hover):not(.--active){
     transform:translateY(-2px);
-    box-shadow: 0px 5px 15px 0px -color('DARK', 0.8) !important;
+    box-shadow: 0px 10px 20px -8px -color('DARK', 1);
   }
 
   &:is(:active, .--active){
     transform:translateY(-2px);
-    box-shadow: 0px 5px 15px 0px -color('DARK', 1);
+    box-shadow: 0px 10px 20px -8px -color('DARK', 1);
   }
 
 }
@@ -537,8 +506,8 @@ export default {
     height: 17px;
     box-sizing: border-box;
 
-    border: 2px solid -color('TEXT', 1);
-    border-top: 2px solid -color('TEXT', 1);
+    border: 2px solid -color('BASE-TEXT',1);
+    border-top: 2px solid -color('BASE-TEXT',1);
     border-bottom: 2px solid -color('TEXT', 0);
     border-right: 2px solid -color('TEXT', 0);
     border-radius: 50%;
@@ -692,28 +661,28 @@ export default {
 
 
 &.--size-xl {
-  border-radius: calc(var(--BORDER-RADIOS) + 4px);
+  border-radius: calc(var(--BORDER-RADIUS) + 4px);
   .--content { 
     font-size: calc(var(--FONT-SIZE) + 0.2rem);
     padding: 15px 20px !important;
   }
 }
 &.--size-l {
-  border-radius: calc(var(--BORDER-RADIOS) + 2px);
+  border-radius: calc(var(--BORDER-RADIUS) + 2px);
   .--content{
     font-size: calc(var(--FONT-SIZE) + 0.1rem);
     padding: 10px 15px !important;
   }
 }
 &.--size-small {
-  border-radius: calc(var(--BORDER-RADIOS) - 2px);
+  border-radius: calc(var(--BORDER-RADIUS) - 2px);
   .--content{
     font-size: calc(var(--FONT-SIZE) - 0.1rem);
     padding: 5px 10px !important;
   }
 }
 &.--size-mini {
-  border-radius: calc(var(--BORDER-RADIOS) - 4px);
+  border-radius: calc(var(--BORDER-RADIUS) - 4px);
   .--content {
     font-size: calc(var(--FONT-SIZE) - 0.2rem);
     padding: 3px 8px !important;
@@ -721,19 +690,27 @@ export default {
 }
 
 
-&.--circle {
-  border-radius: 25px;
+&.--pill {
+  border-radius: 9999px;
+  min-width: 100px;
+}
+
+&.--circular {
+  border-radius: 50%;
   aspect-ratio: 1/1;
 }
 &.--square {
   border-radius: 0px;
 }
 
-
 &.--block {
     width: 100% !important;
     display: block !important;
 }
+
+
+
+
 
 
 
@@ -746,7 +723,7 @@ export default {
 
 }
 
-[gnk-theme="light"]{
+[gnk-theme-colorMode="light"]{
   .gnk-button:is(:hover){
     filter: brightness(0.95);
   }
@@ -757,7 +734,7 @@ export default {
 
 
 
-[gnk-theme="dark"]{
+[gnk-them-colorMode="dark"]{
   .--border{
     color: -color('PRIMARY', 1) !important;
   }

@@ -1,18 +1,5 @@
-<template>
-  <div
-    :class="[componentClassObject,componentGeneralClasses]"
-    class="gnkProgress --primary"
-    role="progressbar"
-    :title="`${progressPercentage}%`"
-    aria-valuemin="0"
-    :aria-valuemax="max"
-    :aria-valuenow="value"
-  >
-    <div  :style="`width: ${progressPercentage}%`" />
-  </div>
-</template>
 <script>
-import mixin from "../../mixin/gnkComponent"
+import mixin from "../ComponentBase/gnkComponent"
 
 export default {
   name: 'gnkProgress',
@@ -102,15 +89,13 @@ export default {
 
   computed: {
 
+    progressCircularPercentage() {
+      console.log('progressCircularPercentage', this.value, this.max)
+      return (200 * ((Number.isNaN(Number(this.value)) ? 0 : Number(this.value)  ) / (Number.isNaN(Number(this.max)) ? 100 : Number(this.max)))) ;
+    },
+
     progressPercentage() {
-      const value = Number(this.value)
-      const max = Number(this.max)
-
-      if (Number.isNaN(value) || Number.isNaN(max)) {
-        return 0
-      }
-
-      return Math.round((value / max) * 100)
+      return Math.round(((Number.isNaN( Number(this.value)) ? 0 : Number(this.value)) / (Number.isNaN(Number(this.max))? 100 : Number(this.max))) * 100)
     },
     componentClassObject() {
       return {
@@ -137,8 +122,36 @@ export default {
   
 }
 </script>
+
+<template>
+  <div
+    :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]"
+    class="--primary"
+    role="progressbar"
+    :title="`${progressPercentage}%`"
+    aria-valuemin="0"
+    :aria-valuemax="max"
+    :aria-valuenow="value"
+  >
+    <div v-if="!circular"  :style="`width: ${progressPercentage}%`" />
+
+    <svg v-if="circular" class="ring"  viewBox="0 0 100 100" preserveAspectRatio="none">
+        
+        <defs>
+          <linearGradient id="gradient"  y1="50%">
+            <stop offset="0%" stop-color="var(--color-stop-1)" />
+            <stop offset="50%" stop-color="var(--color-stop-2)" />
+          </linearGradient>
+        </defs>
+
+        <circle stroke-width="18" fill="transparent" r="40" cx="50" cy="50" stroke-linecap="round"  stroke-dasharray="200 200" strokeDashoffset="200" />
+        <circle class="ring-circle" stroke-linecap="round" stroke-width="14" fill="transparent" r="40" cx="50" cy="50" :stroke-dasharray="progressCircularPercentage +  ' 253'"   /> 
+    </svg>
+
+  </div>
+</template>
+
 <style lang="scss">
-@import "../../scss/base";
 
 .gnkProgress {
   position: relative;
@@ -147,7 +160,7 @@ export default {
   height: 10px;
 
   overflow: hidden;
-  border-radius: var(--BORDER-RADIOS);
+  border-radius: var(--BORDER-RADIUS);
   background-color: -color('BASE', 0.2);
 
   &>div {
@@ -158,25 +171,24 @@ export default {
 
     background-color: -color('BASE', 1);
     border-radius: inherit;
-    min-width: calc(var(--BORDER-RADIOS) * 2);
+    min-width: calc(var(--BORDER-RADIUS) * 2);
     transition: 0.2s cubic-bezier(0.4, 0, 0.6, 1);
   }
 
-
   &.--size-xl {
-    border-radius: calc(var(--BORDER-RADIOS) + 4px);
+    border-radius: calc(var(--BORDER-RADIUS) + 4px);
     height: 18px; 
   }
   &.--size-l {
-    border-radius: calc(var(--BORDER-RADIOS) + 2px);
+    border-radius: calc(var(--BORDER-RADIUS) + 2px);
     height: 14px;
   }
   &.--size-small {
-    border-radius: calc(var(--BORDER-RADIOS) - 2px);
+    border-radius: calc(var(--BORDER-RADIUS) - 2px);
     height: 8px;
   }
   &.--size-mini {
-    border-radius: calc(var(--BORDER-RADIOS) - 4px);
+    border-radius: calc(var(--BORDER-RADIUS) - 4px);
     height: 6px;
   }
 
@@ -245,13 +257,23 @@ export default {
   }
   &.--gradient{
     transition: opacity 0.2s ease, color 0.2s ease;
-
+        &>.ring>.ring-circle {
+          stroke: url(#gradient) -color('BASE');
+        }
+        
     &>div {
-      background: repeating-linear-gradient(
+      background:repeating-linear-gradient(
         145deg,
-        -color('BASE', 0.6),
+        -color('BASE', 1),
         -color('BASE', 1) 10px,
-      );
+        -color('BASE', 1, 0,0,-5) 10px,
+        -color('BASE', 1, 0,0,-5) 20px,
+      ),
+      linear-gradient(
+        90deg,
+        transparent,
+        -color('BASE', 1, 0,0,-5),
+      )
     }
   }
   &:is(.--primary, .--success):is(.--gradient){
@@ -357,6 +379,29 @@ export default {
     100% {
       left: 100%;
     }
+  }
+
+
+
+  &.--circular{
+    
+    --color-stop-2: hsla(calc(var(--COLOR-BASE-H)), var(--COLOR-BASE-S)  , var(--COLOR-BASE-L), 1);
+    --color-stop-1: hsla(calc(var(--COLOR-BASE-H) + 45), var(--COLOR-BASE-S)  , var(--COLOR-BASE-L), 1);
+
+    background: transparent;
+    min-width: 100px;
+    min-height: 100px;
+    &>.ring {
+        display: block;
+        transform: rotate(125deg);
+        stroke: -color('BASE', 0.3);
+      &>.ring-circle {
+
+          transition: stroke-dashoffset 0.60s ease;
+      }
+    }
+
+    
   }
 }
 

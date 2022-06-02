@@ -1,447 +1,169 @@
 <script>
 
-import mixin from "../../mixin/gnkComponent"
+import mixin from "../ComponentBase/gnkComponent"
 import imageData from "../../utils/imageData"
 
 export default {
     name: 'gnkCard',
     mixins: [mixin.gnkComponent],
     
-
     data() {
         return {
-            mediaSrc: null,
-            mediaAlt: null,
-            mediaHeight: null,
-            mediaWidth: null,
-            mediaDirection: null,
-            expanded: false,
-
-            modalPosition:null,
-            }
-        },
-    props: {
-        media: {
+            
+        }
+    },
+    props:{
+        headerBackground: {
             type: String,
-            default: '',
+            default: null,
+            /* validator: function(value) {
+                return imageData.validate(value)
+            } */
         },
-        mediaLable: {
+        headerBackgroundAlt: {
             type: String,
-            default: '',
+            default: null,
         },
+    },
 
-
-        },
     computed: {
-
-            componentClassObject(){
-                return {
-
-                }
-            },
-            modalPositionObject(){
-                return {
-                '--top' : this.modalPosition['top'],
-                '--left' : this.modalPosition['left'],
-                '--width' : this.modalPosition['width'],
-                '--height' : this.modalPosition['height'],
-                }
-            },
+        componentClassObject() {
+            return {
+                'container': true,
+                'flex': true,
+            }
         },
+    },
     
-    emits: ['open', 'close', 'click'],
-
     methods: {
-        onClick(event) {
-            this.$emit('click', event)
-        },
-        
-        open(){
-            if(!this.expanded && !!this.$slots.expanded){
-                this.expanded = true
-                this.$emit('open', this.componentId)
-            }   
-        },
-        close(){
-            this.expanded = false;
-            this.$emit('close',  this.componentId)
-        },
-
-
-        closing(direction, start,end,distance,time){
-            if(direction == 'down'){
-
-                let modalPosition = this.$refs.cardConteinerFull.getBoundingClientRect()
-                this.modalPosition = {
-                    top: (modalPosition.top - distance.y) + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: (modalPosition.height - distance.y) + 'px',
-                }
-            }  
-        },
+        alternateDarkMode() {
+            this.store.alternateColorMode()
+        }
+    }
 
 
 
-        getModalPosition(){
-            let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-            this.modalPosition = {
-                top: modalPosition.top + 'px',
-                left: modalPosition.left + 'px',
-                width: modalPosition.width + 'px',
-                height: modalPosition.height + 'px',
-            }
-        },
-
-        async getMediaInfo(){
-            try{
-                let imageMeta = await imageData.getImageMeta(this.media)
-                this.mediaSrc = imageMeta.src
-                this.mediaAlt = ''
-                this.mediaHeight = imageMeta.height
-                this.mediaWidth = imageMeta.width
-                this.mediaCenter = ((this.mediaWidth > this.mediaHeight) ? ((this.mediaHeight < 300 ) ? '100% auto' :  'auto 100%' ) : 'auto 100%')
-            
-            }catch(e){
-                console.debug(e)
-            }
-        },
-
-
-        onBeforeEnter(el) {
-            
-            if(this.expanded){
-                let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-                this.modalPosition = {
-                    top: modalPosition.top + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: modalPosition.height + 'px',
-                }
-            }
-        },
-
-        onAfterEnter(el) {
-
-            if(this.expanded){
-                this.modalPosition= {
-                    top: '0px',
-                    left: '0px',
-                    width: '100%',
-                    height: '100%',
-                }
-            }
-        },
-
-        onBeforeLeave(el) {
-
-            if(!this.expanded){
-                let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-                this.modalPosition = {
-                    top: modalPosition.top + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: modalPosition.height + 'px',
-                }
-                //console.debug(this.modalPosition)
-            }
-        },
-
-        onAfterLeave(el) {   
-            
-        },
-
-
-
-    },
-
-
-    async mounted() { 
-        //GET ELEMENT POSITION
-        this.getModalPosition()
-        
-        //GET MEDIA DATA    
-        this.getMediaInfo()
-    },
 }
-
 </script>
 
 <template>
-    <div :id="componentId" :ref="componentId">
 
-        <gnkSwipeManager @swipedDown="close()" @swiping="closing">
-
-            <div @click.stop="open" ref="cardConteiner" class="gnk-card container col-12 --LEVEL-4" :class="[componentGeneralClasses]">
-                
-                <div class=" --card-container">
-                    
-                    <div class=" --card-header">
-                        <div v-if="!!this.media" :style="{ backgroundImage: 'url(../../assets/placeholder-1024x512.png)', backgroundSize: 'cover' }">
-                            <div class=" --media col-12 " :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">            
-                            </div>
-                        </div>
-                        <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                            <h4>
-                                <slot name="title"> 
-                                </slot>
-                            </h4>
-                        </div>
-                    
-                    </div>
-                    <div class="row --card-body" v-if="!!this.$slots.default">
-                        <div class="--card-content col-12  pad-10 pad-t-5 flex">
-                            <slot>
-
-                            </slot>
-                        </div>
-                    </div>
-                    <div class="row"  v-if="!!this.$slots.footer">
-
-                        <div class="columns">
-                            <div class="--card-footer col-12 flex position-centered pad-1">
-                                <slot name="footer">    
-                                </slot>
-                            </div>
-                        </div>
-                    </div>
+    <div :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]" @click="alternateDarkMode">
+        
+        <header class="--header col-12 container">
+            <div v-if="!!this.$slots.title || !!this.$slots.subtitle" class="--header-title">
+                <div v-if="!!this.$slots.title"  class="--title col-12">
+                    <slot name="title"></slot>
+                </div>
+                <div v-if="!!this.$slots.subtitle" class="--subtitle col-12 flex">
+                    <slot name="subtitle"></slot>
                 </div>
             </div>
+            <img loading="lazy" class="col-12" v-if="!!headerBackground" :src="headerBackground" :alt="headerBackgroundAlt">
+        </header>
 
+        <div v-if="!!this.$slots.default" class="--content col-12 flex">
+            <slot>teste</slot>
+        </div>  
 
-            <transition
-            @before-enter="onBeforeEnter"
-            @after-enter="onAfterEnter"
-            @before-leave="onBeforeLeave"
-            @after-leave="onAfterLeave"
-            enter-active-class="modal_open" 
-            leave-active-class="modal_close">
-                
-                <div ref="cardConteinerFull" v-if="expanded" class="gnk-card --card-expanded container col-12 --LEVEL-4" :style="modalPositionObject" :class="[componentGeneralClasses]">
-                    
-                    <div class="row --card-container">
-                        
-                        <div class="row --card-header">
+        <div v-if="!!this.$slots.expanded" class="--expanded col-12 flex">
+                <slot name="expanded"></slot>
+        </div>
 
-                            <gnkButton v-if="expanded" :disableRipple="true" data-animation-offset="10" circular dark class="--close-expanded-card fadeIn" @click.stop="close">
-                                    <b>x</b>
-                            </gnkButton>
+        <footer v-if="!!this.$slots.footer" class="--footer col-12 container">
+            <div class="--footer-content col-12 flex">
+                <slot name="footer"></slot>
+            </div>
+        </footer>
 
-                            <div v-if="!!this.mediaHeight" class="row --media" :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">                        
-                            </div>
-                            
-                            <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                                <h4>
-                                    <slot name="title"> 
-                                    </slot>
-                                </h4>
-                            </div>
-                        
-                        </div>
-                        <div class="row --card-body" >
-                            <div v-if="!!this.$slots.default" class="--card-content col-12  pad-10 pad-t-5">
-                                <slot>
-                                </slot>
-                            </div>
-                            <div class="--card-content-expanded col-12  pad-10 pad-t-5 flex">
-                                <slot name="expanded">
-
-
-                                </slot>
-                            </div>
-                        </div>
-                        <div class="row"  v-if="!!this.$slots.footer">
-
-                            <div class="columns">
-                                <div class="--card-footer col-12 flex position-centered pad-1">
-                                    <slot name="footer">
-
-                                        
-                                    </slot>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-        </gnkSwipeManager>
     </div>
+    
+
 
 </template>
 
-<style lang="scss">
-@import "../../scss/base"; 
+<style lang="scss" scoped>
 
-.gnk-card{
-    transition:all 1s ease-in-out !important;
+.gnkCard{
     position: relative;
+    background: -color('BASE');
+    border-radius: var(--BORDER-RADIUS);
+    overflow: hidden;
+    box-shadow: var(--SHADOW);
 
-    border-radius: var(--BORDER-RADIOS);
-    overflow-y: auto;
-    max-height: 100% !important;
 
-    &.--card-expanded{
-        pointer-events: visible;
-        transition: all 1s ease-in-out;
-        position: absolute ;
-        z-index: 9999;
-
-        box-sizing: border-box;
-        overflow:hidden;
-
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
-
-    }
-
-    .--card-container{
-        display: flex;
-        flex-direction: column;
-        height: 100%;
+    &>*{
         width: 100%;
-        overflow-y:auto;
     }
 
-    .--card-header{
-        width:100% !important;
-        .--close-expanded-card{
-            position: absolute;
-            top: 15px;
-            right:15px;
+    .--header{
+        display: grid;
+        align-items: end;
+        overflow: hidden;
+        max-height: 250px;
+        &>*{
+            grid-column: 1 / -1;
+            grid-row: 1 / -1;
+            z-index: 1;
         }
-        
-        .--media{
-            position: relative;
-            height: 150px;
-            width: 100% !important;
+        &>img{
 
-        }
-
-        .--card-title{
-            border-radius: var(--BORDER-RADIOS)  var(--BORDER-RADIOS) 0 0 ;
-            background: -color('BASE'); 
-
-            position: relative;
-            padding: 20px 15px;
+            transition : all 0.3s ease-in-out;
             width: 100%;
-            margin-top: -10px;
+            min-height: 100px;
+            max-height: 250px;
+
+            object-fit: cover;
+            z-index: 0;
+            &:is(:hover, :focus){
+                transform: scale(1.1);
+                filter: contrast(120%);
+
+            }
         }
     }
-    
-    .--card-body{
-        display:flex;
-        flex-direction: column;
 
-        background: -color('BASE'); 
-        padding: 5px;
-        height:100%;
+    .--content, .--footer,.--expanded, .--header-title{
+        height: fit-content;
+        width: 100%;
+        padding: 8px;
+    }
+
+    .--header-title{
+        color: -color('TEXT');
+        text-shadow: 0px 2px 5px -color('LIGHT');
+    }
+
+
+    .--content,.--expanded{
         overflow-y: auto;
-
-        .--card-content{
-            border-radius: var(--BORDER-RADIOS);
-            background-color: -color('LEVEL-1');
-        }
-        .--card-content-expanded{
-            border-radius: var(--BORDER-RADIOS);
-            background-color: -color('LEVEL-1');
-            height:100%;
-        }
+        background-color: -color('LEVEL-1');
     }
 
-    .--card-footer{
-
-        background: -color('BASE'); 
-        border-radius: 0 0 var(--BORDER-RADIOS) var(--BORDER-RADIOS);
+    .--footer{
+        padding: 2px 8px;
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: fit-content;
+        background-color: -color('LEVEL-2');
+        border-top: 1px solid -color('LEVEL-3');
+        z-index: 1;
     }
 }
 
 
-@keyframes modal_open {
-    from {
-        opacity: 0;
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
-    }
-    to {
-        opacity: 1;
-        top:0px;
-        left:0px;
-        height:100%;
-        width:100%;
-    }
-}
-.modal_open {
-    pointer-events: none;
-    animation-fill-mode: both;
-    animation-name: modal_open;  
-    animation-duration: 0.3s;
-}
 
-@keyframes modal_close {
-    from {
-        opacity: 1;
-        top:0px;
-        left:0px;
-        height:100%;
-        width:100%;
-    }
-    to {
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
-        opacity: 0;
-        z-index: -1;
-    }
+.--open{
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    
+
+    opacity: 1;
+    transition: all .3s ease-in-out;
 }
-.modal_close {
-    pointer-events: none;
-    animation-fill-mode: both;
-    animation-name: modal_close;
-    animation-duration: 0.2s;
-}
-
-
-
-
-@keyframes fadeIn {
-    from {
-        pointer-events: none;
-        opacity: 0;
-    }
-    to {
-        pointer-events: auto;
-        opacity: 1;
-    }
-}
-.fadeIn {
-    animation-delay: calc(0.5s * attr(data-animation-offset number 1));
-    animation-fill-mode: both;
-    animation-name: fadeIn;
-    animation-duration: 0.3s;
-}
-
-@keyframes fadeOut {
-    from {
-        pointer-events: none;
-        opacity: 1;
-    }
-    to {
-        pointer-events: none;
-        opacity: 0;
-    }
-}
-.fadeOut {
-    animation-delay: calc(0.5s * attr(data-animation-offset number 1));
-    animation-fill-mode: both;
-    animation-name: fadeOut;
-    animation-duration: 0.3s;
-}
-
-
 
 </style>

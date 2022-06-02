@@ -1,7 +1,6 @@
 //MIXINGS
-
-@function -color($color, $alpha: 1) {
-    @return unquote('rgba(var(--COLOR-#{$color}), #{$alpha})');
+@function -color($color, $alpha: 1, $H: 0, $S: 0, $L: 0) {
+    @return unquote('hsla(calc(var(--COLOR-#{$color}-H) + #{$H}),calc(var(--COLOR-#{$color}-S) + #{$S}%),calc(var(--COLOR-#{$color}-L) + #{$L}%), #{$alpha})');
 };
 
 
@@ -33,3 +32,8 @@ $breakpoints: ("phone": 400px,
     }
 }
 
+@for $i from 1 through 10 {
+    .--Z-INDEX-#{$i} {
+        z-index: calc( 100000 -  #{$i}0000) !important;
+    }
+}

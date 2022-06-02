@@ -108,6 +108,18 @@
     justify-content: center;
 }
 
+.flex-left {
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.flex-right {
+
+    display: flex;
+    justify-content: flex-end;
+}
+
 .full-width {
     width: 100%;
 }
@@ -172,8 +184,7 @@
 .column {
     flex: 1;
     max-width: 100%;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
+
 
     &.col-12,
     &.col-11,
@@ -386,7 +397,7 @@
 }
 
 //GAP 0-20px
-@for $i from 0 through 20 {
+@for $i from 0 through 50 {
     .gap-#{$i} {
         gap: #{$i}px !important;
     }

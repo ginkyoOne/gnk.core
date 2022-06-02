@@ -1,6 +1,5 @@
 <script>
-import mixin from "../../mixin/gnkComponent"
-import imageData from "../../utils/imageData"
+import mixin from "../ComponentBase/gnkComponent"
 
 export default {
     name: 'gnkButtonGroup',
@@ -19,7 +18,7 @@ export default {
             type: String,
             default: 'default',
             validator: function(value) {
-                return ['single', 'multiple', 'default'].includes(value)
+                return ['single', 'default'].includes(value)
             }
         },
 
@@ -58,24 +57,23 @@ export default {
 
             switch (this.toggle) {
                 case 'single':
-                    
+
+                    this.selectedItems = []
                     this.selectedItem = e.detail.component
                     this.childButtons = this.childButtons.map(button => {
-                        if(button.uid == e.detail.component.uid) button.checked = true 
+                        if(button.componentId == e.detail.component.componentId) button.checked = true 
                         else button.checked = false
                         return button
                     })
 
-                    break;
-                case 'multiple':
 
-                    if(e.detail.component.checked) this.selectedItems.push(e.detail.component)
-                    else this.selectedItems = this.selectedItems.filter(item => item.uid != e.detail.component.uid)
-                    
                     break;
                 default:
-                    break;
+                    if(e.detail.component.checked) this.selectedItems.push(e.detail.component)
+                    else this.selectedItems = this.selectedItems.filter(item => item.componentId != e.detail.component.componentId)
+                    this.selectedItem = this.selectedItems.slice(-1)
             }
+
         },
 
         registerChildToggle(element){
@@ -102,7 +100,7 @@ export default {
 </script>
 <template>
 
-    <div class="gnkButtonGroup" :ref="componentId" :id="componentId"  :class="[ componentClassObject , componentGeneralClasses]" >
+    <div :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]" >
         <div class="--title">
             <h4>
                 <slot name="title">
@@ -123,13 +121,14 @@ export default {
 
 
 .gnkButtonGroup{
-    background: -color('LEVEL-3');
-    border-radius: var(--BORDER-RADIOS);
-    padding: 8px 16px;
+    background: -color('LEVEL-2');
+    border-radius: var(--BORDER-RADIUS);
+    padding: 4px;
 
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     width: fit-content;
     height: fit-content;
 
@@ -153,32 +152,32 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         width: fit-content;
         height: fit-content;
 
-        &>:first-child:is(.gnk-button):not(&:last-child){
-            border-top-left-radius: var(--BORDER-RADIOS);
-            border-bottom-left-radius: var(--BORDER-RADIOS);
+        &>:first-child:is(.gnkButton):not(&:last-child){
+            border-top-left-radius: var(--BORDER-RADIUS);
+            border-bottom-left-radius: var(--BORDER-RADIUS);
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;    
         }
 
 
-        &>.gnk-button:is(.gnk-button + .gnk-button) {
+        &>.gnkButton:is(.gnkButton + .gnkButton) {
             border-radius: 0;
         }
 
-        &>:last-child:is(.gnk-button):not(&:first-child){
-            border-bottom-right-radius: var(--BORDER-RADIOS);
-            border-top-right-radius: var(--BORDER-RADIOS);
+        &>:last-child:is(.gnkButton):not(&:first-child){
+            border-bottom-right-radius: var(--BORDER-RADIUS);
+            border-top-right-radius: var(--BORDER-RADIUS);
         }
     }
 
-    .--buttons>.gnk-button{
+    .--buttons>.gnkButton{
         margin: 0px;
     }
     
-
     &.--vertical{
         flex-direction: column;
         align-items: center;
@@ -189,28 +188,26 @@ export default {
             align-items: center;
             justify-content: center;
 
-            &>:first-child:is(.gnk-button):not(&:last-child){
-                border-top-left-radius: var(--BORDER-RADIOS) !important;
+            &>:first-child:is(.gnkButton):not(&:last-child){
+                border-top-left-radius: var(--BORDER-RADIUS) !important;
                 border-bottom-left-radius: 0 !important;
                 border-bottom-right-radius: 0 !important;
-                border-top-right-radius:  var(--BORDER-RADIOS) !important;    
+                border-top-right-radius:  var(--BORDER-RADIUS) !important;    
             }
 
 
-            &>.gnk-button:is(.gnk-button + .gnk-button) {
+            &>.gnkButton:is(.gnkButton + .gnkButton) {
                 border-radius: 0 !important;
             }
 
-            &>:last-child:is(.gnk-button):not(&:first-child){
-                border-bottom-right-radius: var(--BORDER-RADIOS) !important ;
-                border-bottom-left-radius: var(--BORDER-RADIOS)  !important;
+            &>:last-child:is(.gnkButton):not(&:first-child){
+                border-bottom-right-radius: var(--BORDER-RADIUS) !important ;
+                border-bottom-left-radius: var(--BORDER-RADIUS)  !important;
             }
         }
 
         
     }
-
-
 
     &:is(.--draggable){
         .--title::before{
@@ -218,17 +215,17 @@ export default {
         content: '';
         cursor: move;
         position: absolute;
-        top: 10%;
-        left: -4px;
+        top: 25%;
+        left: 0px;
 
-        height: 80%;
-        width: 5px;
+        height: 50%;
+        width: 2px;
         border-left: 1px;
         border-right: 1px;
         border-top: 0px;
         border-bottom: 0px;
         border-style: solid;
-        border-color: -color('TEXT');
+        border-color: -color('LEVEL-3');
         }
     }
 

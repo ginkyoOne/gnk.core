@@ -1,4 +1,6 @@
-import gnk from "../index"
+import gnk from "../../index"
+
+
 const gnkComponent = {
     inject: {
         registerChild: {
@@ -7,7 +9,7 @@ const gnkComponent = {
     },
     data(){
         return {
-            store: gnk.Configs,
+            store: gnk.Store,
         }
     },
     methods: {
@@ -17,15 +19,21 @@ const gnkComponent = {
         },
 
 
+        componentRaiseEvent(eventName, data) {
+            let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
+            this.$emit(eventName, event )
+            this.$el.dispatchEvent(event)
+        },
 
         //GET ELEMENTE SIZE ON SCREEN
         componentElementClientRect() {
-            let modalPosition = this.$el.getBoundingClientRect()
+            let modalPosition = this?.$el?.getBoundingClientRect()
+            console.log(modalPosition)
             return {
-                top: modalPosition.top,
-                left: modalPosition.left,
-                width: modalPosition.width,
-                height: modalPosition.height,
+                top: (!modalPosition ? 0 : modalPosition.top),
+                left: (!modalPosition ? 0 : modalPosition.left),
+                width: (!modalPosition ? 0 : modalPosition.width),
+                height: (!modalPosition ? 0 : modalPosition.height),
             }
         },
 
@@ -79,7 +87,11 @@ const gnkComponent = {
             default: false,
         },
 
-
+        pill: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
         circular: {
             type: Boolean,
             required: false,
@@ -108,10 +120,15 @@ const gnkComponent = {
             return `${this.$options.name}_${([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16))}`
         },
 
+        //COMPONENTE CLASSES
+        componentName() {
+            return this.$options.name
+        },
+
         //GENERIC CLASSES
         componentGeneralClasses() {
             return {
-                
+
                 '--info': this.info,
                 '--primary': this.primary,
                 '--success': this.success,
@@ -122,12 +139,14 @@ const gnkComponent = {
                 '--dark': this.dark,
                 '--light': this.light,
 
-                '--circle': this.circular,
+                '--pill': this.pill,
+                '--circular': this.circular,
                 '--square': this.square,
 
                 '--block': this.block,
 
                 '--disabled': this.disabled,
+                
             }
         },
 

@@ -1,0 +1,232 @@
+:root {
+
+
+    //LAYOUT
+/*     primary
+    info
+    success
+    warning
+    critical
+    bug */
+    --LIGHT-COLOR: 0%;
+
+    --COLOR-PRIMARY-H: 214;
+    --COLOR-PRIMARY-S: 100%;
+    --COLOR-PRIMARY-L: calc(55% - var(--LIGHT-COLOR));
+
+    --COLOR-INFO-H: 204;
+    --COLOR-INFO-S: 70%;
+    --COLOR-INFO-L: calc(62% - var(--LIGHT-COLOR));
+
+    --COLOR-SUCCESS-H: 151;
+    --COLOR-SUCCESS-S: 70%;
+    --COLOR-SUCCESS-L: calc(51% - var(--LIGHT-COLOR));
+
+    --COLOR-WARNING-H: 39;
+    --COLOR-WARNING-S: 100%;
+    --COLOR-WARNING-L: calc(50% - var(--LIGHT-COLOR));
+
+    --COLOR-DANGER-H: 2;
+    --COLOR-DANGER-S: 100%;
+    --COLOR-DANGER-L: calc(61% - var(--LIGHT-COLOR));
+
+    --COLOR-BUG-H: 0;
+    --COLOR-BUG-S: 100%;
+    --COLOR-BUG-L: calc(57% - var(--LIGHT-COLOR));
+
+    --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
+    --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);
+    --COLOR-DARK-L: var(--COLOR-LEVEL-0-L);
+
+    --COLOR-LIGHT-H: var(--COLOR-LEVEL-4-H);
+    --COLOR-LIGHT-S: var(--COLOR-LEVEL-4-S);
+    --COLOR-LIGHT-L: var(--COLOR-LEVEL-4-L);
+
+    --COLOR-BASE-H: var(--COLOR-LEVEL-1-H);
+    --COLOR-BASE-S: var(--COLOR-LEVEL-1-S);
+    --COLOR-BASE-L: var(--COLOR-LEVEL-1-L);
+
+    --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+    --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+    --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+
+    --COLOR-TEXT-H: 0;
+    --COLOR-TEXT-S: 0%;
+    --COLOR-TEXT-L: 0%;
+
+    --COLOR-LEVEL-0-H: 252;
+    --COLOR-LEVEL-0-S: 19%;
+    --COLOR-LEVEL-0-L: 95%;
+
+    --COLOR-LEVEL-1-H: 0;
+    --COLOR-LEVEL-1-S: 0%;
+    --COLOR-LEVEL-1-L: 100%;
+
+    --COLOR-LEVEL-2-H: 0;
+    --COLOR-LEVEL-2-S: 0%;
+    --COLOR-LEVEL-2-L: 97%;
+
+    --COLOR-LEVEL-3-H: 0;
+    --COLOR-LEVEL-3-S: 0%;
+    --COLOR-LEVEL-3-L: 98%;
+    
+    --COLOR-LEVEL-4-H: 0;
+    --COLOR-LEVEL-4-S: 0%;
+    --COLOR-LEVEL-4-L: 94%;
+
+
+    --SHADOW: 0px 3px 10px rgb(0,0,0,0.05);
+
+    .gnk-ripple {
+        --COLOR-BASE-H: 0;
+        --COLOR-BASE-S: 0;
+        --COLOR-BASE-L: 0;
+    }
+
+
+
+
+
+
+    [class*="--primary"] {
+        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
+        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
+        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--default"] {
+        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
+        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
+        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--info"] {
+        --COLOR-BASE-H: var(--COLOR-INFO-H);
+        --COLOR-BASE-S: var(--COLOR-INFO-S);
+        --COLOR-BASE-L: var(--COLOR-INFO-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--success"] {
+        --COLOR-BASE-H: var(--COLOR-SUCCESS-H);
+        --COLOR-BASE-S: var(--COLOR-SUCCESS-S);
+        --COLOR-BASE-L: var(--COLOR-SUCCESS-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--warning"] {
+        --COLOR-BASE-H: var(--COLOR-WARNING-H);
+        --COLOR-BASE-S: var(--COLOR-WARNING-S);
+        --COLOR-BASE-L: var(--COLOR-WARNING-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--danger"] {
+        --COLOR-BASE-H: var(--COLOR-DANGER-H);
+        --COLOR-BASE-S: var(--COLOR-DANGER-S);
+        --COLOR-BASE-L: var(--COLOR-DANGER-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--bug"] {
+        --COLOR-BASE-H: var(--COLOR-BUG-H);
+        --COLOR-BASE-S: var(--COLOR-BUG-S);
+        --COLOR-BASE-L: var(--COLOR-BUG-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--dark"] {
+        --COLOR-BASE-H: var(--COLOR-DARK-H);
+        --COLOR-BASE-S: var(--COLOR-DARK-S);
+        --COLOR-BASE-L: var(--COLOR-DARK-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+    }
+
+    [class*="--light"] {
+        --COLOR-BASE-H: var(--COLOR-LIGHT-H);
+        --COLOR-BASE-S: var(--COLOR-LIGHT-S);
+        --COLOR-BASE-L: var(--COLOR-LIGHT-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+    }
+
+    [class*="--level-0"] {
+        --COLOR-BASE-H: var(--COLOR-LEVEL-0-H);
+        --COLOR-BASE-S: var(--COLOR-LEVEL-0-S);
+        --COLOR-BASE-L: var(--COLOR-LEVEL-0-L);
+    }
+
+    [class*="--level-1"] {
+        --COLOR-BASE-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-L: var(--COLOR-LEVEL-1-L);
+    }
+
+    [class*="--level-2"] {
+        --COLOR-BASE-H: var(--COLOR-LEVEL-2-H);
+        --COLOR-BASE-S: var(--COLOR-LEVEL-2-S);
+        --COLOR-BASE-L: var(--COLOR-LEVEL-2-L);
+    }
+
+    [class*="--level-3"] {
+        --COLOR-BASE-H: var(--COLOR-LEVEL-3-H);
+        --COLOR-BASE-S: var(--COLOR-LEVEL-3-S);
+        --COLOR-BASE-L: var(--COLOR-LEVEL-3-L);
+    }
+
+    [class*="--level-4"] {
+        --COLOR-BASE-H: var(--COLOR-LEVEL-4-H);
+        --COLOR-BASE-S: var(--COLOR-LEVEL-4-S);
+        --COLOR-BASE-L: var(--COLOR-LEVEL-4-L);
+    }
+
+    --COLOR-RED: 0, 66%, 51%;
+    --COLOR-RED-ORANGE: 11, 74%, 53%;
+    --COLOR-ORANGE: 20, 85%, 53%;
+    --COLOR-ORANGE-YELLOW: 35, 97%, 54%;
+    --COLOR-YELLOW: 41, 97%, 61%;
+    --COLOR-LIGHT-GREEN: 117, 42%, 61%;
+    --COLOR-GREEN: 116, 35%, 46%;
+    --COLOR-DARK-GREEN: 140, 71%, 27%;
+    --COLOR-DARK-TEAL: 183, 58%, 23%;
+    --COLOR-TEAL: 175, 54%, 34%;
+    --COLOR-LIGHT-TEAL: 164, 48%, 51%;
+    --COLOR-LIGHT-BLUE: 200, 59%, 58%;
+    --COLOR-BLUE: 214, 100%, 57%;
+    --COLOR-DARK-BLUE: 206, 66%, 34%;
+    --COLOR-DARK-PURPLE: 260, 44%, 43%;
+    --COLOR-PURPLE: 261, 35%, 54%;
+    --COLOR-LIGHT-PURPLE: 280, 53%, 70%;
+
+
+    
+
+}

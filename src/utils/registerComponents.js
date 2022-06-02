@@ -10,4 +10,4 @@ function registerModuleComponents(App, components) {
     }
 }
 
-export { registerModuleComponents }
+export default registerModuleComponents 
