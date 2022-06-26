@@ -1,9 +1,9 @@
 <script>
-import mixin from "../ComponentBase/gnkComponent"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
     name: 'gnkListview',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     data() {
         return {
             childElements: [],
@@ -62,7 +62,9 @@ export default {
     </div>
 </template>
 <style lang="scss">
+
     .gnkListview{
+        
         position: relative;
         background: -color('LEVEL-2');
 
@@ -72,7 +74,6 @@ export default {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
         overflow-y: auto;
         
         .gnkListviewItem:is(.gnkListviewItem + .gnkListviewItem)::after {

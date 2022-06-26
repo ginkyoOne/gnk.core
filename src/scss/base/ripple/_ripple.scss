@@ -1,10 +1,13 @@
+
 .gnk-ripple {
-    
-    position: absolute;
+    pointer-events: none;
+    flex:1 !important;
+    position: absolute !important;
     border-radius: 50%;
     transform: scale(0);
-    animation: ripple 600ms linear !important;
+    animation: ripple 1s ease-out !important;
     background-color: -color('LIGHT', 0.4);
+    z-index: calc(var(--TOP-Z-INDEX));
 
 }
 

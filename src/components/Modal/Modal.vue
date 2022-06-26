@@ -30,6 +30,7 @@
   </teleport>
 </template>
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import  lockScroll  from '../../index'
 import unlockScroll from '../../index'
 import { tabbable } from 'tabbable'
@@ -41,6 +42,7 @@ let previouslyFocusedElement
 
 export default {
   name: 'Modal',
+  extends: gnkComponent,
   props: {
     isOpen: {
       type: Boolean,

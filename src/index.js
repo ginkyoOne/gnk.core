@@ -1,6 +1,8 @@
 
 import gnkApp from './components/App/App.vue'
 import gnkPage from './components/Page/Page.vue'
+import gnk404 from './components/Page/404.vue'
+
 import gnkNavbar from './components/Navbar/Navbar.vue'
 import gnkSwipeManager from './components/SwipeManager/SwipeManager.vue'
 
@@ -15,6 +17,7 @@ import gnkListview from './components/Listview/Listview.vue'
 import gnkListviewItem from './components/Listview/ListviewItem.vue'
 
 import gnkSwitch from './components/Switch/Switch.vue'
+import gnkLoading from './components/Loading/Loading.vue'
 
 
 
@@ -23,13 +26,12 @@ import sleep  from './utils/sleep'
 import { lockScroll, unlockScroll , isMobile} from './utils/scrollLock'
 
 
-
-import gnkComponent from './components/ComponentBase/gnkComponent'
+import {router, registerRoutes } from './Router/Router'
 import Store from './Store/Store'
 
 
-import registerModuleComponents from './utils/registerComponents'
 
+import registerModuleComponents from './utils/registerComponents'
 
 
 
@@ -38,8 +40,8 @@ export default {
 
     gnkApp,
     gnkPage,
+    gnk404,
     gnkNavbar,
-    Store,
     gnkButton,
     gnkButtonGroup,
     gnkCard,
@@ -47,7 +49,13 @@ export default {
     gnkListview,
     gnkListviewItem,
     gnkSwitch,
+    gnkLoading,
     
+
+    router,
+    Store,
+
+    registerRoutes,
     registerModuleComponents
 }
 

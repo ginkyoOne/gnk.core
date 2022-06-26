@@ -8,31 +8,29 @@
     warning
     critical
     bug */
-    --LIGHT-COLOR: 0%;
+    --COLOR-PRIMARY-H: 215;
+    --COLOR-PRIMARY-S: 73%;
+    --COLOR-PRIMARY-L: 51%;
 
-    --COLOR-PRIMARY-H: 214;
-    --COLOR-PRIMARY-S: 100%;
-    --COLOR-PRIMARY-L: calc(55% - var(--LIGHT-COLOR));
+    --COLOR-INFO-H: 215;
+    --COLOR-INFO-S: 72%;
+    --COLOR-INFO-L: 90%;
 
-    --COLOR-INFO-H: 204;
-    --COLOR-INFO-S: 70%;
-    --COLOR-INFO-L: calc(62% - var(--LIGHT-COLOR));
+    --COLOR-SUCCESS-H: 142;
+    --COLOR-SUCCESS-S: 57%;
+    --COLOR-SUCCESS-L: 53%;
 
-    --COLOR-SUCCESS-H: 151;
-    --COLOR-SUCCESS-S: 70%;
-    --COLOR-SUCCESS-L: calc(51% - var(--LIGHT-COLOR));
-
-    --COLOR-WARNING-H: 39;
+    --COLOR-WARNING-H: 44;
     --COLOR-WARNING-S: 100%;
-    --COLOR-WARNING-L: calc(50% - var(--LIGHT-COLOR));
+    --COLOR-WARNING-L: 50%;
 
-    --COLOR-DANGER-H: 2;
-    --COLOR-DANGER-S: 100%;
-    --COLOR-DANGER-L: calc(61% - var(--LIGHT-COLOR));
+    --COLOR-DANGER-H: 351;
+    --COLOR-DANGER-S: 85%;
+    --COLOR-DANGER-L: 55%;
 
-    --COLOR-BUG-H: 0;
-    --COLOR-BUG-S: 100%;
-    --COLOR-BUG-L: calc(57% - var(--LIGHT-COLOR));
+    --COLOR-BUG-H: 351;
+    --COLOR-BUG-S: 69%;
+    --COLOR-BUG-L: 43%;
 
     --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
     --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);
@@ -54,17 +52,17 @@
     --COLOR-TEXT-S: 0%;
     --COLOR-TEXT-L: 0%;
 
-    --COLOR-LEVEL-0-H: 252;
-    --COLOR-LEVEL-0-S: 19%;
+    --COLOR-LEVEL-0-H: 216;
+    --COLOR-LEVEL-0-S: 20%;
     --COLOR-LEVEL-0-L: 95%;
 
     --COLOR-LEVEL-1-H: 0;
     --COLOR-LEVEL-1-S: 0%;
-    --COLOR-LEVEL-1-L: 100%;
+    --COLOR-LEVEL-1-L: 98%;
 
     --COLOR-LEVEL-2-H: 0;
     --COLOR-LEVEL-2-S: 0%;
-    --COLOR-LEVEL-2-L: 97%;
+    --COLOR-LEVEL-2-L: 92%;
 
     --COLOR-LEVEL-3-H: 0;
     --COLOR-LEVEL-3-S: 0%;
@@ -73,6 +71,10 @@
     --COLOR-LEVEL-4-H: 0;
     --COLOR-LEVEL-4-S: 0%;
     --COLOR-LEVEL-4-L: 94%;
+
+    --COLOR-SHADOW-H: 0;
+    --COLOR-SHADOW-S: 0%;
+    --COLOR-SHADOW-L: 80%;
 
 
     --SHADOW: 0px 3px 10px rgb(0,0,0,0.05);

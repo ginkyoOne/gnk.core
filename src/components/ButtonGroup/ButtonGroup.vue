@@ -1,9 +1,9 @@
 <script>
-import mixin from "../ComponentBase/gnkComponent"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
     name: 'gnkButtonGroup',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     data() {
         return {
             childButtons:[],
@@ -22,14 +22,6 @@ export default {
             }
         },
 
-        direction: {
-            type: String,
-            default: 'horizontal',
-            validator(type) {
-                return ['horizontal', 'vertical'].includes(type)
-            },
-        },
-
         draggable: {
             type: Boolean,
             default: false,
@@ -41,12 +33,13 @@ export default {
         componentClassObject() {
             return {
                 '--draggable' : this.draggable,
-                '--vertical' : this.direction === 'vertical',
                 }
             },
         },
     watch: {
-        
+            childButtons() {
+                console.log('childButtons', this.childButtons)
+            },
         },
     emits: [
 
@@ -55,25 +48,7 @@ export default {
     methods: {
         childValueChange (e) {
 
-            switch (this.toggle) {
-                case 'single':
-
-                    this.selectedItems = []
-                    this.selectedItem = e.detail.component
-                    this.childButtons = this.childButtons.map(button => {
-                        if(button.componentId == e.detail.component.componentId) button.checked = true 
-                        else button.checked = false
-                        return button
-                    })
-
-
-                    break;
-                default:
-                    if(e.detail.component.checked) this.selectedItems.push(e.detail.component)
-                    else this.selectedItems = this.selectedItems.filter(item => item.componentId != e.detail.component.componentId)
-                    this.selectedItem = this.selectedItems.slice(-1)
-            }
-
+            
         },
 
         registerChildToggle(element){
@@ -100,8 +75,8 @@ export default {
 </script>
 <template>
 
-    <div :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]" >
-        <div class="--title">
+    <div :id="componentId" :class="[componentName, componentClassObject , componentGeneralClasses]">
+        <div class="--title" v-if="!!this.$slots.title">
             <h4>
                 <slot name="title">
 
@@ -117,13 +92,18 @@ export default {
 
 </template>
 <style lang="scss">
+
+
+
+
+
+
     
 
 
 .gnkButtonGroup{
     background: -color('LEVEL-2');
     border-radius: var(--BORDER-RADIUS);
-    padding: 4px;
 
     display: flex;
     flex-direction: row;
@@ -156,57 +136,31 @@ export default {
         width: fit-content;
         height: fit-content;
 
-        &>:first-child:is(.gnkButton):not(&:last-child){
+
+        &>:first-child:is(.gnkButton):not(&:last-child, .--square){
             border-top-left-radius: var(--BORDER-RADIUS);
             border-bottom-left-radius: var(--BORDER-RADIUS);
             border-bottom-right-radius: 0;
-            border-top-right-radius: 0;    
+            border-top-right-radius: 0;  
+            border-right: 1px solid -color('BASE', 1, 0, 0, -10);
         }
 
 
         &>.gnkButton:is(.gnkButton + .gnkButton) {
             border-radius: 0;
+            border-right: 1px solid -color('BASE', 1, 0, 0, -10);
+            border-left: 1px solid -color('BASE', 1, 0, 0, 2);
         }
 
-        &>:last-child:is(.gnkButton):not(&:first-child){
+        &>:last-child:is(.gnkButton):not(&:first-child, .--square){
             border-bottom-right-radius: var(--BORDER-RADIUS);
             border-top-right-radius: var(--BORDER-RADIUS);
+            border-left: 1px solid -color('BASE', 1, 0, 0, 2);
         }
     }
 
     .--buttons>.gnkButton{
         margin: 0px;
-    }
-    
-    &.--vertical{
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        .--buttons{
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            &>:first-child:is(.gnkButton):not(&:last-child){
-                border-top-left-radius: var(--BORDER-RADIUS) !important;
-                border-bottom-left-radius: 0 !important;
-                border-bottom-right-radius: 0 !important;
-                border-top-right-radius:  var(--BORDER-RADIUS) !important;    
-            }
-
-
-            &>.gnkButton:is(.gnkButton + .gnkButton) {
-                border-radius: 0 !important;
-            }
-
-            &>:last-child:is(.gnkButton):not(&:first-child){
-                border-bottom-right-radius: var(--BORDER-RADIUS) !important ;
-                border-bottom-left-radius: var(--BORDER-RADIUS)  !important;
-            }
-        }
-
-        
     }
 
     &:is(.--draggable){

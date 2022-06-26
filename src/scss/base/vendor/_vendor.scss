@@ -35,7 +35,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: -color('LEVEL-1',1,0,0,-5);
+    background-color: -color('LEVEL-1',1,0,0,-3);
     border-radius: 8px;
 
     &:hover {
@@ -45,8 +45,12 @@
 }
 
 
+.disable-page-zoom{
+    touch-action: pan-x pan-y;
+}
+
 /* REMOVE TEXT SELECTION */
-.noselect {
+.disable-text-selection {
     -webkit-touch-callout: none;
     /* iOS Safari */
     -webkit-user-select: none;
@@ -143,6 +147,7 @@ Source: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
     outline-offset: -2px;
     -webkit-appearance: textfield;
     -webkit-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 /*

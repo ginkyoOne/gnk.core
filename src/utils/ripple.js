@@ -13,11 +13,13 @@ function createRipple(event) {
 
     //CREATE NEW RIPPLE
     const RIPPLE_SPAN = document.createElement("span");
+
     const RIPPLE_SIZE = Math.max(TARGET_INFO['width'], TARGET_INFO['height']);
+
+    RIPPLE_SPAN.style = `height: ${RIPPLE_SIZE}px !important; width: ${RIPPLE_SIZE}px !important;`;
     
-    RIPPLE_SPAN.style.width = RIPPLE_SPAN.style.height = `${RIPPLE_SIZE}px`;
-    RIPPLE_SPAN.style.left = `${event.clientX - TARGET_INFO['x'] - (RIPPLE_SIZE / 2)}px`;
-    RIPPLE_SPAN.style.top = `${event.clientY - TARGET_INFO['y'] - (RIPPLE_SIZE / 2)}px`;
+    RIPPLE_SPAN.style.left = `${(event.clientX - TARGET_INFO['x']) - (RIPPLE_SIZE / 2)}px`;
+    RIPPLE_SPAN.style.top = `${(event.clientY - TARGET_INFO['y']) - (RIPPLE_SIZE / 2)}px`;
     RIPPLE_SPAN.classList.add("gnk-ripple");
     
     //ADD TO TARGET

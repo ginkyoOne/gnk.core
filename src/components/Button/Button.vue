@@ -1,11 +1,11 @@
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import createRipple from "../../utils/ripple"
-import mixin from "../ComponentBase/gnkComponent"
 
 
 export default {
   name: 'gnkButton',
-  mixins: [mixin.gnkComponent],
+  extends: gnkComponent,
   emits: ['onsubmit','onchange', 'onclick','ondblclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onwheel', 'onfocus', 'onblur','onkeydown','onkeypress','onkeyup'],
 
 
@@ -48,12 +48,17 @@ export default {
       required: false,
       default: false,
     },
-    relief:{
+/*     relief:{
+      type: Boolean,
+      required: false,
+      default: false,
+    }, */
+    transparent:{
       type: Boolean,
       required: false,
       default: false,
     },
-    transparent:{
+    clear: {
       type: Boolean,
       required: false,
       default: false,
@@ -74,11 +79,20 @@ export default {
         return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
       },
     },
+
+    busy:{
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
     loading:{
       type: Boolean,
       required: false,
       default: false,
     },
+
+
     animate:{
       type: String,      
       required: false,
@@ -147,6 +161,7 @@ export default {
         '--gradient': this.gradient,
         '--relief': this.relief,
         '--transparent': this.transparent,
+        '--clear': this.clear,
         '--shadow': this.shadow,
 
         '--size-xl': this.size === 'xl',
@@ -156,12 +171,13 @@ export default {
 
         '--animate': this.$slots?.animate  ? true : false,
 
-        '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.animateInactive ? true : false,
-        '--animate-slide-left': this.animate === 'slide-left'  && !this.loading && !this.animateInactive? true : false,
-        '--animate-fade': this.animate === 'fade'  && !this.loading && !this.animateInactive ? true : false,
-        '--animate-scale': this.animate === 'scale'  && !this.loading && !this.animateInactive? true : false,
-        '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.animateInactive? true : false,
-        
+        '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        '--animate-slide-left': this.animate === 'slide-left'  && !this.loading  && !this.busy && !this.animateInactive? true : false,
+        '--animate-fade': this.animate === 'fade'  && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        '--animate-scale': this.animate === 'scale'  && !this.loading && !this.busy && !this.animateInactive? true : false,
+        '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.busy && !this.animateInactive? true : false,
+
+        '--busy': this.busy,
         '--loading': this.loading,
 
         '--active': this.checked & this.type == 'toggle' ,
@@ -197,42 +213,58 @@ export default {
 </script>
 
 <template>
-    <button
-      :ref="componentId"
-      :id="componentId"
-      :class="[componentName, componentClassObject , componentGeneralClasses]"
-      :title="title"
-      :aria-label="title"
-      :disabled="disabled"
-      :type="buttonType"
-      @click.stop="onClick($event)"
-      :checked="checked"
-    >
-      <div class="--content">
-        <slot>gnkButton</slot> 
-      </div>
-      <div class="--content-animate" v-if="!!this.$slots.animate">
-          <slot name="animate"></slot>
-      </div>
-    </button>
+  <button :ref="componentId" :id="componentId" :class="[componentName, componentClassObject , componentGeneralClasses]"
+    :title="title" :aria-label="title" :disabled="disabled" :type="buttonType" @click.stop="onClick($event)"
+    :checked="checked">
+    <div class="--content">
+
+        <gnk-Progress loading gradient block v-if="loading"></gnk-Progress> 
+
+        <slot>gnkButton</slot>
+
+        <gnk-Loading v-if="busy" :target="'#' + componentId" />
+    </div>
+    <div class="--content-animate" v-if="!!this.$slots.animate">
+      <slot name="animate"></slot>
+    </div>
+  </button>
 </template>
 
 <style lang="scss">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .gnkButton {
-  transition: flex 0.3s ease-out;
-  cursor:         pointer;
-  position:       relative;
-  overflow:       hidden;
-
   display: flex;
-  height: fit-content;
-  min-width: fit-content;
+  align-items: center;
+  justify-content: center;
 
+
+  transition: flex 0.3s ease-out;
+  cursor: pointer;
+
+  position: relative;
+  height: fit-content;
+  width: fit-content;
   margin: 5px;
   padding: 0 !important;
 
-  align-items: center;
-  justify-content: center;
+  overflow: hidden !important;
+  
 
   border: var(--BORDER-SIZE) none  -color('BASE');
   border-radius: var(--BORDER-RADIUS);
@@ -243,23 +275,43 @@ export default {
   transition: transform 0.2s ease;
   transform: translateY(0);
 
-  z-index: 1;
+
+
+
+
 
 
   .--content{
-    gap : 5px;
-    text-decoration: none;
-    padding: 10px 12px;
-    position:       relative;
-    overflow:       hidden;
+    gap: 5px;
 
-
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    position: relative;
+    overflow: hidden;
+
+    padding: 10px 12px;
+    height: 100%;
+    width: 100%;
+
+    line-height: calc(var(--LINE-HEIGHT));
+    
+    &>.gnkProgress{
+      position: absolute;
+      top: 0 !important;
+      left: 0 !important;
+      height:100%!important;
+      z-index: -1;
+    }
+
+    >*{
+      flex-grow: 0!important;
+      font-size: var(--FONT-SIZE) !important;
+      line-height: var(--LINE-HEIGHT) !important;
+    }
   }
+
   .--content-animate{
     gap : 5px;
   }
@@ -277,8 +329,6 @@ export default {
 
   &:is(:hover){
     filter: brightness(1.2);
-
-
   }
 
 
@@ -354,7 +404,7 @@ export default {
   }
 
 }
-&.--gradient:not(.--loading){
+&.--gradient:not(.--busy, .--loading){
   
   background-image: linear-gradient(30deg, -color('BASE',0) 30%, -color('BASE', 1 , 45 , 15 , 10) 80%);
   
@@ -374,6 +424,10 @@ export default {
 
 }
 
+&.--busy,
+&.--loading{
+  pointer-events: none;
+}
 
 
 &.--relief{
@@ -428,12 +482,12 @@ export default {
 
   &:is(:hover):not(.--active){
     transform:translateY(-2px);
-    box-shadow: 0px 10px 20px -8px -color('DARK', 1);
+    box-shadow: 0px 10px 20px -8px -color('DARK', 1,0,0,-50);
   }
 
   &:is(:active, .--active){
     transform:translateY(-2px);
-    box-shadow: 0px 10px 20px -8px -color('DARK', 1);
+    box-shadow: 0px 10px 20px -8px -color('DARK', 1,0,0,-50);
   }
 
 }
@@ -479,45 +533,29 @@ export default {
   }
 
 }
-&.--loading{
-  pointer-events: none;
-  user-select: none;
-  .--content{
-    &::after{
-      content: '';
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 100%;
-      height: 100%;
-      background: -color('BASE', 0.8);
+
+&.--clear {
+  background: transparent;
+  color: -color('BASE');
+
+  &:is(:hover):not(.--active) {
+    transform: scale(1.05);
+    color: -color('BASE', 1,0,0,10);
+  }
+
+  &:is(.--active) {
+    color: -color('BASE', 1, 0, 0, 10);
+
+    &::after {
+      background: -color('BASE', .4);
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
-  &:after{
-    position: absolute;
-    content: '';
-    
-    top: calc(50% - (17px / 2));
-    left: calc(50% - (17px / 2));
-
-
-    width: 17px;
-    height: 17px;
-    box-sizing: border-box;
-
-    border: 2px solid -color('BASE-TEXT',1);
-    border-top: 2px solid -color('BASE-TEXT',1);
-    border-bottom: 2px solid -color('TEXT', 0);
-    border-right: 2px solid -color('TEXT', 0);
-    border-radius: 50%;
-
-    animation: cnkButton-loading .6s ease infinite;
-    
-    z-index: 1;
-  }
-
 }
+
+
 
 
 
@@ -664,6 +702,7 @@ export default {
   border-radius: calc(var(--BORDER-RADIUS) + 4px);
   .--content { 
     font-size: calc(var(--FONT-SIZE) + 0.2rem);
+    line-height: calc(var(--LINE-HEIGHT) + 0.2rem);
     padding: 15px 20px !important;
   }
 }
@@ -671,6 +710,7 @@ export default {
   border-radius: calc(var(--BORDER-RADIUS) + 2px);
   .--content{
     font-size: calc(var(--FONT-SIZE) + 0.1rem);
+    line-height: var(--LINE-HEIGHT +0.1rem);
     padding: 10px 15px !important;
   }
 }
@@ -678,6 +718,7 @@ export default {
   border-radius: calc(var(--BORDER-RADIUS) - 2px);
   .--content{
     font-size: calc(var(--FONT-SIZE) - 0.1rem);
+    line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
     padding: 5px 10px !important;
   }
 }
@@ -685,17 +726,22 @@ export default {
   border-radius: calc(var(--BORDER-RADIUS) - 4px);
   .--content {
     font-size: calc(var(--FONT-SIZE) - 0.2rem);
+    line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
     padding: 3px 8px !important;
   }
 }
 
 
 &.--pill {
-  border-radius: 9999px;
+  border-radius: 100vmax;
   min-width: 100px;
 }
 
 &.--circular {
+  height:35px;
+  max-width:35px !important;
+  
+  
   border-radius: 50%;
   aspect-ratio: 1/1;
 }
@@ -704,7 +750,7 @@ export default {
 }
 
 &.--block {
-    width: 100% !important;
+    width: calc(100% - 10px) !important;
     display: block !important;
 }
 
@@ -728,7 +774,7 @@ export default {
     filter: brightness(0.95);
   }
   .--shadow{
-    color: -color('PRIMARY', 1) !important;
+    color: -color('PRIMARY', 1) !important;        
   }
 }
 
@@ -742,14 +788,5 @@ export default {
 }
 
 
-
-@keyframes cnkButton-loading{
-  0%{
-    transform: rotate(0deg);
-    }
-  100%{
-    transform: rotate(360deg);
-    }
-}
 
 </style>

@@ -1,50 +1,15 @@
+<script>
 import gnk from "../../index"
+import createRipple from "../../utils/ripple"
 
-
-const gnkComponent = {
-    inject: {
-        registerChild: {
-            default: null
-        },
-    },
+export default {
+    name: 'gnkComponent',
     data(){
         return {
             store: gnk.Store,
         }
     },
-    methods: {
-
-        hello() {
-            console.log('hello from mixin!')
-        },
-
-
-        componentRaiseEvent(eventName, data) {
-            let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
-            this.$emit(eventName, event )
-            this.$el.dispatchEvent(event)
-        },
-
-        //GET ELEMENTE SIZE ON SCREEN
-        componentElementClientRect() {
-            let modalPosition = this?.$el?.getBoundingClientRect()
-            console.log(modalPosition)
-            return {
-                top: (!modalPosition ? 0 : modalPosition.top),
-                left: (!modalPosition ? 0 : modalPosition.left),
-                width: (!modalPosition ? 0 : modalPosition.width),
-                height: (!modalPosition ? 0 : modalPosition.height),
-            }
-        },
-
-        //SHORTHAND FOR CONVERTING OBJECTS PROPERTIES TO ARRAY
-        objectToArray(obj) {
-            return Object.keys(obj)
-                .map(function (key) {
-                    return obj[key];
-                });
-        }
-    },
+    
     props: {
         primary: {
             type: Boolean,
@@ -113,8 +78,8 @@ const gnkComponent = {
             default: false,
         },
     },
-    computed: {
 
+    computed: {
         //COMPONENTE ID
         componentId() {
             return `${this.$options.name}_${([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16))}`
@@ -146,19 +111,88 @@ const gnkComponent = {
                 '--block': this.block,
 
                 '--disabled': this.disabled,
-                
+                 
             }
         },
 
+        //GET ELEMENTE SIZE ON SCREEN
+        componentElementClientRect() {
+            let modalPosition = this?.$el?.getBoundingClientRect()
+            return {
+                top: (!modalPosition ? 0 : modalPosition.top),
+                left: (!modalPosition ? 0 : modalPosition.left),
+                width: (!modalPosition ? 0 : modalPosition.width),
+                height: (!modalPosition ? 0 : modalPosition.height),
+            }
+        },
 
     },
+
+
+
+
+
+
+    methods: {
+
+        hello() {
+            console.log('hello from mixin!')
+        },
+
+
+        componentRaiseEvent(eventName, data) {
+            let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
+            this.$emit(eventName, event)
+            //this.$el.dispatchEvent(event)
+        },
+
+
+
+        //SHORTHAND FOR CONVERTING OBJECTS PROPERTIES TO ARRAY
+        objectToArray(obj) {
+            return Object.keys(obj)
+                .map(function (key) {
+                    return obj[key];
+                });
+        },
+
+    },
+
 
     mounted() {
         (typeof this.registerChild === 'function' && this.type === 'toggle') ? this.registerChild(this) : null
     },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    provide() {
+        return {
+            registerChild: ( !this.registerChilds ? null : this.registerChild)
+        }
+    },
+    inject: {
+        registerChild: {
+            default: null
+        },
+    },
 }
 
-export default{
-    gnkComponent
-}
+</script>

@@ -21,8 +21,10 @@
   </label>
 </template>
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 export default {
   name: 'gnkSwitch',
+  extends: gnkComponent,
   props: {
     modelValue: {
       type: Boolean,
@@ -60,13 +62,12 @@ export default {
     },
     state(newValue) {
       this.$emit('update:modelValue', newValue)
-      this.$emit('onChanged', this.state, newValue)
+      //this.$emit('onChanged', this.state, newValue)
     },
   },
   methods: {
     onTrigger() {
       this.state = !this.state
-      console.log('click', this.state)
       this.$emit('onChanged', this.state)
     },
   },

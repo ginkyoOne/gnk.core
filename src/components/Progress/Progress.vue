@@ -1,9 +1,9 @@
 <script>
-import mixin from "../ComponentBase/gnkComponent"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
   name: 'gnkProgress',
-  mixins:[mixin.gnkComponent],
+  extends:gnkComponent,
 
   props: {
     value: {
@@ -90,12 +90,11 @@ export default {
   computed: {
 
     progressCircularPercentage() {
-      console.log('progressCircularPercentage', this.value, this.max)
       return (200 * ((Number.isNaN(Number(this.value)) ? 0 : Number(this.value)  ) / (Number.isNaN(Number(this.max)) ? 100 : Number(this.max)))) ;
     },
 
     progressPercentage() {
-      return Math.round(((Number.isNaN( Number(this.value)) ? 0 : Number(this.value)) / (Number.isNaN(Number(this.max))? 100 : Number(this.max))) * 100)
+      return (Math.round(((Number.isNaN( Number(this.value)) ? 0 : Number(this.value)) / (Number.isNaN(Number(this.max))? 100 : Number(this.max))) * 100))
     },
     componentClassObject() {
       return {
@@ -124,15 +123,16 @@ export default {
 </script>
 
 <template>
-  <div
-    :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]"
-    class="--primary"
-    role="progressbar"
-    :title="`${progressPercentage}%`"
-    aria-valuemin="0"
-    :aria-valuemax="max"
-    :aria-valuenow="value"
-  >
+<div
+	:aria-valuemax="max"
+	:aria-valuenow="value"
+	:class="[componentName, componentClassObject , componentGeneralClasses]"
+	:id="componentId"
+	:title="`${progressPercentage}%`"
+	class="--primary"
+	aria-valuemin="0"
+	role="progressbar"
+>
     <div v-if="!circular"  :style="`width: ${progressPercentage}%`" />
 
     <svg v-if="circular" class="ring"  viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -153,13 +153,30 @@ export default {
 
 <style lang="scss">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .gnkProgress {
-  position: relative;
+  display: flex;
+  inset: 0px;
   
   min-width: 100px;
-  height: 10px;
+  height: 10px; 
 
-  overflow: hidden;
   border-radius: var(--BORDER-RADIUS);
   background-color: -color('BASE', 0.2);
 
@@ -177,19 +194,19 @@ export default {
 
   &.--size-xl {
     border-radius: calc(var(--BORDER-RADIUS) + 4px);
-    height: 18px; 
+    height: 18px!important;; 
   }
   &.--size-l {
     border-radius: calc(var(--BORDER-RADIUS) + 2px);
-    height: 14px;
+    height: 14px!important;
   }
   &.--size-small {
     border-radius: calc(var(--BORDER-RADIUS) - 2px);
-    height: 8px;
+    height: 8px!important;
   }
   &.--size-mini {
     border-radius: calc(var(--BORDER-RADIUS) - 4px);
-    height: 6px;
+    height: 6px!important;
   }
 
 
@@ -359,27 +376,40 @@ export default {
 
   &.--loading{
     pointer-events: none;
-    user-select: none;
+    margin:0px;
+
     &>div {
+
       position:absolute;
       width: 100%!important;
-      animation: loading 3s infinite;
-      animation-timing-function: ease-in-out;
+
+      background-image: linear-gradient(
+        135deg,
+        -color('BASE', 1,0,0,-5) 25%,
+        -color('BASE') 25%,
+        -color('BASE') 50%, 
+        -color('BASE', 1, 0, 0, -5) 50%, 
+        -color('BASE', 1, 0, 0, -5) 75%, 
+        -color('BASE') 75%, 
+        -color('BASE'));
+
+      background-size: 40px 40px;
+      animation: progress-bar-stripes 2s linear infinite;
+
     }
   }
+  
 
 
-  @keyframes loading {
-    0% {
-      left:-100%;
-    }
-    50%{
-      left:0%;
-    }
-    100% {
-      left: 100%;
-    }
+@keyframes progress-bar-stripes {
+  to {
+    background-position: 40px 0;
   }
+
+  from {
+    background-position: 0 0;
+  }
+}
 
 
 

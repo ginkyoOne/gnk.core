@@ -22,6 +22,8 @@
   </div>
 </template>
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
+
 export default {
   name: 'gnkInput',
   props: {

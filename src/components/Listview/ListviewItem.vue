@@ -1,10 +1,10 @@
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import createRipple from "../../utils/ripple"
-import mixin from "../ComponentBase/gnkComponent"
-
+import {sleep} from "../../utils/sleep"
 export default {
     name: 'gnkListviewItem',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     data() {
         return {
             childElements: [],
@@ -46,8 +46,9 @@ export default {
 
     ],
     methods: {
-        onClick(e){
-
+        async onClick(event) {
+            
+            createRipple.createRipple(event)
             this?.$router?.push(this.to)
             this.componentRaiseEvent('click')
         }
@@ -67,10 +68,12 @@ export default {
         </slot>
     </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss" >
+
     .gnkListviewItem{
-        cursor:         pointer;
-        padding : 8px 16px;
+
+        cursor: pointer;
+        padding : 16px 16px;
         position: relative;
 
         background: -color('LEVEL-1');
@@ -80,8 +83,8 @@ export default {
         justify-content: flex-start;
         
         color: -color('TEXT');
-
         overflow: hidden;
+
 
         &:is(:hover, :active){
             background: -color('LEVEL-2');

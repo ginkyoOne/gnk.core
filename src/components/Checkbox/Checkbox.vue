@@ -21,8 +21,11 @@
   </label>
 </template>
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
+
 export default {
   name: 'gnkCheckbox',
+  extends: gnkComponent,
   props: {
     modelValue: {
       type: Boolean,

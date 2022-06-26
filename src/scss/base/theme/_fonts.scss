@@ -1,63 +1,106 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0");
+
 
 :root{
     //FONTS
-    --FONT-FAMILY: 'Roboto',
-    sans-serif; //'Montserrat', sans-serif;
-    --FONT-ICON: "FontAwesome";
-    --FONT-ICON-SOLID: "FontAwesome solid";
+    --FONT-TITLE-FAMILY: 'Poppins', sans-serif;
+    --FONT-FAMILY: 'Roboto',sans-serif;
     --FONT-SIZE: 14px;
-    --LINE-HEIGHT: 2;
+    --LINE-HEIGHT: 1.125rem;
 
-    --FONT-WEIFHT-LIGHT: 300;
-    --FONT-WEIFHT-REGULAR: 400;
-    --FONT-WEIFHT-HEAVY: 700;
+    --FONT-WEIGHT-LIGHT: 300;
+    --FONT-WEIGHT-REGULAR: 400;
+    --FONT-WEIGHT-BOLD: 600;
 
+}
+
+* {
+    font-family: var(--FONT-FAMILY);
+    font-weight: var(--FONT-WEIGHT-REGULAR);
+    font-size: calc(var(--FONT-SIZE));
+    line-height: calc((var(--FONT-SIZE) * 1.1) + 0.25rem);
+}
+
+h1, h2, h3, h4{
+    &:is(.header-anchor) {
+        cursor: pointer;
+        transition: all 0.25s ease-in-out;
+
+        &>A {
+            pointer-events: none !important;
+            transition: all 0.25s ease-in-out;
+        }
+    }
+
+    &>A {
+        opacity: 0;
+        color: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        text-decoration: none;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    &:is(.header-anchor):is(:hover, :active) {
+
+        &:is(h1){
+            padding-left: 3.4rem !important;
+        }
+        &:is(h2) {
+            padding-left: 2.4rem !important;
+        }
+        &:is(h3) {
+            padding-left: 1.8rem !important;
+        }
+        &:is(h4) {
+            padding-left: 1.6rem !important;
+        }
+
+        &>A {
+            left: 0.5rem;
+            pointer-events: all !important;
+            opacity: 1;
+        }
+    }
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-BOLD);
+    font-size: calc(var(--FONT-SIZE) * 2.5);
+    line-height: calc((var(--FONT-SIZE) * 2.5) + 0.25rem);
 }
 
 h2 {
-    font-size: 2rem;
+    position : relative;
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-BOLD);
+    font-size: calc(var(--FONT-SIZE) * 1.8);
+    line-height: calc((var(--FONT-SIZE) * 1.8) + 0.25rem);
 }
 
 h3 {
-    font-size: 1.375rem;
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+    font-size: calc(var(--FONT-SIZE) * 1.4);
+    line-height: calc((var(--FONT-SIZE) * 1.4) + 0.25rem);
 }
 
-h4 {
-    font-size: 1.125rem;
+h3 {
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+    font-size: calc(var(--FONT-SIZE) * 1.2);
+    line-height: calc((var(--FONT-SIZE) * 1.2) + 0.25rem);
 }
 
-h5 {
-    font-size: 1rem;
-}
-
-h6 {
-    font-size: 0.875rem;
-}
-
-p {
-    font-size: 1.125rem;
-    font-weight: 200;
-    line-height: 1.8;
-}
-
-
-.font-light {
-    font-weight: var(--FONT-WEIFHT-LIGHT);
-}
-
-.font-regular {
-    font-weight: var(--FONT-WEIFHT-REGULAR);
-}
-
-.font-heavy {
-    font-weight: var(--FONT-WEIFHT-HEAVY);
-}
 
 // utility
 
@@ -111,12 +154,15 @@ p {
 }
 
 // Text style utilities
+.text-light {
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+}
 .text-normal {
-    font-weight: normal;
+    font-weight: var(--FONT-WEIGHT-REGULAR);
 }
 
 .text-bold {
-    font-weight: bold;
+    font-weight: var(--FONT-WEIGHT-BOLD);
 }
 
 .text-italic {
@@ -124,15 +170,18 @@ p {
 }
 
 .text-large {
-    font-size: 1.2em;
+    font-size: calc(var(--FONT-SIZE) * 1.5);
+    line-height: calc((var(--FONT-SIZE) * 1.5) + 0.25rem);
 }
 
 .text-small {
-    font-size: .9em;
+    font-size: calc(var(--FONT-SIZE) / 1.5);
+    line-height: calc((var(--FONT-SIZE) / 1.5) + 0.25rem);
 }
 
 .text-tiny {
-    font-size: .8em;
+    font-size: calc(var(--FONT-SIZE) /2);
+    line-height: calc((var(--FONT-SIZE) /2) + 0.25rem);
 }
 
 .text-muted {

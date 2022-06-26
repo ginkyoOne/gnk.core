@@ -1,169 +1,434 @@
 <script>
-
-import mixin from "../ComponentBase/gnkComponent"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
+import createRipple from "../../utils/ripple"
 import imageData from "../../utils/imageData"
 
 export default {
     name: 'gnkCard',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     
     data() {
         return {
             
         }
     },
-    props:{
+    props: {
+        
         headerBackground: {
             type: String,
             default: null,
-            /* validator: function(value) {
-                return imageData.validate(value)
-            } */
         },
+
         headerBackgroundAlt: {
             type: String,
             default: null,
+        },
+
+        headerBackgroundHeight: {
+            type: Number,
+            default: 450,
+            validator(value) {
+                return (value > 125 && value < 500 && !isNaN(value))
+            },
+        },
+
+        interactionsPosition: {
+            type: String,
+            default: 'default',
+            validator(type) {
+                return ['default', 'topRight', 'topLeft', 'bottomRight', 'bottomLeft', 'hide'].includes(type)
+            },
+        },
+
+        animateInactive: {
+            type: Boolean,
+            default: false,
+            
+        },
+
+
+
+
+        type: {
+            type: String,
+            default: 'cardType01',
+            validator: function(value) {
+                return ['cardType01', 'cardType02', 'cardType03', 'cardType04', 'cardType05'].includes(value)
+            }
         },
     },
 
     computed: {
         componentClassObject() {
             return {
-                'container': true,
-                'flex': true,
+                'cardType01': this.type === 'cardType01',
+                'cardType02': this.type === 'cardType02',
+                'cardType03': this.type === 'cardType03',
+                
+
+                //'cardType04': this.type === 'cardType04',
+                //'cardType05': this.type === 'cardType05',
+                
             }
         },
     },
-    
-    methods: {
-        alternateDarkMode() {
-            this.store.alternateColorMode()
-        }
-    }
-
-
 
 }
 </script>
 
 <template>
 
-    <div :id="componentId"  :class="[componentName, componentClassObject , componentGeneralClasses]" @click="alternateDarkMode">
-        
-        <header class="--header col-12 container">
-            <div v-if="!!this.$slots.title || !!this.$slots.subtitle" class="--header-title">
-                <div v-if="!!this.$slots.title"  class="--title col-12">
-                    <slot name="title"></slot>
-                </div>
-                <div v-if="!!this.$slots.subtitle" class="--subtitle col-12 flex">
-                    <slot name="subtitle"></slot>
-                </div>
+
+    <div @click.stop="onClick($event)" :class="[componentName, componentClassObject , componentGeneralClasses]"
+        :id="componentId">
+        <div class="--hero-container">
+            <div class="--hero-background">
             </div>
-            <img loading="lazy" class="col-12" v-if="!!headerBackground" :src="headerBackground" :alt="headerBackgroundAlt">
-        </header>
-
-        <div v-if="!!this.$slots.default" class="--content col-12 flex">
-            <slot>teste</slot>
-        </div>  
-
-        <div v-if="!!this.$slots.expanded" class="--expanded col-12 flex">
-                <slot name="expanded"></slot>
+            <div v-if="!!this.$slots.interactions" class="--interactions">
+                <slot name="interactions"></slot>
+            </div>
         </div>
-
-        <footer v-if="!!this.$slots.footer" class="--footer col-12 container">
-            <div class="--footer-content col-12 flex">
-                <slot name="footer"></slot>
+        <div class="--content">
+            <div v-if="!!this.$slots.title" class="--content-title">
+                <h3 class="text-capitalize">
+                    <slot name="title"></slot>
+                </h3>
             </div>
-        </footer>
+            <div v-if="!!this.$slots.default" class="--content-body">
+                <slot>teste</slot>
+            </div>
+        </div>
+        <div v-if="!!this.$slots.footer" class="--footer flex">
+            <slot name="footer">
 
+            </slot>
+        </div>
     </div>
-    
 
 
 </template>
 
-<style lang="scss" scoped>
-
-.gnkCard{
-    position: relative;
-    background: -color('BASE');
-    border-radius: var(--BORDER-RADIUS);
-    overflow: hidden;
-    box-shadow: var(--SHADOW);
-
-
-    &>*{
-        width: 100%;
-    }
-
-    .--header{
-        display: grid;
-        align-items: end;
-        overflow: hidden;
-        max-height: 250px;
-        &>*{
-            grid-column: 1 / -1;
-            grid-row: 1 / -1;
-            z-index: 1;
-        }
-        &>img{
-
-            transition : all 0.3s ease-in-out;
-            width: 100%;
-            min-height: 100px;
-            max-height: 250px;
-
-            object-fit: cover;
-            z-index: 0;
-            &:is(:hover, :focus){
-                transform: scale(1.1);
-                filter: contrast(120%);
-
-            }
-        }
-    }
-
-    .--content, .--footer,.--expanded, .--header-title{
-        height: fit-content;
-        width: 100%;
-        padding: 8px;
-    }
-
-    .--header-title{
-        color: -color('TEXT');
-        text-shadow: 0px 2px 5px -color('LIGHT');
-    }
-
-
-    .--content,.--expanded{
-        overflow-y: auto;
-        background-color: -color('LEVEL-1');
-    }
-
-    .--footer{
-        padding: 2px 8px;
-        position: relative;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: fit-content;
-        background-color: -color('LEVEL-2');
-        border-top: 1px solid -color('LEVEL-3');
-        z-index: 1;
-    }
-}
+<style lang="scss">
 
 
 
-.--open{
-    top:0px;
-    left: 0px;
+
+
+
+
+
+[class*="cardType"] {
+    display: grid;
     width: 100%;
-    height: 100%;
+    margin: 10px;
+    margin-bottom: 5px;
+
+
+    transition: all .25s ease-in-out;
+
+    position: relative;
+
+    background: -color('LEVEL-1');
+    border-radius: var(--BORDER-RADIUS);
+
+    box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+    border : 1px solid -color('LEVEL-0', 0.8);
+    overflow: hidden;
     
 
-    opacity: 1;
-    transition: all .3s ease-in-out;
+    &>.--content {
+        grid-area: content;
+
+        transition: all .25s ease;
+        padding: 15px;
+        padding-top: 5px;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+
+        overflow: visible;
+        width: 100%;
+        height: auto;
+        max-height:100vmax;
+        
+
+        &>.--content-title {
+            transition: all .25s ease-in-out;
+            display: block;
+            margin-block-start: 10px;
+            margin-block-end: 10px;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        &>.--content-body {
+            transition: all .25s ease-in-out; 
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+            height:100%;
+            overflow-y: scroll;
+        }
+    }
+
+    &>.--hero-container {
+        grid-area: media;
+
+        height: 100%;
+        width: 100%;
+        min-height: 250px;
+        min-width: 200px;
+
+        background: -color('LEVEL-1');
+
+        border-radius: var(--BORDER-RADIUS);
+        overflow: hidden;
+        position: relative;
+
+        &>.--hero-background {
+            transition: all .25s ease;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            background: url('https://source.unsplash.com/random/900×700/?experimental') no-repeat;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(90%);
+        }
+
+        &>.--interactions {
+            position : absolute;
+            bottom: 15px;
+            right : 15px;
+
+            transition: all .25s ease-in-out;
+            
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
+    }
+
+    &>.--footer{
+        transition: all .25s ease-in-out;
+        grid-area: footer;
+
+        background: -color('LEVEL-2');
+        border-radius: 0 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS);
+        min-height:10%;
+        height: fit-content;
+        padding: 5px 2px;
+    }
+
+    &:is(:active, :hover) {
+        transform: translateY(-10px);
+        box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+
+        &>.--content {
+            &>.--content-title {
+                transition: transform .5s .10s ease-in-out;
+                transform: translateY(10px);
+            }
+
+            &>.--content-body {
+                opacity: 1;
+                transition: transform .4s .10s ease-in-out;
+                transform: translateY(10px);
+            }
+        }
+
+
+        &>.--hero-container>.--hero-background {
+            transform: scale(1.1);
+            filter: brightness(100%);
+        }
+
+        &>.--hero-container>.--interactions {
+            transform: translate(0, 0) scale(1.1);
+        }
+    }
 }
+
+.cardType01 {
+    grid-template-areas:
+            "media"
+            "content"
+            "footer";
+}
+
+.cardType02 {
+    grid-template-areas:
+            "media content"
+            "footer footer";
+    grid-template-columns: 60% 1fr;
+    &>.--content{
+        margin-left: 15px !important;
+    }
+    &>.--hero-container {
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+    }
+}
+
+.cardType03 {
+    overflow: hidden;
+    grid-template-areas:
+            "media"
+            "footer";
+
+
+    &>.--content {
+        grid-area: media;
+        position: absolute;
+
+        height: 100%;
+        width: 100%;
+        transform: translateY(calc(100% - var(--LINE-HEIGHT) * 3));
+
+        z-index: 1;
+
+        background: -color('LEVEL-1');
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0px 0px;
+
+
+        &>.--content-title {
+            transform:translateY(-0.5rem)
+        }
+
+        &>.--content-body {
+            opacity: 0;
+        }
+    }
+
+    &>.--hero-container>.--interactions {
+        right:15px;
+        top: 15px;
+        bottom: auto;
+        left: auto;
+        z-index: 2;
+    }
+
+    &>.--footer{
+        z-index: 1;
+    }
+
+    &:is(:active, :hover) {
+        &>.--content {
+            //backdrop-filter: saturate(180%) blur(20px);
+            background: -color('LEVEL-1', 1);
+            transform: translateY(0%);
+        }
+        &>.--hero-container>.--interactions {
+            transform: translate(-10%, 10%) scale(1.1);
+        }
+    }
+}
+
+.cardType04 {
+    
+    background: transparent;
+    box-shadow: unset;
+    grid-template-areas:
+        "media"
+        "content"
+        "footer";
+    grid-template-rows: auto 0 auto;
+    transition: transform .25s ease-in-out;
+
+    &>.--content{
+        
+        opacity: 0;
+        z-index: -1;
+        place-self: center center;
+        width : calc(100% - 20px);
+        margin-top: -10px;
+        
+        background: -color('LEVEL-1');
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0 0;
+        
+
+    }
+
+    &>.--footer{
+        width: 100%;
+        align-self: start;
+        place-self: flex-start center;
+        box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+
+        transition: width .25s ease-in-out;
+    }
+
+    &>.--hero-container>.cardInteractions {
+        top: 15px;   
+        right: 15px;
+    }
+
+    &:is(:active, :hover) {
+
+        box-shadow: unset;
+        grid-template-rows: auto auto auto;
+
+        &>.--content {
+            //backdrop-filter: saturate(180%) blur(20px); 
+            animation-direction: normal ;
+            animation: card4 1s ease-in-out;
+            opacity:1;
+            z-index: 1;
+        }
+        
+    
+        &>.--hero-container>.cardInteractions {
+            top: 15%;
+            right: 5%;
+        }
+
+        &>.--footer{
+            width: calc(100% - 20px);
+            box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+        }
+    }
+    @keyframes card4 {
+        0% {
+
+            opacity: 0.0;
+            z-index: -1;
+
+        }
+        50%{
+            z-index: 0;
+            transform: translateY(10px);
+        }
+
+        100% {
+            opacity: 1.0;
+            z-index: 1;
+            transform: translateY(0px);
+        }
+
+    }
+}
+
+
+
+.cardType05 {
+    grid-template-areas:
+        "media content"
+        "footer footer";
+    grid-template-columns: 60% 1fr;
+
+    &>.--content {
+        margin-left: 15px !important;
+    }
+
+    &>.--hero-container {
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+    }
+}
+
+
+
+
 
 </style>

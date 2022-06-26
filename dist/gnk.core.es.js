@@ -14,46 +14,33 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
-import { resolveComponent, openBlock, createBlock, withCtx, createElementBlock, createVNode, Transition, resolveDynamicComponent, createElementVNode, renderSlot, normalizeClass, withModifiers, createCommentVNode, createTextVNode, normalizeStyle, mergeProps, withKeys, withDirectives, vModelCheckbox, toDisplayString, pushScopeId, popScopeId, reactive } from "vue";
+import { resolveComponent, openBlock, createElementBlock, normalizeClass, createElementVNode, withDirectives, createVNode, vShow, withCtx, toDisplayString, renderSlot, createBlock, Transition, resolveDynamicComponent, createCommentVNode, createTextVNode, Teleport, withModifiers, normalizeStyle, mergeProps, withKeys, vModelCheckbox, pushScopeId, popScopeId, shallowRef, unref, computed, reactive, nextTick, defineComponent, inject, h, provide, ref, watch } from "vue";
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-const gnkComponent = {
-  inject: {
-    registerChild: {
-      default: null
-    }
-  },
+function createRipple(event) {
+  const TARGET = event.currentTarget;
+  const RIPPLE = TARGET.querySelector(".gnk-ripple");
+  if (!!RIPPLE)
+    RIPPLE.remove();
+  const TARGET_INFO = TARGET.getBoundingClientRect();
+  const RIPPLE_SPAN = document.createElement("span");
+  const RIPPLE_SIZE = Math.max(TARGET_INFO["width"], TARGET_INFO["height"]);
+  RIPPLE_SPAN.style = `height: ${RIPPLE_SIZE}px !important; width: ${RIPPLE_SIZE}px !important;`;
+  RIPPLE_SPAN.style.left = `${event.clientX - TARGET_INFO["x"] - RIPPLE_SIZE / 2}px`;
+  RIPPLE_SPAN.style.top = `${event.clientY - TARGET_INFO["y"] - RIPPLE_SIZE / 2}px`;
+  RIPPLE_SPAN.classList.add("gnk-ripple");
+  TARGET.appendChild(RIPPLE_SPAN);
+}
+var createRipple$1 = {
+  createRipple
+};
+const _sfc_main$d = {
+  name: "gnkComponent",
   data() {
     return {
       store: gnk.Store
     };
-  },
-  methods: {
-    hello() {
-      console.log("hello from mixin!");
-    },
-    componentRaiseEvent(eventName, data) {
-      let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
-      this.$emit(eventName, event);
-      this.$el.dispatchEvent(event);
-    },
-    componentElementClientRect() {
-      var _a;
-      let modalPosition = (_a = this == null ? void 0 : this.$el) == null ? void 0 : _a.getBoundingClientRect();
-      console.log(modalPosition);
-      return {
-        top: !modalPosition ? 0 : modalPosition.top,
-        left: !modalPosition ? 0 : modalPosition.left,
-        width: !modalPosition ? 0 : modalPosition.width,
-        height: !modalPosition ? 0 : modalPosition.height
-      };
-    },
-    objectToArray(obj) {
-      return Object.keys(obj).map(function(key) {
-        return obj[key];
-      });
-    }
   },
   props: {
     primary: {
@@ -145,16 +132,47 @@ const gnkComponent = {
         "--block": this.block,
         "--disabled": this.disabled
       };
+    },
+    componentElementClientRect() {
+      var _a;
+      let modalPosition = (_a = this == null ? void 0 : this.$el) == null ? void 0 : _a.getBoundingClientRect();
+      return {
+        top: !modalPosition ? 0 : modalPosition.top,
+        left: !modalPosition ? 0 : modalPosition.left,
+        width: !modalPosition ? 0 : modalPosition.width,
+        height: !modalPosition ? 0 : modalPosition.height
+      };
+    }
+  },
+  methods: {
+    hello() {
+      console.log("hello from mixin!");
+    },
+    componentRaiseEvent(eventName, data) {
+      let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
+      this.$emit(eventName, event);
+    },
+    objectToArray(obj) {
+      return Object.keys(obj).map(function(key) {
+        return obj[key];
+      });
     }
   },
   mounted() {
     typeof this.registerChild === "function" && this.type === "toggle" ? this.registerChild(this) : null;
+  },
+  provide() {
+    return {
+      registerChild: !this.registerChilds ? null : this.registerChild
+    };
+  },
+  inject: {
+    registerChild: {
+      default: null
+    }
   }
 };
-var mixin = {
-  gnkComponent
-};
-var App_vue_vue_type_style_index_0_scoped_true_lang = "";
+var App_vue_vue_type_style_index_0_lang = "";
 var _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -162,17 +180,27 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$a = {
+const _sfc_main$c = {
   name: "gnkApp",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
       childElements: [],
       transitionName: "",
-      transitioning: false
+      routeHistoryStartingPoint: "",
+      routeHistory: []
     };
   },
-  props: {},
+  props: {
+    loading: {
+      type: Boolean,
+      default: true
+    },
+    busy: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     componentClassObject() {
       return {};
@@ -183,7 +211,27 @@ const _sfc_main$a = {
   },
   watch: {
     async $route(to, from) {
-      this.transitionName = to.path == from.path ? null : !(to.name == "Home") ? "next" : "prev";
+      if (this.routeHistory.length > 35) {
+        this.routeHistory = this.routeHistory.slice(15);
+      }
+      if (!this.routeHistoryStartingPoint) {
+        this.routeHistory.push(to.name);
+        this.routeHistoryStartingPoint = to.name;
+      }
+      if (to.name == this.routeHistoryStartingPoint) {
+        this.routeHistory = [];
+        this.transitionName = "prev";
+        return;
+      }
+      if (this.routeHistory.at(-1) == to.name && this.routeHistory.length > 1) {
+        this.routeHistory.pop();
+        this.transitionName = "prev";
+        return;
+      }
+      if (to.name == from.name)
+        return;
+      this.routeHistory.push(from.name);
+      this.transitionName = "next";
     }
   },
   emits: [],
@@ -198,70 +246,137 @@ const _sfc_main$a = {
     };
   },
   mounted() {
+    console.log(this.store);
   }
 };
-const _hoisted_1$a = {
-  key: 0,
-  class: "--content"
-};
-const _hoisted_2$6 = {
-  key: 1,
-  class: "--content"
-};
-const _hoisted_3$6 = { class: "container" };
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$c = ["id"];
+const _hoisted_2$8 = { class: "--header grid" };
+const _hoisted_3$8 = { class: "row" };
+const _hoisted_4$6 = { class: "col-12" };
+const _hoisted_5$5 = { class: "row" };
+const _hoisted_6$3 = { class: "col-12" };
+const _hoisted_7$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_back_ios ", -1);
+const _hoisted_8$2 = /* @__PURE__ */ createTextVNode(" Back ");
+const _hoisted_9$2 = { class: "--body fill grid" };
+const _hoisted_10$2 = { class: "row fill" };
+const _hoisted_11 = { class: "--sidebar lg-hide sm-hide xs-hide col-4 overflow-vertical" };
+const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_13 = { class: "--gnkApp-content col-12" };
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_progress = resolveComponent("gnk-progress");
+  const _component_gnkButton = resolveComponent("gnkButton");
+  const _component_gnkNavbar = resolveComponent("gnkNavbar");
   const _component_router_view = resolveComponent("router-view");
   const _component_gnkSwipeManager = resolveComponent("gnkSwipeManager");
-  return openBlock(), createBlock(_component_gnkSwipeManager, {
-    onSwipedRight: _cache[0] || (_cache[0] = ($event) => {
-      var _a;
-      return (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.go(-1);
-    }),
-    onSwipedLeft: _cache[1] || (_cache[1] = ($event) => {
-      var _a;
-      return (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.go(1);
-    })
-  }, {
-    default: withCtx(() => [
-      $options.hasRouter ? (openBlock(), createElementBlock("div", _hoisted_1$a, [
-        createVNode(_component_router_view, null, {
-          default: withCtx(({ Component }) => [
-            createVNode(Transition, {
-              name: $data.transitionName || "fade"
-            }, {
-              default: withCtx(() => [
-                (openBlock(), createBlock(resolveDynamicComponent(Component)))
-              ]),
-              _: 2
-            }, 1032, ["name"])
-          ]),
-          _: 1
-        })
-      ])) : (openBlock(), createElementBlock("div", _hoisted_2$6, [
-        createElementVNode("div", _hoisted_3$6, [
-          renderSlot(_ctx.$slots, "default", {}, void 0, true)
+  return openBlock(), createElementBlock("div", {
+    id: _ctx.componentId,
+    class: normalizeClass(["fill", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
+  }, [
+    createElementVNode("div", _hoisted_2$8, [
+      createElementVNode("div", _hoisted_3$8, [
+        createElementVNode("div", _hoisted_4$6, [
+          withDirectives(createVNode(_component_gnk_progress, {
+            gradient: "",
+            loading: "",
+            square: "",
+            class: "full-width"
+          }, null, 512), [
+            [vShow, false]
+          ])
         ])
-      ]))
+      ]),
+      createElementVNode("div", _hoisted_5$5, [
+        createElementVNode("div", _hoisted_6$3, [
+          createVNode(_component_gnkNavbar, null, {
+            left: withCtx(() => [
+              createVNode(_component_gnkButton, {
+                transparent: "",
+                onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
+              }, {
+                default: withCtx(() => [
+                  _hoisted_7$3,
+                  _hoisted_8$2
+                ]),
+                _: 1
+              })
+            ]),
+            title: withCtx(() => {
+              var _a;
+              return [
+                createElementVNode("h4", null, toDisplayString((_a = _ctx.$route) == null ? void 0 : _a.meta.title), 1)
+              ];
+            }),
+            _: 1
+          })
+        ])
+      ])
     ]),
-    _: 3
-  });
+    createElementVNode("div", _hoisted_9$2, [
+      createElementVNode("div", _hoisted_10$2, [
+        createElementVNode("div", _hoisted_11, [
+          renderSlot(_ctx.$slots, "sidebar", {}, () => [
+            _hoisted_12
+          ])
+        ]),
+        createVNode(_component_gnkSwipeManager, {
+          class: "col-block grid",
+          captureDirection: "horizontal",
+          onSwipedRight: _cache[1] || (_cache[1] = ($event) => {
+            var _a;
+            return (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.go(-1);
+          }),
+          onSwipedLeft: _cache[2] || (_cache[2] = ($event) => {
+            var _a;
+            return (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.go(1);
+          })
+        }, {
+          default: withCtx(() => [
+            createElementVNode("div", _hoisted_13, [
+              renderSlot(_ctx.$slots, "default", {}, () => [
+                $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
+                  default: withCtx(({ Component }) => [
+                    createVNode(Transition, {
+                      name: $data.transitionName || "fade"
+                    }, {
+                      default: withCtx(() => [
+                        (openBlock(), createBlock(resolveDynamicComponent(Component)))
+                      ]),
+                      _: 2
+                    }, 1032, ["name"])
+                  ]),
+                  _: 1
+                })) : createCommentVNode("", true)
+              ])
+            ])
+          ]),
+          _: 3
+        })
+      ])
+    ])
+  ], 10, _hoisted_1$c);
 }
-var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a], ["__scopeId", "data-v-81d3b09c"]]);
+var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var Page_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$9 = {
+const _sfc_main$b = {
   name: "gnkPage",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
-      childElements: []
+      childElements: [],
+      loaded: false,
+      parentPage: null
     };
   },
-  props: {},
+  props: {
+    title: {
+      type: String,
+      required: false,
+      default: "page"
+    }
+  },
   computed: {
     componentClassObject() {
-      return {
-        "container": true
-      };
+      return {};
     },
     hasRouter() {
       return !!this.$router;
@@ -277,68 +392,192 @@ const _sfc_main$9 = {
     return {};
   },
   mounted() {
+    this.loaded = true;
   }
 };
-const _hoisted_1$9 = ["id"];
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$b = ["id"];
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
-    class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
+    class: normalizeClass(["grid col-12", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
+    (openBlock(), createBlock(Teleport, { to: ".gnkApp" }, [
+      createVNode(Transition, { name: "next" }, {
+        default: withCtx(() => [
+          $data.loaded ? renderSlot(_ctx.$slots, "navbar", { key: 0 }) : createCommentVNode("", true)
+        ]),
+        _: 3
+      })
+    ])),
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$9);
+  ], 10, _hoisted_1$b);
 }
-var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+var _404_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$a = {
+  name: "gnk404",
+  extends: _sfc_main$d,
+  props: {
+    title: {
+      type: String,
+      required: false,
+      default: "404"
+    },
+    lable: {
+      type: String,
+      required: false,
+      default: "Oops something went wrong :("
+    },
+    showGoBack: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    goBackLable: {
+      type: String,
+      required: false,
+      default: "go back"
+    }
+  },
+  mounted() {
+  }
+};
+const _hoisted_1$a = ["id"];
+const _hoisted_2$7 = { class: "grid fill" };
+const _hoisted_3$7 = { class: "row" };
+const _hoisted_4$5 = { class: "col-12 flex-centered" };
+const _hoisted_5$4 = { class: "P404-500" };
+const _hoisted_6$2 = { class: "row" };
+const _hoisted_7$2 = { class: "col-12 flex-centered" };
+const _hoisted_8$1 = { class: "row" };
+const _hoisted_9$1 = {
+  key: 0,
+  class: "col-12 flex-centered p-t-20"
+};
+const _hoisted_10$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_row = resolveComponent("row");
+  const _component_gnk_button = resolveComponent("gnk-button");
+  return openBlock(), createElementBlock("div", {
+    id: _ctx.componentId,
+    class: normalizeClass([_ctx.componentName, _ctx.componentClassObject, _ctx.componentGeneralClasses])
+  }, [
+    createElementVNode("div", _hoisted_2$7, [
+      createVNode(_component_row, { class: "fill" }),
+      createElementVNode("div", _hoisted_3$7, [
+        createElementVNode("div", _hoisted_4$5, [
+          createElementVNode("h1", _hoisted_5$4, toDisplayString($props.title), 1)
+        ])
+      ]),
+      createElementVNode("div", _hoisted_6$2, [
+        createElementVNode("div", _hoisted_7$2, toDisplayString($props.lable), 1)
+      ]),
+      createElementVNode("div", _hoisted_8$1, [
+        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_9$1, [
+          createVNode(_component_gnk_button, {
+            onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
+          }, {
+            default: withCtx(() => [
+              _hoisted_10$1,
+              createTextVNode(" " + toDisplayString($props.goBackLable), 1)
+            ]),
+            _: 1
+          })
+        ])) : createCommentVNode("", true)
+      ]),
+      createVNode(_component_row, { class: "fill" })
+    ])
+  ], 10, _hoisted_1$a);
+}
+var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
 var Navbar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$8 = {
+const _sfc_main$9 = {
   name: "gnkNavbar",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
-    return {};
+    return {
+      pageScrollPosition: 0,
+      hide: false
+    };
   },
-  props: {},
+  props: {
+    blur: {
+      type: Boolean,
+      default: true
+    },
+    hideOnScroll: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     componentClassObject() {
       return {
         "container": true,
-        "flex": true
+        "--hide-on-scroll": this.hideOnScroll && this.hide,
+        "--blur": this.blur
       };
     }
   },
-  methods: {},
+  methods: {
+    hideOnScrollHandler(e) {
+      this.pageScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      window.addEventListener("scroll", (e2) => {
+        if (!this.hideOnScroll)
+          retunr;
+        let currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        let scrollDirection = currentScrollPosition > this.pageScrollPosition ? "down" : currentScrollPosition < this.pageScrollPosition ? "up" : "none";
+        let elementHeight = this.$el.offsetHeight;
+        let elementTop = this.$el.offsetTop;
+        let elementBottom = elementTop + elementHeight;
+        switch (true) {
+          case (scrollDirection === "down" && elementBottom > window.innerHeight):
+            this.hide = true;
+            break;
+          case scrollDirection === "up":
+            this.hide = false;
+            break;
+        }
+      });
+    }
+  },
   mounted() {
-    document.body.style.paddingTop = this.$el.offsetHeight - 3 + "px";
   }
 };
-const _hoisted_1$8 = ["id"];
-const _hoisted_2$5 = { class: "col-2 flex-centered flex-left" };
-const _hoisted_3$5 = { class: "col-8 flex-centered" };
-const _hoisted_4$3 = { class: "col-2 flex-centered flex-right" };
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$9 = ["id"];
+const _hoisted_2$6 = { class: "row" };
+const _hoisted_3$6 = { class: "--left col-2 flex-centered flex-left" };
+const _hoisted_4$4 = { class: "--title col-block flex-centered" };
+const _hoisted_5$3 = { class: "--right col-2 flex-centered flex-right" };
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
-    class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
+    class: normalizeClass(["grid", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
-    createElementVNode("div", _hoisted_2$5, [
-      renderSlot(_ctx.$slots, "left")
-    ]),
-    createElementVNode("div", _hoisted_3$5, [
-      renderSlot(_ctx.$slots, "title")
-    ]),
-    createElementVNode("div", _hoisted_4$3, [
-      renderSlot(_ctx.$slots, "right")
+    createElementVNode("div", _hoisted_2$6, [
+      createElementVNode("div", _hoisted_3$6, [
+        renderSlot(_ctx.$slots, "left")
+      ]),
+      createElementVNode("div", _hoisted_4$4, [
+        renderSlot(_ctx.$slots, "title")
+      ]),
+      createElementVNode("div", _hoisted_5$3, [
+        renderSlot(_ctx.$slots, "right")
+      ])
     ])
-  ], 10, _hoisted_1$8);
+  ], 10, _hoisted_1$9);
 }
-var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
-const _sfc_main$7 = {
+var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+var SwipeManager_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$8 = {
   name: "gnkSwipeManager",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
       swipe: {
         direction: "",
+        passive: false,
         start: { x: 0, y: 0 },
         end: { x: 0, y: 0 },
         distance: { x: 0, y: 0 },
@@ -370,7 +609,7 @@ const _sfc_main$7 = {
     },
     captureDirection: {
       type: String,
-      default: "all",
+      default: "none",
       validator(type) {
         return ["none", "all", "left", "right", "top", "bottom", "horizontal", "vertical"].includes(type);
       }
@@ -382,6 +621,22 @@ const _sfc_main$7 = {
     }
   },
   watch: {
+    captureDirection: function(newValue) {
+      if (this.disabled !== newValue) {
+        this.swipe = {
+          direction: "",
+          passive: false,
+          start: { x: 0, y: 0 },
+          end: { x: 0, y: 0 },
+          distance: { x: 0, y: 0 },
+          time: {
+            start: 0,
+            end: 0,
+            elapsed: 0
+          }
+        };
+      }
+    },
     disabled: function(newValue) {
       if (this.disabled !== newValue) {
         this.swipe = {
@@ -414,54 +669,8 @@ const _sfc_main$7 = {
       element.addEventListener("touchstart", (e) => {
         if (this.disabled)
           return;
-        if (!!this.store.swipeCapturedBy && this.store.swipeCapturedBy !== this.componentId)
+        if (this.captureDirection == "none")
           return;
-        this.store.swipeCapturedBy = this.componentId;
-        this.swipe.direction = "";
-        this.swipe.start.x = e.touches[0].clientX;
-        this.swipe.start.y = e.touches[0].clientY;
-        this.swipe.time.start = new Date().getTime();
-        this.$emit("touchDown", ...this.objectToArray(this.swipe));
-      }, { passive: true });
-      element.addEventListener("touchmove", (e) => {
-        if (this.disabled)
-          return;
-        if (this.store.swipeCapturedBy !== this.componentId)
-          return;
-        this.swipe.end.x = e.touches[0].clientX;
-        this.swipe.end.y = e.touches[0].clientY;
-        this.swipe.distance.x = this.swipe.end.x - this.swipe.start.x;
-        this.swipe.distance.y = this.swipe.end.y - this.swipe.start.y;
-        this.swipe.time.elapsed = new Date().getTime() - this.swipe.time.start;
-        this.$emit("touchMove", ...this.objectToArray(this.swipe));
-        this.$emit("swiping", ...this.objectToArray(this.swipe));
-      }, { passive: false });
-      element.addEventListener("touchend", async (e) => {
-        if (this.disabled || this.store.swipeCapturedBy !== this.componentId)
-          return;
-        this.swipe.time.end = new Date().getTime();
-        this.swipe.time.elapsed = this.swipe.time.end - this.swipe.time.start;
-        if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
-          this.swipe.direction = "right";
-          this.$emit("swipedRight", ...this.objectToArray(this.swipe));
-        } else if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
-          this.swipe.direction = "left";
-          this.$emit("swipedLeft", ...this.objectToArray(this.swipe));
-        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
-          this.swipe.direction = "down";
-          this.$emit("swipedDown", ...this.objectToArray(this.swipe));
-        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
-          this.swipe.direction = "up";
-          this.$emit("swipedUp", ...this.objectToArray(this.swipe));
-        }
-        if (this.swipe.direction) {
-          this.$emit("touchUp", ...this.objectToArray(this.swipe));
-          this.$emit("swiped", ...this.objectToArray(this.swipe));
-          if (callback instanceof Function)
-            callback(this.swipe.direction);
-        }
-        await sleep(this.allowedInterval);
-        this.store.swipeCapturedBy = null;
         this.swipe = {
           direction: "",
           start: { x: 0, y: 0 },
@@ -473,6 +682,73 @@ const _sfc_main$7 = {
             elapsed: 0
           }
         };
+        this.swipe.start.x = e.touches[0].clientX;
+        this.swipe.start.y = e.touches[0].clientY;
+        this.swipe.time.start = new Date().getTime();
+        this.$emit("touchDown", ...this.objectToArray(this.swipe));
+      }, { passive: false });
+      element.addEventListener("touchmove", (e) => {
+        if (this.disabled)
+          return;
+        if (this.captureDirection == "none")
+          return;
+        if (this.swipe.passive) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        this.swipe.end.x = e.touches[0].clientX;
+        this.swipe.end.y = e.touches[0].clientY;
+        this.swipe.distance.x = this.swipe.end.x - this.swipe.start.x;
+        this.swipe.distance.y = this.swipe.end.y - this.swipe.start.y;
+        this.swipe.time.elapsed = new Date().getTime() - this.swipe.time.start;
+        if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "right";
+          this.swipe.passive = this.captureDirection == this.swipe.direction || this.captureDirection == "horizontal" ? true : false;
+        } else if (Math.abs(this.swipe.distance.x) > Math.abs(this.swipe.distance.y) && this.swipe.distance.x < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "left";
+          this.swipe.passive = this.captureDirection == this.swipe.direction || this.captureDirection == "horizontal" ? true : false;
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y > this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "down";
+          this.swipe.passive = this.captureDirection == this.swipe.direction || this.captureDirection == "vertical" ? true : false;
+        } else if (Math.abs(this.swipe.distance.y) > Math.abs(this.swipe.distance.x) && this.swipe.distance.y < -1 * this.threshold && this.swipe.time.elapsed <= this.allowedTime) {
+          this.swipe.direction = "up";
+          this.swipe.passive = this.captureDirection == this.swipe.direction || this.captureDirection == "vertical" ? true : false;
+        }
+        this.$emit("touchMove", ...this.objectToArray(this.swipe));
+        this.$emit("swiping", ...this.objectToArray(this.swipe));
+      }, { passive: false });
+      element.addEventListener("touchend", async (e) => {
+        if (this.disabled)
+          return;
+        if (this.captureDirection == "none")
+          return;
+        this.swipe.time.end = new Date().getTime();
+        this.swipe.time.elapsed = this.swipe.time.end - this.swipe.time.start;
+        switch (true) {
+          case (this.swipe.direction == "right" && (this.captureDirection == "right" || this.captureDirection == "horizontal")):
+            this.$emit("swipedRight", ...this.objectToArray(this.swipe));
+            break;
+          case (this.swipe.direction == "left" && (this.captureDirection == "left" || this.captureDirection == "horizontal")):
+            this.$emit("swipedLeft", ...this.objectToArray(this.swipe));
+            break;
+          case (this.swipe.direction == "down" && (this.captureDirection == "down" || this.captureDirection == "vertical")):
+            this.$emit("swipedDown", ...this.objectToArray(this.swipe));
+            break;
+          case (this.swipe.direction == "up" && (this.captureDirection == "up" || this.captureDirection == "vertical")):
+            this.$emit("swipedUp", ...this.objectToArray(this.swipe));
+            break;
+          default:
+            return;
+        }
+        if (this.swipe.direction) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.$emit("touchUp", ...this.objectToArray(this.swipe));
+          this.$emit("swiped", ...this.objectToArray(this.swipe));
+          if (callback instanceof Function)
+            callback(this.swipe.direction);
+        }
+        await sleep(this.allowedInterval);
       }, { passive: true });
     }
   },
@@ -480,37 +756,20 @@ const _sfc_main$7 = {
     this.observeSwipe(this.$el);
   }
 };
-const _hoisted_1$7 = ["id"];
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$8 = ["id"];
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
-    class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
+    class: normalizeClass(["p-0 m-0 fill", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$7);
+  ], 10, _hoisted_1$8);
 }
-var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
-function createRipple(event) {
-  const TARGET = event.currentTarget;
-  const RIPPLE = TARGET.querySelector(".gnk-ripple");
-  if (!!RIPPLE)
-    RIPPLE.remove();
-  const TARGET_INFO = TARGET.getBoundingClientRect();
-  const RIPPLE_SPAN = document.createElement("span");
-  const RIPPLE_SIZE = Math.max(TARGET_INFO["width"], TARGET_INFO["height"]);
-  RIPPLE_SPAN.style.width = RIPPLE_SPAN.style.height = `${RIPPLE_SIZE}px`;
-  RIPPLE_SPAN.style.left = `${event.clientX - TARGET_INFO["x"] - RIPPLE_SIZE / 2}px`;
-  RIPPLE_SPAN.style.top = `${event.clientY - TARGET_INFO["y"] - RIPPLE_SIZE / 2}px`;
-  RIPPLE_SPAN.classList.add("gnk-ripple");
-  TARGET.appendChild(RIPPLE_SPAN);
-}
-var createRipple$1 = {
-  createRipple
-};
+var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
 var Button_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$7 = {
   name: "gnkButton",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
@@ -541,12 +800,12 @@ const _sfc_main$6 = {
       required: false,
       default: false
     },
-    relief: {
+    transparent: {
       type: Boolean,
       required: false,
       default: false
     },
-    transparent: {
+    clear: {
       type: Boolean,
       required: false,
       default: false
@@ -563,6 +822,11 @@ const _sfc_main$6 = {
       validator(type) {
         return ["xl", "l", "default", "small", "mini"].includes(type);
       }
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     loading: {
       type: Boolean,
@@ -625,17 +889,19 @@ const _sfc_main$6 = {
         "--gradient": this.gradient,
         "--relief": this.relief,
         "--transparent": this.transparent,
+        "--clear": this.clear,
         "--shadow": this.shadow,
         "--size-xl": this.size === "xl",
         "--size-l": this.size === "l",
         "--size-small": this.size === "small",
         "--size-mini": this.size === "mini",
         "--animate": ((_a = this.$slots) == null ? void 0 : _a.animate) ? true : false,
-        "--animate-slide-up": this.animate === "slide-up" && !this.loading && !this.animateInactive ? true : false,
-        "--animate-slide-left": this.animate === "slide-left" && !this.loading && !this.animateInactive ? true : false,
-        "--animate-fade": this.animate === "fade" && !this.loading && !this.animateInactive ? true : false,
-        "--animate-scale": this.animate === "scale" && !this.loading && !this.animateInactive ? true : false,
-        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.animateInactive ? true : false,
+        "--animate-slide-up": this.animate === "slide-up" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-slide-left": this.animate === "slide-left" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--busy": this.busy,
         "--loading": this.loading,
         "--active": this.checked & this.type == "toggle"
       };
@@ -656,14 +922,16 @@ const _sfc_main$6 = {
   mounted() {
   }
 };
-const _hoisted_1$6 = ["id", "title", "aria-label", "disabled", "type", "checked"];
-const _hoisted_2$4 = { class: "--content" };
-const _hoisted_3$4 = /* @__PURE__ */ createTextVNode("gnkButton");
-const _hoisted_4$2 = {
+const _hoisted_1$7 = ["id", "title", "aria-label", "disabled", "type", "checked"];
+const _hoisted_2$5 = { class: "--content" };
+const _hoisted_3$5 = /* @__PURE__ */ createTextVNode("gnkButton");
+const _hoisted_4$3 = {
   key: 0,
   class: "--content-animate"
 };
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_Progress = resolveComponent("gnk-Progress");
+  const _component_gnk_Loading = resolveComponent("gnk-Loading");
   return openBlock(), createElementBlock("button", {
     ref: _ctx.componentId,
     id: _ctx.componentId,
@@ -675,21 +943,31 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onClick($event), ["stop"])),
     checked: $data.checked
   }, [
-    createElementVNode("div", _hoisted_2$4, [
+    createElementVNode("div", _hoisted_2$5, [
+      $props.loading ? (openBlock(), createBlock(_component_gnk_Progress, {
+        key: 0,
+        loading: "",
+        gradient: "",
+        block: ""
+      })) : createCommentVNode("", true),
       renderSlot(_ctx.$slots, "default", {}, () => [
-        _hoisted_3$4
-      ])
+        _hoisted_3$5
+      ]),
+      $props.busy ? (openBlock(), createBlock(_component_gnk_Loading, {
+        key: 1,
+        target: "#" + _ctx.componentId
+      }, null, 8, ["target"])) : createCommentVNode("", true)
     ]),
-    !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_4$2, [
+    !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
       renderSlot(_ctx.$slots, "animate")
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$6);
+  ], 10, _hoisted_1$7);
 }
-var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
 var ButtonGroup_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$5 = {
+const _sfc_main$6 = {
   name: "gnkButtonGroup",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
       childButtons: [],
@@ -705,13 +983,6 @@ const _sfc_main$5 = {
         return ["single", "default"].includes(value);
       }
     },
-    direction: {
-      type: String,
-      default: "horizontal",
-      validator(type) {
-        return ["horizontal", "vertical"].includes(type);
-      }
-    },
     draggable: {
       type: Boolean,
       default: false
@@ -720,34 +991,18 @@ const _sfc_main$5 = {
   computed: {
     componentClassObject() {
       return {
-        "--draggable": this.draggable,
-        "--vertical": this.direction === "vertical"
+        "--draggable": this.draggable
       };
     }
   },
-  watch: {},
+  watch: {
+    childButtons() {
+      console.log("childButtons", this.childButtons);
+    }
+  },
   emits: [],
   methods: {
     childValueChange(e) {
-      switch (this.toggle) {
-        case "single":
-          this.selectedItems = [];
-          this.selectedItem = e.detail.component;
-          this.childButtons = this.childButtons.map((button) => {
-            if (button.componentId == e.detail.component.componentId)
-              button.checked = true;
-            else
-              button.checked = false;
-            return button;
-          });
-          break;
-        default:
-          if (e.detail.component.checked)
-            this.selectedItems.push(e.detail.component);
-          else
-            this.selectedItems = this.selectedItems.filter((item) => item.componentId != e.detail.component.componentId);
-          this.selectedItem = this.selectedItems.slice(-1);
-      }
     },
     registerChildToggle(element) {
       this.childButtons.push(element);
@@ -762,29 +1017,32 @@ const _sfc_main$5 = {
   mounted() {
   }
 };
-const _hoisted_1$5 = ["id"];
-const _hoisted_2$3 = { class: "--title" };
-const _hoisted_3$3 = { class: "--buttons" };
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$6 = ["id"];
+const _hoisted_2$4 = {
+  key: 0,
+  class: "--title"
+};
+const _hoisted_3$4 = { class: "--buttons" };
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
-    createElementVNode("div", _hoisted_2$3, [
+    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$4, [
       createElementVNode("h4", null, [
         renderSlot(_ctx.$slots, "title")
       ])
-    ]),
-    createElementVNode("div", _hoisted_3$3, [
+    ])) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_3$4, [
       renderSlot(_ctx.$slots, "default")
     ])
-  ], 10, _hoisted_1$5);
+  ], 10, _hoisted_1$6);
 }
-var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
-var Card_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$4 = {
+var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var Card_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$5 = {
   name: "gnkCard",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {};
   },
@@ -796,94 +1054,99 @@ const _sfc_main$4 = {
     headerBackgroundAlt: {
       type: String,
       default: null
+    },
+    headerBackgroundHeight: {
+      type: Number,
+      default: 450,
+      validator(value) {
+        return value > 125 && value < 500 && !isNaN(value);
+      }
+    },
+    interactionsPosition: {
+      type: String,
+      default: "default",
+      validator(type) {
+        return ["default", "topRight", "topLeft", "bottomRight", "bottomLeft", "hide"].includes(type);
+      }
+    },
+    animateInactive: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: "cardType01",
+      validator: function(value) {
+        return ["cardType01", "cardType02", "cardType03", "cardType04", "cardType05"].includes(value);
+      }
     }
   },
   computed: {
     componentClassObject() {
       return {
-        "container": true,
-        "flex": true
+        "cardType01": this.type === "cardType01",
+        "cardType02": this.type === "cardType02",
+        "cardType03": this.type === "cardType03"
       };
-    }
-  },
-  methods: {
-    alternateDarkMode() {
-      this.store.alternateColorMode();
     }
   }
 };
-const _hoisted_1$4 = ["id"];
-const _hoisted_2$2 = { class: "--header col-12 container" };
-const _hoisted_3$2 = {
+const _hoisted_1$5 = ["id"];
+const _hoisted_2$3 = { class: "--hero-container" };
+const _hoisted_3$3 = /* @__PURE__ */ createElementVNode("div", { class: "--hero-background" }, null, -1);
+const _hoisted_4$2 = {
   key: 0,
-  class: "--header-title"
+  class: "--interactions"
 };
-const _hoisted_4$1 = {
+const _hoisted_5$2 = { class: "--content" };
+const _hoisted_6$1 = {
   key: 0,
-  class: "--title col-12"
+  class: "--content-title"
 };
-const _hoisted_5$1 = {
+const _hoisted_7$1 = { class: "text-capitalize" };
+const _hoisted_8 = {
   key: 1,
-  class: "--subtitle col-12 flex"
+  class: "--content-body"
 };
-const _hoisted_6 = ["src", "alt"];
-const _hoisted_7 = {
-  key: 0,
-  class: "--content col-12 flex"
-};
-const _hoisted_8 = /* @__PURE__ */ createTextVNode("teste");
-const _hoisted_9 = {
-  key: 1,
-  class: "--expanded col-12 flex"
-};
+const _hoisted_9 = /* @__PURE__ */ createTextVNode("teste");
 const _hoisted_10 = {
-  key: 2,
-  class: "--footer col-12 container"
+  key: 0,
+  class: "--footer flex"
 };
-const _hoisted_11 = { class: "--footer-content col-12 flex" };
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
-    id: _ctx.componentId,
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => _ctx.onClick($event), ["stop"])),
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]),
-    onClick: _cache[0] || (_cache[0] = (...args) => $options.alternateDarkMode && $options.alternateDarkMode(...args))
+    id: _ctx.componentId
   }, [
-    createElementVNode("header", _hoisted_2$2, [
-      !!this.$slots.title || !!this.$slots.subtitle ? (openBlock(), createElementBlock("div", _hoisted_3$2, [
-        !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_4$1, [
-          renderSlot(_ctx.$slots, "title", {}, void 0, true)
-        ])) : createCommentVNode("", true),
-        !!this.$slots.subtitle ? (openBlock(), createElementBlock("div", _hoisted_5$1, [
-          renderSlot(_ctx.$slots, "subtitle", {}, void 0, true)
-        ])) : createCommentVNode("", true)
-      ])) : createCommentVNode("", true),
-      !!$props.headerBackground ? (openBlock(), createElementBlock("img", {
-        key: 1,
-        loading: "lazy",
-        class: "col-12",
-        src: $props.headerBackground,
-        alt: $props.headerBackgroundAlt
-      }, null, 8, _hoisted_6)) : createCommentVNode("", true)
+    createElementVNode("div", _hoisted_2$3, [
+      _hoisted_3$3,
+      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_4$2, [
+        renderSlot(_ctx.$slots, "interactions")
+      ])) : createCommentVNode("", true)
     ]),
-    !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_7, [
-      renderSlot(_ctx.$slots, "default", {}, () => [
-        _hoisted_8
-      ], true)
-    ])) : createCommentVNode("", true),
-    !!this.$slots.expanded ? (openBlock(), createElementBlock("div", _hoisted_9, [
-      renderSlot(_ctx.$slots, "expanded", {}, void 0, true)
-    ])) : createCommentVNode("", true),
-    !!this.$slots.footer ? (openBlock(), createElementBlock("footer", _hoisted_10, [
-      createElementVNode("div", _hoisted_11, [
-        renderSlot(_ctx.$slots, "footer", {}, void 0, true)
-      ])
+    createElementVNode("div", _hoisted_5$2, [
+      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_6$1, [
+        createElementVNode("h3", _hoisted_7$1, [
+          renderSlot(_ctx.$slots, "title")
+        ])
+      ])) : createCommentVNode("", true),
+      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_8, [
+        renderSlot(_ctx.$slots, "default", {}, () => [
+          _hoisted_9
+        ])
+      ])) : createCommentVNode("", true)
+    ]),
+    !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_10, [
+      renderSlot(_ctx.$slots, "footer")
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$4);
+  ], 10, _hoisted_1$5);
 }
-var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4], ["__scopeId", "data-v-2428b89f"]]);
+var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
 var Progress_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$3 = {
+const _sfc_main$4 = {
   name: "gnkProgress",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   props: {
     value: {
       type: [Number, String],
@@ -961,7 +1224,6 @@ const _sfc_main$3 = {
   },
   computed: {
     progressCircularPercentage() {
-      console.log("progressCircularPercentage", this.value, this.max);
       return 200 * ((Number.isNaN(Number(this.value)) ? 0 : Number(this.value)) / (Number.isNaN(Number(this.max)) ? 100 : Number(this.max)));
     },
     progressPercentage() {
@@ -985,14 +1247,14 @@ const _sfc_main$3 = {
     }
   }
 };
-const _hoisted_1$3 = ["id", "title", "aria-valuemax", "aria-valuenow"];
-const _hoisted_2$1 = {
+const _hoisted_1$4 = ["aria-valuemax", "aria-valuenow", "id", "title"];
+const _hoisted_2$2 = {
   key: 1,
   class: "ring",
   viewBox: "0 0 100 100",
   preserveAspectRatio: "none"
 };
-const _hoisted_3$1 = /* @__PURE__ */ createElementVNode("defs", null, [
+const _hoisted_3$2 = /* @__PURE__ */ createElementVNode("defs", null, [
   /* @__PURE__ */ createElementVNode("linearGradient", {
     id: "gradient",
     y1: "50%"
@@ -1007,7 +1269,7 @@ const _hoisted_3$1 = /* @__PURE__ */ createElementVNode("defs", null, [
     })
   ])
 ], -1);
-const _hoisted_4 = /* @__PURE__ */ createElementVNode("circle", {
+const _hoisted_4$1 = /* @__PURE__ */ createElementVNode("circle", {
   "stroke-width": "18",
   fill: "transparent",
   r: "40",
@@ -1017,24 +1279,24 @@ const _hoisted_4 = /* @__PURE__ */ createElementVNode("circle", {
   "stroke-dasharray": "200 200",
   strokeDashoffset: "200"
 }, null, -1);
-const _hoisted_5 = ["stroke-dasharray"];
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_5$1 = ["stroke-dasharray"];
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
-    id: _ctx.componentId,
+    "aria-valuemax": $props.max,
+    "aria-valuenow": $props.value,
     class: normalizeClass([[_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses], "--primary"]),
-    role: "progressbar",
+    id: _ctx.componentId,
     title: `${$options.progressPercentage}%`,
     "aria-valuemin": "0",
-    "aria-valuemax": $props.max,
-    "aria-valuenow": $props.value
+    role: "progressbar"
   }, [
     !$props.circular ? (openBlock(), createElementBlock("div", {
       key: 0,
       style: normalizeStyle(`width: ${$options.progressPercentage}%`)
     }, null, 4)) : createCommentVNode("", true),
-    $props.circular ? (openBlock(), createElementBlock("svg", _hoisted_2$1, [
-      _hoisted_3$1,
-      _hoisted_4,
+    $props.circular ? (openBlock(), createElementBlock("svg", _hoisted_2$2, [
+      _hoisted_3$2,
+      _hoisted_4$1,
       createElementVNode("circle", {
         class: "ring-circle",
         "stroke-linecap": "round",
@@ -1044,15 +1306,15 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
         cx: "50",
         cy: "50",
         "stroke-dasharray": $options.progressCircularPercentage + " 253"
-      }, null, 8, _hoisted_5)
+      }, null, 8, _hoisted_5$1)
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$3);
+  ], 10, _hoisted_1$4);
 }
-var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
 var Listview_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$2 = {
+const _sfc_main$3 = {
   name: "gnkListview",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
       childElements: []
@@ -1079,20 +1341,20 @@ const _sfc_main$2 = {
   mounted() {
   }
 };
-const _hoisted_1$2 = ["id"];
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$3 = ["id"];
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$2);
+  ], 10, _hoisted_1$3);
 }
-var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
-var ListviewItem_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$1 = {
+var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var ListviewItem_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$2 = {
   name: "gnkListviewItem",
-  mixins: [mixin.gnkComponent],
+  extends: _sfc_main$d,
   data() {
     return {
       childElements: [],
@@ -1124,8 +1386,9 @@ const _sfc_main$1 = {
   watch: {},
   emits: [],
   methods: {
-    onClick(e) {
+    async onClick(event) {
       var _a;
+      createRipple$1.createRipple(event);
       (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.push(this.to);
       this.componentRaiseEvent("click");
     }
@@ -1133,20 +1396,21 @@ const _sfc_main$1 = {
   mounted() {
   }
 };
-const _hoisted_1$1 = ["id"];
-function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$2 = ["id"];
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args)),
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
-    renderSlot(_ctx.$slots, "default", {}, void 0, true)
-  ], 10, _hoisted_1$1);
+    renderSlot(_ctx.$slots, "default")
+  ], 10, _hoisted_1$2);
 }
-var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-11f95f9b"]]);
+var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
 var Switch_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main = {
+const _sfc_main$1 = {
   name: "gnkSwitch",
+  extends: _sfc_main$d,
   props: {
     modelValue: {
       type: Boolean,
@@ -1184,25 +1448,23 @@ const _sfc_main = {
     },
     state(newValue) {
       this.$emit("update:modelValue", newValue);
-      this.$emit("onChanged", this.state, newValue);
     }
   },
   methods: {
     onTrigger() {
       this.state = !this.state;
-      console.log("click", this.state);
       this.$emit("onChanged", this.state);
     }
   }
 };
-const _withScopeId = (n) => (pushScopeId("data-v-ef74adb0"), n = n(), popScopeId(), n);
-const _hoisted_1 = ["disabled"];
-const _hoisted_2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("div", { class: "gnkSwitch__slider" }, null, -1));
-const _hoisted_3 = {
+const _withScopeId = (n) => (pushScopeId("data-v-e79c9802"), n = n(), popScopeId(), n);
+const _hoisted_1$1 = ["disabled"];
+const _hoisted_2$1 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("div", { class: "gnkSwitch__slider" }, null, -1));
+const _hoisted_3$1 = {
   key: 0,
   class: "gnkSwitch__label"
 };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("label", mergeProps({ class: "gnkSwitch" }, $options.switchAttributes, {
     onKeydown: _cache[2] || (_cache[2] = withKeys(withModifiers(() => {
     }, ["prevent"]), ["space"])),
@@ -1218,20 +1480,1779 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       type: "checkbox",
       disabled: $props.disabled,
       onClick: _cache[1] || (_cache[1] = ($event) => $options.onTrigger())
-    }, null, 8, _hoisted_1), [
+    }, null, 8, _hoisted_1$1), [
       [vModelCheckbox, $data.state]
     ]),
-    _hoisted_2,
-    $props.label ? (openBlock(), createElementBlock("span", _hoisted_3, toDisplayString($props.label), 1)) : createCommentVNode("", true)
+    _hoisted_2$1,
+    $props.label ? (openBlock(), createElementBlock("span", _hoisted_3$1, toDisplayString($props.label), 1)) : createCommentVNode("", true)
   ], 16);
 }
-var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-ef74adb0"]]);
+var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-e79c9802"]]);
+var Loading_vue_vue_type_style_index_0_lang = "";
+const _sfc_main = {
+  name: "gnkLoading",
+  extends: _sfc_main$d,
+  data() {
+    return {
+      loaded: false
+    };
+  },
+  props: {
+    modal: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: "default",
+      validator: function(value) {
+        return ["default", "points", "scale"].includes(value);
+      }
+    },
+    lable: {
+      type: String,
+      default: ""
+    },
+    percentage: {
+      type: Number,
+      default: -1,
+      validator: function(value) {
+        return value >= -1 && value <= 100;
+      }
+    },
+    progress: {
+      type: Number,
+      default: -1,
+      validator: function(value) {
+        return value >= -1 && value <= 100;
+      }
+    },
+    opacity: {
+      type: Number,
+      default: 1,
+      validator: function(value) {
+        return value >= 0 && value <= 1;
+      }
+    },
+    target: {
+      type: String,
+      default: "body",
+      validator: function(value) {
+        return document.querySelector(value) !== null ? value : "body";
+      }
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--modal": this.modal
+      };
+    },
+    componentStyleObject() {
+      return {
+        "--loading-size": this.getTargetSize() + "px",
+        "--opacity": this.opacity
+      };
+    }
+  },
+  methods: {
+    getTargetSize() {
+      let target = document.querySelector(this.target);
+      if (target) {
+        return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 10, 64);
+      }
+      return 64;
+    }
+  },
+  mounted() {
+    this.loaded = true;
+  }
+};
+const _hoisted_1 = ["id"];
+const _hoisted_2 = { class: "row full-height" };
+const _hoisted_3 = { class: "col-block" };
+const _hoisted_4 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
+const _hoisted_5 = {
+  key: 0,
+  class: "--loading-percentage"
+};
+const _hoisted_6 = { class: "text-bold" };
+const _hoisted_7 = { class: "--loading-label text-bold" };
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_Progress = resolveComponent("gnk-Progress");
+  return $data.loaded ? (openBlock(), createBlock(Teleport, {
+    key: 0,
+    to: $props.target
+  }, [
+    createVNode(Transition, { name: "fade" }, {
+      default: withCtx(() => [
+        createElementVNode("div", {
+          id: _ctx.componentId,
+          class: normalizeClass(["grid --primary", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]]),
+          style: normalizeStyle($options.componentStyleObject)
+        }, [
+          $props.progress >= 0 && !$props.modal ? (openBlock(), createBlock(_component_gnk_Progress, {
+            key: 0,
+            class: "--progress",
+            size: "mini",
+            square: "",
+            block: "",
+            value: $props.progress
+          }, null, 8, ["value"])) : createCommentVNode("", true),
+          createElementVNode("div", _hoisted_2, [
+            createElementVNode("div", _hoisted_3, [
+              _hoisted_4,
+              $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_5, [
+                createElementVNode("p", _hoisted_6, toDisplayString($props.percentage) + "%", 1)
+              ])) : createCommentVNode("", true),
+              createElementVNode("p", _hoisted_7, toDisplayString($props.lable), 1)
+            ])
+          ])
+        ], 14, _hoisted_1)
+      ]),
+      _: 1
+    })
+  ], 8, ["to"])) : createCommentVNode("", true);
+}
+var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+/*!
+  * vue-router v4.0.16
+  * (c) 2022 Eduardo San Martin Morote
+  * @license MIT
+  */
+const hasSymbol = typeof Symbol === "function" && typeof Symbol.toStringTag === "symbol";
+const PolySymbol = (name) => hasSymbol ? Symbol(name) : "_vr_" + name;
+const matchedRouteKey = /* @__PURE__ */ PolySymbol("rvlm");
+const viewDepthKey = /* @__PURE__ */ PolySymbol("rvd");
+const routerKey = /* @__PURE__ */ PolySymbol("r");
+const routeLocationKey = /* @__PURE__ */ PolySymbol("rl");
+const routerViewLocationKey = /* @__PURE__ */ PolySymbol("rvl");
+const isBrowser = typeof window !== "undefined";
+function isESModule(obj) {
+  return obj.__esModule || hasSymbol && obj[Symbol.toStringTag] === "Module";
+}
+const assign = Object.assign;
+function applyToParams(fn, params) {
+  const newParams = {};
+  for (const key in params) {
+    const value = params[key];
+    newParams[key] = Array.isArray(value) ? value.map(fn) : fn(value);
+  }
+  return newParams;
+}
+const noop = () => {
+};
+const TRAILING_SLASH_RE = /\/$/;
+const removeTrailingSlash = (path) => path.replace(TRAILING_SLASH_RE, "");
+function parseURL(parseQuery2, location2, currentLocation = "/") {
+  let path, query = {}, searchString = "", hash = "";
+  const searchPos = location2.indexOf("?");
+  const hashPos = location2.indexOf("#", searchPos > -1 ? searchPos : 0);
+  if (searchPos > -1) {
+    path = location2.slice(0, searchPos);
+    searchString = location2.slice(searchPos + 1, hashPos > -1 ? hashPos : location2.length);
+    query = parseQuery2(searchString);
+  }
+  if (hashPos > -1) {
+    path = path || location2.slice(0, hashPos);
+    hash = location2.slice(hashPos, location2.length);
+  }
+  path = resolveRelativePath(path != null ? path : location2, currentLocation);
+  return {
+    fullPath: path + (searchString && "?") + searchString + hash,
+    path,
+    query,
+    hash
+  };
+}
+function stringifyURL(stringifyQuery2, location2) {
+  const query = location2.query ? stringifyQuery2(location2.query) : "";
+  return location2.path + (query && "?") + query + (location2.hash || "");
+}
+function stripBase(pathname, base) {
+  if (!base || !pathname.toLowerCase().startsWith(base.toLowerCase()))
+    return pathname;
+  return pathname.slice(base.length) || "/";
+}
+function isSameRouteLocation(stringifyQuery2, a, b) {
+  const aLastIndex = a.matched.length - 1;
+  const bLastIndex = b.matched.length - 1;
+  return aLastIndex > -1 && aLastIndex === bLastIndex && isSameRouteRecord(a.matched[aLastIndex], b.matched[bLastIndex]) && isSameRouteLocationParams(a.params, b.params) && stringifyQuery2(a.query) === stringifyQuery2(b.query) && a.hash === b.hash;
+}
+function isSameRouteRecord(a, b) {
+  return (a.aliasOf || a) === (b.aliasOf || b);
+}
+function isSameRouteLocationParams(a, b) {
+  if (Object.keys(a).length !== Object.keys(b).length)
+    return false;
+  for (const key in a) {
+    if (!isSameRouteLocationParamsValue(a[key], b[key]))
+      return false;
+  }
+  return true;
+}
+function isSameRouteLocationParamsValue(a, b) {
+  return Array.isArray(a) ? isEquivalentArray(a, b) : Array.isArray(b) ? isEquivalentArray(b, a) : a === b;
+}
+function isEquivalentArray(a, b) {
+  return Array.isArray(b) ? a.length === b.length && a.every((value, i) => value === b[i]) : a.length === 1 && a[0] === b;
+}
+function resolveRelativePath(to, from) {
+  if (to.startsWith("/"))
+    return to;
+  if (!to)
+    return from;
+  const fromSegments = from.split("/");
+  const toSegments = to.split("/");
+  let position = fromSegments.length - 1;
+  let toPosition;
+  let segment;
+  for (toPosition = 0; toPosition < toSegments.length; toPosition++) {
+    segment = toSegments[toPosition];
+    if (position === 1 || segment === ".")
+      continue;
+    if (segment === "..")
+      position--;
+    else
+      break;
+  }
+  return fromSegments.slice(0, position).join("/") + "/" + toSegments.slice(toPosition - (toPosition === toSegments.length ? 1 : 0)).join("/");
+}
+var NavigationType;
+(function(NavigationType2) {
+  NavigationType2["pop"] = "pop";
+  NavigationType2["push"] = "push";
+})(NavigationType || (NavigationType = {}));
+var NavigationDirection;
+(function(NavigationDirection2) {
+  NavigationDirection2["back"] = "back";
+  NavigationDirection2["forward"] = "forward";
+  NavigationDirection2["unknown"] = "";
+})(NavigationDirection || (NavigationDirection = {}));
+function normalizeBase(base) {
+  if (!base) {
+    if (isBrowser) {
+      const baseEl = document.querySelector("base");
+      base = baseEl && baseEl.getAttribute("href") || "/";
+      base = base.replace(/^\w+:\/\/[^\/]+/, "");
+    } else {
+      base = "/";
+    }
+  }
+  if (base[0] !== "/" && base[0] !== "#")
+    base = "/" + base;
+  return removeTrailingSlash(base);
+}
+const BEFORE_HASH_RE = /^[^#]+#/;
+function createHref(base, location2) {
+  return base.replace(BEFORE_HASH_RE, "#") + location2;
+}
+function getElementPosition(el, offset) {
+  const docRect = document.documentElement.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+  return {
+    behavior: offset.behavior,
+    left: elRect.left - docRect.left - (offset.left || 0),
+    top: elRect.top - docRect.top - (offset.top || 0)
+  };
+}
+const computeScrollPosition = () => ({
+  left: window.pageXOffset,
+  top: window.pageYOffset
+});
+function scrollToPosition(position) {
+  let scrollToOptions;
+  if ("el" in position) {
+    const positionEl = position.el;
+    const isIdSelector = typeof positionEl === "string" && positionEl.startsWith("#");
+    const el = typeof positionEl === "string" ? isIdSelector ? document.getElementById(positionEl.slice(1)) : document.querySelector(positionEl) : positionEl;
+    if (!el) {
+      return;
+    }
+    scrollToOptions = getElementPosition(el, position);
+  } else {
+    scrollToOptions = position;
+  }
+  if ("scrollBehavior" in document.documentElement.style)
+    window.scrollTo(scrollToOptions);
+  else {
+    window.scrollTo(scrollToOptions.left != null ? scrollToOptions.left : window.pageXOffset, scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset);
+  }
+}
+function getScrollKey(path, delta) {
+  const position = history.state ? history.state.position - delta : -1;
+  return position + path;
+}
+const scrollPositions = /* @__PURE__ */ new Map();
+function saveScrollPosition(key, scrollPosition) {
+  scrollPositions.set(key, scrollPosition);
+}
+function getSavedScrollPosition(key) {
+  const scroll = scrollPositions.get(key);
+  scrollPositions.delete(key);
+  return scroll;
+}
+let createBaseLocation = () => location.protocol + "//" + location.host;
+function createCurrentLocation(base, location2) {
+  const { pathname, search, hash } = location2;
+  const hashPos = base.indexOf("#");
+  if (hashPos > -1) {
+    let slicePos = hash.includes(base.slice(hashPos)) ? base.slice(hashPos).length : 1;
+    let pathFromHash = hash.slice(slicePos);
+    if (pathFromHash[0] !== "/")
+      pathFromHash = "/" + pathFromHash;
+    return stripBase(pathFromHash, "");
+  }
+  const path = stripBase(pathname, base);
+  return path + search + hash;
+}
+function useHistoryListeners(base, historyState, currentLocation, replace) {
+  let listeners = [];
+  let teardowns = [];
+  let pauseState = null;
+  const popStateHandler = ({ state }) => {
+    const to = createCurrentLocation(base, location);
+    const from = currentLocation.value;
+    const fromState = historyState.value;
+    let delta = 0;
+    if (state) {
+      currentLocation.value = to;
+      historyState.value = state;
+      if (pauseState && pauseState === from) {
+        pauseState = null;
+        return;
+      }
+      delta = fromState ? state.position - fromState.position : 0;
+    } else {
+      replace(to);
+    }
+    listeners.forEach((listener) => {
+      listener(currentLocation.value, from, {
+        delta,
+        type: NavigationType.pop,
+        direction: delta ? delta > 0 ? NavigationDirection.forward : NavigationDirection.back : NavigationDirection.unknown
+      });
+    });
+  };
+  function pauseListeners() {
+    pauseState = currentLocation.value;
+  }
+  function listen(callback) {
+    listeners.push(callback);
+    const teardown = () => {
+      const index = listeners.indexOf(callback);
+      if (index > -1)
+        listeners.splice(index, 1);
+    };
+    teardowns.push(teardown);
+    return teardown;
+  }
+  function beforeUnloadListener() {
+    const { history: history2 } = window;
+    if (!history2.state)
+      return;
+    history2.replaceState(assign({}, history2.state, { scroll: computeScrollPosition() }), "");
+  }
+  function destroy() {
+    for (const teardown of teardowns)
+      teardown();
+    teardowns = [];
+    window.removeEventListener("popstate", popStateHandler);
+    window.removeEventListener("beforeunload", beforeUnloadListener);
+  }
+  window.addEventListener("popstate", popStateHandler);
+  window.addEventListener("beforeunload", beforeUnloadListener);
+  return {
+    pauseListeners,
+    listen,
+    destroy
+  };
+}
+function buildState(back, current, forward, replaced = false, computeScroll = false) {
+  return {
+    back,
+    current,
+    forward,
+    replaced,
+    position: window.history.length,
+    scroll: computeScroll ? computeScrollPosition() : null
+  };
+}
+function useHistoryStateNavigation(base) {
+  const { history: history2, location: location2 } = window;
+  const currentLocation = {
+    value: createCurrentLocation(base, location2)
+  };
+  const historyState = { value: history2.state };
+  if (!historyState.value) {
+    changeLocation(currentLocation.value, {
+      back: null,
+      current: currentLocation.value,
+      forward: null,
+      position: history2.length - 1,
+      replaced: true,
+      scroll: null
+    }, true);
+  }
+  function changeLocation(to, state, replace2) {
+    const hashIndex = base.indexOf("#");
+    const url = hashIndex > -1 ? (location2.host && document.querySelector("base") ? base : base.slice(hashIndex)) + to : createBaseLocation() + base + to;
+    try {
+      history2[replace2 ? "replaceState" : "pushState"](state, "", url);
+      historyState.value = state;
+    } catch (err) {
+      {
+        console.error(err);
+      }
+      location2[replace2 ? "replace" : "assign"](url);
+    }
+  }
+  function replace(to, data) {
+    const state = assign({}, history2.state, buildState(historyState.value.back, to, historyState.value.forward, true), data, { position: historyState.value.position });
+    changeLocation(to, state, true);
+    currentLocation.value = to;
+  }
+  function push(to, data) {
+    const currentState = assign({}, historyState.value, history2.state, {
+      forward: to,
+      scroll: computeScrollPosition()
+    });
+    changeLocation(currentState.current, currentState, true);
+    const state = assign({}, buildState(currentLocation.value, to, null), { position: currentState.position + 1 }, data);
+    changeLocation(to, state, false);
+    currentLocation.value = to;
+  }
+  return {
+    location: currentLocation,
+    state: historyState,
+    push,
+    replace
+  };
+}
+function createWebHistory(base) {
+  base = normalizeBase(base);
+  const historyNavigation = useHistoryStateNavigation(base);
+  const historyListeners = useHistoryListeners(base, historyNavigation.state, historyNavigation.location, historyNavigation.replace);
+  function go(delta, triggerListeners = true) {
+    if (!triggerListeners)
+      historyListeners.pauseListeners();
+    history.go(delta);
+  }
+  const routerHistory = assign({
+    location: "",
+    base,
+    go,
+    createHref: createHref.bind(null, base)
+  }, historyNavigation, historyListeners);
+  Object.defineProperty(routerHistory, "location", {
+    enumerable: true,
+    get: () => historyNavigation.location.value
+  });
+  Object.defineProperty(routerHistory, "state", {
+    enumerable: true,
+    get: () => historyNavigation.state.value
+  });
+  return routerHistory;
+}
+function isRouteLocation(route) {
+  return typeof route === "string" || route && typeof route === "object";
+}
+function isRouteName(name) {
+  return typeof name === "string" || typeof name === "symbol";
+}
+const START_LOCATION_NORMALIZED = {
+  path: "/",
+  name: void 0,
+  params: {},
+  query: {},
+  hash: "",
+  fullPath: "/",
+  matched: [],
+  meta: {},
+  redirectedFrom: void 0
+};
+const NavigationFailureSymbol = /* @__PURE__ */ PolySymbol("nf");
+var NavigationFailureType;
+(function(NavigationFailureType2) {
+  NavigationFailureType2[NavigationFailureType2["aborted"] = 4] = "aborted";
+  NavigationFailureType2[NavigationFailureType2["cancelled"] = 8] = "cancelled";
+  NavigationFailureType2[NavigationFailureType2["duplicated"] = 16] = "duplicated";
+})(NavigationFailureType || (NavigationFailureType = {}));
+function createRouterError(type, params) {
+  {
+    return assign(new Error(), {
+      type,
+      [NavigationFailureSymbol]: true
+    }, params);
+  }
+}
+function isNavigationFailure(error, type) {
+  return error instanceof Error && NavigationFailureSymbol in error && (type == null || !!(error.type & type));
+}
+const BASE_PARAM_PATTERN = "[^/]+?";
+const BASE_PATH_PARSER_OPTIONS = {
+  sensitive: false,
+  strict: false,
+  start: true,
+  end: true
+};
+const REGEX_CHARS_RE = /[.+*?^${}()[\]/\\]/g;
+function tokensToParser(segments, extraOptions) {
+  const options = assign({}, BASE_PATH_PARSER_OPTIONS, extraOptions);
+  const score = [];
+  let pattern = options.start ? "^" : "";
+  const keys = [];
+  for (const segment of segments) {
+    const segmentScores = segment.length ? [] : [90];
+    if (options.strict && !segment.length)
+      pattern += "/";
+    for (let tokenIndex = 0; tokenIndex < segment.length; tokenIndex++) {
+      const token = segment[tokenIndex];
+      let subSegmentScore = 40 + (options.sensitive ? 0.25 : 0);
+      if (token.type === 0) {
+        if (!tokenIndex)
+          pattern += "/";
+        pattern += token.value.replace(REGEX_CHARS_RE, "\\$&");
+        subSegmentScore += 40;
+      } else if (token.type === 1) {
+        const { value, repeatable, optional, regexp } = token;
+        keys.push({
+          name: value,
+          repeatable,
+          optional
+        });
+        const re2 = regexp ? regexp : BASE_PARAM_PATTERN;
+        if (re2 !== BASE_PARAM_PATTERN) {
+          subSegmentScore += 10;
+          try {
+            new RegExp(`(${re2})`);
+          } catch (err) {
+            throw new Error(`Invalid custom RegExp for param "${value}" (${re2}): ` + err.message);
+          }
+        }
+        let subPattern = repeatable ? `((?:${re2})(?:/(?:${re2}))*)` : `(${re2})`;
+        if (!tokenIndex)
+          subPattern = optional && segment.length < 2 ? `(?:/${subPattern})` : "/" + subPattern;
+        if (optional)
+          subPattern += "?";
+        pattern += subPattern;
+        subSegmentScore += 20;
+        if (optional)
+          subSegmentScore += -8;
+        if (repeatable)
+          subSegmentScore += -20;
+        if (re2 === ".*")
+          subSegmentScore += -50;
+      }
+      segmentScores.push(subSegmentScore);
+    }
+    score.push(segmentScores);
+  }
+  if (options.strict && options.end) {
+    const i = score.length - 1;
+    score[i][score[i].length - 1] += 0.7000000000000001;
+  }
+  if (!options.strict)
+    pattern += "/?";
+  if (options.end)
+    pattern += "$";
+  else if (options.strict)
+    pattern += "(?:/|$)";
+  const re = new RegExp(pattern, options.sensitive ? "" : "i");
+  function parse(path) {
+    const match = path.match(re);
+    const params = {};
+    if (!match)
+      return null;
+    for (let i = 1; i < match.length; i++) {
+      const value = match[i] || "";
+      const key = keys[i - 1];
+      params[key.name] = value && key.repeatable ? value.split("/") : value;
+    }
+    return params;
+  }
+  function stringify(params) {
+    let path = "";
+    let avoidDuplicatedSlash = false;
+    for (const segment of segments) {
+      if (!avoidDuplicatedSlash || !path.endsWith("/"))
+        path += "/";
+      avoidDuplicatedSlash = false;
+      for (const token of segment) {
+        if (token.type === 0) {
+          path += token.value;
+        } else if (token.type === 1) {
+          const { value, repeatable, optional } = token;
+          const param = value in params ? params[value] : "";
+          if (Array.isArray(param) && !repeatable)
+            throw new Error(`Provided param "${value}" is an array but it is not repeatable (* or + modifiers)`);
+          const text = Array.isArray(param) ? param.join("/") : param;
+          if (!text) {
+            if (optional) {
+              if (segment.length < 2 && segments.length > 1) {
+                if (path.endsWith("/"))
+                  path = path.slice(0, -1);
+                else
+                  avoidDuplicatedSlash = true;
+              }
+            } else
+              throw new Error(`Missing required param "${value}"`);
+          }
+          path += text;
+        }
+      }
+    }
+    return path;
+  }
+  return {
+    re,
+    score,
+    keys,
+    parse,
+    stringify
+  };
+}
+function compareScoreArray(a, b) {
+  let i = 0;
+  while (i < a.length && i < b.length) {
+    const diff = b[i] - a[i];
+    if (diff)
+      return diff;
+    i++;
+  }
+  if (a.length < b.length) {
+    return a.length === 1 && a[0] === 40 + 40 ? -1 : 1;
+  } else if (a.length > b.length) {
+    return b.length === 1 && b[0] === 40 + 40 ? 1 : -1;
+  }
+  return 0;
+}
+function comparePathParserScore(a, b) {
+  let i = 0;
+  const aScore = a.score;
+  const bScore = b.score;
+  while (i < aScore.length && i < bScore.length) {
+    const comp = compareScoreArray(aScore[i], bScore[i]);
+    if (comp)
+      return comp;
+    i++;
+  }
+  if (Math.abs(bScore.length - aScore.length) === 1) {
+    if (isLastScoreNegative(aScore))
+      return 1;
+    if (isLastScoreNegative(bScore))
+      return -1;
+  }
+  return bScore.length - aScore.length;
+}
+function isLastScoreNegative(score) {
+  const last = score[score.length - 1];
+  return score.length > 0 && last[last.length - 1] < 0;
+}
+const ROOT_TOKEN = {
+  type: 0,
+  value: ""
+};
+const VALID_PARAM_RE = /[a-zA-Z0-9_]/;
+function tokenizePath(path) {
+  if (!path)
+    return [[]];
+  if (path === "/")
+    return [[ROOT_TOKEN]];
+  if (!path.startsWith("/")) {
+    throw new Error(`Invalid path "${path}"`);
+  }
+  function crash(message) {
+    throw new Error(`ERR (${state})/"${buffer}": ${message}`);
+  }
+  let state = 0;
+  let previousState = state;
+  const tokens = [];
+  let segment;
+  function finalizeSegment() {
+    if (segment)
+      tokens.push(segment);
+    segment = [];
+  }
+  let i = 0;
+  let char;
+  let buffer = "";
+  let customRe = "";
+  function consumeBuffer() {
+    if (!buffer)
+      return;
+    if (state === 0) {
+      segment.push({
+        type: 0,
+        value: buffer
+      });
+    } else if (state === 1 || state === 2 || state === 3) {
+      if (segment.length > 1 && (char === "*" || char === "+"))
+        crash(`A repeatable param (${buffer}) must be alone in its segment. eg: '/:ids+.`);
+      segment.push({
+        type: 1,
+        value: buffer,
+        regexp: customRe,
+        repeatable: char === "*" || char === "+",
+        optional: char === "*" || char === "?"
+      });
+    } else {
+      crash("Invalid state to consume buffer");
+    }
+    buffer = "";
+  }
+  function addCharToBuffer() {
+    buffer += char;
+  }
+  while (i < path.length) {
+    char = path[i++];
+    if (char === "\\" && state !== 2) {
+      previousState = state;
+      state = 4;
+      continue;
+    }
+    switch (state) {
+      case 0:
+        if (char === "/") {
+          if (buffer) {
+            consumeBuffer();
+          }
+          finalizeSegment();
+        } else if (char === ":") {
+          consumeBuffer();
+          state = 1;
+        } else {
+          addCharToBuffer();
+        }
+        break;
+      case 4:
+        addCharToBuffer();
+        state = previousState;
+        break;
+      case 1:
+        if (char === "(") {
+          state = 2;
+        } else if (VALID_PARAM_RE.test(char)) {
+          addCharToBuffer();
+        } else {
+          consumeBuffer();
+          state = 0;
+          if (char !== "*" && char !== "?" && char !== "+")
+            i--;
+        }
+        break;
+      case 2:
+        if (char === ")") {
+          if (customRe[customRe.length - 1] == "\\")
+            customRe = customRe.slice(0, -1) + char;
+          else
+            state = 3;
+        } else {
+          customRe += char;
+        }
+        break;
+      case 3:
+        consumeBuffer();
+        state = 0;
+        if (char !== "*" && char !== "?" && char !== "+")
+          i--;
+        customRe = "";
+        break;
+      default:
+        crash("Unknown state");
+        break;
+    }
+  }
+  if (state === 2)
+    crash(`Unfinished custom RegExp for param "${buffer}"`);
+  consumeBuffer();
+  finalizeSegment();
+  return tokens;
+}
+function createRouteRecordMatcher(record, parent, options) {
+  const parser = tokensToParser(tokenizePath(record.path), options);
+  const matcher = assign(parser, {
+    record,
+    parent,
+    children: [],
+    alias: []
+  });
+  if (parent) {
+    if (!matcher.record.aliasOf === !parent.record.aliasOf)
+      parent.children.push(matcher);
+  }
+  return matcher;
+}
+function createRouterMatcher(routes, globalOptions) {
+  const matchers = [];
+  const matcherMap = /* @__PURE__ */ new Map();
+  globalOptions = mergeOptions({ strict: false, end: true, sensitive: false }, globalOptions);
+  function getRecordMatcher(name) {
+    return matcherMap.get(name);
+  }
+  function addRoute(record, parent, originalRecord) {
+    const isRootAdd = !originalRecord;
+    const mainNormalizedRecord = normalizeRouteRecord(record);
+    mainNormalizedRecord.aliasOf = originalRecord && originalRecord.record;
+    const options = mergeOptions(globalOptions, record);
+    const normalizedRecords = [
+      mainNormalizedRecord
+    ];
+    if ("alias" in record) {
+      const aliases = typeof record.alias === "string" ? [record.alias] : record.alias;
+      for (const alias of aliases) {
+        normalizedRecords.push(assign({}, mainNormalizedRecord, {
+          components: originalRecord ? originalRecord.record.components : mainNormalizedRecord.components,
+          path: alias,
+          aliasOf: originalRecord ? originalRecord.record : mainNormalizedRecord
+        }));
+      }
+    }
+    let matcher;
+    let originalMatcher;
+    for (const normalizedRecord of normalizedRecords) {
+      const { path } = normalizedRecord;
+      if (parent && path[0] !== "/") {
+        const parentPath = parent.record.path;
+        const connectingSlash = parentPath[parentPath.length - 1] === "/" ? "" : "/";
+        normalizedRecord.path = parent.record.path + (path && connectingSlash + path);
+      }
+      matcher = createRouteRecordMatcher(normalizedRecord, parent, options);
+      if (originalRecord) {
+        originalRecord.alias.push(matcher);
+      } else {
+        originalMatcher = originalMatcher || matcher;
+        if (originalMatcher !== matcher)
+          originalMatcher.alias.push(matcher);
+        if (isRootAdd && record.name && !isAliasRecord(matcher))
+          removeRoute(record.name);
+      }
+      if ("children" in mainNormalizedRecord) {
+        const children = mainNormalizedRecord.children;
+        for (let i = 0; i < children.length; i++) {
+          addRoute(children[i], matcher, originalRecord && originalRecord.children[i]);
+        }
+      }
+      originalRecord = originalRecord || matcher;
+      insertMatcher(matcher);
+    }
+    return originalMatcher ? () => {
+      removeRoute(originalMatcher);
+    } : noop;
+  }
+  function removeRoute(matcherRef) {
+    if (isRouteName(matcherRef)) {
+      const matcher = matcherMap.get(matcherRef);
+      if (matcher) {
+        matcherMap.delete(matcherRef);
+        matchers.splice(matchers.indexOf(matcher), 1);
+        matcher.children.forEach(removeRoute);
+        matcher.alias.forEach(removeRoute);
+      }
+    } else {
+      const index = matchers.indexOf(matcherRef);
+      if (index > -1) {
+        matchers.splice(index, 1);
+        if (matcherRef.record.name)
+          matcherMap.delete(matcherRef.record.name);
+        matcherRef.children.forEach(removeRoute);
+        matcherRef.alias.forEach(removeRoute);
+      }
+    }
+  }
+  function getRoutes() {
+    return matchers;
+  }
+  function insertMatcher(matcher) {
+    let i = 0;
+    while (i < matchers.length && comparePathParserScore(matcher, matchers[i]) >= 0 && (matcher.record.path !== matchers[i].record.path || !isRecordChildOf(matcher, matchers[i])))
+      i++;
+    matchers.splice(i, 0, matcher);
+    if (matcher.record.name && !isAliasRecord(matcher))
+      matcherMap.set(matcher.record.name, matcher);
+  }
+  function resolve(location2, currentLocation) {
+    let matcher;
+    let params = {};
+    let path;
+    let name;
+    if ("name" in location2 && location2.name) {
+      matcher = matcherMap.get(location2.name);
+      if (!matcher)
+        throw createRouterError(1, {
+          location: location2
+        });
+      name = matcher.record.name;
+      params = assign(paramsFromLocation(currentLocation.params, matcher.keys.filter((k) => !k.optional).map((k) => k.name)), location2.params);
+      path = matcher.stringify(params);
+    } else if ("path" in location2) {
+      path = location2.path;
+      matcher = matchers.find((m) => m.re.test(path));
+      if (matcher) {
+        params = matcher.parse(path);
+        name = matcher.record.name;
+      }
+    } else {
+      matcher = currentLocation.name ? matcherMap.get(currentLocation.name) : matchers.find((m) => m.re.test(currentLocation.path));
+      if (!matcher)
+        throw createRouterError(1, {
+          location: location2,
+          currentLocation
+        });
+      name = matcher.record.name;
+      params = assign({}, currentLocation.params, location2.params);
+      path = matcher.stringify(params);
+    }
+    const matched = [];
+    let parentMatcher = matcher;
+    while (parentMatcher) {
+      matched.unshift(parentMatcher.record);
+      parentMatcher = parentMatcher.parent;
+    }
+    return {
+      name,
+      path,
+      params,
+      matched,
+      meta: mergeMetaFields(matched)
+    };
+  }
+  routes.forEach((route) => addRoute(route));
+  return { addRoute, resolve, removeRoute, getRoutes, getRecordMatcher };
+}
+function paramsFromLocation(params, keys) {
+  const newParams = {};
+  for (const key of keys) {
+    if (key in params)
+      newParams[key] = params[key];
+  }
+  return newParams;
+}
+function normalizeRouteRecord(record) {
+  return {
+    path: record.path,
+    redirect: record.redirect,
+    name: record.name,
+    meta: record.meta || {},
+    aliasOf: void 0,
+    beforeEnter: record.beforeEnter,
+    props: normalizeRecordProps(record),
+    children: record.children || [],
+    instances: {},
+    leaveGuards: /* @__PURE__ */ new Set(),
+    updateGuards: /* @__PURE__ */ new Set(),
+    enterCallbacks: {},
+    components: "components" in record ? record.components || {} : { default: record.component }
+  };
+}
+function normalizeRecordProps(record) {
+  const propsObject = {};
+  const props = record.props || false;
+  if ("component" in record) {
+    propsObject.default = props;
+  } else {
+    for (const name in record.components)
+      propsObject[name] = typeof props === "boolean" ? props : props[name];
+  }
+  return propsObject;
+}
+function isAliasRecord(record) {
+  while (record) {
+    if (record.record.aliasOf)
+      return true;
+    record = record.parent;
+  }
+  return false;
+}
+function mergeMetaFields(matched) {
+  return matched.reduce((meta, record) => assign(meta, record.meta), {});
+}
+function mergeOptions(defaults, partialOptions) {
+  const options = {};
+  for (const key in defaults) {
+    options[key] = key in partialOptions ? partialOptions[key] : defaults[key];
+  }
+  return options;
+}
+function isRecordChildOf(record, parent) {
+  return parent.children.some((child) => child === record || isRecordChildOf(record, child));
+}
+const HASH_RE = /#/g;
+const AMPERSAND_RE = /&/g;
+const SLASH_RE = /\//g;
+const EQUAL_RE = /=/g;
+const IM_RE = /\?/g;
+const PLUS_RE = /\+/g;
+const ENC_BRACKET_OPEN_RE = /%5B/g;
+const ENC_BRACKET_CLOSE_RE = /%5D/g;
+const ENC_CARET_RE = /%5E/g;
+const ENC_BACKTICK_RE = /%60/g;
+const ENC_CURLY_OPEN_RE = /%7B/g;
+const ENC_PIPE_RE = /%7C/g;
+const ENC_CURLY_CLOSE_RE = /%7D/g;
+const ENC_SPACE_RE = /%20/g;
+function commonEncode(text) {
+  return encodeURI("" + text).replace(ENC_PIPE_RE, "|").replace(ENC_BRACKET_OPEN_RE, "[").replace(ENC_BRACKET_CLOSE_RE, "]");
+}
+function encodeHash(text) {
+  return commonEncode(text).replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
+}
+function encodeQueryValue(text) {
+  return commonEncode(text).replace(PLUS_RE, "%2B").replace(ENC_SPACE_RE, "+").replace(HASH_RE, "%23").replace(AMPERSAND_RE, "%26").replace(ENC_BACKTICK_RE, "`").replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
+}
+function encodeQueryKey(text) {
+  return encodeQueryValue(text).replace(EQUAL_RE, "%3D");
+}
+function encodePath(text) {
+  return commonEncode(text).replace(HASH_RE, "%23").replace(IM_RE, "%3F");
+}
+function encodeParam(text) {
+  return text == null ? "" : encodePath(text).replace(SLASH_RE, "%2F");
+}
+function decode(text) {
+  try {
+    return decodeURIComponent("" + text);
+  } catch (err) {
+  }
+  return "" + text;
+}
+function parseQuery(search) {
+  const query = {};
+  if (search === "" || search === "?")
+    return query;
+  const hasLeadingIM = search[0] === "?";
+  const searchParams = (hasLeadingIM ? search.slice(1) : search).split("&");
+  for (let i = 0; i < searchParams.length; ++i) {
+    const searchParam = searchParams[i].replace(PLUS_RE, " ");
+    const eqPos = searchParam.indexOf("=");
+    const key = decode(eqPos < 0 ? searchParam : searchParam.slice(0, eqPos));
+    const value = eqPos < 0 ? null : decode(searchParam.slice(eqPos + 1));
+    if (key in query) {
+      let currentValue = query[key];
+      if (!Array.isArray(currentValue)) {
+        currentValue = query[key] = [currentValue];
+      }
+      currentValue.push(value);
+    } else {
+      query[key] = value;
+    }
+  }
+  return query;
+}
+function stringifyQuery(query) {
+  let search = "";
+  for (let key in query) {
+    const value = query[key];
+    key = encodeQueryKey(key);
+    if (value == null) {
+      if (value !== void 0) {
+        search += (search.length ? "&" : "") + key;
+      }
+      continue;
+    }
+    const values = Array.isArray(value) ? value.map((v) => v && encodeQueryValue(v)) : [value && encodeQueryValue(value)];
+    values.forEach((value2) => {
+      if (value2 !== void 0) {
+        search += (search.length ? "&" : "") + key;
+        if (value2 != null)
+          search += "=" + value2;
+      }
+    });
+  }
+  return search;
+}
+function normalizeQuery(query) {
+  const normalizedQuery = {};
+  for (const key in query) {
+    const value = query[key];
+    if (value !== void 0) {
+      normalizedQuery[key] = Array.isArray(value) ? value.map((v) => v == null ? null : "" + v) : value == null ? value : "" + value;
+    }
+  }
+  return normalizedQuery;
+}
+function useCallbacks() {
+  let handlers = [];
+  function add(handler) {
+    handlers.push(handler);
+    return () => {
+      const i = handlers.indexOf(handler);
+      if (i > -1)
+        handlers.splice(i, 1);
+    };
+  }
+  function reset() {
+    handlers = [];
+  }
+  return {
+    add,
+    list: () => handlers,
+    reset
+  };
+}
+function guardToPromiseFn(guard, to, from, record, name) {
+  const enterCallbackArray = record && (record.enterCallbacks[name] = record.enterCallbacks[name] || []);
+  return () => new Promise((resolve, reject) => {
+    const next = (valid) => {
+      if (valid === false)
+        reject(createRouterError(4, {
+          from,
+          to
+        }));
+      else if (valid instanceof Error) {
+        reject(valid);
+      } else if (isRouteLocation(valid)) {
+        reject(createRouterError(2, {
+          from: to,
+          to: valid
+        }));
+      } else {
+        if (enterCallbackArray && record.enterCallbacks[name] === enterCallbackArray && typeof valid === "function")
+          enterCallbackArray.push(valid);
+        resolve();
+      }
+    };
+    const guardReturn = guard.call(record && record.instances[name], to, from, next);
+    let guardCall = Promise.resolve(guardReturn);
+    if (guard.length < 3)
+      guardCall = guardCall.then(next);
+    guardCall.catch((err) => reject(err));
+  });
+}
+function extractComponentsGuards(matched, guardType, to, from) {
+  const guards = [];
+  for (const record of matched) {
+    for (const name in record.components) {
+      let rawComponent = record.components[name];
+      if (guardType !== "beforeRouteEnter" && !record.instances[name])
+        continue;
+      if (isRouteComponent(rawComponent)) {
+        const options = rawComponent.__vccOpts || rawComponent;
+        const guard = options[guardType];
+        guard && guards.push(guardToPromiseFn(guard, to, from, record, name));
+      } else {
+        let componentPromise = rawComponent();
+        guards.push(() => componentPromise.then((resolved) => {
+          if (!resolved)
+            return Promise.reject(new Error(`Couldn't resolve component "${name}" at "${record.path}"`));
+          const resolvedComponent = isESModule(resolved) ? resolved.default : resolved;
+          record.components[name] = resolvedComponent;
+          const options = resolvedComponent.__vccOpts || resolvedComponent;
+          const guard = options[guardType];
+          return guard && guardToPromiseFn(guard, to, from, record, name)();
+        }));
+      }
+    }
+  }
+  return guards;
+}
+function isRouteComponent(component) {
+  return typeof component === "object" || "displayName" in component || "props" in component || "__vccOpts" in component;
+}
+function useLink(props) {
+  const router2 = inject(routerKey);
+  const currentRoute = inject(routeLocationKey);
+  const route = computed(() => router2.resolve(unref(props.to)));
+  const activeRecordIndex = computed(() => {
+    const { matched } = route.value;
+    const { length } = matched;
+    const routeMatched = matched[length - 1];
+    const currentMatched = currentRoute.matched;
+    if (!routeMatched || !currentMatched.length)
+      return -1;
+    const index = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
+    if (index > -1)
+      return index;
+    const parentRecordPath = getOriginalPath(matched[length - 2]);
+    return length > 1 && getOriginalPath(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2])) : index;
+  });
+  const isActive = computed(() => activeRecordIndex.value > -1 && includesParams(currentRoute.params, route.value.params));
+  const isExactActive = computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params));
+  function navigate(e = {}) {
+    if (guardEvent(e)) {
+      return router2[unref(props.replace) ? "replace" : "push"](unref(props.to)).catch(noop);
+    }
+    return Promise.resolve();
+  }
+  return {
+    route,
+    href: computed(() => route.value.href),
+    isActive,
+    isExactActive,
+    navigate
+  };
+}
+const RouterLinkImpl = /* @__PURE__ */ defineComponent({
+  name: "RouterLink",
+  compatConfig: { MODE: 3 },
+  props: {
+    to: {
+      type: [String, Object],
+      required: true
+    },
+    replace: Boolean,
+    activeClass: String,
+    exactActiveClass: String,
+    custom: Boolean,
+    ariaCurrentValue: {
+      type: String,
+      default: "page"
+    }
+  },
+  useLink,
+  setup(props, { slots }) {
+    const link = reactive(useLink(props));
+    const { options } = inject(routerKey);
+    const elClass = computed(() => ({
+      [getLinkClass(props.activeClass, options.linkActiveClass, "router-link-active")]: link.isActive,
+      [getLinkClass(props.exactActiveClass, options.linkExactActiveClass, "router-link-exact-active")]: link.isExactActive
+    }));
+    return () => {
+      const children = slots.default && slots.default(link);
+      return props.custom ? children : h("a", {
+        "aria-current": link.isExactActive ? props.ariaCurrentValue : null,
+        href: link.href,
+        onClick: link.navigate,
+        class: elClass.value
+      }, children);
+    };
+  }
+});
+const RouterLink = RouterLinkImpl;
+function guardEvent(e) {
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey)
+    return;
+  if (e.defaultPrevented)
+    return;
+  if (e.button !== void 0 && e.button !== 0)
+    return;
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    const target = e.currentTarget.getAttribute("target");
+    if (/\b_blank\b/i.test(target))
+      return;
+  }
+  if (e.preventDefault)
+    e.preventDefault();
+  return true;
+}
+function includesParams(outer, inner) {
+  for (const key in inner) {
+    const innerValue = inner[key];
+    const outerValue = outer[key];
+    if (typeof innerValue === "string") {
+      if (innerValue !== outerValue)
+        return false;
+    } else {
+      if (!Array.isArray(outerValue) || outerValue.length !== innerValue.length || innerValue.some((value, i) => value !== outerValue[i]))
+        return false;
+    }
+  }
+  return true;
+}
+function getOriginalPath(record) {
+  return record ? record.aliasOf ? record.aliasOf.path : record.path : "";
+}
+const getLinkClass = (propClass, globalClass, defaultClass) => propClass != null ? propClass : globalClass != null ? globalClass : defaultClass;
+const RouterViewImpl = /* @__PURE__ */ defineComponent({
+  name: "RouterView",
+  inheritAttrs: false,
+  props: {
+    name: {
+      type: String,
+      default: "default"
+    },
+    route: Object
+  },
+  compatConfig: { MODE: 3 },
+  setup(props, { attrs, slots }) {
+    const injectedRoute = inject(routerViewLocationKey);
+    const routeToDisplay = computed(() => props.route || injectedRoute.value);
+    const depth = inject(viewDepthKey, 0);
+    const matchedRouteRef = computed(() => routeToDisplay.value.matched[depth]);
+    provide(viewDepthKey, depth + 1);
+    provide(matchedRouteKey, matchedRouteRef);
+    provide(routerViewLocationKey, routeToDisplay);
+    const viewRef = ref();
+    watch(() => [viewRef.value, matchedRouteRef.value, props.name], ([instance, to, name], [oldInstance, from, oldName]) => {
+      if (to) {
+        to.instances[name] = instance;
+        if (from && from !== to && instance && instance === oldInstance) {
+          if (!to.leaveGuards.size) {
+            to.leaveGuards = from.leaveGuards;
+          }
+          if (!to.updateGuards.size) {
+            to.updateGuards = from.updateGuards;
+          }
+        }
+      }
+      if (instance && to && (!from || !isSameRouteRecord(to, from) || !oldInstance)) {
+        (to.enterCallbacks[name] || []).forEach((callback) => callback(instance));
+      }
+    }, { flush: "post" });
+    return () => {
+      const route = routeToDisplay.value;
+      const matchedRoute = matchedRouteRef.value;
+      const ViewComponent = matchedRoute && matchedRoute.components[props.name];
+      const currentName = props.name;
+      if (!ViewComponent) {
+        return normalizeSlot(slots.default, { Component: ViewComponent, route });
+      }
+      const routePropsOption = matchedRoute.props[props.name];
+      const routeProps = routePropsOption ? routePropsOption === true ? route.params : typeof routePropsOption === "function" ? routePropsOption(route) : routePropsOption : null;
+      const onVnodeUnmounted = (vnode) => {
+        if (vnode.component.isUnmounted) {
+          matchedRoute.instances[currentName] = null;
+        }
+      };
+      const component = h(ViewComponent, assign({}, routeProps, attrs, {
+        onVnodeUnmounted,
+        ref: viewRef
+      }));
+      return normalizeSlot(slots.default, { Component: component, route }) || component;
+    };
+  }
+});
+function normalizeSlot(slot, data) {
+  if (!slot)
+    return null;
+  const slotContent = slot(data);
+  return slotContent.length === 1 ? slotContent[0] : slotContent;
+}
+const RouterView = RouterViewImpl;
+function createRouter(options) {
+  const matcher = createRouterMatcher(options.routes, options);
+  const parseQuery$1 = options.parseQuery || parseQuery;
+  const stringifyQuery$1 = options.stringifyQuery || stringifyQuery;
+  const routerHistory = options.history;
+  const beforeGuards = useCallbacks();
+  const beforeResolveGuards = useCallbacks();
+  const afterGuards = useCallbacks();
+  const currentRoute = shallowRef(START_LOCATION_NORMALIZED);
+  let pendingLocation = START_LOCATION_NORMALIZED;
+  if (isBrowser && options.scrollBehavior && "scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+  const normalizeParams = applyToParams.bind(null, (paramValue) => "" + paramValue);
+  const encodeParams = applyToParams.bind(null, encodeParam);
+  const decodeParams = applyToParams.bind(null, decode);
+  function addRoute(parentOrRoute, route) {
+    let parent;
+    let record;
+    if (isRouteName(parentOrRoute)) {
+      parent = matcher.getRecordMatcher(parentOrRoute);
+      record = route;
+    } else {
+      record = parentOrRoute;
+    }
+    return matcher.addRoute(record, parent);
+  }
+  function removeRoute(name) {
+    const recordMatcher = matcher.getRecordMatcher(name);
+    if (recordMatcher) {
+      matcher.removeRoute(recordMatcher);
+    }
+  }
+  function getRoutes() {
+    return matcher.getRoutes().map((routeMatcher) => routeMatcher.record);
+  }
+  function hasRoute(name) {
+    return !!matcher.getRecordMatcher(name);
+  }
+  function resolve(rawLocation, currentLocation) {
+    currentLocation = assign({}, currentLocation || currentRoute.value);
+    if (typeof rawLocation === "string") {
+      const locationNormalized = parseURL(parseQuery$1, rawLocation, currentLocation.path);
+      const matchedRoute2 = matcher.resolve({ path: locationNormalized.path }, currentLocation);
+      const href2 = routerHistory.createHref(locationNormalized.fullPath);
+      return assign(locationNormalized, matchedRoute2, {
+        params: decodeParams(matchedRoute2.params),
+        hash: decode(locationNormalized.hash),
+        redirectedFrom: void 0,
+        href: href2
+      });
+    }
+    let matcherLocation;
+    if ("path" in rawLocation) {
+      matcherLocation = assign({}, rawLocation, {
+        path: parseURL(parseQuery$1, rawLocation.path, currentLocation.path).path
+      });
+    } else {
+      const targetParams = assign({}, rawLocation.params);
+      for (const key in targetParams) {
+        if (targetParams[key] == null) {
+          delete targetParams[key];
+        }
+      }
+      matcherLocation = assign({}, rawLocation, {
+        params: encodeParams(rawLocation.params)
+      });
+      currentLocation.params = encodeParams(currentLocation.params);
+    }
+    const matchedRoute = matcher.resolve(matcherLocation, currentLocation);
+    const hash = rawLocation.hash || "";
+    matchedRoute.params = normalizeParams(decodeParams(matchedRoute.params));
+    const fullPath = stringifyURL(stringifyQuery$1, assign({}, rawLocation, {
+      hash: encodeHash(hash),
+      path: matchedRoute.path
+    }));
+    const href = routerHistory.createHref(fullPath);
+    return assign({
+      fullPath,
+      hash,
+      query: stringifyQuery$1 === stringifyQuery ? normalizeQuery(rawLocation.query) : rawLocation.query || {}
+    }, matchedRoute, {
+      redirectedFrom: void 0,
+      href
+    });
+  }
+  function locationAsObject(to) {
+    return typeof to === "string" ? parseURL(parseQuery$1, to, currentRoute.value.path) : assign({}, to);
+  }
+  function checkCanceledNavigation(to, from) {
+    if (pendingLocation !== to) {
+      return createRouterError(8, {
+        from,
+        to
+      });
+    }
+  }
+  function push(to) {
+    return pushWithRedirect(to);
+  }
+  function replace(to) {
+    return push(assign(locationAsObject(to), { replace: true }));
+  }
+  function handleRedirectRecord(to) {
+    const lastMatched = to.matched[to.matched.length - 1];
+    if (lastMatched && lastMatched.redirect) {
+      const { redirect } = lastMatched;
+      let newTargetLocation = typeof redirect === "function" ? redirect(to) : redirect;
+      if (typeof newTargetLocation === "string") {
+        newTargetLocation = newTargetLocation.includes("?") || newTargetLocation.includes("#") ? newTargetLocation = locationAsObject(newTargetLocation) : { path: newTargetLocation };
+        newTargetLocation.params = {};
+      }
+      return assign({
+        query: to.query,
+        hash: to.hash,
+        params: to.params
+      }, newTargetLocation);
+    }
+  }
+  function pushWithRedirect(to, redirectedFrom) {
+    const targetLocation = pendingLocation = resolve(to);
+    const from = currentRoute.value;
+    const data = to.state;
+    const force = to.force;
+    const replace2 = to.replace === true;
+    const shouldRedirect = handleRedirectRecord(targetLocation);
+    if (shouldRedirect)
+      return pushWithRedirect(assign(locationAsObject(shouldRedirect), {
+        state: data,
+        force,
+        replace: replace2
+      }), redirectedFrom || targetLocation);
+    const toLocation = targetLocation;
+    toLocation.redirectedFrom = redirectedFrom;
+    let failure;
+    if (!force && isSameRouteLocation(stringifyQuery$1, from, targetLocation)) {
+      failure = createRouterError(16, { to: toLocation, from });
+      handleScroll(from, from, true, false);
+    }
+    return (failure ? Promise.resolve(failure) : navigate(toLocation, from)).catch((error) => isNavigationFailure(error) ? isNavigationFailure(error, 2) ? error : markAsReady(error) : triggerError(error, toLocation, from)).then((failure2) => {
+      if (failure2) {
+        if (isNavigationFailure(failure2, 2)) {
+          return pushWithRedirect(assign(locationAsObject(failure2.to), {
+            state: data,
+            force,
+            replace: replace2
+          }), redirectedFrom || toLocation);
+        }
+      } else {
+        failure2 = finalizeNavigation(toLocation, from, true, replace2, data);
+      }
+      triggerAfterEach(toLocation, from, failure2);
+      return failure2;
+    });
+  }
+  function checkCanceledNavigationAndReject(to, from) {
+    const error = checkCanceledNavigation(to, from);
+    return error ? Promise.reject(error) : Promise.resolve();
+  }
+  function navigate(to, from) {
+    let guards;
+    const [leavingRecords, updatingRecords, enteringRecords] = extractChangingRecords(to, from);
+    guards = extractComponentsGuards(leavingRecords.reverse(), "beforeRouteLeave", to, from);
+    for (const record of leavingRecords) {
+      record.leaveGuards.forEach((guard) => {
+        guards.push(guardToPromiseFn(guard, to, from));
+      });
+    }
+    const canceledNavigationCheck = checkCanceledNavigationAndReject.bind(null, to, from);
+    guards.push(canceledNavigationCheck);
+    return runGuardQueue(guards).then(() => {
+      guards = [];
+      for (const guard of beforeGuards.list()) {
+        guards.push(guardToPromiseFn(guard, to, from));
+      }
+      guards.push(canceledNavigationCheck);
+      return runGuardQueue(guards);
+    }).then(() => {
+      guards = extractComponentsGuards(updatingRecords, "beforeRouteUpdate", to, from);
+      for (const record of updatingRecords) {
+        record.updateGuards.forEach((guard) => {
+          guards.push(guardToPromiseFn(guard, to, from));
+        });
+      }
+      guards.push(canceledNavigationCheck);
+      return runGuardQueue(guards);
+    }).then(() => {
+      guards = [];
+      for (const record of to.matched) {
+        if (record.beforeEnter && !from.matched.includes(record)) {
+          if (Array.isArray(record.beforeEnter)) {
+            for (const beforeEnter of record.beforeEnter)
+              guards.push(guardToPromiseFn(beforeEnter, to, from));
+          } else {
+            guards.push(guardToPromiseFn(record.beforeEnter, to, from));
+          }
+        }
+      }
+      guards.push(canceledNavigationCheck);
+      return runGuardQueue(guards);
+    }).then(() => {
+      to.matched.forEach((record) => record.enterCallbacks = {});
+      guards = extractComponentsGuards(enteringRecords, "beforeRouteEnter", to, from);
+      guards.push(canceledNavigationCheck);
+      return runGuardQueue(guards);
+    }).then(() => {
+      guards = [];
+      for (const guard of beforeResolveGuards.list()) {
+        guards.push(guardToPromiseFn(guard, to, from));
+      }
+      guards.push(canceledNavigationCheck);
+      return runGuardQueue(guards);
+    }).catch((err) => isNavigationFailure(err, 8) ? err : Promise.reject(err));
+  }
+  function triggerAfterEach(to, from, failure) {
+    for (const guard of afterGuards.list())
+      guard(to, from, failure);
+  }
+  function finalizeNavigation(toLocation, from, isPush, replace2, data) {
+    const error = checkCanceledNavigation(toLocation, from);
+    if (error)
+      return error;
+    const isFirstNavigation = from === START_LOCATION_NORMALIZED;
+    const state = !isBrowser ? {} : history.state;
+    if (isPush) {
+      if (replace2 || isFirstNavigation)
+        routerHistory.replace(toLocation.fullPath, assign({
+          scroll: isFirstNavigation && state && state.scroll
+        }, data));
+      else
+        routerHistory.push(toLocation.fullPath, data);
+    }
+    currentRoute.value = toLocation;
+    handleScroll(toLocation, from, isPush, isFirstNavigation);
+    markAsReady();
+  }
+  let removeHistoryListener;
+  function setupListeners() {
+    if (removeHistoryListener)
+      return;
+    removeHistoryListener = routerHistory.listen((to, _from, info) => {
+      const toLocation = resolve(to);
+      const shouldRedirect = handleRedirectRecord(toLocation);
+      if (shouldRedirect) {
+        pushWithRedirect(assign(shouldRedirect, { replace: true }), toLocation).catch(noop);
+        return;
+      }
+      pendingLocation = toLocation;
+      const from = currentRoute.value;
+      if (isBrowser) {
+        saveScrollPosition(getScrollKey(from.fullPath, info.delta), computeScrollPosition());
+      }
+      navigate(toLocation, from).catch((error) => {
+        if (isNavigationFailure(error, 4 | 8)) {
+          return error;
+        }
+        if (isNavigationFailure(error, 2)) {
+          pushWithRedirect(error.to, toLocation).then((failure) => {
+            if (isNavigationFailure(failure, 4 | 16) && !info.delta && info.type === NavigationType.pop) {
+              routerHistory.go(-1, false);
+            }
+          }).catch(noop);
+          return Promise.reject();
+        }
+        if (info.delta)
+          routerHistory.go(-info.delta, false);
+        return triggerError(error, toLocation, from);
+      }).then((failure) => {
+        failure = failure || finalizeNavigation(toLocation, from, false);
+        if (failure) {
+          if (info.delta) {
+            routerHistory.go(-info.delta, false);
+          } else if (info.type === NavigationType.pop && isNavigationFailure(failure, 4 | 16)) {
+            routerHistory.go(-1, false);
+          }
+        }
+        triggerAfterEach(toLocation, from, failure);
+      }).catch(noop);
+    });
+  }
+  let readyHandlers = useCallbacks();
+  let errorHandlers = useCallbacks();
+  let ready;
+  function triggerError(error, to, from) {
+    markAsReady(error);
+    const list = errorHandlers.list();
+    if (list.length) {
+      list.forEach((handler) => handler(error, to, from));
+    } else {
+      console.error(error);
+    }
+    return Promise.reject(error);
+  }
+  function isReady() {
+    if (ready && currentRoute.value !== START_LOCATION_NORMALIZED)
+      return Promise.resolve();
+    return new Promise((resolve2, reject) => {
+      readyHandlers.add([resolve2, reject]);
+    });
+  }
+  function markAsReady(err) {
+    if (!ready) {
+      ready = !err;
+      setupListeners();
+      readyHandlers.list().forEach(([resolve2, reject]) => err ? reject(err) : resolve2());
+      readyHandlers.reset();
+    }
+    return err;
+  }
+  function handleScroll(to, from, isPush, isFirstNavigation) {
+    const { scrollBehavior } = options;
+    if (!isBrowser || !scrollBehavior)
+      return Promise.resolve();
+    const scrollPosition = !isPush && getSavedScrollPosition(getScrollKey(to.fullPath, 0)) || (isFirstNavigation || !isPush) && history.state && history.state.scroll || null;
+    return nextTick().then(() => scrollBehavior(to, from, scrollPosition)).then((position) => position && scrollToPosition(position)).catch((err) => triggerError(err, to, from));
+  }
+  const go = (delta) => routerHistory.go(delta);
+  let started;
+  const installedApps = /* @__PURE__ */ new Set();
+  const router2 = {
+    currentRoute,
+    addRoute,
+    removeRoute,
+    hasRoute,
+    getRoutes,
+    resolve,
+    options,
+    push,
+    replace,
+    go,
+    back: () => go(-1),
+    forward: () => go(1),
+    beforeEach: beforeGuards.add,
+    beforeResolve: beforeResolveGuards.add,
+    afterEach: afterGuards.add,
+    onError: errorHandlers.add,
+    isReady,
+    install(app) {
+      const router3 = this;
+      app.component("RouterLink", RouterLink);
+      app.component("RouterView", RouterView);
+      app.config.globalProperties.$router = router3;
+      Object.defineProperty(app.config.globalProperties, "$route", {
+        enumerable: true,
+        get: () => unref(currentRoute)
+      });
+      if (isBrowser && !started && currentRoute.value === START_LOCATION_NORMALIZED) {
+        started = true;
+        push(routerHistory.location).catch((err) => {
+        });
+      }
+      const reactiveRoute = {};
+      for (const key in START_LOCATION_NORMALIZED) {
+        reactiveRoute[key] = computed(() => currentRoute.value[key]);
+      }
+      app.provide(routerKey, router3);
+      app.provide(routeLocationKey, reactive(reactiveRoute));
+      app.provide(routerViewLocationKey, currentRoute);
+      const unmountApp = app.unmount;
+      installedApps.add(app);
+      app.unmount = function() {
+        installedApps.delete(app);
+        if (installedApps.size < 1) {
+          pendingLocation = START_LOCATION_NORMALIZED;
+          removeHistoryListener && removeHistoryListener();
+          removeHistoryListener = null;
+          currentRoute.value = START_LOCATION_NORMALIZED;
+          started = false;
+          ready = false;
+        }
+        unmountApp();
+      };
+    }
+  };
+  return router2;
+}
+function runGuardQueue(guards) {
+  return guards.reduce((promise, guard) => promise.then(() => guard()), Promise.resolve());
+}
+function extractChangingRecords(to, from) {
+  const leavingRecords = [];
+  const updatingRecords = [];
+  const enteringRecords = [];
+  const len = Math.max(from.matched.length, to.matched.length);
+  for (let i = 0; i < len; i++) {
+    const recordFrom = from.matched[i];
+    if (recordFrom) {
+      if (to.matched.find((record) => isSameRouteRecord(record, recordFrom)))
+        updatingRecords.push(recordFrom);
+      else
+        leavingRecords.push(recordFrom);
+    }
+    const recordTo = to.matched[i];
+    if (recordTo) {
+      if (!from.matched.find((record) => isSameRouteRecord(record, recordTo))) {
+        enteringRecords.push(recordTo);
+      }
+    }
+  }
+  return [leavingRecords, updatingRecords, enteringRecords];
+}
+let router;
+router == null ? void 0 : router.beforeEach((to, from, next) => {
+  if (to.component !== null)
+    next();
+  else
+    next("/404");
+});
+function registerRoutes(App, routes) {
+  if (!routes)
+    return null;
+  router = createRouter({
+    history: createWebHistory(),
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition;
+      }
+      if (to.hash) {
+        return {
+          selector: to.hash,
+          behavior: "smooth"
+        };
+      }
+      return { x: 0, y: 0 };
+    },
+    routes
+  });
+  App.use(router);
+  router.push(routes[0]);
+}
 const Store = reactive({
   colorMode: "light",
   alternateColorMode(isDark = null) {
-    console.log("here");
     this.colorMode = isDark === null ? this.colorMode === "light" ? "dark" : "light" : isDark;
-    console.log("alternateColorMode", this.colorMode);
     document.querySelector("body").setAttribute("gnk-theme-colorMode", this.colorMode);
     localStorage.setItem("gnk-theme-colorMode", this.colorMode);
   },
@@ -1252,8 +3273,8 @@ var gnk = {
   gnkSwipeManager,
   gnkApp,
   gnkPage,
+  gnk404,
   gnkNavbar,
-  Store,
   gnkButton,
   gnkButtonGroup,
   gnkCard,
@@ -1261,6 +3282,10 @@ var gnk = {
   gnkListview,
   gnkListviewItem,
   gnkSwitch,
+  gnkLoading,
+  router,
+  Store,
+  registerRoutes,
   registerModuleComponents
 };
 export { gnk as default };
