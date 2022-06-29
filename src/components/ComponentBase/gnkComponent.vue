@@ -57,6 +57,8 @@ export default {
             required: false,
             default: false,
         },
+
+
         circular: {
             type: Boolean,
             required: false,
@@ -111,20 +113,9 @@ export default {
                 '--block': this.block,
 
                 '--disabled': this.disabled,
-                 
             }
         },
 
-        //GET ELEMENTE SIZE ON SCREEN
-        componentElementClientRect() {
-            let modalPosition = this?.$el?.getBoundingClientRect()
-            return {
-                top: (!modalPosition ? 0 : modalPosition.top),
-                left: (!modalPosition ? 0 : modalPosition.left),
-                width: (!modalPosition ? 0 : modalPosition.width),
-                height: (!modalPosition ? 0 : modalPosition.height),
-            }
-        },
 
     },
 
@@ -134,11 +125,21 @@ export default {
 
 
     methods: {
-
+        
         hello() {
             console.log('hello from mixin!')
         },
 
+            //GET ELEMENTE SIZE ON SCREEN
+            componentElementClientRect() {
+                let modalPosition = this?.$el?.getBoundingClientRect()
+                return {
+                    top: (!modalPosition ? 0 : modalPosition.top),
+                    left: (!modalPosition ? 0 : modalPosition.left),
+                    width: (!modalPosition ? 0 : modalPosition.width),
+                    height: (!modalPosition ? 0 : modalPosition.height),
+                }
+            },
 
         componentRaiseEvent(eventName, data) {
             let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
@@ -160,7 +161,7 @@ export default {
 
 
     mounted() {
-        (typeof this.registerChild === 'function' && this.type === 'toggle') ? this.registerChild(this) : null
+        (typeof this.registerChild === 'function') ? this.registerChild(this) : null
     },
 
 

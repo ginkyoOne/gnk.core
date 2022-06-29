@@ -1,7 +1,6 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import { sleep } from "../../utils/sleep"
-import { lockScroll, unlockScroll } from "../../utils/scrollLock"
+import sleep from "../../utils/sleep"
 export default {
     name: 'gnkSwipeManager',
     extends: gnkComponent,

@@ -20,10 +20,9 @@ import gnkSwitch from './components/Switch/Switch.vue'
 import gnkLoading from './components/Loading/Loading.vue'
 
 
+import gnkImage from './components/Image/Image.vue'
+import gnkBadge from './components/Badge/Badge.vue'
 
-
-import sleep  from './utils/sleep'
-import { lockScroll, unlockScroll , isMobile} from './utils/scrollLock'
 
 
 import {router, registerRoutes } from './Router/Router'
@@ -37,10 +36,17 @@ import registerModuleComponents from './utils/registerComponents'
 
 export default {
     gnkSwipeManager,
+    gnk404,
+
+
+    gnkImage,
+    gnkBadge,
+
+
 
     gnkApp,
     gnkPage,
-    gnk404,
+    
     gnkNavbar,
     gnkButton,
     gnkButtonGroup,
@@ -51,7 +57,7 @@ export default {
     gnkSwitch,
     gnkLoading,
     
-
+    
     router,
     Store,
 

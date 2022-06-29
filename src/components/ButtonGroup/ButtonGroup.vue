@@ -43,25 +43,15 @@ export default {
         },
     emits: [
 
-
         ],
     methods: {
         childValueChange (e) {
-
-            
+ 
         },
 
         registerChildToggle(element){
             this.childButtons.push(element)
             element.$el.addEventListener('onchange', this.childValueChange)
-        }
-    },
-
-        
-
-    provide() {
-        return {
-            registerChild: this.registerChildToggle
         }
     },
 

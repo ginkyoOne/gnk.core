@@ -174,7 +174,7 @@ export default {
   display: flex;
   inset: 0px;
   
-  min-width: 100px;
+  min-width: 10px;
   height: 10px; 
 
   border-radius: var(--BORDER-RADIUS);

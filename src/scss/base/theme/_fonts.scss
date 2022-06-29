@@ -2,7 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0");
-
+[class*="material-symbols"] {
+    font-size: inherit ;
+    line-height: inherit;
+}
 
 :root{
     //FONTS
@@ -26,46 +29,53 @@
 
 h1, h2, h3, h4{
     &:is(.header-anchor) {
+        position: relative;
+        
+        &:is(h1) {
+            padding-left: 3.4rem !important;
+            transform:translateX( -3.4rem );
+        }
+    
+        &:is(h2) {
+            padding-left: 2.4rem !important;
+            transform:translateX( -2.4rem );
+        }
+    
+        &:is(h3) {
+            padding-left: 1.8rem !important;
+            transform:translateX( -1.8rem );
+        }
+    
+        &:is(h4) {
+            padding-left: 1.6rem !important;
+            transform:translateX( -1.6rem );
+        }
+        
         cursor: pointer;
         transition: all 0.25s ease-in-out;
 
         &>A {
             pointer-events: none !important;
             transition: all 0.25s ease-in-out;
+            opacity: 0;
+            color: inherit;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            text-decoration: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
     }
 
-    &>A {
-        opacity: 0;
-        color: inherit;
-        font-family: inherit;
-        font-weight: inherit;
-        font-size: inherit;
-        line-height: inherit;
-        text-decoration: none;
-
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
 
     &:is(.header-anchor):is(:hover, :active) {
-
-        &:is(h1){
-            padding-left: 3.4rem !important;
-        }
-        &:is(h2) {
-            padding-left: 2.4rem !important;
-        }
-        &:is(h3) {
-            padding-left: 1.8rem !important;
-        }
-        &:is(h4) {
-            padding-left: 1.6rem !important;
-        }
-
+        transform: translateX(0);
+        
         &>A {
-            left: 0.5rem;
+            transform: translateX(0.1rem);
             pointer-events: all !important;
             opacity: 1;
         }
@@ -101,6 +111,9 @@ h3 {
     line-height: calc((var(--FONT-SIZE) * 1.2) + 0.25rem);
 }
 
+p {
+    padding-top: 10px;
+}
 
 // utility
 

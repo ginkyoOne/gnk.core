@@ -1,18 +1,14 @@
 
-.gnk-ripple {
+.--ripple-animation {
     pointer-events: none;
-    flex:1 !important;
-    position: absolute !important;
+    position: absolute ;
     border-radius: 50%;
     transform: scale(0);
+    
     animation: ripple 1s ease-out !important;
-    background-color: -color('LIGHT', 0.4);
-    z-index: calc(var(--TOP-Z-INDEX));
+    background-color: -color('BASE', 1, 1, 1, -5);
+    
 
-}
-
-[gnk-theme="dark"] .gnk-ripple {
-    background-color: -color('DARK', 0.4);
 }
 
 @keyframes ripple {

@@ -148,7 +148,7 @@ export default {
     }
 
     &.--modal{
-        background: -color('LEVEL-3', 0.8);
+        background: -color('LEVEL-2', 0.9);
         position: absolute;
         top:50%;
         left:50%;
@@ -179,8 +179,8 @@ export default {
 
         box-sizing: border-box;
     
-        border: 2px solid -color('BASE', 0);
-        border-top: 2px solid -color('BASE', var(--opacity, 1));
+        border: 4px solid -color('BASE', 0);
+        border-top: 4px solid -color('BASE', var(--opacity, 1));
         //border-bottom: 2px solid -color('BASE', var(--opacity, 1));
         border-radius: 50%;
     

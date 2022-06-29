@@ -33,9 +33,9 @@
     --COLOR-LIGHT-S: var(--COLOR-LEVEL-4-S);
     --COLOR-LIGHT-L: var(--COLOR-LEVEL-4-L);
 
-    --COLOR-BASE-H: 220;
-    --COLOR-BASE-S: 8%;
-    --COLOR-BASE-L: 7%;
+    --COLOR-BASE-H: var(--COLOR-LEVEL-2-H);
+    --COLOR-BASE-S: var(--COLOR-LEVEL-2-S);
+    --COLOR-BASE-L: var(--COLOR-LEVEL-2-L);
 
     --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
     --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
@@ -80,16 +80,6 @@
     }
 
     [class*="--primary"] {
-        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
-        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
-        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-    }
-
-    [class*="--default"] {
         --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
         --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
         --COLOR-BASE-L: var(--COLOR-PRIMARY-L);

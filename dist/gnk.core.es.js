@@ -14,13 +14,18 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
-import { resolveComponent, openBlock, createElementBlock, normalizeClass, createElementVNode, withDirectives, createVNode, vShow, withCtx, toDisplayString, renderSlot, createBlock, Transition, resolveDynamicComponent, createCommentVNode, createTextVNode, Teleport, withModifiers, normalizeStyle, mergeProps, withKeys, vModelCheckbox, pushScopeId, popScopeId, shallowRef, unref, computed, reactive, nextTick, defineComponent, inject, h, provide, ref, watch } from "vue";
+import { resolveComponent, openBlock, createElementBlock, normalizeClass, createElementVNode, withDirectives, createVNode, vShow, withCtx, toDisplayString, renderSlot, createBlock, Transition, resolveDynamicComponent, createCommentVNode, createTextVNode, Teleport, normalizeStyle, withModifiers, mergeProps, withKeys, vModelCheckbox, pushScopeId, popScopeId, shallowRef, unref, computed, reactive, nextTick, defineComponent, inject, h, provide, ref, watch } from "vue";
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+var sleep$1 = {
+  sleep
+};
 function createRipple(event) {
-  const TARGET = event.currentTarget;
-  const RIPPLE = TARGET.querySelector(".gnk-ripple");
+  if (!event.currentTarget.querySelector(".--ripple"))
+    return;
+  const TARGET = event.currentTarget.querySelector(".--ripple");
+  const RIPPLE = TARGET.querySelector(".--ripple-animation");
   if (!!RIPPLE)
     RIPPLE.remove();
   const TARGET_INFO = TARGET.getBoundingClientRect();
@@ -29,13 +34,13 @@ function createRipple(event) {
   RIPPLE_SPAN.style = `height: ${RIPPLE_SIZE}px !important; width: ${RIPPLE_SIZE}px !important;`;
   RIPPLE_SPAN.style.left = `${event.clientX - TARGET_INFO["x"] - RIPPLE_SIZE / 2}px`;
   RIPPLE_SPAN.style.top = `${event.clientY - TARGET_INFO["y"] - RIPPLE_SIZE / 2}px`;
-  RIPPLE_SPAN.classList.add("gnk-ripple");
+  RIPPLE_SPAN.classList.add("--ripple-animation");
   TARGET.appendChild(RIPPLE_SPAN);
 }
 var createRipple$1 = {
   createRipple
 };
-const _sfc_main$d = {
+const _sfc_main$f = {
   name: "gnkComponent",
   data() {
     return {
@@ -132,6 +137,11 @@ const _sfc_main$d = {
         "--block": this.block,
         "--disabled": this.disabled
       };
+    }
+  },
+  methods: {
+    hello() {
+      console.log("hello from mixin!");
     },
     componentElementClientRect() {
       var _a;
@@ -142,11 +152,6 @@ const _sfc_main$d = {
         width: !modalPosition ? 0 : modalPosition.width,
         height: !modalPosition ? 0 : modalPosition.height
       };
-    }
-  },
-  methods: {
-    hello() {
-      console.log("hello from mixin!");
     },
     componentRaiseEvent(eventName, data) {
       let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
@@ -159,7 +164,7 @@ const _sfc_main$d = {
     }
   },
   mounted() {
-    typeof this.registerChild === "function" && this.type === "toggle" ? this.registerChild(this) : null;
+    typeof this.registerChild === "function" ? this.registerChild(this) : null;
   },
   provide() {
     return {
@@ -180,9 +185,9 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$c = {
+const _sfc_main$e = {
   name: "gnkApp",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       childElements: [],
@@ -249,12 +254,12 @@ const _sfc_main$c = {
     console.log(this.store);
   }
 };
-const _hoisted_1$c = ["id"];
-const _hoisted_2$8 = { class: "--header grid" };
-const _hoisted_3$8 = { class: "row" };
+const _hoisted_1$e = ["id"];
+const _hoisted_2$9 = { class: "--header grid" };
+const _hoisted_3$9 = { class: "row" };
 const _hoisted_4$6 = { class: "col-12" };
-const _hoisted_5$5 = { class: "row" };
-const _hoisted_6$3 = { class: "col-12" };
+const _hoisted_5$6 = { class: "row" };
+const _hoisted_6$4 = { class: "col-12" };
 const _hoisted_7$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_back_ios ", -1);
 const _hoisted_8$2 = /* @__PURE__ */ createTextVNode(" Back ");
 const _hoisted_9$2 = { class: "--body fill grid" };
@@ -262,7 +267,7 @@ const _hoisted_10$2 = { class: "row fill" };
 const _hoisted_11 = { class: "--sidebar lg-hide sm-hide xs-hide col-4 overflow-vertical" };
 const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
 const _hoisted_13 = { class: "--gnkApp-content col-12" };
-function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_progress = resolveComponent("gnk-progress");
   const _component_gnkButton = resolveComponent("gnkButton");
   const _component_gnkNavbar = resolveComponent("gnkNavbar");
@@ -272,8 +277,8 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
     id: _ctx.componentId,
     class: normalizeClass(["fill", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
-    createElementVNode("div", _hoisted_2$8, [
-      createElementVNode("div", _hoisted_3$8, [
+    createElementVNode("div", _hoisted_2$9, [
+      createElementVNode("div", _hoisted_3$9, [
         createElementVNode("div", _hoisted_4$6, [
           withDirectives(createVNode(_component_gnk_progress, {
             gradient: "",
@@ -285,8 +290,8 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
           ])
         ])
       ]),
-      createElementVNode("div", _hoisted_5$5, [
-        createElementVNode("div", _hoisted_6$3, [
+      createElementVNode("div", _hoisted_5$6, [
+        createElementVNode("div", _hoisted_6$4, [
           createVNode(_component_gnkNavbar, null, {
             left: withCtx(() => [
               createVNode(_component_gnkButton, {
@@ -353,13 +358,13 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         })
       ])
     ])
-  ], 10, _hoisted_1$c);
+  ], 10, _hoisted_1$e);
 }
-var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
 var Page_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$b = {
+const _sfc_main$d = {
   name: "gnkPage",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       childElements: [],
@@ -395,8 +400,8 @@ const _sfc_main$b = {
     this.loaded = true;
   }
 };
-const _hoisted_1$b = ["id"];
-function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$d = ["id"];
+function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["grid col-12", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
@@ -410,13 +415,13 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
       })
     ])),
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$b);
+  ], 10, _hoisted_1$d);
 }
-var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
 var _404_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$a = {
+const _sfc_main$c = {
   name: "gnk404",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   props: {
     title: {
       type: String,
@@ -442,12 +447,12 @@ const _sfc_main$a = {
   mounted() {
   }
 };
-const _hoisted_1$a = ["id"];
-const _hoisted_2$7 = { class: "grid fill" };
-const _hoisted_3$7 = { class: "row" };
+const _hoisted_1$c = ["id"];
+const _hoisted_2$8 = { class: "grid fill" };
+const _hoisted_3$8 = { class: "row" };
 const _hoisted_4$5 = { class: "col-12 flex-centered" };
-const _hoisted_5$4 = { class: "P404-500" };
-const _hoisted_6$2 = { class: "row" };
+const _hoisted_5$5 = { class: "P404-500" };
+const _hoisted_6$3 = { class: "row" };
 const _hoisted_7$2 = { class: "col-12 flex-centered" };
 const _hoisted_8$1 = { class: "row" };
 const _hoisted_9$1 = {
@@ -455,21 +460,21 @@ const _hoisted_9$1 = {
   class: "col-12 flex-centered p-t-20"
 };
 const _hoisted_10$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_row = resolveComponent("row");
   const _component_gnk_button = resolveComponent("gnk-button");
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, _ctx.componentClassObject, _ctx.componentGeneralClasses])
   }, [
-    createElementVNode("div", _hoisted_2$7, [
+    createElementVNode("div", _hoisted_2$8, [
       createVNode(_component_row, { class: "fill" }),
-      createElementVNode("div", _hoisted_3$7, [
+      createElementVNode("div", _hoisted_3$8, [
         createElementVNode("div", _hoisted_4$5, [
-          createElementVNode("h1", _hoisted_5$4, toDisplayString($props.title), 1)
+          createElementVNode("h1", _hoisted_5$5, toDisplayString($props.title), 1)
         ])
       ]),
-      createElementVNode("div", _hoisted_6$2, [
+      createElementVNode("div", _hoisted_6$3, [
         createElementVNode("div", _hoisted_7$2, toDisplayString($props.lable), 1)
       ]),
       createElementVNode("div", _hoisted_8$1, [
@@ -487,13 +492,13 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
       ]),
       createVNode(_component_row, { class: "fill" })
     ])
-  ], 10, _hoisted_1$a);
+  ], 10, _hoisted_1$c);
 }
-var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
+var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var Navbar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$9 = {
+const _sfc_main$b = {
   name: "gnkNavbar",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
@@ -545,34 +550,34 @@ const _sfc_main$9 = {
   mounted() {
   }
 };
-const _hoisted_1$9 = ["id"];
-const _hoisted_2$6 = { class: "row" };
-const _hoisted_3$6 = { class: "--left col-2 flex-centered flex-left" };
+const _hoisted_1$b = ["id"];
+const _hoisted_2$7 = { class: "row" };
+const _hoisted_3$7 = { class: "--left col-2 flex-centered flex-left" };
 const _hoisted_4$4 = { class: "--title col-block flex-centered" };
-const _hoisted_5$3 = { class: "--right col-2 flex-centered flex-right" };
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_5$4 = { class: "--right col-2 flex-centered flex-right" };
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["grid", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
-    createElementVNode("div", _hoisted_2$6, [
-      createElementVNode("div", _hoisted_3$6, [
+    createElementVNode("div", _hoisted_2$7, [
+      createElementVNode("div", _hoisted_3$7, [
         renderSlot(_ctx.$slots, "left")
       ]),
       createElementVNode("div", _hoisted_4$4, [
         renderSlot(_ctx.$slots, "title")
       ]),
-      createElementVNode("div", _hoisted_5$3, [
+      createElementVNode("div", _hoisted_5$4, [
         renderSlot(_ctx.$slots, "right")
       ])
     ])
-  ], 10, _hoisted_1$9);
+  ], 10, _hoisted_1$b);
 }
-var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
 var SwipeManager_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$8 = {
+const _sfc_main$a = {
   name: "gnkSwipeManager",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       swipe: {
@@ -748,7 +753,7 @@ const _sfc_main$8 = {
           if (callback instanceof Function)
             callback(this.swipe.direction);
         }
-        await sleep(this.allowedInterval);
+        await sleep$1(this.allowedInterval);
       }, { passive: true });
     }
   },
@@ -756,39 +761,45 @@ const _sfc_main$8 = {
     this.observeSwipe(this.$el);
   }
 };
-const _hoisted_1$8 = ["id"];
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$a = ["id"];
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["p-0 m-0 fill", [_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$8);
+  ], 10, _hoisted_1$a);
 }
-var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
 var Button_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$7 = {
+const _sfc_main$9 = {
   name: "gnkButton",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
-      checked: false
+      checked: false,
+      activeStep: 0
     };
   },
   props: {
-    notSync: {
-      type: Boolean,
-      default: false
-    },
-    disableRipple: {
-      type: Boolean,
-      default: false
-    },
-    title: {
+    type: {
       type: String,
       required: false,
-      default: void 0
+      default: "button",
+      validator(type) {
+        return ["submit", "button", "reset", "toggle"].includes(type);
+      }
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     border: {
       type: Boolean,
@@ -823,16 +834,6 @@ const _sfc_main$7 = {
         return ["xl", "l", "default", "small", "mini"].includes(type);
       }
     },
-    busy: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     animate: {
       type: String,
       required: false,
@@ -855,14 +856,6 @@ const _sfc_main$7 = {
       type: Boolean,
       required: false,
       default: false
-    },
-    type: {
-      type: String,
-      required: false,
-      default: "button",
-      validator(type) {
-        return ["submit", "button", "reset", "toggle"].includes(type);
-      }
     }
   },
   computed: {
@@ -881,7 +874,6 @@ const _sfc_main$7 = {
     componentClassObject() {
       var _a;
       return {
-        "--primary": true,
         "--toggle": this.type === "toggle",
         "--floating": this.floating,
         "--flat": this.flat,
@@ -910,64 +902,87 @@ const _sfc_main$7 = {
   methods: {
     onClick(event) {
       event.preventDefault();
-      if (!this.disableRipple && !!event)
+      if (!!event)
         createRipple$1.createRipple(event);
       if (this.type === "toggle") {
         this.checked = !this.checked;
         this.componentRaiseEvent("onchange", { newValue: this.checked, oldValue: !this.checked, event });
       }
       this.componentRaiseEvent("onclick", { event });
+    },
+    onMouseOver(event) {
+      event.preventDefault();
+      this.componentRaiseEvent("onmouseover", { event });
+    },
+    onMouseOut(event) {
+      event.preventDefault();
+      this.componentRaiseEvent("onmouseout", { event });
     }
   },
   mounted() {
   }
 };
-const _hoisted_1$7 = ["id", "title", "aria-label", "disabled", "type", "checked"];
-const _hoisted_2$5 = { class: "--content" };
-const _hoisted_3$5 = /* @__PURE__ */ createTextVNode("gnkButton");
-const _hoisted_4$3 = {
+const _hoisted_1$9 = ["checked", "disabled", "id", "type"];
+const _hoisted_2$6 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_3$6 = { class: "--content-holder" };
+const _hoisted_4$3 = { class: "--content-step1" };
+const _hoisted_5$3 = {
   key: 0,
-  class: "--content-animate"
+  class: "--content-step2"
 };
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_gnk_Progress = resolveComponent("gnk-Progress");
-  const _component_gnk_Loading = resolveComponent("gnk-Loading");
+const _hoisted_6$2 = { class: "--badge-holder" };
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_progress = resolveComponent("gnk-progress");
+  const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("button", {
-    ref: _ctx.componentId,
-    id: _ctx.componentId,
+    checked: $data.checked,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]),
-    title: $props.title,
-    "aria-label": $props.title,
     disabled: _ctx.disabled,
+    id: _ctx.componentId,
+    style: normalizeStyle(_ctx.componentStyleObject),
     type: $options.buttonType,
     onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onClick($event), ["stop"])),
-    checked: $data.checked
+    onMouseleave: _cache[1] || (_cache[1] = ($event) => $data.activeStep = 0),
+    onMouseover: _cache[2] || (_cache[2] = ($event) => $data.activeStep = !!this.$slots.animate ? 1 : 0)
   }, [
-    createElementVNode("div", _hoisted_2$5, [
-      $props.loading ? (openBlock(), createBlock(_component_gnk_Progress, {
-        key: 0,
-        loading: "",
-        gradient: "",
-        block: ""
-      })) : createCommentVNode("", true),
-      renderSlot(_ctx.$slots, "default", {}, () => [
-        _hoisted_3$5
+    createVNode(Transition, { name: "fade" }, {
+      default: withCtx(() => [
+        this.loading ? (openBlock(), createBlock(_component_gnk_progress, {
+          key: 0,
+          loading: "",
+          class: "fill"
+        })) : createCommentVNode("", true)
       ]),
-      $props.busy ? (openBlock(), createBlock(_component_gnk_Loading, {
-        key: 1,
-        target: "#" + _ctx.componentId
-      }, null, 8, ["target"])) : createCommentVNode("", true)
+      _: 1
+    }),
+    _hoisted_2$6,
+    createElementVNode("div", _hoisted_3$6, [
+      createElementVNode("div", _hoisted_4$3, [
+        renderSlot(_ctx.$slots, "default")
+      ]),
+      !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_5$3, [
+        renderSlot(_ctx.$slots, "animate")
+      ])) : createCommentVNode("", true)
     ]),
-    !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-      renderSlot(_ctx.$slots, "animate")
-    ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$7);
+    createVNode(Transition, { name: "fade" }, {
+      default: withCtx(() => [
+        this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
+          key: 0,
+          target: "#" + _ctx.componentId
+        }, null, 8, ["target"])) : createCommentVNode("", true)
+      ]),
+      _: 1
+    }),
+    createElementVNode("div", _hoisted_6$2, [
+      renderSlot(_ctx.$slots, "badge")
+    ])
+  ], 46, _hoisted_1$9);
 }
-var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
 var ButtonGroup_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$8 = {
   name: "gnkButtonGroup",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       childButtons: [],
@@ -1009,40 +1024,35 @@ const _sfc_main$6 = {
       element.$el.addEventListener("onchange", this.childValueChange);
     }
   },
-  provide() {
-    return {
-      registerChild: this.registerChildToggle
-    };
-  },
   mounted() {
   }
 };
-const _hoisted_1$6 = ["id"];
-const _hoisted_2$4 = {
+const _hoisted_1$8 = ["id"];
+const _hoisted_2$5 = {
   key: 0,
   class: "--title"
 };
-const _hoisted_3$4 = { class: "--buttons" };
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_3$5 = { class: "--buttons" };
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
-    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$4, [
+    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$5, [
       createElementVNode("h4", null, [
         renderSlot(_ctx.$slots, "title")
       ])
     ])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_3$4, [
+    createElementVNode("div", _hoisted_3$5, [
       renderSlot(_ctx.$slots, "default")
     ])
-  ], 10, _hoisted_1$6);
+  ], 10, _hoisted_1$8);
 }
-var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
 var Card_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$5 = {
+const _sfc_main$7 = {
   name: "gnkCard",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {};
   },
@@ -1091,9 +1101,9 @@ const _sfc_main$5 = {
     }
   }
 };
-const _hoisted_1$5 = ["id"];
-const _hoisted_2$3 = { class: "--hero-container" };
-const _hoisted_3$3 = /* @__PURE__ */ createElementVNode("div", { class: "--hero-background" }, null, -1);
+const _hoisted_1$7 = ["id"];
+const _hoisted_2$4 = { class: "--hero-container" };
+const _hoisted_3$4 = /* @__PURE__ */ createElementVNode("div", { class: "--hero-background" }, null, -1);
 const _hoisted_4$2 = {
   key: 0,
   class: "--interactions"
@@ -1113,14 +1123,14 @@ const _hoisted_10 = {
   key: 0,
   class: "--footer flex"
 };
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     onClick: _cache[0] || (_cache[0] = withModifiers(($event) => _ctx.onClick($event), ["stop"])),
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId
   }, [
-    createElementVNode("div", _hoisted_2$3, [
-      _hoisted_3$3,
+    createElementVNode("div", _hoisted_2$4, [
+      _hoisted_3$4,
       !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_4$2, [
         renderSlot(_ctx.$slots, "interactions")
       ])) : createCommentVNode("", true)
@@ -1140,13 +1150,13 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_10, [
       renderSlot(_ctx.$slots, "footer")
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$5);
+  ], 10, _hoisted_1$7);
 }
-var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
 var Progress_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$4 = {
+const _sfc_main$6 = {
   name: "gnkProgress",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   props: {
     value: {
       type: [Number, String],
@@ -1247,14 +1257,14 @@ const _sfc_main$4 = {
     }
   }
 };
-const _hoisted_1$4 = ["aria-valuemax", "aria-valuenow", "id", "title"];
-const _hoisted_2$2 = {
+const _hoisted_1$6 = ["aria-valuemax", "aria-valuenow", "id", "title"];
+const _hoisted_2$3 = {
   key: 1,
   class: "ring",
   viewBox: "0 0 100 100",
   preserveAspectRatio: "none"
 };
-const _hoisted_3$2 = /* @__PURE__ */ createElementVNode("defs", null, [
+const _hoisted_3$3 = /* @__PURE__ */ createElementVNode("defs", null, [
   /* @__PURE__ */ createElementVNode("linearGradient", {
     id: "gradient",
     y1: "50%"
@@ -1280,7 +1290,7 @@ const _hoisted_4$1 = /* @__PURE__ */ createElementVNode("circle", {
   strokeDashoffset: "200"
 }, null, -1);
 const _hoisted_5$1 = ["stroke-dasharray"];
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     "aria-valuemax": $props.max,
     "aria-valuenow": $props.value,
@@ -1294,8 +1304,8 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       style: normalizeStyle(`width: ${$options.progressPercentage}%`)
     }, null, 4)) : createCommentVNode("", true),
-    $props.circular ? (openBlock(), createElementBlock("svg", _hoisted_2$2, [
-      _hoisted_3$2,
+    $props.circular ? (openBlock(), createElementBlock("svg", _hoisted_2$3, [
+      _hoisted_3$3,
       _hoisted_4$1,
       createElementVNode("circle", {
         class: "ring-circle",
@@ -1308,13 +1318,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
         "stroke-dasharray": $options.progressCircularPercentage + " 253"
       }, null, 8, _hoisted_5$1)
     ])) : createCommentVNode("", true)
-  ], 10, _hoisted_1$4);
+  ], 10, _hoisted_1$6);
 }
-var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+var gnkProgress = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
 var Listview_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$3 = {
+const _sfc_main$5 = {
   name: "gnkListview",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       childElements: []
@@ -1341,20 +1351,20 @@ const _sfc_main$3 = {
   mounted() {
   }
 };
-const _hoisted_1$3 = ["id"];
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$5 = ["id"];
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$3);
+  ], 10, _hoisted_1$5);
 }
-var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
 var ListviewItem_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$2 = {
+const _sfc_main$4 = {
   name: "gnkListviewItem",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       childElements: [],
@@ -1396,21 +1406,21 @@ const _sfc_main$2 = {
   mounted() {
   }
 };
-const _hoisted_1$2 = ["id"];
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$4 = ["id"];
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args)),
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$2);
+  ], 10, _hoisted_1$4);
 }
-var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
 var Switch_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$1 = {
+const _sfc_main$3 = {
   name: "gnkSwitch",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   props: {
     modelValue: {
       type: Boolean,
@@ -1458,13 +1468,13 @@ const _sfc_main$1 = {
   }
 };
 const _withScopeId = (n) => (pushScopeId("data-v-e79c9802"), n = n(), popScopeId(), n);
-const _hoisted_1$1 = ["disabled"];
-const _hoisted_2$1 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("div", { class: "gnkSwitch__slider" }, null, -1));
-const _hoisted_3$1 = {
+const _hoisted_1$3 = ["disabled"];
+const _hoisted_2$2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("div", { class: "gnkSwitch__slider" }, null, -1));
+const _hoisted_3$2 = {
   key: 0,
   class: "gnkSwitch__label"
 };
-function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("label", mergeProps({ class: "gnkSwitch" }, $options.switchAttributes, {
     onKeydown: _cache[2] || (_cache[2] = withKeys(withModifiers(() => {
     }, ["prevent"]), ["space"])),
@@ -1480,18 +1490,18 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       type: "checkbox",
       disabled: $props.disabled,
       onClick: _cache[1] || (_cache[1] = ($event) => $options.onTrigger())
-    }, null, 8, _hoisted_1$1), [
+    }, null, 8, _hoisted_1$3), [
       [vModelCheckbox, $data.state]
     ]),
-    _hoisted_2$1,
-    $props.label ? (openBlock(), createElementBlock("span", _hoisted_3$1, toDisplayString($props.label), 1)) : createCommentVNode("", true)
+    _hoisted_2$2,
+    $props.label ? (openBlock(), createElementBlock("span", _hoisted_3$2, toDisplayString($props.label), 1)) : createCommentVNode("", true)
   ], 16);
 }
-var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-e79c9802"]]);
+var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3], ["__scopeId", "data-v-e79c9802"]]);
 var Loading_vue_vue_type_style_index_0_lang = "";
-const _sfc_main = {
+const _sfc_main$2 = {
   name: "gnkLoading",
-  extends: _sfc_main$d,
+  extends: _sfc_main$f,
   data() {
     return {
       loaded: false
@@ -1568,9 +1578,9 @@ const _sfc_main = {
     this.loaded = true;
   }
 };
-const _hoisted_1 = ["id"];
-const _hoisted_2 = { class: "row full-height" };
-const _hoisted_3 = { class: "col-block" };
+const _hoisted_1$2 = ["id"];
+const _hoisted_2$1 = { class: "row full-height" };
+const _hoisted_3$1 = { class: "col-block" };
 const _hoisted_4 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
 const _hoisted_5 = {
   key: 0,
@@ -1578,7 +1588,7 @@ const _hoisted_5 = {
 };
 const _hoisted_6 = { class: "text-bold" };
 const _hoisted_7 = { class: "--loading-label text-bold" };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Progress = resolveComponent("gnk-Progress");
   return $data.loaded ? (openBlock(), createBlock(Teleport, {
     key: 0,
@@ -1599,8 +1609,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
             block: "",
             value: $props.progress
           }, null, 8, ["value"])) : createCommentVNode("", true),
-          createElementVNode("div", _hoisted_2, [
-            createElementVNode("div", _hoisted_3, [
+          createElementVNode("div", _hoisted_2$1, [
+            createElementVNode("div", _hoisted_3$1, [
               _hoisted_4,
               $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_5, [
                 createElementVNode("p", _hoisted_6, toDisplayString($props.percentage) + "%", 1)
@@ -1608,13 +1618,160 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
               createElementVNode("p", _hoisted_7, toDisplayString($props.lable), 1)
             ])
           ])
-        ], 14, _hoisted_1)
+        ], 14, _hoisted_1$2)
       ]),
       _: 1
     })
   ], 8, ["to"])) : createCommentVNode("", true);
 }
-var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+var imgUrl = "data:image/png;base64,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";
+var Image_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$1 = {
+  name: "gnkImage",
+  extends: _sfc_main$f,
+  data() {
+    return {};
+  },
+  props: {
+    src: {
+      type: String,
+      required: true,
+      validator: function(value) {
+        return value.length > 0 && value.includes("http");
+      }
+    },
+    size: {
+      type: String,
+      required: false,
+      validator: function(value) {
+        return !!value && value.length > 0 && value.includes("x") && value.split("x")[0] > 0 && value.split("x")[1] > 0;
+      }
+    },
+    alt: {
+      type: String,
+      required: false,
+      default: ""
+    },
+    animation: {
+      type: String,
+      required: false,
+      default: "none",
+      validator: function(value) {
+        return ["none", "zoomIn-light", "zoomIn-bw", "zoomIn-saturation", "zoomIn-sepia", "zoomIn-blur", "zoomIn-rotation", "zoomOut-light", "zoomOut-bw", "zoomOut-saturation", "zoomOut-sepia", "zoomOut-blur"].includes(value);
+      }
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--none": this.animation === "none",
+        "--zoomIn-light": this.animation == "zoomIn-light",
+        "--zoomIn-bw": this.animation == "zoomIn-bw",
+        "--zoomIn-saturation": this.animation == "zoomIn-saturation",
+        "--zoomIn-sepia": this.animation == "zoomIn-sepia",
+        "--zoomIn-blur": this.animation == "zoomIn-blur",
+        "--zoomIn-rotation": this.animation == "zoomIn-rotation",
+        "--zoomOut-light": this.animation == "zoomOut-light",
+        "--zoomOut-bw": this.animation == "zoomOut-bw",
+        "--zoomOut-saturation": this.animation == "zoomOut-saturation",
+        "--zoomOut-sepia": this.animation == "zoomOut-sepia",
+        "--zoomOut-blur": this.animation == "zoomOut-blur"
+      };
+    },
+    componentStyleObject() {
+      var _a;
+      console.log("src", this.src);
+      return {
+        "--img-placeholder-url": `url(${imgUrl})`,
+        "--img-background-url": `url(${this.src})`,
+        "--img-background-alt": `url(${this.alt})`,
+        "--img-background-size-w": !!this.size && this.size.length > 0 && this.size.includes("x") && this.size.split("x")[0] > 0 && this.size.split("x")[1] > 0 ? `${this.size.split("x")[0]}px` : "100%",
+        "--img-background-size-h": !!this.size && this.size.length > 0 && this.size.includes("x") && this.size.split("x")[0] > 0 && this.size.split("x")[1] > 0 ? `${(_a = this.size) == null ? void 0 : _a.split("x")[1]}px` : "100%"
+      };
+    }
+  },
+  methods: {}
+};
+const _hoisted_1$1 = ["id"];
+const _hoisted_2 = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
+const _hoisted_3 = ["alt"];
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    style: normalizeStyle($options.componentStyleObject)
+  }, [
+    _hoisted_2,
+    createElementVNode("div", {
+      class: normalizeClass(["--img-background", $options.componentClassObject]),
+      alt: this.alt
+    }, null, 10, _hoisted_3)
+  ], 14, _hoisted_1$1);
+}
+var gnkImage = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+var Badge_vue_vue_type_style_index_0_lang = "";
+const _sfc_main = {
+  name: "gnkBadge",
+  extends: _sfc_main$f,
+  data() {
+    return {
+      parentClientRect: null
+    };
+  },
+  props: {
+    position: {
+      type: String,
+      default: "top-right",
+      validator: (value) => {
+        return ["none", "top-right", "top-left", "bottom-right", "bottom-left"].includes(value);
+      }
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "mini",
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--primary": true,
+        "--top-right": this.position === "top-right",
+        "--top-left": this.position === "top-left",
+        "--bottom-right": this.position === "bottom-right",
+        "--bottom-left": this.position === "bottom-left",
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini"
+      };
+    },
+    componentStyleObject() {
+      if (this.parentClientRect === null)
+        return;
+      return {};
+    }
+  },
+  methods: {},
+  mounted() {
+    this.parentClientRect = this.$parent.componentElementClientRect();
+  }
+};
+const _hoisted_1 = ["id"];
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass([_ctx.componentName, $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    style: normalizeStyle($options.componentStyleObject)
+  }, [
+    renderSlot(_ctx.$slots, "default")
+  ], 14, _hoisted_1);
+}
+var gnkBadge = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 /*!
   * vue-router v4.0.16
   * (c) 2022 Eduardo San Martin Morote
@@ -3271,9 +3428,11 @@ function registerModuleComponents(App, components) {
 }
 var gnk = {
   gnkSwipeManager,
+  gnk404,
+  gnkImage,
+  gnkBadge,
   gnkApp,
   gnkPage,
-  gnk404,
   gnkNavbar,
   gnkButton,
   gnkButtonGroup,

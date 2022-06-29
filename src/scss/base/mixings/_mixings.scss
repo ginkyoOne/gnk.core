@@ -32,9 +32,3 @@ $breakpoints: ("phone": 400px,
         }
     }
 }
-
-@for $i from 1 through 10 {
-    .--Z-INDEX-#{$i} {
-        z-index: calc( 100000 -  #{$i}0000) !important;
-    }
-}
