@@ -51,24 +51,6 @@ export default {
             required: false,
             default: false,
         },
-
-        pill: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-
-
-        circular: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        square: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
         block: {
             type: Boolean,
             required: false,
@@ -89,31 +71,17 @@ export default {
 
         //COMPONENTE CLASSES
         componentName() {
-            return this.$options.name
+            return this.$options.name + ' |'
         },
 
         //GENERIC CLASSES
         componentGeneralClasses() {
-            return {
-
-                '--info': this.info,
-                '--primary': this.primary,
-                '--success': this.success,
-                '--warning': this.warning,
-                '--danger': this.danger,
-                '--bug': this.bug,
-
-                '--dark': this.dark,
-                '--light': this.light,
-
-                '--pill': this.pill,
-                '--circular': this.circular,
-                '--square': this.square,
-
-                '--block': this.block,
-
-                '--disabled': this.disabled,
+            let componentProps = {}
+            for (let prop in this.$options.props) {
+                if (!this.$options.props[prop]?.skip) componentProps['--' + prop] = this[prop]
             }
+            componentProps['|'] = true
+            return componentProps
         },
 
 
@@ -130,16 +98,16 @@ export default {
             console.log('hello from mixin!')
         },
 
-            //GET ELEMENTE SIZE ON SCREEN
-            componentElementClientRect() {
-                let modalPosition = this?.$el?.getBoundingClientRect()
-                return {
-                    top: (!modalPosition ? 0 : modalPosition.top),
-                    left: (!modalPosition ? 0 : modalPosition.left),
-                    width: (!modalPosition ? 0 : modalPosition.width),
-                    height: (!modalPosition ? 0 : modalPosition.height),
-                }
-            },
+        //GET ELEMENTE SIZE ON SCREEN
+        componentElementClientRect() {
+            let modalPosition = this?.$el?.getBoundingClientRect()
+            return {
+                top: (!modalPosition ? 0 : modalPosition.top),
+                left: (!modalPosition ? 0 : modalPosition.left),
+                width: (!modalPosition ? 0 : modalPosition.width),
+                height: (!modalPosition ? 0 : modalPosition.height),
+            }
+        },
 
         componentRaiseEvent(eventName, data) {
             let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
@@ -161,7 +129,7 @@ export default {
 
 
     mounted() {
-        (typeof this.registerChild === 'function') ? this.registerChild(this) : null
+        if (typeof this.registerChild == 'function'  ) this.registerChild(this)
     },
 
 
@@ -186,7 +154,7 @@ export default {
 
     provide() {
         return {
-            registerChild: ( !this.registerChilds ? null : this.registerChild)
+            registerChild: ( typeof this.registerChild == 'function' ? this.registerChild : null)
         }
     },
     inject: {

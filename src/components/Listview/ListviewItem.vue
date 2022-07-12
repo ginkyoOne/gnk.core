@@ -1,7 +1,7 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import createRipple from "../../utils/ripple"
-import {sleep} from "../../utils/sleep"
+
 export default {
     name: 'gnkListviewItem',
     extends: gnkComponent,

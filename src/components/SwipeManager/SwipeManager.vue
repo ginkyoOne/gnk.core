@@ -1,6 +1,6 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import sleep from "../../utils/sleep"
+import {sleep} from "../../utils/animateValue"
 export default {
     name: 'gnkSwipeManager',
     extends: gnkComponent,

@@ -82,7 +82,7 @@ export default {
                 top: 0px;
                 right: 16px;
                 left: 16px;
-                border-top: calc(var(--BORDER-SIZE) / 2) solid -color('LEVEL-4');
+                border-top: var(--BORDER-SIZE) solid -color('LEVEL-4');
         }
     }
 

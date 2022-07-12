@@ -11,7 +11,7 @@ export default {
     
     data() {
         return {
-            
+
         }
     },
     props: {
@@ -19,7 +19,7 @@ export default {
             type: String,
             required: true,
             validator: function(value) {
-                return value.length > 0 && value.includes('http')
+                return value.length > 0 
             }
         },
         size: {
@@ -35,6 +35,18 @@ export default {
             default: '',
         },
 
+        title: {
+            type: String,
+            required: false,
+            default: '',
+        },
+
+        showTitle: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
         animation: {
             type: String,
             required: false,
@@ -43,6 +55,12 @@ export default {
                 return ['none', 'zoomIn-light', 'zoomIn-bw', 'zoomIn-saturation', 'zoomIn-sepia', 'zoomIn-blur', 'zoomIn-rotation', 'zoomOut-light', 'zoomOut-bw', 'zoomOut-saturation', 'zoomOut-sepia', 'zoomOut-blur'].includes(value)
             }
         }
+    },
+
+    watch: {
+    },
+
+    mounted() {
     },
 
     computed: {
@@ -63,9 +81,7 @@ export default {
             }
         },
         componentStyleObject() {
-                console.log('src', this.src)
             return {
-                '--img-placeholder-url': `url(${imgUrl})`,
                 '--img-background-url': `url(${this.src})`,
                 '--img-background-alt': `url(${this.alt})`,
                 '--img-background-size-w': (!!this.size && this.size.length > 0 && this.size.includes('x') && this.size.split('x')[0] > 0 && this.size.split('x')[1] > 0 ? `${this.size.split('x')[0]}px` : '100%') ,
@@ -85,11 +101,16 @@ export default {
     <div :class="[componentName, componentClassObject , componentGeneralClasses]" :id="componentId"
         :style="componentStyleObject">
         <div class="--img-placeholder">
-
         </div>
-        <div class="--img-background" :class="componentClassObject"
+<!--         <gnk-progress loading light class="fill">
+        </gnk-progress> -->
+        <div class="--img-background | " :class="componentClassObject"
             :alt="this.alt">
 
+        </div>
+        <div v-if="this.showTitle && (this.title.constructor ===  String && this.title.length > 0 )"
+        class="--title | flex flex-centered">
+            <h3>{{this.title}}</h3>
         </div>
     </div>
 
@@ -112,8 +133,12 @@ export default {
     background: -color('LEVEL-2');
 
     border-radius: var(--BORDER-RADIUS);
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+
+    &>.gnkProgress{
+        opacity: 20%;
+    }
 
     &>[class*="--img"]{
         transition: all .25s ease;
@@ -126,65 +151,117 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-
     }
     &>.--img-placeholder{
-        background-image: var(--img-placeholder-url);
+        //background-image: var(--img-placeholder-url);
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        &::after{
+            content: '';
+            position: absolute;
+            top: calc((100% - 80px ) / 2);
+            left: calc((100% /2) - 100px) ;
+
+            border-right : 80px solid transparent;
+            border-bottom : 80px solid -color('BASE-TEXT',1,0,0,0);
+            border-left : 80px solid transparent;
+        }  
+        &::before{
+            content: '';
+            position: absolute;
+            top: calc((100% - 60px ) / 2);
+            left: calc((100% / 2) - 20px);
+
+            border-right : 60px solid transparent;
+            border-bottom : 60px solid -color('BASE-TEXT',1,0,0,-10);
+            border-left : 60px solid transparent;
+        }   
         
     }
     &>.--img-background {
-        transition: all .25s ease;
         background-image: var(--img-background-url);
-                
+    }
+    &>.--title{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: fit-content;
+        
+        padding: 15px;
+        text-align: center;
+
+        color: -color('BASE-TEXT');
+        
+        z-index: 1;
+
+        background: rgb(0,0,0);
+        background: linear-gradient(0deg, rgba(0,0,0,0.5272727272727273) 0%, rgba(0,0,0,0) 100%);
+    }
 
 
 
-
-
-
-                
-        &.--none{
+    &.--none{
+        &>[class*="--img"]{
             filter: none;
             transform: none;
-
-            &:is(:hover, :active) {
+        }
+        &:is(:hover, :active) {
+            &>[class*="--img"]{
                 transform: none;
                 filter:none;
             }
         }
-        &.--zoomIn-light{
+    }
+    &.--zoomIn-light{
+        &>[class*="--img"]{
             filter: brightness(80%);
-            
-                &:is(:hover, :active) {
-                    transform: scale(1.1);
-                    filter: brightness(100%);
-                }
         }
-        &.--zoomIn-bw{
+        &:is(:hover, :active) {
+            &>[class*="--img"]{
+                transform: scale(1.1);
+                filter: brightness(100%);
+            }
+        }
+    }
+    &.--zoomIn-bw{
+        &>[class*="--img"]{
             filter:grayscale(100%);
-            
-            &:is(:hover, :active) {
+        }
+        &:is(:hover, :active) {
+            &>[class*="--img"]{
                 transform: scale(1.1);
                 filter: grayscale(0%);
             }
         }
-        &.--zoomIn-saturation{
+    }
+    &.--zoomIn-saturation{
+        &>[class*="--img"]{
             filter: saturate(10%);
-
-            &:is(:hover, :active){
+        }
+        &:is(:hover, :active){
+            &>[class*="--img"]{
                 transform: scale(1.1);
                 filter: saturate(100%);
             }
         }
-        &.--zoomIn-sepia{
+    }
+    &.--zoomIn-sepia{
+        &>[class*="--img"]{
             filter: sepia(100%);
-
-            &:is(:hover, :active){
+        }
+        &:is(:hover, :active){
+            &>[class*="--img"]{
                 transform: scale(1.1);
                 filter: sepia(100%);
             }
         }
-        &.--zoomIn-blur{
+    }
+    &.--zoomIn-blur{
+        &>[class*="--img"]{
+                
             filter: blur(2px);
 
             &:is(:hover, :active){
@@ -192,7 +269,10 @@ export default {
                 filter: none;
             }
         }
-        &.--zoomIn-rotation{
+    }
+    &.--zoomIn-rotation{
+        &>[class*="--img"]{
+                
             filter: brightness(90%);
             transform: scale(1) rotate(0deg);
 
@@ -201,7 +281,10 @@ export default {
                 filter: brightness(100%);
             }
         }
-        &.--zoomOut-light{
+    }
+    &.--zoomOut-light{
+        &>[class*="--img"]{
+                
             transform: scale(1.1);
             filter: brightness(80%);
 
@@ -210,7 +293,10 @@ export default {
                 filter: brightness(100%);
             }
         }
-        &.--zoomOut-bw{
+    }
+    &.--zoomOut-bw{
+        &>[class*="--img"]{
+                
             filter: grayscale(100%);
             transform: scale(1.1);
             
@@ -219,7 +305,10 @@ export default {
                 filter: grayscale(0%);
             }
         }
-        &.--zoomOut-saturation{
+    }
+    &.--zoomOut-saturation{
+        &>[class*="--img"]{
+                
             filter: saturate(10%);
             transform: scale(1.1);
             
@@ -228,7 +317,10 @@ export default {
                 filter: saturate(100%);
             }
         }
-        &.--zoomOut-sepia{
+    }
+    &.--zoomOut-sepia{
+        &>[class*="--img"]{
+            
             filter: sepia(100%);
             transform: scale(1.1);
             
@@ -237,7 +329,10 @@ export default {
                 filter: sepia(100%);
             }
         }
-        &.--zoomOut-blur{
+    }
+    &.--zoomOut-blur{
+        &>[class*="--img"]{
+            
             filter: blur(2px);
             transform: scale(1.1);
             
@@ -246,7 +341,10 @@ export default {
                 filter:none;
             }
         }
-        &.--zoomOut-rotation {
+    }
+    &.--zoomOut-rotation {
+        &>[class*="--img"]{
+                
             filter: brightness(90%);
             transform: scale(1.2) rotate(2deg);
 
@@ -255,10 +353,7 @@ export default {
                 filter: brightness(100%);
             }
         }
-
-        
     }
-
 
 }
 

@@ -1,7 +1,5 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import createRipple from "../../utils/ripple"
-import imageData from "../../utils/imageData"
 
 export default {
     name: 'gnkCard',
@@ -17,6 +15,9 @@ export default {
         headerBackground: {
             type: String,
             default: null,
+            validator: function(value) {
+                return value.length > 0
+            }
         },
 
         headerBackgroundAlt: {
@@ -32,22 +33,11 @@ export default {
             },
         },
 
-        interactionsPosition: {
-            type: String,
-            default: 'default',
-            validator(type) {
-                return ['default', 'topRight', 'topLeft', 'bottomRight', 'bottomLeft', 'hide'].includes(type)
-            },
-        },
-
         animateInactive: {
             type: Boolean,
             default: false,
             
         },
-
-
-
 
         type: {
             type: String,
@@ -59,12 +49,20 @@ export default {
     },
 
     computed: {
+        hasValidHeaderBackground() {
+            return (!!this.headerBackground && this.headerBackground.length > 0)
+        },
+
         componentClassObject() {
             return {
-                'cardType01': this.type === 'cardType01',
-                'cardType02': this.type === 'cardType02',
-                'cardType03': this.type === 'cardType03',
-                
+                '--separate-title': !(this.hasValidHeaderBackground),
+                '--animate': !this.animateInactive,
+
+
+                '--cardType01': this.type === 'cardType01' || !this.hasValidHeaderBackground,
+                '--cardType02': this.type === 'cardType02' && this.hasValidHeaderBackground,
+                '--cardType03': this.type === 'cardType03' && this.hasValidHeaderBackground,
+
 
                 //'cardType04': this.type === 'cardType04',
                 //'cardType05': this.type === 'cardType05',
@@ -72,37 +70,56 @@ export default {
             }
         },
     },
-
+    emits: ['click', 'mouseover', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup'],   
+    
 }
 </script>
 
 <template>
 
+    <div
+	:class="[componentName, componentClassObject , componentGeneralClasses]"
+	:id="componentId"
+    
+    @click.prevent="this.componentRaiseEvent('click',{event: $event})"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
+    @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+    @keypress.prevent="this.componentRaiseEvent('keypress',{event: $event})"
+    @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+    
+            <div class="--hero-container" v-if="this.hasValidHeaderBackground || !!this.$slots.interactions" >
+                <gnk-image v-if="this.hasValidHeaderBackground" class="--hero-background" :src="headerBackground"
+                                :alt="headerBackgroundAlt" animation="zoomIn-light">
+                </gnk-image>
+                <div v-if="!!this.$slots.interactions" class="--interactions">
+                    <slot name="interactions">
+                    
+                    </slot>
+                </div>
+            </div>
+            <div class="--content">
+                <div v-if="!!this.$slots.title" class="--content-title | text-capitalize flex ">
+                    <slot name="title">
+                    
+                    </slot>
+                </div>
+                <div v-if="!!this.$slots.default" class="--content-body | flex ">
+                    <slot>
+                    
+                    </slot>
+                </div>
+            </div>
+            <div v-if="!!this.$slots.footer" class="--footer | flex">
+                <slot name="footer">
 
-    <div @click.stop="onClick($event)" :class="[componentName, componentClassObject , componentGeneralClasses]"
-        :id="componentId">
-        <div class="--hero-container">
-            <div class="--hero-background">
+                </slot>
             </div>
-            <div v-if="!!this.$slots.interactions" class="--interactions">
-                <slot name="interactions"></slot>
-            </div>
-        </div>
-        <div class="--content">
-            <div v-if="!!this.$slots.title" class="--content-title">
-                <h3 class="text-capitalize">
-                    <slot name="title"></slot>
-                </h3>
-            </div>
-            <div v-if="!!this.$slots.default" class="--content-body">
-                <slot>teste</slot>
-            </div>
-        </div>
-        <div v-if="!!this.$slots.footer" class="--footer flex">
-            <slot name="footer">
 
-            </slot>
+<!--         <div class="--badge-holder">
+            <slot name="badge" />
         </div>
+ -->
     </div>
 
 
@@ -117,12 +134,19 @@ export default {
 
 
 
-[class*="cardType"] {
-    display: grid;
-    width: 100%;
-    margin: 10px;
+[class*="--cardType"] {
+    overflow: hidden;
+    transition: all .25s ease-in-out;
+    margin:5px;
     margin-bottom: 5px;
 
+
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    
+    display: grid;
+    width: 100%;
 
     transition: all .25s ease-in-out;
 
@@ -132,18 +156,16 @@ export default {
     border-radius: var(--BORDER-RADIUS);
 
     box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
-    border : 1px solid -color('LEVEL-0', 0.8);
-    overflow: hidden;
+    border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
     
+    
+
 
     &>.--content {
         grid-area: content;
 
         transition: all .25s ease;
         padding: 15px;
-        padding-top: 5px;
-        padding-bottom: 30px;
-        margin-bottom: 30px;
 
         overflow: visible;
         width: 100%;
@@ -153,21 +175,29 @@ export default {
 
         &>.--content-title {
             transition: all .25s ease-in-out;
-            display: block;
-            margin-block-start: 10px;
-            margin-block-end: 10px;
-            margin-inline-start: 0px;
-            margin-inline-end: 0px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100% !important;
+
+            &>:first-of-type(h4,h3,h2,h1,p){
+                margin-block-start: 10px;
+                margin-block-end: 10px;
+                margin-inline-start: 0px;
+                margin-inline-end: 0px;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
         }
+        
 
         &>.--content-body {
             transition: all .25s ease-in-out; 
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
+            align-content: flex-start;
+            justify-content: flex-start;
             width: 100%;
             height:100%;
             overflow-y: scroll;
@@ -179,9 +209,6 @@ export default {
 
         height: 100%;
         width: 100%;
-        min-height: 250px;
-        min-width: 200px;
-
         background: -color('LEVEL-1');
 
         border-radius: var(--BORDER-RADIUS);
@@ -189,14 +216,11 @@ export default {
         position: relative;
 
         &>.--hero-background {
-            transition: all .25s ease;
             position: relative;
             height: 100%;
             width: 100%;
-            background: url('https://source.unsplash.com/random/900×700/?experimental') no-repeat;
-            background-size: cover;
-            background-position: center;
-            filter: brightness(90%);
+            min-height: 250px;
+            min-width: 200px;
         }
 
         &>.--interactions {
@@ -223,57 +247,72 @@ export default {
         padding: 5px 2px;
     }
 
-    &:is(:active, :hover) {
+
+
+    &.--animate:is(:active, :hover) {
         transform: translateY(-10px);
         box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
 
-        &>.--content {
-            &>.--content-title {
-                transition: transform .5s .10s ease-in-out;
-                transform: translateY(10px);
+        
+            &>.--content {
+                &>.--content-title {
+                    transition: transform .5s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
+
+                &>.--content-body {
+                    opacity: 1;
+                    transition: transform .4s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
             }
 
-            &>.--content-body {
-                opacity: 1;
-                transition: transform .4s .10s ease-in-out;
-                transform: translateY(10px);
+            &>.--hero-container>.--interactions {
+                transform: translate(0, 0) scale(1.1);
             }
-        }
-
-
-        &>.--hero-container>.--hero-background {
-            transform: scale(1.1);
-            filter: brightness(100%);
-        }
-
-        &>.--hero-container>.--interactions {
-            transform: translate(0, 0) scale(1.1);
-        }
+        
     }
+
+    &:is(.--separate-title){
+            .--content-title{
+
+                padding: 10px;
+                margin-bottom: 10px;
+                &::after{
+                    content: '';
+                    position: absolute;
+                    bottom: 0px;
+                    left: 0px;
+                    width: 100%;
+                    border-top: var(--BORDER-SIZE) solid -color('LEVEL-4', 0.5);
+                    border-bottom: var(--BORDER-SIZE) solid -color('LEVEL-0', 0.5);
+                }
+            }
+        }
 }
 
-.cardType01 {
+.--cardType01 {
     grid-template-areas:
             "media"
             "content"
             "footer";
+    grid-template-rows: auto 1fr auto;
 }
 
-.cardType02 {
+.--cardType02 {
     grid-template-areas:
             "media content"
             "footer footer";
-    grid-template-columns: 60% 1fr;
-    &>.--content{
-        margin-left: 15px !important;
-    }
+    grid-template-columns: 50% 1fr;
+
     &>.--hero-container {
         border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
     }
 }
 
-.cardType03 {
+.--cardType03 {
     overflow: hidden;
+    grid-template-rows: 1fr auto;
     grid-template-areas:
             "media"
             "footer";
@@ -287,15 +326,8 @@ export default {
         width: 100%;
         transform: translateY(calc(100% - var(--LINE-HEIGHT) * 3));
 
-        z-index: 1;
-
         background: -color('LEVEL-1');
         border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0px 0px;
-
-
-        &>.--content-title {
-            transform:translateY(-0.5rem)
-        }
 
         &>.--content-body {
             opacity: 0;
@@ -314,19 +346,50 @@ export default {
         z-index: 1;
     }
 
-    &:is(:active, :hover) {
-        &>.--content {
+    &:is(:active, :hover) {   
+        .--content {
+
             //backdrop-filter: saturate(180%) blur(20px);
             background: -color('LEVEL-1', 1);
             transform: translateY(0%);
         }
-        &>.--hero-container>.--interactions {
+        .--hero-container>.--interactions {
             transform: translate(-10%, 10%) scale(1.1);
         }
     }
 }
 
-.cardType04 {
+
+
+.--badge-holder{
+    border-radius: inherit !important;
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    background: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.--cardType04 {
     
     background: transparent;
     box-shadow: unset;
@@ -410,9 +473,7 @@ export default {
     }
 }
 
-
-
-.cardType05 {
+.--cardType05 {
     grid-template-areas:
         "media content"
         "footer footer";

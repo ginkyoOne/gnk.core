@@ -70,7 +70,9 @@ export default {
 <template>
 
 
-    <div :class="[componentName, componentClassObject , componentGeneralClasses]" :id="componentId"
+    <div
+        :class="[componentName, componentClassObject , componentGeneralClasses]"
+        :id="componentId"
         :style="componentStyleObject">
         <slot>
 
@@ -82,26 +84,6 @@ export default {
 </template>
 
 <style lang="scss">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .gnkBadge{
     position: relative;
@@ -119,6 +101,7 @@ export default {
     text-align: center;
     
 
+    border: calc(var(--BORDER-SIZE) /2) solid  -color('BASE',0,0,0,0.5);
     border-radius: 100vmax;
     padding: 0px 4px;
     

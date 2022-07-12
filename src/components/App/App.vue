@@ -1,5 +1,4 @@
 <script>
-import sleep from '../../utils/sleep'
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
@@ -11,6 +10,7 @@ export default {
             transitionName: "",
             routeHistoryStartingPoint: '',
             routeHistory: [],
+            busy: false,
         }
     },
 
@@ -36,6 +36,7 @@ export default {
             return !!this.$router
         },
     },
+    
     watch: {
         async $route(to, from) {
             if (this.routeHistory.length > 35) {
@@ -68,28 +69,22 @@ export default {
             this.transitionName = 'next';
         }
     },
+
     emits: [
 
 
     ],
+
     methods: {
         registerChilds(element){
-            element.$options.name == 'gnkPage' ? this.childElements.push(element) : null
+            if(element?.$options?.name == 'gnkPage') this.childElements.push(element)
         },
     },
 
-        
-
-    provide() {
-        return {
-            registerChild: this.registerChilds
-        }
-    },
 
 
 
     mounted() { 
-        console.log(this.store)
 
             
         },
@@ -98,31 +93,40 @@ export default {
 
 </script>
 <template>
-    <div :id="componentId" class="fill" :class="[componentName, componentClassObject , componentGeneralClasses]">
+    <div
+        :class="[componentName, componentClassObject , componentGeneralClasses]"
+        :id="componentId"
+        class="fill">
 
-        <div class="--header grid">
+        <div class="--header | grid">
             <div class="row">
                 <div class="col-12">
-                    <gnk-progress v-show="false" gradient loading square class="full-width">
-                    </gnk-progress>
+                    
+                    <gnk-Progressbar v-show="busy" loading square class="full-width" />
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <gnkNavbar>
+                    
                         <template #left>
-                            <gnkButton transparent @click="$router.go(-1)">
+                            <gnkButton clear
+                            	@click="$router.go(-1)"
+                            	transparent>
+
                                 <span class="material-symbols-rounded">
                                     arrow_back_ios
                                 </span> Back
                             </gnkButton>
 
                         </template>
+
                         <template #title>
                             <h4>{{$route?.meta.title}}</h4>
                         </template>
                         <!--                         <template #right>
-                            <gnkSwitch lable="night" :state="store.colorMode == 'light'"
+                            <gnkSwitch label="night" :state="store.colorMode == 'light'"
                                 @onChanged="store.alternateColorMode()" />
                         </template> -->
                     </gnkNavbar>
@@ -132,19 +136,22 @@ export default {
         </div>
 
 
-        <div class=" --body fill grid">
+        <div class=" --body | fill grid">
             <div class="row fill">
-                <div class="--sidebar lg-hide sm-hide xs-hide col-4 overflow-vertical">
+                <div class="--sidebar | lg-hide sm-hide xs-hide col-4 overflow-vertical">
                     <slot name="sidebar">
                         overflow-vertical
                     </slot>
                 </div>
 
-                <gnkSwipeManager class="col-block grid" captureDirection="horizontal" @swipedRight="this?.$router?.go(-1)"
-                    @swipedLeft="this?.$router?.go(+1)">
 
+                <gnkSwipeManager
+                    @swipedLeft="this?.$router?.go(+1)"
+                    @swipedRight="this?.$router?.go(-1)"
+                    class="col-block grid"
+                    captureDirection="horizontal">
 
-                    <div class="--gnkApp-content col-12">
+                    <div class="--gnkApp-content | col-12">
                         <slot>
 
                             <router-view v-if="hasRouter" v-slot="{ Component }">
@@ -177,6 +184,11 @@ export default {
         top:0px;
         left:0px;
         z-index: 99;
+        background: -color('LEVEL-2');
+
+        & .gnkProgressbar{
+            margin: 0!important;
+        }
     }
 
     &>.--body{

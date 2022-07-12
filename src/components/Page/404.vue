@@ -10,7 +10,7 @@ export default {
             required: false,
             default: "404",
         },
-        lable: {
+        label: {
             type: String,
             required: false,
             default: "Oops something went wrong :(",
@@ -46,12 +46,12 @@ export default {
             </div>
             <div class="row">
                 <div class="col-12 flex-centered">
-                    {{ lable }}
+                    {{ label }}
                 </div>
             </div>
             <div class="row">
                 <div v-if="showGoBack" class="col-12 flex-centered p-t-20">
-                    <gnk-button @click="$router.go(-1)">
+                    <gnk-button success @click="$router.go(-1)">
 
                         <span class="material-symbols-rounded">
                             chevron_left

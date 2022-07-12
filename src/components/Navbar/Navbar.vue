@@ -15,10 +15,6 @@ export default {
     },
 
     props: {
-            blur: {
-                type: Boolean,
-                default: true,
-            },
             hideOnScroll: {
                 type: Boolean,
                 default: false,
@@ -28,9 +24,7 @@ export default {
     computed: {
         componentClassObject() {
             return {
-                'container': true,
                 '--hide-on-scroll': this.hideOnScroll && this.hide,
-                '--blur' : this.blur,
             }
         },
     },
@@ -81,16 +75,30 @@ export default {
 <template>
     <div
     :id="componentId"
-    class="grid"
-    :class="[componentName, componentClassObject , componentGeneralClasses]">
-        <div class="row">
-            <div class="--left col-2 flex-centered flex-left">
-                <slot name="left"></slot> 
+    :class="[componentName, componentClassObject , componentGeneralClasses]"
+    class="grid flex-centered">
+
+        <div class="--content | row flex-centered">
+            <div class="col-3 flex-centered flex-left">
+                <gnk-buttonGroup clear>
+                    <gnk-button clear>
+                            <span class="material-symbols-rounded">
+                                menu
+                            </span>
+                    </gnk-button>
+
+                    <slot name="left">
+                    
+                    </slot> 
+                </gnk-buttonGroup>
             </div>
-            <div class="--title col-block flex-centered">
-                <slot name="title"></slot>
+
+            <div class="col-6">
+                <div class="--title |  flex-centered">
+                    <slot name="title"></slot>
+                </div>
             </div>
-            <div class="--right col-2 flex-centered flex-right">
+            <div class="--right | col-3 flex-centered flex-right">
                 <slot name="right"></slot>
             </div>    
         </div>
@@ -107,23 +115,24 @@ export default {
         
         width: 100%;
         min-height: 44px;
+        
+        
 
-        &.--title{
+
+        &>.--content{
+            align-items: center;
+        }
+
+        &>.--content>.--title{
+            position: absolute;
+            left:50%;
+            transform:translateX(-50%);
             text-align: center;
         }
 
         &.--hide-on-scroll{
             transition: transform 0.3s ease-in-out;
             transform: translateY(-100%);
-        }
-
-        &.--blur{
-                -webkit-backdrop-filter: blur(25px);
-                backdrop-filter: blur(25px);
-                background: -color('LEVEL-1',0.5) !important;
-                -webkit-box-shadow: var(--SHADOW);
-                box-shadow: var(--SHADOW);
-                
         }
     }
 

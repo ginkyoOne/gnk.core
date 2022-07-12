@@ -8,10 +8,6 @@
     extends: gnkComponent,
     emits: ['onsubmit','onchange', 'onclick','ondblclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onwheel', 'onfocus', 'onblur','onkeydown','onkeypress','onkeyup'],
 
-
-
-
-
     data() {
       return {
         checked: false,
@@ -21,14 +17,27 @@
 
     props: {
 
+      to: {
+        type: String,
+        skip: true,
+        default: '',
+      },
+
+
       type: {
         type: String,
         required: false,
+        skip: true,
         default: 'button',
         validator(type) {
           return ['submit', 'button', 'reset', 'toggle'].includes(type)
         },
       },
+
+
+
+
+
 
       busy: {
         type: Boolean,
@@ -42,20 +51,23 @@
         default: false,
       },
 
+      pill: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
 
+      circular: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
 
-
-
-
-
-
-
-
-
-
-
-
-
+      square: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
 
 
 
@@ -69,11 +81,7 @@
         required: false,
         default: false,
       },
-  /*     relief:{
-        type: Boolean,
-        required: false,
-        default: false,
-      }, */
+
       transparent:{
         type: Boolean,
         required: false,
@@ -90,12 +98,11 @@
         default: false,
       },
 
-
-
       size:{
         type: String,      
         required: false,
         default: 'default',
+        skip: true,
         validator(type) {
           return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
         },
@@ -105,6 +112,7 @@
       animate:{
         type: String,      
         required: false,
+        skip: true,
         default: 'default',
         validator(type) {
           return ['slide-up','slide-left', 'fade', 'scale', 'rotate', 'default'].includes(type)
@@ -117,16 +125,6 @@
         default: false,
       },
 
-      floating:{
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-      flat:{
-        type: Boolean,
-        required: false,
-        default: false,
-      },
 
 
 
@@ -134,39 +132,20 @@
 
     computed: {
       buttonType() {
-        switch (this.type) {
-          case 'submit':
-            return 'submit'
-          case 'button':
-            return 'button'
-          case 'reset':
-            return 'reset'
-          case 'toggle':
-            return 'button'
-          default:
-            break;
-        }
+          return this.type
       },
 
       componentClassObject() {
         return {
-          '--toggle': this.type === 'toggle',
-          '--floating': this.floating,
-
-          '--flat': this.flat,
-          '--border': this.border,
-          '--gradient': this.gradient,
-          '--relief': this.relief,
-          '--transparent': this.transparent,
-          '--clear': this.clear,
-          '--shadow': this.shadow,
+          '--checked': this.type === 'toggle' && this.checked,
 
           '--size-xl': this.size === 'xl',
           '--size-l': this.size === 'l',
           '--size-small': this.size === 'small',
           '--size-mini': this.size === 'mini',
 
-          '--animate': this.$slots?.animate  ? true : false,
+
+          '--animate': this.$slots?.animate && !this.animateInactive  ? true : false,
 
           '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.busy && !this.animateInactive ? true : false,
           '--animate-slide-left': this.animate === 'slide-left'  && !this.loading  && !this.busy && !this.animateInactive? true : false,
@@ -174,39 +153,37 @@
           '--animate-scale': this.animate === 'scale'  && !this.loading && !this.busy && !this.animateInactive? true : false,
           '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.busy && !this.animateInactive? true : false,
 
-          '--busy': this.busy,
-          '--loading': this.loading,
-
-          '--active': this.checked & this.type == 'toggle' ,
-
         }
       },
     },
 
+    emits: ['onchange','click', 'mouseover','mouseleave','mouseover','keydown','keypress','keyup'],
 
     methods: {
 
-      onClick(event) {
-          event.preventDefault()
+      onToggle(eventName, event) {
+        // if thers an click event show the ripple  
+        if(!!event) createRipple.createRipple(event)
 
-          if(!!event) createRipple.createRipple(event)
-          
-          if(this.type === 'toggle') {
-            this.checked = !this.checked 
-            this.componentRaiseEvent('onchange',{newValue: this.checked , oldValue: !this.checked, event: event})
-          }
-          
-          this.componentRaiseEvent('onclick',{event: event})
+        //check if the button is a toggle button
+        if (this.type === 'toggle') {
 
-      },
+          // if the button is checked then uncheck it
+          this.checked = !this.checked 
 
-      onMouseOver(event) {
-          event.preventDefault()
-          this.componentRaiseEvent('onmouseover',{event: event})
-      },
-      onMouseOut(event) {
-          event.preventDefault()
-          this.componentRaiseEvent('onmouseout',{event: event})
+          // create the event
+          let thisEvent = { componentId: this.componentId, newValue: this.checked, oldValue: !this.checked, event: event }
+
+          // call parent childchange event if it exists(only on button group)
+          if ((typeof this.$parent.childChanged === 'function')) this.$parent.childChanged(thisEvent)
+
+          // raise event
+          this.componentRaiseEvent('onchange',thisEvent)
+        }
+
+        // raise event
+        this.componentRaiseEvent(eventName, { event: event })
+        if(this.to !== '') this.$router.push(this.to)
       },
 
 
@@ -219,90 +196,87 @@
   }
   </script>
 
-  <template>
-    <button :checked="checked" :class="[componentName, componentClassObject , componentGeneralClasses]"
-      :disabled="disabled" :id="componentId" :style="componentStyleObject" :type="buttonType"
-      @click.stop="onClick($event)" @mouseleave="activeStep = 0"
-      @mouseover=" activeStep = (!!this.$slots.animate ? 1 : 0 ) ">
-  
-  
+<template>
+    <button
+      :checked="checked"
+      :class="[componentName, componentClassObject , componentGeneralClasses]"
+      class="cursor-pointer inline-flex flex-centered "
+      :disabled="disabled"
+      :id="componentId"
+      :type="buttonType "
+
+
+      @click.prevent="onToggle('click',$event)"
+      @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
+      @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
+      @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+      @keypress.prevent="onToggle('keypress',$event)"
+      @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+
+
       <transition name="fade">
-        <gnk-progress v-if="this.loading" loading class="fill " />
+        <gnk-progressbar v-if="this.loading" loading class="fill " />
       </transition>
-  
-  
-  
+
+
+
       <div class="--ripple" />
 
 
       <div class="--content-holder">
         <div class="--content-step1">
           <slot>
-  
-  
+
+
           </slot>
         </div>
-        <div class="--content-step2" v-if="!!this.$slots.animate">
-          <slot name="animate">
-  
-  
-          </slot>
-        </div>
+          <div class="--content-step2" v-if="!!this.$slots.animate">
+            <slot name="animate">
+
+
+            </slot>
+          </div>
       </div>
-  
-  
+
+
       <transition name="fade">
         <gnk-loading v-if="this.busy" :target="'#' + componentId" />
       </transition>
-  
-  
+
+
       <div class="--badge-holder">
         <slot name="badge" />
       </div>
-  
-  
-  
-  
-  
-  
-      <!--     <div class="--content">
-      
-                <gnk-Progress loading gradient block v-if="loading"></gnk-Progress> 
-      
-                <slot>gnkButton</slot>
-      
-                <gnk-Loading v-if="busy" :target="'#' + componentId" />
-            </div>
-            <div class="--content-animate" v-if="!!this.$slots.animate">
-              <slot name="animate"></slot>
-            </div>-->
-  
-  
-    </button>
-  </template>
+
+
+  </button>
+</template>
 
 <style lang="scss">
+
   .gnkButton{
     isolation: isolate;
     user-select: none;
+
     position: relative;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
+
   
     background-color: -color('BASE');
     color: -color('BASE-TEXT');
   
     border-radius: var(--BORDER-RADIUS);
-    border: 1px solid -color('BASE',1,0,0,1.5); 
+    border-width: var(--BORDER-SIZE);
+    border-style: solid;
+    border-color: -color('BASE',1,0,0,1.5); 
   
-    width: fit-content;
+    width: max-content;
     height: fit-content;
   
     margin:5px;
     padding: 8px 12px;
   
     font-size: .8rem;
+    line-height: 1rem;
   
     //box-shadow: 0px 5px 1rem -color('BASE', 0.4);
     &::after{
@@ -311,32 +285,80 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
+      -moz-border-radius: inherit;
+      -webkit-border-radius: inherit;
+
       z-index: -1;
       transform:scale(0);
     }
 
+    //INTERACTION
     &:is(:disabled, .--disabled){
       pointer-events: none;
       opacity: .8;
       filter:brightness(80%);
     }
 
-          
+    &:is(:hover, :focus){
+      border-width: var(--BORDER-SIZE);
+      &>.--content-holder{
+        opacity: 1;
+      }
+      &::after{
+        background-color: -color('BASE', .5,0,0,5);
+        transform:scale(1);
+      }
+    }       
+
+    &:is(:active, :checked, .--checked) {
+      opacity: 1;
+      border-width: var(--BORDER-SIZE);
+
+      &::after {
+        background-color: -color('BASE', .5, 0, 0, 10);
+        transform:scale(1);
+      }
       
-      
-    &>.gnkProgress,.gnkLoading,.--badge-holder, .--ripple{
+      &:not(.--clear):is(:checked , .--checked){
+        box-shadow: inset 0px 0px 10px  -color('LEVEL-0', .5,0,0,-10);
+
+        &::after{
+          background-color: -color('BASE', .2, 0, 0, -10);
+        }
+      }
+
+
+    }
+
+    &:active{
+      transform: scale(.9);
+    }
+
+
+    //BASE STYLES
+    &.--loading, &.--busy{
+      pointer-events: none;
+      cursor: auto;
+      &>.--content-holder>[class*="--content-step"]{
+        color: -color('BASE-TEXT', .5);
+      }
+    }
+
+    &>.gnkProgressbar,&>.gnkLoading,&>.--badge-holder,&>.--ripple{
       border-radius: inherit !important;
       position: absolute;
       inset: 0;
+      margin: 0;
+      border: unset;
     }
 
     &>.--ripple{
+      border-radius: var(--BORDER-RADIUS);
       overflow: hidden;
     }
 
     &>.--content-holder{
       transition: all .2s ease-in-out;
-      border-radius: inherit;
       position: relative;
 
       display: grid;
@@ -349,7 +371,10 @@
       font-size: inherit !important;
       line-height: inherit !important;
 
+      overflow: hidden;
+
       &>[class*="--content-step"]{
+        
         border-radius: inherit;
         position: relative;
         display: flex;
@@ -363,25 +388,18 @@
         gap: 5px;
         font-size: inherit !important;
         line-height: inherit !important;
-      }
 
+        transition: all .25s ease-in-out;
+      }
       &>.--content-step2{
-        border-radius: inherit;
-        position: relative;
         opacity: 0;
       }
-
-
     }
+  
 
-
-    
-
-    
-    
-      // SIZING
+    // SIZING
     &.--size-xl {
-      border-radius: 20px;
+      //border-radius: 20px;
       padding: 15px 20px;
       font-size: calc(var(--FONT-SIZE) + 0.2rem);
       line-height: calc(var(--LINE-HEIGHT) + 0.2rem);
@@ -416,8 +434,28 @@
     }
                           
     &.--circular {
+      height: 34px;
+      width: 34px;
       border-radius: 50%;
       aspect-ratio: 1/1;
+
+      & .--size-xl{
+        height: 44px;
+        width: 44px;
+      }
+      & .--size-l{
+        height: 40px;
+        width: 40px;
+      }
+      & .--size-small{
+        height: 32px;
+        width: 32px;
+      }
+      & .--size-mini{
+        height: 28px;
+        width: 28px;
+      }
+      
     }
 
     &.--square {
@@ -428,44 +466,13 @@
         width: 100% !important;
         display: block !important;
     }
-          
-            
-            
-            
-            
-            
-            
-            
-    &:is(:hover, :focus){
-      &>.--content-holder{
-        transform: translateY(-10%);
-      }
-      &::after{
-        background-color: -color('BASE', .5,0,0,5);
-        transform:scale(1);
-      }
-    }       
 
-    &:is(:active, :checked) {
-      transform: scale(0.95);
 
-      &>.--content-holder {
-          transform: scale(0.99);
-      }
-
-      &::after {
-        background-color: -color('BASE', .5, 0, 0, -5);
-      }
-    }
-            
-            
-            
-            
-            
-            
-
+    //STYLES          
     &.--border{
+      border-width: calc(var(--BORDER-SIZE) * 2);
       background-color: transparent;
+
     }
 
     &.--gradient{
@@ -473,44 +480,172 @@
     }
 
     &.--transparent{
+      
+      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+        color: -color('BASE');
+      }
+
       background-color: transparent;
       border: none;
+
+      &:is(:active, :checked,:hover, :focus ){
+        color: -color('BASE-TEXT');
+      }
     }
 
     &.--clear{
+
+      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+        color: -color('BASE');
+      }
+      
+
       background-color: transparent;
       border: none;
-    }
+      opacity: 0.9;
 
-        
-      
-      
-      
-                
-                
-                
-                
-                
-                
-                
-                
-          
-    //ANIMATIONS
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: opacity .5s ease-in-out;
-    }
+      &::after{
+        visibility: hidden;
+      }
 
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
+      &>.--ripple{
+        visibility: hidden;
+      }
+
+      &:is(:hover, :focus){
+        opacity: 1;
+      }
+
+      &:is(:active, :checked){
+        opacity: .8;
+      }
     }
-                
-                
-}
-                              
-          
-        
-      
     
+    &.--shadow{
+      box-shadow: 0px 0.25rem 0.5rem -color('BASE', 0.4);
+    }
+
+
+
+
+    &.--animate{     
+        &.--animate-slide-up{
+          .--content-step2{
+            transform: translateY(100%);
+            opacity: 0;
+          }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: translateY(-100%);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: translateY(0%);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-slide-left{
+            .--content-step2{
+              transform: translateX(-100%);
+              opacity:0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-fade{
+            .--content-step2{
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              opacity: 0;
+            }
+            .--content-step2{
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-scale{
+            .--content-step2{
+              transform: scale(-1);
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform:scale(1.5);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform:scale(1);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-rotate{
+            .--content-step2{
+              transform: rotate(-180deg);
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: rotate(180deg);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: rotate(0deg);
+              opacity: 1;
+            }
+          }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //ANIMATIONS
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .25s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
+
+}
 </style>

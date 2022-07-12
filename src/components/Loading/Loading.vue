@@ -1,7 +1,6 @@
 <script>
 
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import imageData from "../../utils/imageData"
 
 export default {
     name: 'gnkLoading',
@@ -25,7 +24,7 @@ export default {
                 return ['default','points','scale'].includes(value)
             }
         },
-        lable: {
+        label: {
             type: String,
             default: '',
         },
@@ -33,13 +32,6 @@ export default {
             type: Number,
             default: -1,
             validator: function(value) {
-                return value >= -1 && value <= 100
-            } 
-        },
-        progress: {
-            type: Number,
-            default: -1,
-            validator: function (value) {
                 return value >= -1 && value <= 100
             } 
         },
@@ -57,11 +49,27 @@ export default {
                 return (document.querySelector(value) !== null ? value : 'body' )
             } 
         },
+
+        type: {
+            type: String,
+            default: 'loadingType01',
+            validator: function(value) {
+                return ['loadingType01', 'loadingType02', 'loadingType03', 'loadingType04', 'loadingType05'].includes(value)
+            }
+        },
+
     },
     computed: {
         componentClassObject() {
             return {
+                '--primary' : true,
                 '--modal': this.modal,
+                '--loadingType01': this.type === 'loadingType01',
+                '--loadingType02': this.type === 'loadingType02',
+                '--loadingType03': this.type === 'loadingType03',
+                '--loadingType04': this.type === 'loadingType04',
+                '--loadingType05': this.type === 'loadingType05',
+
             }
         },
         componentStyleObject() {
@@ -79,7 +87,12 @@ export default {
                 return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 10, 64)
             }
             return 64
-        }
+        },
+
+        onEvent(event) {
+            event.stopPropagation()
+            event.preventDefault()
+        },
     
     },
     mounted() {
@@ -97,20 +110,36 @@ export default {
     <Teleport v-if="loaded" :to="target">
         <transition name="fade">
 
-            <div :id="componentId" class="grid --primary" :style="componentStyleObject"
-                :class="[componentName, componentClassObject, componentGeneralClasses]">
-                <gnk-Progress class="--progress" v-if="progress >= 0 && !modal" size="mini" square block
-                    :value="progress" />
+            <div
+                :class="[componentName, componentClassObject, componentGeneralClasses]"
+                :id="componentId"
+                :style="componentStyleObject"
+                
+                @click.prevent="onEvent($event)"
+                @mouseleave.prevent="onEvent($event)"
+                @mouseover.prevent="onEvent($event)"
+                @keydown.prevent="onEvent($event)"
+                @keypress.prevent="onEvent($event)"
+                @keyup.prevent="onEvent($event)"
+
+                
+                class="grid">
+
+
+                <gnk-Progress class="--progress" v-if="percentage >= 0 && !modal" size="mini" square block
+                    :value="percentage" />
 
                 <div class="row full-height">
                     <div class="col-block">
-                        <div class="--loading">
+                        <div class="fill flex-centered">
+                            <div class="--loading">
 
+                            </div>
+                            <div class="fill flex-centered text-bold" v-if="percentage >= 0">
+                                <gnk-Counter :value="percentage"></gnk-Counter>%
+                            </div>
                         </div>
-                        <div class="--loading-percentage" v-if="percentage >= 0">
-                            <p class="text-bold">{{percentage}}%</p>
-                        </div>
-                        <p class="--loading-label text-bold">{{lable}}</p>
+                        <p class="--loading-label | text-bold">{{label}}</p>
                     </div>
                 </div>
             </div>
@@ -118,33 +147,28 @@ export default {
         </transition>
     </Teleport>
 
-
-
-
-
 </template>
 
 <style lang="scss">
 
-
-
 .gnkLoading{
-    background: -color('DARK', 0.5);
-    z-index: calc(var(--TOP-Z-INDEX) - 1);
+
+
     position:absolute;
     inset: 0;
-    color:-color('BASE');
+    z-index: var(--TOP-Z-INDEX);
 
-    &.--progress:not(.--modal){
+    pointer-events: none !important;
+    user-select: none;
+
+    background: -color('DARK', .50);
+    
+    &.--progress{
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         z-index: var(--TOP-Z-INDEX);
-    }
-
-    &.--progress:is(.--modal) {
-        visibility: collapse;
     }
 
     &.--modal{
@@ -162,41 +186,8 @@ export default {
     }
 
     &>*{
-        pointer-events: none !important;
-    }
-
-    & .--loading {
-        position: absolute;
-        content: '';
-    
-        top: calc(50% - (var(--loading-size) / 2));
-        left: calc(50% - (var(--loading-size) / 2));
-    
-    
-        width: var(--loading-size);
-        height: var(--loading-size);
-
-
-        box-sizing: border-box;
-    
-        border: 4px solid -color('BASE', 0);
-        border-top: 4px solid -color('BASE', var(--opacity, 1));
-        //border-bottom: 2px solid -color('BASE', var(--opacity, 1));
-        border-radius: 50%;
-    
-    
-        animation: animationDefaultLoading 1s ease-in-out infinite;
-    
-        z-index: 1;
-    }
-
-            
-    & .--loading-percentage {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
+        pointer-events: none;
+        user-select: none;
     }
 
     & .--loading-label{
@@ -205,17 +196,126 @@ export default {
         text-align: center;
     }
 
+    & .--loading {
+        position :absolute;
+        width: var(--loading-size);
+        height: var(--loading-size);
+
+        box-sizing: border-box;
+        z-index: 1;
+    }
+
+    &.--loadingType01 .--loading {
+        
+            border: calc(var(--BORDER-SIZE) * 2) solid -color('BASE', 0.5);
+            border-bottom-color: -color('BASE');
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+        }
+
+    &.--loadingType02 .--loading {
+        
+        border:calc(var(--BORDER-SIZE) * 2) solid -color('BASE', 0.5);
+        border-radius: 50%;
+        
+
+        &:after {
+            content: '';
+            position: absolute;
+            
+            width:  calc(100% - (var(--BORDER-SIZE) * 4));
+            height:  calc(100% - (var(--BORDER-SIZE) * 4));
+
+            border-radius: 50%;
+            border: calc(var(--BORDER-SIZE) * 2) solid transparent;
+            border-bottom-color: -color('BASE');
+            animation: rotation 1s linear infinite;
+        }
+    }
+    
+    &.--loadingType03 .--loading {
+            
+            border: calc(var(--BORDER-SIZE) * 4) solid -color('BASE',.5);
+            border-top-color: -color('BASE',.35);
+            border-right-color: -color('BASE',.25);
+            border-bottom-color: -color('BASE',.15);
+
+            border-radius: 50%;
+            animation: rotation 2s linear infinite;
+    }
+
+    &.--loadingType04 .--loading {
+
+        border: calc(var(--BORDER-SIZE) * 4) solid -color('BASE');
+        border-radius: 50%;
+        animation: rotationBorderLevels 1s linear infinite alternate;
+    }
+
+    &.--loadingType05 .--loading {
+        animation: rotation 1s ease-in-out infinite;
+        &:after {
+            content: '';
+            position: absolute;
+            
+            width:  calc(100% - (var(--BORDER-SIZE) * 4));
+            height:  calc(100% - (var(--BORDER-SIZE) * 4));
+
+            border-radius: 50%;
+            border: calc(var(--BORDER-SIZE) * 2) solid transparent;
+            border-top-color: -color('BASE',1);
+
+            animation: rotationMaterial 1s linear infinite alternate;
+        }
+    }
+
 }
 
 
-@keyframes animationDefaultLoading {
-    0% {
-        transform: rotate(0deg);
-    }
+@keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+}
 
+@keyframes rotationMaterial {
+    25% {
+        border-top-color: -color('BASE',1);
+        border-right-color: -color('BASE',0);
+        border-bottom-color: -color('BASE',0);
+        border-left-color: -color('BASE',0); 
+    }
     100% {
-        transform: rotate(360deg);
+        border-top-color: -color('BASE',1);
+        border-right-color: -color('BASE',1);
+        border-bottom-color: -color('BASE',1);
+        border-left-color: -color('BASE',0); 
     }
 }
+
+@keyframes rotationBorderLevels {
+    0% {
+        border-top-color: -color('BASE',1);
+        border-right-color: -color('BASE',0);
+        border-bottom-color: -color('BASE',0);
+        border-left-color: -color('BASE',0); 
+    }
+    25% {
+        border-right-color: -color('BASE',.50);
+        border-bottom-color: -color('BASE',0);
+        border-left-color: -color('BASE',0);
+    }
+    50% { 
+        border-right-color: -color('BASE',1);
+        border-bottom-color: -color('BASE',.50);
+        border-left-color: -color('BASE',0);
+    }
+    75% { 
+        border-bottom-color: -color('BASE',1);
+        border-left-color: -color('BASE',.50);
+    }
+    100% { 
+        border-left-color: -color('BASE',1);
+    }
+}
+
 
 </style>
