@@ -1,446 +1,522 @@
 <script>
-
-import mixin from "../../mixin/gnkComponent"
-import imageData from "../../utils/imageData"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
     name: 'gnkCard',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     
-
     data() {
         return {
-            mediaSrc: null,
-            mediaAlt: null,
-            mediaHeight: null,
-            mediaWidth: null,
-            mediaDirection: null,
-            expanded: false,
-
-            modalPosition:null,
-            }
-        },
+            
+        }
+    },
     props: {
-        media: {
+        
+        headerBackground: {
             type: String,
-            default: '',
-        },
-        mediaLable: {
-            type: String,
-            default: '',
+            default: null,
+            validator: function(value) {
+                return value.length > 0
+            }
         },
 
-
+        headerBackgroundAlt: {
+            type: String,
+            default: null,
         },
+
+        headerBackgroundHeight: {
+            type: Number,
+            default: 450,
+            validator(value) {
+                return (value > 125 && value < 500 && !isNaN(value))
+            },
+        },
+
+        animateInactive: {
+            type: Boolean,
+            default: false,
+            
+        },
+
+        type: {
+            type: String,
+            default: 'cardType01',
+            validator: function(value) {
+                return ['cardType01', 'cardType02', 'cardType03', 'cardType04', 'cardType05'].includes(value)
+            }
+        },
+    },
+
     computed: {
-
-            componentClassObject(){
-                return {
-
-                }
-            },
-            modalPositionObject(){
-                return {
-                '--top' : this.modalPosition['top'],
-                '--left' : this.modalPosition['left'],
-                '--width' : this.modalPosition['width'],
-                '--height' : this.modalPosition['height'],
-                }
-            },
+        hasValidHeaderBackground() {
+            return (!!this.headerBackground && this.headerBackground.length > 0)
         },
+
+        componentClassObject() {
+            return {
+                '--separate-title': !(this.hasValidHeaderBackground),
+                '--animate': !this.animateInactive,
+
+
+                '--cardType01': this.type === 'cardType01' || !this.hasValidHeaderBackground,
+                '--cardType02': this.type === 'cardType02' && this.hasValidHeaderBackground,
+                '--cardType03': this.type === 'cardType03' && this.hasValidHeaderBackground,
+
+
+                //'cardType04': this.type === 'cardType04',
+                //'cardType05': this.type === 'cardType05',
+                
+            }
+        },
+    },
+    emits: ['click', 'mouseover', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup'],   
     
-    emits: ['open', 'close', 'click'],
-
-    methods: {
-        onClick(event) {
-            this.$emit('click', event)
-        },
-        
-        open(){
-            if(!this.expanded && !!this.$slots.expanded){
-                this.expanded = true
-                this.$emit('open', this.componentId)
-            }   
-        },
-        close(){
-            this.expanded = false;
-            this.$emit('close',  this.componentId)
-        },
-
-
-        closing(direction, start,end,distance,time){
-            if(direction == 'down'){
-
-                let modalPosition = this.$refs.cardConteinerFull.getBoundingClientRect()
-                this.modalPosition = {
-                    top: (modalPosition.top - distance.y) + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: (modalPosition.height - distance.y) + 'px',
-                }
-            }  
-        },
-
-
-
-        getModalPosition(){
-            let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-            this.modalPosition = {
-                top: modalPosition.top + 'px',
-                left: modalPosition.left + 'px',
-                width: modalPosition.width + 'px',
-                height: modalPosition.height + 'px',
-            }
-        },
-
-        async getMediaInfo(){
-            try{
-                let imageMeta = await imageData.getImageMeta(this.media)
-                this.mediaSrc = imageMeta.src
-                this.mediaAlt = ''
-                this.mediaHeight = imageMeta.height
-                this.mediaWidth = imageMeta.width
-                this.mediaCenter = ((this.mediaWidth > this.mediaHeight) ? ((this.mediaHeight < 300 ) ? '100% auto' :  'auto 100%' ) : 'auto 100%')
-            
-            }catch(e){
-                console.debug(e)
-            }
-        },
-
-
-        onBeforeEnter(el) {
-            
-            if(this.expanded){
-                let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-                this.modalPosition = {
-                    top: modalPosition.top + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: modalPosition.height + 'px',
-                }
-            }
-        },
-
-        onAfterEnter(el) {
-
-            if(this.expanded){
-                this.modalPosition= {
-                    top: '0px',
-                    left: '0px',
-                    width: '100%',
-                    height: '100%',
-                }
-            }
-        },
-
-        onBeforeLeave(el) {
-
-            if(!this.expanded){
-                let modalPosition = this.$refs.cardConteiner.getBoundingClientRect()
-                this.modalPosition = {
-                    top: modalPosition.top + 'px',
-                    left: modalPosition.left + 'px',
-                    width: modalPosition.width + 'px',
-                    height: modalPosition.height + 'px',
-                }
-                //console.debug(this.modalPosition)
-            }
-        },
-
-        onAfterLeave(el) {   
-            
-        },
-
-
-
-    },
-
-
-    async mounted() { 
-        //GET ELEMENT POSITION
-        this.getModalPosition()
-        
-        //GET MEDIA DATA    
-        this.getMediaInfo()
-    },
 }
-
 </script>
 
 <template>
-    <div :id="componentId" :ref="componentId">
 
-        <gnkSwipeManager @swipedDown="close()" @swiping="closing">
+    <div
+	:class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+	:id="componentId"
+    
+    @click="this.componentRaiseEvent('click',{event: $event})"
+    @mouseleave="this.componentRaiseEvent('mouseleave',{event: $event})"
+    @mouseover="this.componentRaiseEvent('mouseover',{event: $event})"
+    @keydown="this.componentRaiseEvent('keydown',{event: $event})"
+    @keypress="this.componentRaiseEvent('keypress',{event: $event})"
+    @keyup="this.componentRaiseEvent('keyup',{event: $event})">
+    
 
-            <div @click.stop="open" ref="cardConteiner" class="gnk-card container col-12 --LEVEL-4" :class="[componentGeneralClasses]">
-                
-                <div class=" --card-container">
+
+
+            <div class="--hero-container" v-if="this.hasValidHeaderBackground || !!this.$slots.interactions" >
+                <gnk-image v-if="this.hasValidHeaderBackground" class="--hero-background" :src="headerBackground"
+                                :alt="headerBackgroundAlt" animation="zoomIn-light">
+                </gnk-image>
+                <div v-if="!!this.$slots.interactions" class="--interactions">
+                    <slot name="interactions">
                     
-                    <div class=" --card-header">
-                        <div v-if="!!this.media" :style="{ backgroundImage: 'url(../../assets/placeholder-1024x512.png)', backgroundSize: 'cover' }">
-                            <div class=" --media col-12 " :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">            
-                            </div>
-                        </div>
-                        <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                            <h4>
-                                <slot name="title"> 
-                                </slot>
-                            </h4>
-                        </div>
-                    
-                    </div>
-                    <div class="row --card-body" v-if="!!this.$slots.default">
-                        <div class="--card-content col-12  pad-10 pad-t-5 flex">
-                            <slot>
-
-                            </slot>
-                        </div>
-                    </div>
-                    <div class="row"  v-if="!!this.$slots.footer">
-
-                        <div class="columns">
-                            <div class="--card-footer col-12 flex position-centered pad-1">
-                                <slot name="footer">    
-                                </slot>
-                            </div>
-                        </div>
-                    </div>
+                    </slot>
                 </div>
             </div>
-
-
-            <transition
-            @before-enter="onBeforeEnter"
-            @after-enter="onAfterEnter"
-            @before-leave="onBeforeLeave"
-            @after-leave="onAfterLeave"
-            enter-active-class="modal_open" 
-            leave-active-class="modal_close">
-                
-                <div ref="cardConteinerFull" v-if="expanded" class="gnk-card --card-expanded container col-12 --LEVEL-4" :style="modalPositionObject" :class="[componentGeneralClasses]">
+            <div class="--content">
+                <div v-if="!!this.$slots.title" class="--content-title | text-capitalize flex ">
+                    <slot name="title">
                     
-                    <div class="row --card-container">
-                        
-                        <div class="row --card-header">
-
-                            <gnkButton v-if="expanded" :disableRipple="true" data-animation-offset="10" circular dark class="--close-expanded-card fadeIn" @click.stop="close">
-                                    <b>x</b>
-                            </gnkButton>
-
-                            <div v-if="!!this.mediaHeight" class="row --media" :style="{ backgroundImage: 'url('  + mediaSrc +  ')', backgroundSize: 'cover' }">                        
-                            </div>
-                            
-                            <div class="--card-title col-12 pad-lr-15 flex"  v-if="!!this.$slots.title">
-                                <h4>
-                                    <slot name="title"> 
-                                    </slot>
-                                </h4>
-                            </div>
-                        
-                        </div>
-                        <div class="row --card-body" >
-                            <div v-if="!!this.$slots.default" class="--card-content col-12  pad-10 pad-t-5">
-                                <slot>
-                                </slot>
-                            </div>
-                            <div class="--card-content-expanded col-12  pad-10 pad-t-5 flex">
-                                <slot name="expanded">
-
-
-                                </slot>
-                            </div>
-                        </div>
-                        <div class="row"  v-if="!!this.$slots.footer">
-
-                            <div class="columns">
-                                <div class="--card-footer col-12 flex position-centered pad-1">
-                                    <slot name="footer">
-
-                                        
-                                    </slot>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </slot>
                 </div>
-            </transition>
-        </gnkSwipeManager>
+                <div v-if="!!this.$slots.default" class="--content-body | flex ">
+                    <slot>
+                    
+                    </slot>
+                </div>
+            </div>
+            <div v-if="!!this.$slots.footer" class="--footer | flex">
+                <slot name="footer">
+
+                </slot>
+            </div>
+
+<!--         <div class="--badge-holder">
+            <slot name="badge" />
+        </div>
+ -->
     </div>
+
 
 </template>
 
 <style lang="scss">
-@import "../../scss/base"; 
 
-.gnk-card{
-    transition:all 1s ease-in-out !important;
+
+
+
+
+
+
+
+[class*="--cardType"] {
+    transition: all .25s ease-in-out;
+    
+    overflow: hidden;
+    margin:5px;
+    margin-bottom: 5px;
+
+
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    
+    display: grid;
+    width: 100%;
+
+    transition: all .25s ease-in-out;
+
     position: relative;
 
-    border-radius: var(--BORDER-RADIOS);
-    overflow-y: auto;
-    max-height: 100% !important;
+    background: -color('LEVEL-1');
+    border-radius: var(--BORDER-RADIUS);
 
-    &.--card-expanded{
-        pointer-events: visible;
-        transition: all 1s ease-in-out;
-        position: absolute ;
-        z-index: 9999;
+    box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+    border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
+    
+    
 
-        box-sizing: border-box;
-        overflow:hidden;
 
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
+    &>.--content {
+        grid-area: content;
 
-    }
+        transition: all .25s ease;
+        padding: 15px;
 
-    .--card-container{
-        display: flex;
-        flex-direction: column;
-        height: 100%;
+        overflow: visible;
         width: 100%;
-        overflow-y:auto;
-    }
-
-    .--card-header{
-        width:100% !important;
-        .--close-expanded-card{
-            position: absolute;
-            top: 15px;
-            right:15px;
-        }
+        height: auto;
+        max-height:100vmax;
         
-        .--media{
-            position: relative;
-            height: 150px;
+
+        &>.--content-title {
+            transition: all .25s ease-in-out;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
             width: 100% !important;
 
+            &>:first-of-type(h4,h3,h2,h1,p){
+                margin-block-start: 10px;
+                margin-block-end: 10px;
+                margin-inline-start: 0px;
+                margin-inline-end: 0px;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
         }
+        
 
-        .--card-title{
-            border-radius: var(--BORDER-RADIOS)  var(--BORDER-RADIOS) 0 0 ;
-            background: -color('BASE'); 
-
-            position: relative;
-            padding: 20px 15px;
+        &>.--content-body {
+            transition: all .25s ease-in-out; 
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            justify-content: flex-start;
             width: 100%;
-            margin-top: -10px;
-        }
-    }
-    
-    .--card-body{
-        display:flex;
-        flex-direction: column;
-
-        background: -color('BASE'); 
-        padding: 5px;
-        height:100%;
-        overflow-y: auto;
-
-        .--card-content{
-            border-radius: var(--BORDER-RADIOS);
-            background-color: -color('LEVEL-1');
-        }
-        .--card-content-expanded{
-            border-radius: var(--BORDER-RADIOS);
-            background-color: -color('LEVEL-1');
             height:100%;
+            overflow-y: scroll;
         }
     }
 
-    .--card-footer{
+    &>.--hero-container {
+        grid-area: media;
 
-        background: -color('BASE'); 
-        border-radius: 0 0 var(--BORDER-RADIOS) var(--BORDER-RADIOS);
+        height: 100%;
+        width: 100%;
+        background: -color('LEVEL-1');
+
+        border-radius: var(--BORDER-RADIUS);
+        overflow: hidden;
+        position: relative;
+
+        &>.--hero-background {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            min-height: 250px;
+            min-width: 200px;
+        }
+
+        &>.--interactions {
+            position : absolute;
+            bottom: 15px;
+            right : 15px;
+
+            transition: all .25s ease-in-out;
+            
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
+    }
+
+    &>.--footer{
+        transition: all .25s ease-in-out;
+        grid-area: footer;
+
+        background: -color('LEVEL-2');
+        border-radius: 0 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS);
+        min-height:10%;
+        height: fit-content;
+        padding: 5px 2px;
+    }
+
+
+
+    &.--animate:is(:active, :hover) {
+        transform: translateY(-10px);
+        box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+
+        
+            &>.--content {
+                &>.--content-title {
+                    transition: transform .5s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
+
+                &>.--content-body {
+                    opacity: 1;
+                    transition: transform .4s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
+            }
+
+            &>.--hero-container>.--interactions {
+                transform: translate(0, 0) scale(1.1);
+            }
+        
+    }
+
+    &:focus-within:is(.--animate){
+        transform: translateY(-10px);
+        box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+
+        
+            &>.--content {
+                &>.--content-title {
+                    transition: transform .5s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
+
+                &>.--content-body {
+                    opacity: 1;
+                    transition: transform .4s .10s ease-in-out;
+                    transform: translateY(5px);
+                }
+            }
+
+            &>.--hero-container>.--interactions {
+                transform: translate(0, 0) scale(1.1);
+            }
+    }
+
+    &:is(.--separate-title){
+            .--content-title{
+
+                padding: 10px;
+                margin-bottom: 10px;
+                &::after{
+                    content: '';
+                    position: absolute;
+                    bottom: 0px;
+                    left: 0px;
+                    width: 100%;
+                    border-top: var(--BORDER-SIZE) solid -color('LEVEL-4', 0.5);
+                    border-bottom: var(--BORDER-SIZE) solid -color('LEVEL-0', 0.5);
+                }
+            }
     }
 }
 
-
-@keyframes modal_open {
-    from {
-        opacity: 0;
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
-    }
-    to {
-        opacity: 1;
-        top:0px;
-        left:0px;
-        height:100%;
-        width:100%;
-    }
-}
-.modal_open {
-    pointer-events: none;
-    animation-fill-mode: both;
-    animation-name: modal_open;  
-    animation-duration: 0.3s;
+.--cardType01 {
+    grid-template-areas:
+            "media"
+            "content"
+            "footer";
+    grid-template-rows: auto 1fr auto;
 }
 
-@keyframes modal_close {
-    from {
-        opacity: 1;
-        top:0px;
-        left:0px;
-        height:100%;
-        width:100%;
+.--cardType02 {
+    grid-template-areas:
+            "media content"
+            "footer footer";
+    grid-template-columns: 50% 1fr;
+
+    &>.--hero-container {
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0 0;
+        &>.--hero-background{
+            border-radius: 0;
+        }
     }
-    to {
-        top:var(--top);
-        left:var(--left);
-        height:var(--height);
-        width:var(--width);
+}
+
+.--cardType03 {
+    overflow: hidden;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+            "media"
+            "footer";
+
+
+    &>.--content {
+        grid-area: media;
+        position: absolute;
+
+        height: 100%;
+        width: 100%;
+        transform: translateY(calc(100% - var(--LINE-HEIGHT) * 3));
+
+        background: -color('LEVEL-1');
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0px 0px;
+
+        &>.--content-body {
+            opacity: 0;
+        }
+    }
+
+    &>.--hero-container>.--interactions {
+        right:15px;
+        top: 15px;
+        bottom: auto;
+        left: auto;
+        z-index: 2;
+    }
+
+    &>.--footer{
+        z-index: 1;
+    }
+
+    &:is(:active, :hover) {   
+        .--content {
+
+            //backdrop-filter: saturate(180%) blur(20px);
+            background: -color('LEVEL-1', 1);
+            transform: translateY(0%);
+        }
+        .--hero-container>.--interactions {
+            transform: translate(-10%, 10%) scale(1.1);
+        }
+    }
+}
+
+.--badge-holder{
+    border-radius: inherit !important;
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    background: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.--cardType04 {
+    
+    background: transparent;
+    box-shadow: unset;
+    grid-template-areas:
+        "media"
+        "content"
+        "footer";
+    grid-template-rows: auto 0 auto;
+    transition: transform .25s ease-in-out;
+
+    &>.--content{
+        
         opacity: 0;
         z-index: -1;
+        place-self: center center;
+        width : calc(100% - 20px);
+        margin-top: -10px;
+        
+        background: -color('LEVEL-1');
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0 0;
+        
+
+    }
+
+    &>.--footer{
+        width: 100%;
+        align-self: start;
+        place-self: flex-start center;
+        box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+
+        transition: width .25s ease-in-out;
+    }
+
+    &>.--hero-container>.cardInteractions {
+        top: 15px;   
+        right: 15px;
+    }
+
+    &:is(:active, :hover) {
+
+        box-shadow: unset;
+        grid-template-rows: auto auto auto;
+
+        &>.--content {
+            //backdrop-filter: saturate(180%) blur(20px); 
+            animation-direction: normal ;
+            animation: card4 1s ease-in-out;
+            opacity:1;
+            z-index: 1;
+        }
+        
+    
+        &>.--hero-container>.cardInteractions {
+            top: 15%;
+            right: 5%;
+        }
+
+        &>.--footer{
+            width: calc(100% - 20px);
+            box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+        }
+    }
+    @keyframes card4 {
+        0% {
+
+            opacity: 0.0;
+            z-index: -1;
+
+        }
+        50%{
+            z-index: 0;
+            transform: translateY(10px);
+        }
+
+        100% {
+            opacity: 1.0;
+            z-index: 1;
+            transform: translateY(0px);
+        }
+
     }
 }
-.modal_close {
-    pointer-events: none;
-    animation-fill-mode: both;
-    animation-name: modal_close;
-    animation-duration: 0.2s;
+
+.--cardType05 {
+    grid-template-areas:
+        "media content"
+        "footer footer";
+    grid-template-columns: 60% 1fr;
+
+    &>.--content {
+        margin-left: 15px !important;
+    }
+
+    &>.--hero-container {
+        border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+    }
 }
 
 
-
-
-@keyframes fadeIn {
-    from {
-        pointer-events: none;
-        opacity: 0;
-    }
-    to {
-        pointer-events: auto;
-        opacity: 1;
-    }
-}
-.fadeIn {
-    animation-delay: calc(0.5s * attr(data-animation-offset number 1));
-    animation-fill-mode: both;
-    animation-name: fadeIn;
-    animation-duration: 0.3s;
-}
-
-@keyframes fadeOut {
-    from {
-        pointer-events: none;
-        opacity: 1;
-    }
-    to {
-        pointer-events: none;
-        opacity: 0;
-    }
-}
-.fadeOut {
-    animation-delay: calc(0.5s * attr(data-animation-offset number 1));
-    animation-fill-mode: both;
-    animation-name: fadeOut;
-    animation-duration: 0.3s;
-}
 
 
 

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import { markRaw } from 'vue'
 import EVENTS from '../../index'
 import EventBus from '../../index'

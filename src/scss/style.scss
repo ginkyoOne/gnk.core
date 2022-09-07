@@ -1,11 +1,22 @@
-@import 'base';
 
-
+@import     'base/mixings/_mixings.scss', 
+            'base/theme/_vars.scss',
+            'base/theme/_colors.scss',
+            'base/theme/_dark.scss',
+            'base/theme/_fonts.scss',
+            'base/ripple/_ripple.scss',
+            'base/vendor/_vendor.scss',
+            'base/grid/_grid.scss';
 
 * {
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    position: relative;
+    accent-color: -color('primary');
+    caret-color:  -color('primary');
+    
+
 }
 
 html,
@@ -13,11 +24,6 @@ body{
     height: 100%;
     width: 100%;
     display: block;
-    box-sizing: border-box;
-
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
 
     background-color: -color('LEVEL-0') !important;
     color: -color('TEXT', 1);
@@ -26,18 +32,18 @@ body{
     line-height: var(--LINE-HEIGHT);
     text-align: justify;
     transition: background-color 0.4s ease, color 0.2s ease;
-
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
 #app{
-    overflow-y: auto;
     height: 100%;
     width: 100%;
     display: block;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
-
+ 
 
 
 

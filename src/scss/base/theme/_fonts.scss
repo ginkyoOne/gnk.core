@@ -1,0 +1,226 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+[class*="material-symbols"] {
+    font-size: inherit ;
+    line-height: inherit;
+}
+
+:root{
+    //FONTS
+    --FONT-TITLE-FAMILY: 'Poppins', sans-serif;
+    --FONT-FAMILY: 'Roboto', sans-serif;
+    --FONT-SIZE: 14px;
+    --LINE-HEIGHT: 1.125rem;
+
+    --FONT-WEIGHT-LIGHT: 300;
+    --FONT-WEIGHT-REGULAR: 400;
+    --FONT-WEIGHT-BOLD: 700;
+
+}
+
+* {
+    font-family: var(--FONT-FAMILY);
+    font-weight: var(--FONT-WEIGHT-REGULAR);
+    font-size: calc(var(--FONT-SIZE));
+    line-height: calc((var(--FONT-SIZE) * 1.1) + 0.25rem);
+}
+
+h1, h2, h3, h4{
+    &:is(.header-anchor) {
+        position: relative;
+        
+        &:is(h1) {
+            padding-left: 3.4rem !important;
+            transform:translateX( -3.4rem );
+        }
+    
+        &:is(h2) {
+            padding-left: 2.4rem !important;
+            transform:translateX( -2.4rem );
+        }
+    
+        &:is(h3) {
+            padding-left: 1.8rem !important;
+            transform:translateX( -1.8rem );
+        }
+    
+        &:is(h4) {
+            padding-left: 1.6rem !important;
+            transform:translateX( -1.6rem );
+        }
+        
+        cursor: pointer;
+        transition: all 0.25s ease-in-out;
+
+        &>A {
+            pointer-events: none !important;
+            transition: all 0.25s ease-in-out;
+            opacity: 0;
+            color: inherit;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            text-decoration: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+
+    &:is(.header-anchor):is(:hover, :active) {
+        transform: translateX(0);
+        
+        &>A {
+            transform: translateX(0.1rem);
+            pointer-events: all !important;
+            opacity: 1;
+        }
+    }
+}
+
+h1 {
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-BOLD);
+    font-size: calc(var(--FONT-SIZE) * 2.5);
+    line-height: calc((var(--FONT-SIZE) * 2.5) + 0.25rem);
+}
+
+h2 {
+    position : relative;
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-BOLD);
+    font-size: calc(var(--FONT-SIZE) * 1.8);
+    line-height: calc((var(--FONT-SIZE) * 1.8) + 0.25rem);
+}
+
+h3 {
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+    font-size: calc(var(--FONT-SIZE) * 1.4);
+    line-height: calc((var(--FONT-SIZE) * 1.4) + 0.25rem);
+}
+
+h3 {
+    font-family: var(--FONT-TITLE-FAMILY);
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+    font-size: calc(var(--FONT-SIZE) * 1.2);
+    line-height: calc((var(--FONT-SIZE) * 1.2) + 0.25rem);
+}
+
+p {
+    padding-top: 10px;
+}
+
+// utility
+
+.text-hide {
+    background: transparent;
+    border: 0;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+    text-shadow: none;
+}
+
+.text-assistive {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+// Text transform utilities
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+// Text style utilities
+.text-light {
+    font-weight: var(--FONT-WEIGHT-LIGHT);
+}
+.text-normal {
+    font-weight: var(--FONT-WEIGHT-REGULAR);
+}
+
+.text-bold {
+    font-weight: var(--FONT-WEIGHT-BOLD);
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.text-large {
+    font-size: calc(var(--FONT-SIZE) * 1.5);
+    line-height: calc((var(--FONT-SIZE) * 1.5) + 0.25rem);
+}
+
+.text-small {
+    font-size: calc(var(--FONT-SIZE) / 1.5);
+    line-height: calc((var(--FONT-SIZE) / 1.5) + 0.25rem);
+}
+
+.text-tiny {
+    font-size: calc(var(--FONT-SIZE) /2);
+    line-height: calc((var(--FONT-SIZE) /2) + 0.25rem);
+}
+
+.text-muted {
+    opacity: .8;
+}
+
+// Text overflow utilities
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-clip {
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.text-break {
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
+}

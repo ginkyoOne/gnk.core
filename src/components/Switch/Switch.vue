@@ -1,157 +1,608 @@
-<template>
-  <label
-    class="c-Switch"
-    v-bind="switchAttributes"
-    @keydown.space.prevent
-    @keyup.enter="onTrigger()"
-    @keyup.space="onTrigger()"
-  >
-    <input
-      v-model="state"
-      aria-hidden="true"
-      class="c-Switch__input"
-      type="checkbox"
-      :disabled="disabled"
-      @click="onTrigger()"
-    />
-    <div class="c-Switch__slider" />
-    <span v-if="label" class="c-Switch__label">
-      {{ label }}
-    </span>
-  </label>
-</template>
+
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
+import createRipple from "../../utils/ripple"
+
 export default {
-  name: 'Switch',
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-  emits: ['update:modelValue'],
+  name: 'gnkSwitch',
+  extends: gnkComponent,
+  emits: ['update:modelValue','click','mouseleave','mouseover','keydown','keypress','keyup'],
+
   data() {
     return {
-      state: this.modelValue,
+      //store: gnk.Store,
+      defaultValue: null,
     }
   },
+
+  props: {
+    name: {
+      type: String,
+      require: false,
+      default: '',
+      skip: true
+    },
+
+    value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+
+    modelValue: {
+      default: null,
+      required: false,
+      skip: true
+    },
+
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false,
+      skip: true
+    },
+
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    indeterminate: {
+      type: Boolean,
+      default: false,
+      skip: true,
+    },
+
+    square: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+
+    lineThrough: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    align: {
+      type: String,
+      default: 'right',
+      skip: true,
+      validator: (value) => ['left', 'center', 'right'].includes(value)
+    },
+
+    border:{
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    gradient:{
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    shadow:{
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+    size:{
+      type: String,      
+      required: false,
+      default: 'default',
+      skip: true,
+      validator(type) {
+        return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
+      },
+    },
+
+
+    animate:{
+      type: String,      
+      required: false,
+      skip: true,
+      default: 'default',
+      validator(type) {
+        return ['fade','scale', 'flip','default'].includes(type)
+      },
+    },
+
+  },
+
   computed: {
-    switchAttributes() {
+    isChecked() {
+      return (Array.isArray( this.modelValue) ? this.modelValue.includes(this.defaultValue) : this.modelValue === this.defaultValue)
+    },
+
+    //STYLING CLASSES  
+    componentClassObject: function () {
       return {
-        'aria-disabled': this.disabled,
-        tabindex: this.disabled ? undefined : '0',
-      }
+          '--primary': true,
+          '--checked': this.isChecked,
+          '--align-left': this.align === 'left',
+
+
+          '--size-xl': this.size === 'xl',
+          '--size-l': this.size === 'l',
+          '--size-small': this.size === 'small',
+          '--size-mini': this.size === 'mini',
+
+
+          '--animate-fade': this.animate === 'fade' && !this.loading && !this.busy ? true : false,
+          '--animate-scale': this.animate === 'scale'  && !this.loading  && !this.busy ? true : false,
+          '--animate-flip': this.animate === 'flip'  && !this.loading && !this.busy ? true : false,
+
+        }
     },
   },
+
+  mounted() {
+    this.defaultValue = (this.value === null ? Math.random().toString(36).substr(2, 9) : this.value)
+    if(this.checked) this.onchange(null)
+  },
+
   watch: {
-    modelValue(newModelValue) {
-      this.state = newModelValue
-    },
-    state(newValue) {
-      this.$emit('update:modelValue', newValue)
+    value(newValue) {
+      this.defaultValue = (newValue === null ? Math.random().toString(36).substr(2, 9) : newValue)
     },
   },
+
   methods: {
-    onTrigger() {
-      this.state = !this.state
-    },
-  },
+    onchange(event) {
+      if (!!event & !this.disabled & !this.busy & !this.loading) createRipple.createRipple(event)
+
+      
+      //CHECK IF MODELVALUE IS AN ARRAY
+      if (Array.isArray(this.modelValue)) {
+
+        //IF CHECKED, REMOVE VALUE FROM MODELVALUE
+        if (this.isChecked){
+
+          this.modelValue.splice(this.modelValue.indexOf(this.defaultValue), 1)
+        }else {
+
+          this.modelValue.push(this.defaultValue)
+        }
+
+        this.modelValue.sort()
+        this.$emit('update:modelValue', this.modelValue)
+
+      } else {
+
+        if (this.isChecked) {
+          this.$emit('update:modelValue', null)
+        } else {
+          this.$emit('update:modelValue', this.defaultValue)
+        }
+      }
+          
+    }
+  }
+
 }
 </script>
-<style scoped>
-.c-Switch {
-  cursor: pointer;
-  position: relative;
+
+
+<template>
+  <div :disabled="disabled" :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+    :id="componentId"
+
+    @click.prevent="onchange($event)"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
+    @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+    @keypress.prevent="onchange($event)"
+    @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+
+        <input
+          :id="componentId"
+          :name="name"
+          type="checkbox"
+          :checked="isChecked"
+          :value="defaultValue"
+        />
+
+
+        <div class="--base">
+          <div class="--ripple" />
+
+          <div v-if="!!this.$slots.on" class="--switch-on">
+            <slot name="on"></slot>
+          </div> 
+
+          <div class="--thumb">
+          </div>
+          
+          <div v-if="!!this.$slots.off" class="--switch-off">
+            <slot name="off">
+            </slot>
+          </div>
+        </div>
+        
+
+        <label :for="componentId">
+            <slot name="label"/>
+        </label>
+
+        <gnk-loading v-if="this.busy" :target="'#' + componentId + '> .--base'" />
+
+        <div class="--badge-holder">
+          <slot name="badge" />
+        </div>
+
+
+  </div>
+        
+</template>
+
+
+<style lang="scss">
+
+.gnkSwitch{
+
+  --height: 22px;
+  --width: calc(var(--height) * 2);
+
+  --thumb-size: .8;
+
+  --border-size: var(--BORDER-SIZE);
+  --border-radius: 100vmax;
+
+
+
+  transition: all .25s ease-in-out;
+
   display: flex;
+  flex-direction: row;
   align-items: center;
-  width: -moz-fit-content;
-  width: fit-content;
+  gap: 5px;
+
+  cursor: pointer;
+  
+
+
+
+  &>.--badge-holder, &>.--base>.--handle>.--ripple{
+    inset: 0;
+    border-radius: var(--border-radius);
+  }
+
+  &>.--badge-holder{
+    z-index: 3;
+  }
+
+
+
+  input[type="checkbox"]{
+    display: none;
+  }
+
+  &>label{
+    color: -color('TEXT');
+
+    &::after{
+      transition: all 0.2s ease-in-out;
+
+      content: '';
+      position: absolute;
+      top: calc(50% - 1px);
+      left: 0px;
+      width: 100%;
+      height: 2px;
+      
+      background-color: -color('TEXT');
+      border-radius: inherit;
+
+      transform: scaleX(0);
+    }
+  }
+
+
+  &>.--base{
+    transition: all .25s ease-in-out;
+    
+    overflow: hidden;
+    isolation: isolate;
+
+    position: relative;
+
+    height:var(--height);
+    width: var(--width);
+    min-width: var(--width);
+
+    display: grid;
+    grid: 1fr / 1fr;
+    justify-content: center;
+    
+    background: -color('DARK');
+    border-radius: var(--border-radius);
+    border: var(--border-size) solid -color('LIGHT',1,0,0,-5);
+    
+    box-shadow: var(--BOX-SHADOW);
+
+    &::after{
+      content: "";
+      position: absolute;
+      inset: 0;//var(--border-size);
+      
+      border-radius: var(--border-radius);
+      background: -color('BASE');
+      z-index: -1;
+
+      transition: all .25s ease-in-out;
+      transform:translateX(-110%);
+    }
+  }
+
+  &>.--base>.--thumb{
+    transition: all .3s ease-in-out;
+
+    
+
+    grid-column: 1;
+    grid-row: 1; 
+
+    position: relative;
+    //inset: 0;
+    border-radius: var(--border-radius);
+
+    height:calc(var(--height) - (var(--border-size) * 6));
+    width: calc(var(--height) - (var(--border-size) * 6));
+
+    background:-color('LIGHT',1,0,0,5);
+
+    top: calc(var(--border-size)*2);
+    left: calc(var(--border-size)*2);  
+  }
+
+
+
+  
+
+  &>.--base>.--switch-on, &>.--base>.--switch-off{
+    //display: none !important;
+    transition: all .35s ease-in-out;
+
+    grid-column: 1;
+    grid-row: 1;
+    
+    height:calc(var(--height) - var(--border-size) * 2);
+    width: 100%;
+    margin: 0px;
+    padding: 15%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+
+    z-index: 2;
+
+  }
+  
+  &>.--base>.--switch-off{
+    justify-content:flex-end;
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  &>.--base>.--switch-on{
+    justify-content:flex-start;
+    transform: translateX(-110%);
+  }
+
+
+  //STATUS
+  &:is(.--checked){
+    &>.--base{
+
+      &::after{
+        transform: translateX(0%);
+      }
+
+      &>.--thumb{
+        left: calc(100% - (var(--height) - (var(--border-size)*4)));
+      }
+      &>.--switch-off{
+        transform: translateX(110%);
+        opacity: 0;
+      }
+
+      &>.--switch-on{
+        transform: translateX(0%);
+        opacity: 1;
+      }
+    }
+    
+  }
+
+  &:is(:disabled, .--disabled,.--busy,.--loading){
+    cursor:not-allowed;
+    pointer-events: none;
+  }
+
+  &:is(:disabled, .--disabled){
+    opacity: .6;
+    filter:brightness(50%);
+  }
+
+  &:is(.--busy){
+    cursor:progress;
+    &>.--base{
+      height:var(--height);
+      width: var(--height);
+      min-width: var(--height);
+    }
+  }
+
+
+
+  //LABEL
+  &:is(.--lineThrough){
+    &:is(.--checked)>label{
+      color: -color('TEXT',.6);
+
+      &::after{
+        background-color: -color('TEXT',.6);
+        transform: scaleX(1);
+      }
+    }
+  }
+  
+  &:is(.--align-left) {
+    flex-direction: row-reverse;
+  }
+  
+
+  //FORMAT
+  &:is(.--square) {
+    --border-radius: 2px;
+  }
+
+  &:is(.--block) {
+    width: 100% ;
+
+    &>label{
+      width: 100%;
+      display: inline-block;
+    }
+  }
+
+
+
+  // SIZING
+  &:is(.--size-xl) {
+    --height: 28px;
+    --width: 58px;
+  }
+
+  &:is(.--size-l) {
+    --height: 24px;
+    --width: 50px;
+  }
+
+  &:is(.--size-small) {
+    --height: 18px;
+    --width: 38px;
+  }
+
+  &:is(.--size-mini) {
+    --height: 16px;
+    --width: 33px;
+  }
+  
+
+
+  //STYLE
+  &:is(.--gradient){
+    &>.--base::after{
+      background-image: linear-gradient(30deg, -color('BASE', 0) 50%, -color('BASE', 1, 45, 15, 10) 80%);
+    }
+  }
+
+  &:is(.--shadow){
+    &:is(:checked, .--checked){
+      &>.--base{
+        box-shadow: 0px 0.2rem 0.3rem -color('BASE', .3);
+      }
+    }
+  }
+
+  &:is(.--border){
+    --border-size : calc(var(var(--border-size) * 2));
+    &>.--base{
+      border-color:-color('BASE');
+      
+      &::after{
+        background:transparent;
+      }
+    }
+
+    &:is(.--checked){
+      &>.--base>.--thumb{
+        background:-color('BASE');
+      }
+    }
+  }
+
+
+
+  //ANIMATION
+  &:is(.--animate-fade){
+    &>.--base>.--thumb, &>.--base::after{
+      animation: animation-fade-in .5s ease-in-out 1;
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb, &>.--base::after{
+        animation: animation-fade-out .5s ease-in-out 1;
+      } 
+    }
+  }
+  &:is(.--animate-scale){
+    &>.--base>.--thumb{
+      transition: all 0.5s ease-in-out;
+      transform:scale(.8);
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb{
+        transition: all 0.5s ease-in-out;
+        transform:scale(1);
+      } 
+    }
+  }
+  &:is(.--animate-flip){
+    &>.--base>.--thumb{
+      transition: all 0.5s ease-in-out;
+      transform: rotateY(180deg);
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb{
+        transition: all 0.5s ease-in-out;
+        transform: rotateY(0deg);
+      }
+    }
+  }
+
+
+
+
+
+
+
+  @keyframes animation-fade-out{
+    0%{
+      opacity: 1;
+    }
+    20%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
+  @keyframes animation-fade-in{
+    100%{
+      opacity: 1;
+    }
+    20%{
+      opacity: 0;
+    }
+    0%{
+      opacity: 1;
+    }
+  } 
+
 }
 
-.c-Switch input {
-  display: none;
-}
-
-.c-Switch__slider {
-  position: relative;
-  display: block;
-  width: 48px;
-  height: 24px;
-  border: 2px solid black;
-  border-radius: 24px;
-  background-color: white;
-  transition: 0.15s;
-}
-
-.c-Switch__slider:before {
-  content: '';
-  border-radius: 24px;
-  position: absolute;
-  position: absolute;
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  top: 2px;
-  background-color: black;
-  transition: 0.15s;
-}
-
-.c-Switch__label {
-  user-select: none;
-  margin-left: 8px;
-}
-
-/* Checked */
-
-.c-Switch__input:checked + .c-Switch__slider {
-  border-color: #101010;
-  background-color: #101010;
-}
-
-.c-Switch__input:focus + .c-Switch__slider {
-  box-shadow: 0 0 1px #101010;
-}
-
-.c-Switch__input:checked + .c-Switch__slider:before {
-  background-color: white;
-  transform: translate(24px);
-}
-
-/* Disabled */
-
-.c-Switch[aria-disabled='true'] {
-  cursor: not-allowed;
-}
-
-.c-Switch[aria-disabled='true'] .c-Switch__slider {
-  border: 2px solid #757575;
-  background-color: #e0e0e0;
-}
-
-.c-Switch[aria-disabled='true'] .c-Switch__input:checked + .c-Switch__slider {
-  border: 2px solid #757575;
-  background-color: #757575;
-}
-
-.c-Switch[aria-disabled='true'] .c-Switch__slider:before {
-  background-color: #757575;
-}
-
-.c-Switch[aria-disabled='true']
-  .c-Switch__input:checked
-  + .c-Switch__slider:before {
-  background-color: #e0e0e0;
-  transform: translate(24px);
-}
 </style>

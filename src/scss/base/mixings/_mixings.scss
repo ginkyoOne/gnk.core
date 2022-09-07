@@ -1,0 +1,47 @@
+
+//MIXINGS
+@function -color($color, $alpha: 1, $H: 0, $S: 0, $L: 0) {
+    @return unquote('hsla(calc(var(--COLOR-#{$color}-H) + #{$H}),calc(var(--COLOR-#{$color}-S) + #{$S}%),calc(var(--COLOR-#{$color}-L) + #{$L}%), #{$alpha})');
+};
+
+
+@function -status($var) {
+    @return unquote('var(--COLOR-#{$var})');
+};
+
+
+$breakpoints: ("phone": 400px,
+    "phone-wide": 480px,
+    "phablet": 560px,
+    "tablet-small": 640px,
+    "tablet": 768px,
+    "tablet-wide": 1024px,
+    "desktop": 1248px,
+    "desktop-ultra-wide": 10000000000000px);
+
+@mixin mq($val1, $val2: 0px , $type: min) {
+    @if map_has_key($breakpoints, $val1) {
+
+        $valOne: map_get($breakpoints, $val1);
+        $valTwo: map_get($breakpoints, $val2);
+
+        @if $type==minmax {
+            @media only screen and (max-width: $valOne) and (min-width: $valTwo) {
+                @content;
+            }
+
+        }@else if $type==max {
+            
+            $valOne: calc($valOne - 1px);
+            @media only screen and (max-width: $valOne) and (min-width: 0px) {
+                @content;
+            }
+
+        }@else if $type==min {
+            @media only screen and (min-width: $valOne) and (max-width: 100vmax) {
+                @content;
+            }
+        }
+
+    }
+}

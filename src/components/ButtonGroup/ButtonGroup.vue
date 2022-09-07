@@ -1,34 +1,23 @@
 <script>
-import mixin from "../../mixin/gnkComponent"
-import imageData from "../../utils/imageData"
+import { root } from "postcss"
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 export default {
     name: 'gnkButtonGroup',
-    mixins: [mixin.gnkComponent],
+    extends: gnkComponent,
     data() {
         return {
             childButtons:[],
-            selectedItems: [],
             selectedItem: null,
-            
-            }
-        },
+        }
+    },
     props: {
-
         toggle: {
             type: String,
             default: 'default',
             validator: function(value) {
-                return ['single', 'multiple', 'default'].includes(value)
+                return ['single', 'default'].includes(value)
             }
-        },
-
-        direction: {
-            type: String,
-            default: 'horizontal',
-            validator(type) {
-                return ['horizontal', 'vertical'].includes(type)
-            },
         },
 
         draggable: {
@@ -36,59 +25,91 @@ export default {
             default: false,
         },
 
-        
+
+        pill: {
+            type: Boolean,
+            required: false,
+            default: false,
         },
+
+        square: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+
+
+        border:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+        gradient:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+        transparent:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+        clear: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+        shadow:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+    },
+
     computed: {
+        selectedItems() {
+            return this.childButtons.filter(button => button.checked)
+        },
         componentClassObject() {
             return {
                 '--draggable' : this.draggable,
-                '--vertical' : this.direction === 'vertical',
                 }
-            },
         },
-    watch: {
+    },
         
-        },
+    watch: {
+
+
+    },
+
     emits: [
 
 
-        ],
+    ],
+
     methods: {
-        childValueChange (e) {
+        childChanged(event) {
 
-            switch (this.toggle) {
-                case 'single':
-                    
-                    this.selectedItem = e.detail.component
-                    this.childButtons = this.childButtons.map(button => {
-                        if(button.uid == e.detail.component.uid) button.checked = true 
-                        else button.checked = false
-                        return button
-                    })
+            if (event.newValue == false) return
+            
+            this.childButtons.forEach(button => {
+                if (button.componentId === event.componentId) {
+                    this.selectedItem = button
+                    return
+                }
 
-                    break;
-                case 'multiple':
+                button.checked = false
+            })
 
-                    if(e.detail.component.checked) this.selectedItems.push(e.detail.component)
-                    else this.selectedItems = this.selectedItems.filter(item => item.uid != e.detail.component.uid)
-                    
-                    break;
-                default:
-                    break;
-            }
         },
 
-        registerChildToggle(element){
-            this.childButtons.push(element)
-            element.$el.addEventListener('onchange', this.childValueChange)
-        }
-    },
-
-        
-
-    provide() {
-        return {
-            registerChild: this.registerChildToggle
+        registerChild(element) {
+            if (element?.$options?.name === 'gnkButton') this.childButtons.push(element)
         }
     },
 
@@ -96,21 +117,24 @@ export default {
 
     mounted() { 
 
-        },
+    },
 
 }
 </script>
+
 <template>
 
-    <div class="gnkButtonGroup" :ref="componentId" :id="componentId"  :class="[ componentClassObject , componentGeneralClasses]" >
-        <div class="--title">
-            <h4>
-                <slot name="title">
+    <div
+    	:class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+    	:id="componentId"
+        @onchange="childChanged()"
+        >
+        <div class="--title" v-if="!!this.$slots.title">
+            <slot name="title">
 
-                </slot>
-            </h4>
+            </slot>
         </div>
-        <div class="--buttons">
+        <div class="--buttons" >
             <slot>
 
             </slot>
@@ -118,119 +142,180 @@ export default {
     </div>
 
 </template>
+
 <style lang="scss">
-    
 
 
 .gnkButtonGroup{
-    background: -color('LEVEL-3');
-    border-radius: var(--BORDER-RADIOS);
-    padding: 8px 16px;
-
+    
+    position:relative;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    
     width: fit-content;
     height: fit-content;
 
-    position:relative;
+    justify-content: flex-start;
+    align-items: center;
 
-    border-color: -color('TEXT');
+
+    background-color: -color('LEVEL-2');
+    color: -color('BASE-TEXT');
+
+    border: var(--BORDER-SIZE) solid -color('LEVEL-2',1,0,0,1.5); 
+    border-radius: var(--BORDER-RADIUS);
     
+    font-size: .8rem;
+    line-height: 1rem;
+
+    margin-right:5px;
+    
+    &::after{
+        transition: all .2s ease-in-out;
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        background-color:inherit;
+        transform:scale(0);
+    }
+
     .--title{
-        color: -color('TEXT');
-        padding: 0px 12px;
+        
+        
         display: flex;
+        position:relative;
         flex-direction: row;    
+
         justify-content: center;
         align-items: center;
+        
+        padding: 0px 12px ;
+        
+
         text-align: left;
-        position:relative;
-        border-color: -color('TEXT');
+        
+        font-size: inherit;
+        line-height: inherit;
+        color: inherit;
     }
 
     .--buttons{
         display: flex;
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         width: fit-content;
         height: fit-content;
 
-        &>:first-child:is(.gnk-button):not(&:last-child){
-            border-top-left-radius: var(--BORDER-RADIOS);
-            border-bottom-left-radius: var(--BORDER-RADIOS);
-            border-bottom-right-radius: 0;
-            border-top-right-radius: 0;    
-        }
 
+        &>[class*="gnkButton"]:not(.--square){
+            margin: 0;
 
-        &>.gnk-button:is(.gnk-button + .gnk-button) {
-            border-radius: 0;
-        }
-
-        &>:last-child:is(.gnk-button):not(&:first-child){
-            border-bottom-right-radius: var(--BORDER-RADIOS);
-            border-top-right-radius: var(--BORDER-RADIOS);
-        }
-    }
-
-    .--buttons>.gnk-button{
-        margin: 0px;
-    }
-    
-
-    &.--vertical{
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        .--buttons{
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            &>:first-child:is(.gnk-button):not(&:last-child){
-                border-top-left-radius: var(--BORDER-RADIOS) !important;
-                border-bottom-left-radius: 0 !important;
-                border-bottom-right-radius: 0 !important;
-                border-top-right-radius:  var(--BORDER-RADIOS) !important;    
+            &:is(.gnkButton + .gnkButton):not(:last-child, :first-child){
+                border-left: 1px solid -color('BASE', 1, 0, 0, 2);
+                border-right: 1px solid -color('BASE', 1, 0, 0, -5);
+                border-radius: 0;
             }
-
-
-            &>.gnk-button:is(.gnk-button + .gnk-button) {
-                border-radius: 0 !important;
+            &:is(:first-child):not(:last-child){
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right: 1px solid -color('BASE', 1, 0, 0, -5);
             }
-
-            &>:last-child:is(.gnk-button):not(&:first-child){
-                border-bottom-right-radius: var(--BORDER-RADIOS) !important ;
-                border-bottom-left-radius: var(--BORDER-RADIOS)  !important;
+            &:is(:last-child):not(:first-child){
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: 1px solid -color('BASE', 1, 0, 0, 2);
             }
         }
 
-        
     }
-
-
 
     &:is(.--draggable){
-        .--title::before{
+        padding-left: 15px;
+        &::before{
+            
 
-        content: '';
-        cursor: move;
-        position: absolute;
-        top: 10%;
-        left: -4px;
+            position: absolute;
 
-        height: 80%;
-        width: 5px;
-        border-left: 1px;
-        border-right: 1px;
-        border-top: 0px;
-        border-bottom: 0px;
-        border-style: solid;
-        border-color: -color('TEXT');
+            content: '';
+            cursor: move;
+
+            top: 25%;
+            left: 5px;
+
+            height: 50%;
+            width: 2px;
+
+            border-left : 2px dotted -color('TEXT',.5);
+            border-right : 2px dotted -color('TEXT',.5);
+        
         }
     }
+
+
+    //FORMAT 
+    &.--pill{
+        border-radius: 100vmax;
+    }
+
+    &.--square {
+        border-radius: 0px;
+    }
+
+    &.--block {
+        width: 100% !important;
+        display: block !important;
+    }
+
+
+    //STYLES
+
+    &.--border{
+        background-color: transparent;
+    }
+
+    &.--transparent{
+        
+        &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+            color: -color('BASE');
+        }
+
+        background-color: transparent;
+        border: none;
+
+        &:is(:active, :checked,:hover, :focus ){
+            &::after{
+                
+                background-color: -color('BASE', .5,0,0,5);
+                transform:scale(1);
+
+                &:not(.--info,.--primary, .--success,.--warning,.--danger,.--bug, .--dark, .--light){
+                    background-color: -color('LEVEL-2', .5,0,0,1.5);
+                }
+            }
+        }
+    }
+
+    &.--clear{
+
+        &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+            color: -color('BASE');
+        }
+        
+        & [class*="gnkButton"]{
+            border:unset !important;
+        }
+        
+        background-color: transparent;
+        border: none;
+    }
+
+    &.--shadow{
+        box-shadow: 0px 5px 1rem -color('BASE', 0.4);
+    }
+
 
 }
 

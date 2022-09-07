@@ -4,11 +4,13 @@
   </div>
 </template>
 <script>
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 
 export default {
   name: 'Tooltip',
+  extends: gnkComponent,
   props: {
     content: {
       type: String,

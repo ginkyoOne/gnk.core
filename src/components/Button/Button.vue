@@ -1,778 +1,652 @@
-<script>
-import createRipple from "../../utils/ripple"
-import mixin from "../../mixin/gnkComponent"
+  <script>
+  import gnkComponent from "../ComponentBase/gnkComponent.vue"
+  import createRipple from "../../utils/ripple"
 
 
-export default {
-  name: 'gnkButton',
-  mixins: [mixin.gnkComponent],
-  emits: ['onsubmit','onchange', 'onclick','ondblclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onwheel', 'onfocus', 'onblur','onkeydown','onkeypress','onkeyup'],
+  export default {
+    name: 'gnkButton',
+    extends: gnkComponent,
+    emits: ['onsubmit','onchange', 'onclick','ondblclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onwheel', 'onfocus', 'onblur','onkeydown','onkeypress','onkeyup'],
 
-
-
-
-
-  data() {
-    return {
-      checked: false,
-    }
-  },
-
-  props: {
-    notSync: {
-      type: Boolean,
-      default: false,
-    },
-    disableRipple:{
-      type: Boolean,
-      default: false
-    },
-        
-    title: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
-
-
-
-
-
-    border:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    gradient:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    relief:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    transparent:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    shadow:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-
-
-
-    size:{
-      type: String,      
-      required: false,
-      default: 'default',
-      validator(type) {
-        return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
-      },
-    },
-    loading:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    animate:{
-      type: String,      
-      required: false,
-      default: 'default',
-      validator(type) {
-        return ['slide-up','slide-left', 'fade', 'scale', 'rotate', 'default'].includes(type)
-      },
-    },
-    
-    animateInactive:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-
-    floating:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    flat:{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    type: {
-      type: String,
-      required: false,
-      default: 'button',
-      validator(type) {
-        return ['submit', 'button', 'reset', 'toggle'].includes(type)
-      },
-    },
-
-
-  },
-
-  computed: {
-    buttonType() {
-      switch (this.type) {
-        case 'submit':
-            return 'submit'
-          break;
-        case 'button':
-            return 'button'
-          break;
-        case 'reset':
-            return 'reset'
-          break;
-        case 'toggle':
-            return 'button'
-        default:
-          break;
-      }
-    },
-
-    componentClassObject() {
+    data() {
       return {
-
-        '--toggle': this.type === 'toggle',
-        '--floating': this.floating,
-
-        '--flat': this.flat,
-        '--border': this.border,
-        '--gradient': this.gradient,
-        '--relief': this.relief,
-        '--transparent': this.transparent,
-        '--shadow': this.shadow,
-
-        '--size-xl': this.size === 'xl',
-        '--size-l': this.size === 'l',
-        '--size-small': this.size === 'small',
-        '--size-mini': this.size === 'mini',
-
-        '--animate': this.$slots?.animate  ? true : false,
-
-        '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.animateInactive ? true : false,
-        '--animate-slide-left': this.animate === 'slide-left'  && !this.loading && !this.animateInactive? true : false,
-        '--animate-fade': this.animate === 'fade'  && !this.loading && !this.animateInactive ? true : false,
-        '--animate-scale': this.animate === 'scale'  && !this.loading && !this.animateInactive? true : false,
-        '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.animateInactive? true : false,
-        
-        '--loading': this.loading,
-
-        '--active': this.checked & this.type == 'toggle' ,
-
+        checked: false,
+        activeStep: 0,
       }
     },
-  },
+
+    props: {
+
+      to: {
+        type: String,
+        skip: true,
+        default: '',
+      },
 
 
-  methods: {
+      type: {
+        type: String,
+        required: false,
+        skip: true,
+        default: 'button',
+        validator(type) {
+          return ['submit', 'button', 'reset', 'toggle'].includes(type)
+        },
+      },
 
-    onClick(event) {
-        event.preventDefault()
 
-        if(!this.disableRipple && !!event) createRipple.createRipple(event)
-        
-        if(this.type === 'toggle') {
-          this.checked = !this.checked 
-          this.$emit('onchange', new CustomEvent('onchange', {detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event }}))
-          this.$el.dispatchEvent( new CustomEvent('onchange',{detail:{  target: this.$el, component: this, newValue: this.checked , oldValue: !this.checked, event: event  }}))
-        }
-        
-        this.$emit('onclick', new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
-        this.$el.dispatchEvent( new CustomEvent('onclick', {detail:{ target: this.$el, component: this, event: event }}))
+
+
+
+
+      busy: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+      loading: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+      pill: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
+
+      circular: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
+
+      square: {
+          type: Boolean,
+          required: false,
+          default: false,
+      },
+
+
+
+      border:{
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      gradient:{
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+      transparent:{
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      clear: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+      shadow:{
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+      size:{
+        type: String,      
+        required: false,
+        default: 'default',
+        skip: true,
+        validator(type) {
+          return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
+        },
+      },
+
+
+      animate:{
+        type: String,      
+        required: false,
+        skip: true,
+        default: 'default',
+        validator(type) {
+          return ['slide-up','slide-left', 'fade', 'scale', 'rotate', 'default'].includes(type)
+        },
+      },
+      
+      animateInactive:{
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+
+
+
 
     },
 
-  },
+    computed: {
+      buttonType() {
+          return this.type
+      },
 
-  mounted() {
+      componentClassObject() {
+        return {
+          '--checked': this.type === 'toggle' && this.checked,
 
-  },
+          '--size-xl': this.size === 'xl',
+          '--size-l': this.size === 'l',
+          '--size-small': this.size === 'small',
+          '--size-mini': this.size === 'mini',
 
-}
-</script>
+
+          '--animate': this.$slots?.animate && !this.animateInactive  ? true : false,
+
+          '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.busy && !this.animateInactive ? true : false,
+          '--animate-slide-left': this.animate === 'slide-left'  && !this.loading  && !this.busy && !this.animateInactive? true : false,
+          '--animate-fade': this.animate === 'fade'  && !this.loading && !this.busy && !this.animateInactive ? true : false,
+          '--animate-scale': this.animate === 'scale'  && !this.loading && !this.busy && !this.animateInactive? true : false,
+          '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.busy && !this.animateInactive? true : false,
+
+        }
+      },
+    },
+
+    emits: ['onchange','click', 'mouseover','mouseleave','mouseover','keydown','keypress','keyup'],
+
+    methods: {
+
+      onToggle(eventName, event) {
+        // if thers an click event show the ripple  
+        if(!!event) createRipple.createRipple(event)
+
+        //check if the button is a toggle button
+        if (this.type === 'toggle') {
+
+          // if the button is checked then uncheck it
+          this.checked = !this.checked 
+
+          // create the event
+          let thisEvent = { componentId: this.componentId, newValue: this.checked, oldValue: !this.checked, event: event }
+
+          // call parent childchange event if it exists(only on button group)
+          if ((typeof this.$parent.childChanged === 'function')) this.$parent.childChanged(thisEvent)
+
+          // raise event
+          this.componentRaiseEvent('onchange',thisEvent)
+        }
+
+        // raise event
+        this.componentRaiseEvent(eventName, { event: event })
+        if(this.to !== '') this.$router.push(this.to)
+      },
+
+
+    },
+
+    mounted() {
+
+    },
+
+  }
+  </script>
 
 <template>
     <button
-      :ref="componentId"
-      :id="componentId"
-      class="gnk-button --primary"
-      :class="[componentClassObject , componentGeneralClasses]"
-      :title="title"
-      :aria-label="title"
-      :disabled="disabled"
-      :type="buttonType"
-      @click.stop="onClick($event)"
       :checked="checked"
-    >
-      <div class="--content">
-        <slot>gnkButton</slot> 
+      :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+      class="cursor-pointer inline-flex flex-centered "
+      :disabled="disabled"
+      :id="componentId"
+      :type="buttonType "
+
+
+      @click.prevent="onToggle('click',$event)"
+      @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
+      @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
+      @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+      @keypress.prevent="onToggle('keypress',$event)"
+      @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+
+
+      <transition name="fade">
+        <gnk-progressbar v-if="this.loading" loading class="fill " />
+      </transition>
+
+
+
+      <div class="--ripple" />
+
+
+      <div class="--content-holder">
+        <div class="--content-step1">
+          <slot>
+
+
+          </slot>
+        </div>
+          <div class="--content-step2" v-if="!!this.$slots.animate">
+            <slot name="animate">
+
+
+            </slot>
+          </div>
       </div>
-      <div class="--content-animate" v-if="!!this.$slots.animate">
-          <slot name="animate"></slot>
+
+
+      <transition name="fade">
+        <gnk-loading v-if="this.busy" :target="'#' + componentId" />
+      </transition>
+
+
+      <div class="--badge-holder">
+        <slot name="badge" />
       </div>
-    </button>
+
+
+  </button>
 </template>
 
 <style lang="scss">
-@import "../../scss/base";
 
+  .gnkButton{
+    transition: all 0.3s ease-in-out; 
+    isolation: isolate;
+    user-select: none;
 
+    position: relative;
 
-
-
-.gnk-button {
-  transition: flex 0.3s ease-out;
-  cursor:         pointer;
-  position:       relative;
-  overflow:       hidden;
-
-  display: flex;
-  height: fit-content;
-  min-width: fit-content;
-
-  margin: 5px;
-  padding: 8px 8px;
-
-  align-items: center;
-  justify-content: center;
-
-  border: var(--OUTLINE-SIZE) solid -color('PRIMARY', 0);
-  border-radius: var(--BORDER-RADIOS);
   
-  background-color: -color('BASE', 1);
-  color: -color('TEXT',1);
-
-  transition: transform 0.2s ease;
-  transform: translateY(0);
-
-  z-index: 1;
-
-  cursor: pointer;
-
-  .--content{
-    gap : 5px;
-    text-decoration: none;
+    background-color: -color('BASE');
+    color: -color('BASE-TEXT');
+  
+    border-radius: var(--BORDER-RADIUS);
+    border-width: var(--BORDER-SIZE);
+    border-style: solid;
+    border-color: -color('BASE',1,0,0,1.5); 
+  
+    width: max-content;
+    height: fit-content;
+  
+    margin:5px;
     padding: 8px 12px;
-    position:       relative;
-    overflow:       hidden;
-
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
-  .--content-animate{
-    gap : 5px;
-  }
-
-  &:is(:active):not(.--relief){
-    transition: filter 0.2s ease-in-out;
-    filter: contrast(1.5) grayscale(.1);
-    transform:scale(0.98);
-  }
-
-  &:disabled{
-    pointer-events: none;
-    opacity: .35;
-  }
-
-  &:is(:hover){
-    filter: brightness(1.2);
-
-
-  }
-
-
-
-
-&.--floating{
-
-  &:is(:hover):not(.disabled, .--relief, .--flat) {
-      transition: transform 0.2s ease;
-      transform: translateY(-2px);
-    
-      &:is(.--size-small) {
-        box-shadow: 0px 10px 20px -8px -color('BASE', 1);
-      }
-      &:is(.--size-mini) {
-        box-shadow: 0px 10px 20px -6px -color('BASE', 1);
-      }
-      &:not(.--size-small, .--size-mini) {
-        box-shadow: 0px 10px 20px -10px -color('BASE', 1);
-      }
-  }
-
-}
-&.--flat{
-  transition: opacity 0.2s ease, color 0.2s ease;
-
-  &:is(.--active){
-    background-color: -color('BASE',1);
-    color: -color('BUTTON-TEXT',1);
-  }
-
-  &:not(.--active){
-    color: -color('BASE', 1) !important;
-    background-color: -color('BASE',0.2);
-  }
-
-  &:is(:hover):not(.--active){
-    color: -color('BUTTON-TEXT',1) !important;
-    background-color: -color('BASE',0.4);
-  }
-
-  &:is(:active){
-    color: -color('BUTTON-TEXT',1) !important;
-    background-color: -color('BASE',0.9);
-  }
-
-}
-&.--border{
-
-  transition: border 0.2s ease, background-color 0.4s ease, color 0.2s ease ,transform 0.2s ease !important;
-
   
+    font-size: .8rem;
+    line-height: 1rem;
   
-
-  &:is(:hover):not(.--active){
-    border: var(--BORDER-SIZE)  solid -color('BASE', 0.6);
-    &:not(.disabled, .--flat,.--relief){
-      transition: transform 0.2s ease;
-      transform: translateY(-2px);
-    }
-  }
-
-
-  &:not(.--active){
-    border: var(--BORDER-SIZE)  solid -color('BASE', 1);
-    background-color: transparent ;
-    color: -color('BASE',1);
-  }
-
-  &:is(.--active, :active){
-    background-color: -color('BASE', 1);
-    color: -color('BUTTON-TEXT',1);
-  }
-
-}
-&.--gradient:not(.--loading){
-  transition: opacity 0.2s ease, color 0.2s ease;
-
-  &::after{
-    content: '';
-    position: absolute;
-    
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-
-    background: linear-gradient(30deg, -color('BASE',0) 33%, -color('BASE', 1) 100%);
-    
-    filter: hue-rotate(-40deg);
-
-    z-index: -1;
-          
-    border-radius: inherit;
-    pointer-events: none;
-    box-sizing: border-box;
-  }
-
-  &:is(.--primary, .--success){
+    //box-shadow: 0px 5px 1rem -color('BASE', 0.4);
     &::after{
-      filter: hue-rotate(40deg);
-    }
-  }
-
-
-  &:is(:hover):not(.--active){
-    background: -color('BASE', 1) ;
-    &::after{
-      opacity: 0.5;
-    }
-  }
-
-  &:is(:active){
-    background: -color('BASE', 0.9) ;
-    &::after{
-      opacity: 0.5;
-    }
-  }
-
-}
-&.--relief{
-  
-  background: -color('BASE');
-  color: -color('BUTTON-TEXT');
-  overflow: hidden;
-  
-  transition: all 0.3s ease;
-  
-  transform: translateY(-4px) scale(1,1);
-  padding-bottom: 4px;
-  
-
-  &:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-    height: calc(100% - 4px);
-
-    filter: contrast(2) grayscale(.4);
-    border-bottom: 3px solid -color('BASE', 1);
-    border-radius: inherit;
-    box-sizing: border-box;
-    
-    z-index: 2;
-  }
-
-  &:is(.--active){
-
-    transition: padding 0.3s ease , transform 0.3s ease, margin-bottom 0.3s ease !important;
-    padding-bottom: 0px;
-    transform: translateY(0px);
-    margin-bottom: 9px;
-
-    &::before {
-      transition: transform 0.3s ease, border-bottom 0.2s ease , opacity 0.2s ease  !important;
-      transform: translateY(4px);
-      opacity: 0;
-    }
-  }
-}
-
-
-&.--shadow{
-  transition: box-shadow 0.2s ease, translateY 0.2s ease;
-  background:transparent; 
-  transform:translateY(0px);
-
-  &:is(:hover):not(.--active){
-    transform:translateY(-2px);
-    box-shadow: 0px 5px 15px 0px -color('DARK', 0.8) !important;
-  }
-
-  &:is(:active, .--active){
-    transform:translateY(-2px);
-    box-shadow: 0px 5px 15px 0px -color('DARK', 1);
-  }
-
-}
-
-
-&.--transparent{
-  background:transparent;
-  color: -color('BASE'); 
-  
-  &::after{
-    content: '';
-    background: -color('BASE', .2);
-    position: absolute;
-    box-sizing: border-box;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-
-    border-radius: inherit;
-
-    transition: all .25s ease;
-    transform: scale(.5);
-    opacity: 0;
-    
-    z-index: -1;
-  }
-
-  &:is(:hover):not(.--active){
-    &::after{
-      opacity: 0.8;
-      transform: scale(1) !important;
-    }
-  }
-
-  &:is(:active, .--active){
-    color: -color('BUTTON-TEXT');
-    &::after{
-      background: -color('BASE', .4);
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-}
-&.--loading{
-  pointer-events: none;
-  user-select: none;
-  .--content{
-    &::after{
+      transition: all .2s ease-in-out;
       content: '';
       position: absolute;
-      top: 0px;
-      left: 0px;
+      inset: 0;
+      border-radius: inherit;
+      -moz-border-radius: inherit;
+      -webkit-border-radius: inherit;
+
+      z-index: -1;
+      transform:scale(0);
+    }
+
+    //INTERACTION
+    &:is(:disabled, .--disabled){
+      pointer-events: none;
+      opacity: .8;
+      filter:brightness(80%);
+    }
+
+    &:is(:hover, :focus){
+      border-width: var(--BORDER-SIZE);
+      &>.--content-holder{
+        opacity: 1;
+      }
+      &::after{
+        background-color: -color('BASE', .5,0,0,5);
+        transform:scale(1);
+      }
+    }       
+
+    &:is(:active, :checked, .--checked) {
+      opacity: 1;
+      border-width: var(--BORDER-SIZE);
+
+      &::after {
+        background-color: -color('BASE', .5, 0, 0, 10);
+        transform:scale(1);
+      }
+      
+      &:not(.--clear):is(:checked , .--checked){
+        box-shadow: inset 0px 0px 10px  -color('LEVEL-0', .5,0,0,-10);
+
+        &::after{
+          background-color: -color('BASE', .2, 0, 0, -10);
+        }
+      }
+
+
+    }
+
+    &:active{
+      transform: scale(.9);
+    }
+
+
+    //BASE STYLES
+    &.--loading, &.--busy{
+      pointer-events: none;
+      cursor: auto;
+      &>.--content-holder>[class*="--content-step"]{
+        color: -color('BASE-TEXT', .5);
+      }
+    }
+
+    &>.gnkProgressbar,&>.gnkLoading,&>.--badge-holder,&>.--ripple{
+      border-radius: inherit !important;
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      border: unset;
+    }
+
+    &>.--ripple{
+      border-radius: var(--BORDER-RADIUS);
+      overflow: hidden;
+    }
+
+    &>.--content-holder{
+      transition: all .2s ease-in-out;
+      position: relative;
+
+      display: grid;
+      grid: 1fr / 1fr;
+
+      align-items: center;
+      justify-content: center;
       width: 100%;
       height: 100%;
-      background: -color('BASE', 0.8);
-    }
-  }
+      font-size: inherit !important;
+      line-height: inherit !important;
 
-  &:after{
-    position: absolute;
-    content: '';
+      overflow: hidden;
+
+      &>[class*="--content-step"]{
+        
+        border-radius: inherit;
+        position: relative;
+        display: flex;
+        grid-column: 1;
+        grid-row: 1;
+
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        gap: 5px;
+        font-size: inherit !important;
+        line-height: inherit !important;
+
+        transition: all .25s ease-in-out;
+      }
+      &>.--content-step2{
+        opacity: 0;
+      }
+    }
+  
+
+    // SIZING
+    &.--size-xl {
+      //border-radius: 20px;
+      padding: 15px 20px;
+      font-size: calc(var(--FONT-SIZE) + 0.2rem);
+      line-height: calc(var(--LINE-HEIGHT) + 0.2rem);
+    }
+
+    &.--size-l {
+      border-radius: 15px;
+      padding: 10px 15px;
+      font-size: calc(var(--FONT-SIZE) + 0.1rem);
+      line-height: calc(var(--LINE-HEIGHT) + 0.1rem);
+    }
+
+    &.--size-small {
+      border-radius: 9px;
+      padding: 5px 10px;
+      font-size: calc(var(--FONT-SIZE) - 0.1rem);
+      line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
+    }
+
+    &.--size-mini {
+      border-radius: 7px;
+      padding: 3px 8px;
+      font-size: calc(var(--FONT-SIZE) - 0.2rem);
+      line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
+    }
     
-    top: calc(50% - (17px / 2));
-    left: calc(50% - (17px / 2));
-
-
-    width: 17px;
-    height: 17px;
-    box-sizing: border-box;
-
-    border: 2px solid -color('TEXT', 1);
-    border-top: 2px solid -color('TEXT', 1);
-    border-bottom: 2px solid -color('TEXT', 0);
-    border-right: 2px solid -color('TEXT', 0);
-    border-radius: 50%;
-
-    animation: cnkButton-loading .6s ease infinite;
     
-    z-index: 1;
-  }
 
-}
+    //FORMAT 
+    &.--pill{
+      border-radius: 100vmax;
+    }
+                          
+    &.--circular {
+      height: 34px;
+      width: 34px;
+      border-radius: 50%;
+      aspect-ratio: 1/1;
+
+      & .--size-xl{
+        height: 44px;
+        width: 44px;
+      }
+      & .--size-l{
+        height: 40px;
+        width: 40px;
+      }
+      & .--size-small{
+        height: 32px;
+        width: 32px;
+      }
+      & .--size-mini{
+        height: 28px;
+        width: 28px;
+      }
+      
+    }
+
+    &.--square {
+      border-radius: 0px;
+    }
+
+    &.--block {
+        width: 100% !important;
+        display: block !important;
+    }
 
 
+    //STYLES          
+    &.--border{
+      border-width: calc(var(--BORDER-SIZE) * 2);
+      background-color: transparent;
 
-&.--animate{
-  transition: all 0.2s ease !important;
-  .--content-animate{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    }
 
+    &.--gradient{
+      background-image: linear-gradient(30deg, -color('BASE', 0) 50%, -color('BASE', 1, 45, 15, 10) 100%);
+    }
 
-    height:100%;
-    width:100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    opacity: 0;
+    &.--transparent{
+      
+      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+        color: -color('BASE');
+      }
+
+      background-color: transparent;
+      border: none;
+
+      &:is(:active, :checked,:hover, :focus ){
+        color: -color('BASE-TEXT');
+      }
+    }
+
+    &.--clear{
+
+      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
+        color: -color('BASE');
+      }
+      
+
+      background-color: transparent;
+      border: none;
+      opacity: 0.9;
+
+      &::after{
+        visibility: hidden;
+      }
+
+      &>.--ripple{
+        visibility: hidden;
+      }
+
+      &:is(:hover, :focus){
+        opacity: 1;
+      }
+
+      &:is(:active, :checked){
+        opacity: .8;
+      }
+    }
     
-  }
-}
-&.--animate-fade{
-  .--content{
-    transition: opacity 0.3s ease;
-    opacity: 1;
-  }
-  .--content-animate{
-    transition: opacity 0.3s ease;
-    opacity: 0;
-  }
-
-  &:is(:hover,:active){
-
-    .--content{
-      opacity: 0;
+    &.--shadow{
+      box-shadow: 0px 0.25rem 0.5rem -color('BASE', 0.4);
     }
-    .--content-animate{
-      opacity: 1;
+
+
+
+
+    &.--animate{     
+        &.--animate-slide-up{
+          .--content-step2{
+            transform: translateY(100%);
+            opacity: 0;
+          }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: translateY(-100%);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: translateY(0%);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-slide-left{
+            .--content-step2{
+              transform: translateX(-100%);
+              opacity:0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-fade{
+            .--content-step2{
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              opacity: 0;
+            }
+            .--content-step2{
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-scale{
+            .--content-step2{
+              transform: scale(-1);
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform:scale(1.5);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform:scale(1);
+              opacity: 1;
+            }
+          }
+        }
+
+        &.--animate-rotate{
+            .--content-step2{
+              transform: rotate(-180deg);
+              opacity: 0;
+            }
+          &:is(:hover, :focus,:active){
+            .--content-step1{
+              transform: rotate(180deg);
+              opacity: 0;
+            }
+            .--content-step2{
+              transform: rotate(0deg);
+              opacity: 1;
+            }
+          }
+        }
     }
-  }
-}
-&.--animate-slide-up{
-  .--content{
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: translateY(0%);
-    opacity: 1;
-  }
-  .--content-animate{
-    opacity: 1;
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: translateY(100%);
-    opacity: 0;
-  }
 
-  &:is(:hover,:active){
 
-    .--content{
-      transform: translateY(-100%);
-      opacity: 0;	
-    }
-    .--content-animate{
-      transform: translateY(0%);
-      opacity: 1;
-    }
-  }
-}
-&.--animate-slide-left{
-  .--content{
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: translatex(0%);
-    opacity: 1;
-  }
-  .--content-animate{
-    opacity: 1;
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: translatex(100%);
-    opacity: 0;
-  }
 
-  &:is(:hover,:active){
 
-    .--content{
-      transform: translatex(-100%);
-      opacity: 0;
-    }
-    .--content-animate{
-      transform: translatex(0%);
-      opacity: 1;
-    }
-  }
-}
-&.--animate-scale{
-  .--content{
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: scale(1);
-    opacity: 1;
-  }
-  .--content-animate{
-    transition: transform 0.3s ease, opacity 0.1s ease;
-    transform: scale(0);
-    opacity: 0;
-  }
 
-  &:is(:hover,:active){
 
-    .--content{
-      transform: scale(0);
-      opacity: 0;
-    }
-    .--content-animate{
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-}
-&.--animate-rotate{
-  .--content{
-    transition: all 0.3s ease, opacity 0.1s ease;
-    transform: rotate(0deg);
-    opacity: 1;
-  }
-  .--content-animate{
-    transition: all 0.3s ease, opacity 0.1s ease;
-    transform: rotate(180deg);
-    opacity: 0;
-  }
 
-  &:is(:hover,:active){
 
-    .--content{
-      transform: rotate(180deg);
-      opacity: 0;
-    }
-    .--content-animate{
-      transform: rotate(0deg);
-      opacity: 1;
-    }
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //ANIMATIONS
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .25s ease-in-out;
 }
 
-
-
-
-&.--size-xl {
-  border-radius: calc(var(--BORDER-RADIOS) + 4px);
-  .--content { 
-    font-size: calc(var(--FONT-SIZE) + 0.2rem);
-    padding: 15px 20px !important;
-  }
-}
-&.--size-l {
-  border-radius: calc(var(--BORDER-RADIOS) + 2px);
-  .--content{
-    font-size: calc(var(--FONT-SIZE) + 0.1rem);
-    padding: 10px 15px !important;
-  }
-}
-&.--size-small {
-  border-radius: calc(var(--BORDER-RADIOS) - 2px);
-  .--content{
-    font-size: calc(var(--FONT-SIZE) - 0.1rem);
-    padding: 5px 10px !important;
-  }
-}
-&.--size-mini {
-  border-radius: calc(var(--BORDER-RADIOS) - 4px);
-  .--content {
-    font-size: calc(var(--FONT-SIZE) - 0.2rem);
-    padding: 3px 8px !important;
-  }
-}
-
-
-&.--circle {
-  border-radius: 25px;
-  aspect-ratio: 1/1;
-}
-&.--square {
-  border-radius: 0px;
-}
-
-
-&.--block {
-    width: 100% !important;
-    display: block !important;
-}
-
-
-
-&.--disabled{
-  pointer-events: none;
-  opacity: .35;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 
 
 }
-
-[gnk-theme="light"]{
-  .gnk-button:is(:hover){
-    filter: brightness(0.95);
-  }
-  .--shadow{
-    color: -color('PRIMARY', 1) !important;
-  }
-}
-
-
-
-[gnk-theme="dark"]{
-  .--border{
-    color: -color('PRIMARY', 1) !important;
-  }
-
-}
-
-
-
-@keyframes cnkButton-loading{
-  0%{
-    transform: rotate(0deg);
-    }
-  100%{
-    transform: rotate(360deg);
-    }
-}
-
 </style>

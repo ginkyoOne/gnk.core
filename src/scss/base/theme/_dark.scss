@@ -1,0 +1,208 @@
+
+[gnk-theme-colorMode="dark"] {
+
+    --COLOR-PRIMARY-H: 215;
+    --COLOR-PRIMARY-S: 73%;
+    --COLOR-PRIMARY-L: 51%;
+
+    --COLOR-INFO-H: 215;
+    --COLOR-INFO-S: 53%;
+    --COLOR-INFO-L: 20%;
+
+    --COLOR-SUCCESS-H: 142;
+    --COLOR-SUCCESS-S: 50%;
+    --COLOR-SUCCESS-L: 38%;
+
+    --COLOR-WARNING-H: 44;
+    --COLOR-WARNING-S: 100%;
+    --COLOR-WARNING-L: 35%;
+
+    --COLOR-DANGER-H: 356;
+    --COLOR-DANGER-S: 62%;
+    --COLOR-DANGER-L: 41%;
+
+    --COLOR-BUG-H: 356;
+    --COLOR-BUG-S: 62%;
+    --COLOR-BUG-L: 28%;
+
+    --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
+    --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);
+    --COLOR-DARK-L: var(--COLOR-LEVEL-0-L);
+
+    --COLOR-LIGHT-H: var(--COLOR-LEVEL-4-H);
+    --COLOR-LIGHT-S: var(--COLOR-LEVEL-4-S);
+    --COLOR-LIGHT-L: var(--COLOR-LEVEL-4-L);
+
+    --COLOR-BASE-H: var(--COLOR-LEVEL-2-H);
+    --COLOR-BASE-S: var(--COLOR-LEVEL-2-S);
+    --COLOR-BASE-L: var(--COLOR-LEVEL-2-L);
+
+    --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+    --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+    --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+    --COLOR-TEXT-H: 0;
+    --COLOR-TEXT-S: 0%;
+    --COLOR-TEXT-L: 100%;
+    
+    
+    --COLOR-LEVEL-0-H: 0;
+    --COLOR-LEVEL-0-S: 0%;
+    --COLOR-LEVEL-0-L: 7%;
+
+    --COLOR-LEVEL-1-H: 0;
+    --COLOR-LEVEL-1-S: 0%;
+    --COLOR-LEVEL-1-L: 12%;
+
+    --COLOR-LEVEL-2-H: 0;
+    --COLOR-LEVEL-2-S: 0%;
+    --COLOR-LEVEL-2-L: 14%;
+    
+    --COLOR-LEVEL-3-H: 0;
+    --COLOR-LEVEL-3-S: 0%;
+    --COLOR-LEVEL-3-L: 15%;
+
+    --COLOR-LEVEL-4-H: 0;
+    --COLOR-LEVEL-4-S: 0%;
+    --COLOR-LEVEL-4-L: 16%;
+
+    --COLOR-SHADOW-H: 0;
+    --COLOR-SHADOW-S: 0%;
+    --COLOR-SHADOW-L: 5%;
+
+    --BOX-SHADOW:  0px .2rem .3rem -color('DARK',.3);;
+
+
+    .gnk-ripple {
+        --COLOR-BASE-H: 0;
+        --COLOR-BASE-S: 0%;
+        --COLOR-BASE-L: 0%;
+    }
+
+    [class*="--default"] {
+        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
+        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
+        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+    
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-0-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-0-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-0-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+
+    [class*="--primary"] {
+        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
+        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
+        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--info"] {
+        --COLOR-BASE-H: var(--COLOR-INFO-H);
+        --COLOR-BASE-S: var(--COLOR-INFO-S);
+        --COLOR-BASE-L: var(--COLOR-INFO-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--success"] {
+        --COLOR-BASE-H: var(--COLOR-SUCCESS-H);
+        --COLOR-BASE-S: var(--COLOR-SUCCESS-S);
+        --COLOR-BASE-L: var(--COLOR-SUCCESS-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--warning"] {
+        --COLOR-BASE-H: var(--COLOR-WARNING-H);
+        --COLOR-BASE-S: var(--COLOR-WARNING-S);
+        --COLOR-BASE-L: var(--COLOR-WARNING-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--danger"] {
+        --COLOR-BASE-H: var(--COLOR-DANGER-H);
+        --COLOR-BASE-S: var(--COLOR-DANGER-S);
+        --COLOR-BASE-L: var(--COLOR-DANGER-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--bug"] {
+        --COLOR-BASE-H: var(--COLOR-BUG-H);
+        --COLOR-BASE-S: var(--COLOR-BUG-S);
+        --COLOR-BASE-L: var(--COLOR-BUG-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--dark"] {
+        --COLOR-BASE-H: var(--COLOR-DARK-H);
+        --COLOR-BASE-S: var(--COLOR-DARK-S);
+        --COLOR-BASE-L: var(--COLOR-DARK-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--light"] {
+        --COLOR-BASE-H: var(--COLOR-LIGHT-H);
+        --COLOR-BASE-S: var(--COLOR-LIGHT-S);
+        --COLOR-BASE-L: var(--COLOR-LIGHT-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+} 

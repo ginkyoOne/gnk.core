@@ -17,6 +17,7 @@ $breakpoints: ("phone": 400px,
     "tablet": 768px,
     "tablet-wide": 1024px,
     "desktop": 1248px,
+<<<<<<< Updated upstream:src/scss/base/_mixings.scss
     "desktop-wide": 1440px);
 
 @mixin mq($width, $type: min) {
@@ -25,11 +26,34 @@ $breakpoints: ("phone": 400px,
 
         @if $type==max {
             $width: $width - 1px;
+=======
+    "desktop-ultra-wide": 10000000000000px);
+
+@mixin mq($val1, $val2: 0px , $type: min) {
+    @if map_has_key($breakpoints, $val1) {
+
+        $valOne: map_get($breakpoints, $val1);
+        $valTwo: map_get($breakpoints, $val2);
+
+        @if $type==minmax {
+            @media only screen and (max-width: $valOne) and (min-width: $valTwo) {
+                @content;
+            }
+
+        }@else if $type==max {
+            
+            $valOne: calc($valOne - 1px);
+            @media only screen and (max-width: $valOne) and (min-width: 0px) {
+                @content;
+            }
+
+        }@else if $type==min {
+            @media only screen and (min-width: $valOne) and (max-width: 100vmax) {
+                @content;
+            }
+>>>>>>> Stashed changes:src/scss/base/mixings/_mixings.scss
         }
 
-        @media only screen and (#{$type}-width: $width) {
-            @content;
-        }
     }
 }
 
