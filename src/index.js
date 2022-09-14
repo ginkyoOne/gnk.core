@@ -46,7 +46,14 @@ import {router, registerRoutes } from './Router/Router'
 import Store from './Store/Store'
 import registerModuleComponents from './utils/registerComponents'
 
+Vue.directive('img', function(url) {
+    var img = new Image();
+    img.src = url;
 
+    img.onload = function () {
+        this.el.src = url;
+    }
+});
 
 export default {
 

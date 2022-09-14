@@ -7796,6 +7796,13 @@ function registerModuleComponents(App, components) {
     }
   }
 }
+Vue.directive("img", function(url) {
+  var img = new Image();
+  img.src = url;
+  img.onload = function() {
+    this.el.src = url;
+  };
+});
 var gnk = {
   gnkImage,
   gnkBadge,
