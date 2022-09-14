@@ -23,7 +23,7 @@ vue gnk.core v0.1 alfa
 - [x] Button
 - [ ] Calendar/Date picker
 - [x] Card/Expandable Card
-- [ ] Checkbox
+- [x] Checkbox
 - [ ] Chip
 - [ ] Collapse
 - [ ] Contacts List
@@ -33,21 +33,21 @@ vue gnk.core v0.1 alfa
 - [ ] Dropdown
 - [ ] Editable
 - [ ] Export pdf/xls
-- [ ] Images
-- [ ] Input
+- [x] Images
+- [x] Input
 - [ ] List
-- [ ] Loading
+- [x] Loading
 - [ ] Navbar
 - [ ] Notification
-- [ ] Number Input
+- [x] Number Input
 - [ ] Pagination
 - [ ] Picker
 - [ ] PopOver
 - [ ] Popup
 - [x] Progress
 - [ ] Properties Grid
-- [ ] Radio
-- [ ] SearchBar
+- [x] Radio
+- [x] SearchBar
 - [ ] Select
 - [ ] Sheet Modal
 - [ ] Sidebar
@@ -56,8 +56,8 @@ vue gnk.core v0.1 alfa
 - [ ] Slider
 - [ ] Sortable/Drag list
 - [ ] Swipeout
-- [ ] Swiper
-- [ ] Switch
+- [x] Swiper
+- [x] Switch
 - [ ] Tabs
 - [ ] Textarea
 - [ ] Timeline
