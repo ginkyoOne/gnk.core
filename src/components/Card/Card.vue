@@ -15,6 +15,7 @@ export default {
         headerBackground: {
             type: String,
             default: null,
+            skip: true,
             validator: function(value) {
                 return value.length > 0
             }
@@ -23,11 +24,13 @@ export default {
         headerBackgroundAlt: {
             type: String,
             default: null,
+            skip: true,
         },
 
         headerBackgroundHeight: {
             type: Number,
             default: 450,
+            skip: true,
             validator(value) {
                 return (value > 125 && value < 500 && !isNaN(value))
             },
@@ -36,7 +39,7 @@ export default {
         animateInactive: {
             type: Boolean,
             default: false,
-            
+            skip: true,
         },
 
         type: {
@@ -46,6 +49,14 @@ export default {
                 return ['cardType01', 'cardType02', 'cardType03', 'cardType04', 'cardType05'].includes(value)
             }
         },
+        overflow: {
+            type: Boolean,
+            default: 'visible',
+            skip: true,
+            validator: function(value) {
+                return ['hidden', 'scroll', 'visible'].includes(value)
+            }
+        }
     },
 
     computed: {
@@ -57,6 +68,10 @@ export default {
             return {
                 '--separate-title': !(this.hasValidHeaderBackground),
                 '--animate': !this.animateInactive,
+
+                '--overflow-hidden': this.overflow == 'hidden',
+                '--overflow-scroll': this.overflow == 'scroll',
+                '--overflow-visible': this.overflow == 'visible',
 
 
                 '--cardType01': this.type === 'cardType01' || !this.hasValidHeaderBackground,
@@ -162,7 +177,23 @@ export default {
     box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
     border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
     
-    
+    &:is(.--overflow-hidden){
+        &>.--content>.--content-body {
+            overflow-y: hidden;
+        }
+    }
+
+    &:is(.--overflow-visible){
+        &>.--content.--content-body {
+            overflow-y: visible;
+        }
+    }
+
+    &:is(.--overflow-scroll){
+        &>.--content.--content-body {
+            overflow-y: scroll;
+        }
+    }
 
 
     &>.--content {
@@ -170,12 +201,12 @@ export default {
 
         transition: all .25s ease;
         padding: 15px;
-
-        overflow: visible;
         width: 100%;
-        height: auto;
+        height: fit-content;
         max-height:100vmax;
         
+
+
 
         &>.--content-title {
             transition: all .25s ease-in-out;
@@ -204,7 +235,6 @@ export default {
             justify-content: flex-start;
             width: 100%;
             height:100%;
-            overflow-y: scroll;
         }
     }
 

@@ -509,9 +509,9 @@
         visibility: hidden;
       }
 
-      &>.--ripple{
+      /* &>.--ripple{
         visibility: hidden;
-      }
+      } */
 
       &:is(:hover, :focus){
         opacity: 1;

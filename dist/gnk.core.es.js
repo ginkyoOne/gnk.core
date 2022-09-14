@@ -430,11 +430,11 @@ const _hoisted_5$9 = { class: "P404-500" };
 const _hoisted_6$8 = { class: "row" };
 const _hoisted_7$6 = { class: "col-12 flex-centered" };
 const _hoisted_8$5 = { class: "row" };
-const _hoisted_9$2 = {
+const _hoisted_9$3 = {
   key: 0,
   class: "col-12 flex-centered p-t-20"
 };
-const _hoisted_10$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+const _hoisted_10$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
 function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_row = resolveComponent("row");
   const _component_gnk_button = resolveComponent("gnk-button");
@@ -453,13 +453,13 @@ function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
         createElementVNode("div", _hoisted_7$6, toDisplayString($props.label), 1)
       ]),
       createElementVNode("div", _hoisted_8$5, [
-        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_9$2, [
+        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_9$3, [
           createVNode(_component_gnk_button, {
             success: "",
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
           }, {
             default: withCtx(() => [
-              _hoisted_10$1,
+              _hoisted_10$2,
               createTextVNode(" " + toDisplayString($props.goBackLable), 1)
             ]),
             _: 1
@@ -1036,7 +1036,7 @@ const _hoisted_7$4 = {
   class: "--switch-off"
 };
 const _hoisted_8$3 = ["for"];
-const _hoisted_9$1 = { class: "--badge-holder" };
+const _hoisted_9$2 = { class: "--badge-holder" };
 function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
@@ -1074,7 +1074,7 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_9$1, [
+    createElementVNode("div", _hoisted_9$2, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$d);
@@ -1477,13 +1477,27 @@ var Input_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$a = {
   name: "gnkInput",
   extends: _sfc_main$j,
-  emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
+  emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "valueChanged"],
   data() {
     return {
-      text: this.modelValue
+      text: this.modelValue,
+      passwordVisible: false
     };
   },
   props: {
+    type: {
+      type: String,
+      required: false,
+      default: "text",
+      skip: true,
+      validator: (value) => ["text", "password", "search", "number", "url", "time", "date"].includes(value)
+    },
+    strenght: {
+      type: Boolean,
+      require: false,
+      default: false,
+      skip: true
+    },
     modelValue: {
       type: String,
       required: false,
@@ -1522,12 +1536,6 @@ const _sfc_main$a = {
       required: false,
       default: false
     },
-    align: {
-      type: String,
-      default: "right",
-      skip: true,
-      validator: (value) => ["left", "center", "right"].includes(value)
-    },
     border: {
       type: Boolean,
       required: false,
@@ -1552,14 +1560,52 @@ const _sfc_main$a = {
         return ["xl", "l", "default", "small", "mini"].includes(type);
       }
     },
-    animate: {
+    min: {
+      type: Number,
+      required: false,
+      default: 1,
+      skip: true
+    },
+    max: {
+      type: Number,
+      required: false,
+      default: 100,
+      skip: true
+    },
+    step: {
+      type: Number,
+      required: false,
+      default: 1,
+      skip: true
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
+      skip: true
+    },
+    minlength: {
+      type: Number,
+      required: false,
+      default: void 0,
+      skip: true
+    },
+    maxlength: {
+      type: Number,
+      required: false,
+      default: void 0,
+      skip: true
+    },
+    pattern: {
       type: String,
       required: false,
-      skip: true,
-      default: "default",
-      validator(type) {
-        return ["fade", "scale", "flip", "default"].includes(type);
-      }
+      default: void 0,
+      skip: true
+    },
+    clearButton: {
+      type: Boolean,
+      require: false,
+      default: true
     }
   },
   computed: {
@@ -1574,7 +1620,34 @@ const _sfc_main$a = {
         "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
         "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
         "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false,
-        "--no-placeholder": this.placeholder === void 0
+        "--no-placeholder": this.placeholder === null || this.placeholder === void 0 || this.placeholder == "",
+        "--has-value": !(this.text === void 0 || this.text === null || this.text == "")
+      };
+    },
+    passwordStrenght: function() {
+      console.log(this.text);
+      try {
+        let level = 0;
+        if (/\d/.test(this.text))
+          level += 20;
+        if (/(.*[a-z].*)/.test(this.text))
+          level += 20;
+        if (/(.*[A-Z].*)/.test(this.text))
+          level += 20;
+        if (this.text.length > 7)
+          level += 20;
+        if (/[^A-Za-z0-0]/.test(this.text))
+          level += 20;
+        return level;
+      } catch {
+        return 0;
+      }
+    },
+    passwordStrenghtColor: function() {
+      return {
+        "--danger": this.passwordStrenght <= 40,
+        "--warning": this.passwordStrenght >= 40 & this.passwordStrenght < 80,
+        "--success": this.passwordStrenght >= 80
       };
     }
   },
@@ -1588,14 +1661,48 @@ const _sfc_main$a = {
   },
   methods: {
     onchange(eventName, data) {
-      console.log(data.event);
-      if (!!data.event & !this.disabled & !this.busy & !this.loading)
-        createRipple$1.createRipple(data.event);
-      this.componentRaiseEvent(eventName, data);
+      if (eventName == "valueChanged") {
+        if (this.type == "number") {
+          switch (true) {
+            case (data.event.target.value == "" || data.event.target.value === void 0):
+              this.text = this.min;
+              break;
+            case data.event.target.value >= this.max:
+              this.text = this.max;
+              break;
+            case data.event.target.value <= this.min:
+              this.text = this.min;
+              break;
+            default:
+              this.text = data.event.target.value;
+          }
+        } else {
+          this.text = data.event.target.value == "" ? void 0 : data.event.target.value;
+        }
+        this.$emit("update:modelValue", this.text);
+      }
     },
-    clearText(event) {
-      this.text = void 0;
-      this.$emit("update:modelValue", void 0);
+    buttonClicked(eventName) {
+      this.$el.getElementsByClassName("--input")[0].focus();
+      switch (eventName) {
+        case "clear":
+          this.text = this.type == "number" ? this.min : void 0;
+          this.$emit("update:modelValue", this.text);
+          break;
+        case "numberUp":
+          let resultup = Number(this.text === void 0 ? this.min : this.text) + Number(this.step) * 1;
+          this.text = resultup > this.max ? this.max : resultup;
+          break;
+        case "numberDown":
+          let resultdown = Number(this.text === void 0 ? this.min : this.text) + Number(this.step) * -1;
+          this.text = resultdown < this.min ? this.min : resultdown;
+          break;
+        case "showPassword":
+          this.passwordVisible = !this.passwordVisible;
+          break;
+        default:
+          return;
+      }
     }
   }
 };
@@ -1606,23 +1713,38 @@ const _hoisted_4$4 = {
   key: 0,
   class: "--icon | material-symbols-rounded"
 };
-const _hoisted_5$4 = ["value", "name", "disabled"];
+const _hoisted_5$4 = ["type", "value", "name", "disabled", "min", "max", "step", "required", "minlenght", "maxlenght", "pattern"];
 const _hoisted_6$4 = ["for"];
-const _hoisted_7$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
-const _hoisted_8$2 = { class: "--badge-holder" };
+const _hoisted_7$3 = {
+  key: 1,
+  class: "--button-upDown | flex flex-row"
+};
+const _hoisted_8$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_upward ", -1);
+const _hoisted_9$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_downward ", -1);
+const _hoisted_10$1 = {
+  key: 0,
+  class: "material-symbols-rounded"
+};
+const _hoisted_11$1 = {
+  key: 1,
+  class: "material-symbols-rounded"
+};
+const _hoisted_12$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
+const _hoisted_13$1 = { class: "--badge-holder" };
 function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
+  const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
-    onClick: _cache[2] || (_cache[2] = ($event) => this.onchange("click", { event: $event })),
-    onMouseleave: _cache[3] || (_cache[3] = ($event) => this.componentRaiseEvent("mouseleave", { event: $event })),
-    onMouseover: _cache[4] || (_cache[4] = ($event) => this.componentRaiseEvent("mouseover", { event: $event })),
-    onKeydown: _cache[5] || (_cache[5] = ($event) => this.componentRaiseEvent("keydown", { event: $event })),
-    onKeypress: _cache[6] || (_cache[6] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
-    onKeyup: _cache[7] || (_cache[7] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
+    onClick: _cache[5] || (_cache[5] = ($event) => [$options.buttonClicked("base"), this.onchange("click", { event: $event })]),
+    onMouseleave: _cache[6] || (_cache[6] = ($event) => this.componentRaiseEvent("mouseleave", { event: $event })),
+    onMouseover: _cache[7] || (_cache[7] = ($event) => this.componentRaiseEvent("mouseover", { event: $event })),
+    onKeydown: _cache[8] || (_cache[8] = ($event) => this.componentRaiseEvent("keydown", { event: $event })),
+    onKeypress: _cache[9] || (_cache[9] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
+    onKeyup: _cache[10] || (_cache[10] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
   }, [
     createElementVNode("div", _hoisted_2$6, [
       _hoisted_3$5,
@@ -1630,38 +1752,93 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
       createElementVNode("input", {
         class: "--input",
         ref: "input",
-        type: "text",
+        type: this.passwordVisible ? "text" : $props.type,
         placeholder: "  ",
         value: $data.text,
         name: _ctx.componentId,
-        onInput: _cache[0] || (_cache[0] = ($event) => $data.text = $event.target.value),
+        onInput: _cache[0] || (_cache[0] = ($event) => this.onchange("valueChanged", { event: $event })),
         disabled: _ctx.disabled,
+        min: $props.min,
+        max: $props.max,
+        step: $props.step,
+        required: $props.required,
+        minlenght: _ctx.minlenght,
+        maxlenght: _ctx.maxlenght,
+        pattern: $props.pattern,
         autofocus: ""
       }, null, 40, _hoisted_5$4),
       createElementVNode("label", {
         class: "--placeholder",
         for: _ctx.componentId
       }, toDisplayString($props.placeholder), 9, _hoisted_6$4),
-      createVNode(_component_gnk_button, {
+      this.type == "number" ? (openBlock(), createElementBlock("div", _hoisted_7$3, [
+        createVNode(_component_gnk_button, {
+          disabled: _ctx.disabled,
+          class: "--button-down",
+          circular: "",
+          clear: "",
+          light: "",
+          onClick: _cache[1] || (_cache[1] = ($event) => $options.buttonClicked("numberUp"))
+        }, {
+          default: withCtx(() => [
+            _hoisted_8$2
+          ]),
+          _: 1
+        }, 8, ["disabled"]),
+        createVNode(_component_gnk_button, {
+          disabled: _ctx.disabled,
+          class: "--button-up",
+          circular: "",
+          clear: "",
+          light: "",
+          onClick: _cache[2] || (_cache[2] = ($event) => $options.buttonClicked("numberDown"))
+        }, {
+          default: withCtx(() => [
+            _hoisted_9$1
+          ]),
+          _: 1
+        }, 8, ["disabled"])
+      ])) : createCommentVNode("", true),
+      this.type == "password" ? (openBlock(), createBlock(_component_gnk_button, {
+        key: 2,
         disabled: _ctx.disabled,
-        class: "--button",
+        class: "--button-showPassword",
         circular: "",
         clear: "",
         light: "",
-        onClick: _cache[1] || (_cache[1] = ($event) => $options.clearText($event))
+        onClick: _cache[3] || (_cache[3] = ($event) => $options.buttonClicked("showPassword"))
       }, {
         default: withCtx(() => [
-          _hoisted_7$3
+          this.passwordVisible ? (openBlock(), createElementBlock("span", _hoisted_10$1, " visibility_off ")) : (openBlock(), createElementBlock("span", _hoisted_11$1, " visibility "))
         ]),
         _: 1
-      }, 8, ["disabled"])
+      }, 8, ["disabled"])) : createCommentVNode("", true),
+      createVNode(_component_gnk_button, {
+        disabled: _ctx.disabled,
+        class: "--button-clear",
+        circular: "",
+        clear: "",
+        light: "",
+        onClick: _cache[4] || (_cache[4] = ($event) => $options.buttonClicked("clear"))
+      }, {
+        default: withCtx(() => [
+          _hoisted_12$1
+        ]),
+        _: 1
+      }, 8, ["disabled"]),
+      this.type == "password" && this.strenght ? (openBlock(), createBlock(_component_gnk_progressbar, {
+        key: 3,
+        value: $options.passwordStrenght,
+        square: "",
+        class: normalizeClass([$options.passwordStrenghtColor])
+      }, null, 8, ["value", "class"])) : createCommentVNode("", true)
     ]),
     this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
       key: 0,
       class: "--loading",
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_8$2, [
+    createElementVNode("div", _hoisted_13$1, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$a);
@@ -5591,30 +5768,42 @@ const _sfc_main$5 = {
     headerBackground: {
       type: String,
       default: null,
+      skip: true,
       validator: function(value) {
         return value.length > 0;
       }
     },
     headerBackgroundAlt: {
       type: String,
-      default: null
+      default: null,
+      skip: true
     },
     headerBackgroundHeight: {
       type: Number,
       default: 450,
+      skip: true,
       validator(value) {
         return value > 125 && value < 500 && !isNaN(value);
       }
     },
     animateInactive: {
       type: Boolean,
-      default: false
+      default: false,
+      skip: true
     },
     type: {
       type: String,
       default: "cardType01",
       validator: function(value) {
         return ["cardType01", "cardType02", "cardType03", "cardType04", "cardType05"].includes(value);
+      }
+    },
+    overflow: {
+      type: Boolean,
+      default: "visible",
+      skip: true,
+      validator: function(value) {
+        return ["hidden", "scroll", "visible"].includes(value);
       }
     }
   },
@@ -5626,6 +5815,9 @@ const _sfc_main$5 = {
       return {
         "--separate-title": !this.hasValidHeaderBackground,
         "--animate": !this.animateInactive,
+        "--overflow-hidden": this.overflow == "hidden",
+        "--overflow-scroll": this.overflow == "scroll",
+        "--overflow-visible": this.overflow == "visible",
         "--cardType01": this.type === "cardType01" || !this.hasValidHeaderBackground,
         "--cardType02": this.type === "cardType02" && this.hasValidHeaderBackground,
         "--cardType03": this.type === "cardType03" && this.hasValidHeaderBackground
@@ -7796,13 +7988,6 @@ function registerModuleComponents(App, components) {
     }
   }
 }
-Vue.directive("img", function(url) {
-  var img = new Image();
-  img.src = url;
-  img.onload = function() {
-    this.el.src = url;
-  };
-});
 var gnk = {
   gnkImage,
   gnkBadge,
