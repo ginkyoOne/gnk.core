@@ -114,11 +114,11 @@ APP.mount('#app')
 <!-- USAGE EXAMPLES -->
 ## Usage
 ```sh
-    <gnk-button primary size="xl" > xl</gnkButton>
-    <gnk-button info size="xl" > xl</gnkButton>
-    <gnk-button warning size="l"> l </gnkButton>
-    <gnk-button danger size="default"> default </gnkButton>
-    <gnk-button success size="small"> small </gnkButton>
+    <gnk-button primary size="xl" > xl</gnk-button>
+    <gnk-button info size="xl" > xl</gnk-button>
+    <gnk-button warning size="l"> l </gnk-button>
+    <gnk-button danger size="default"> default </gnk-button>
+    <gnk-button success size="small"> small </gnk-button>
 ```
 
 <!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
