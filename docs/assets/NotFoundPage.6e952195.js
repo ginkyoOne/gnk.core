@@ -1,1 +1,0 @@
-import{_ as e,r as c,c as n,o as t}from"./index.e2070f4b.js";const a={};function r(s,_){const o=c("gnk404");return t(),n(o,{showGoBack:!0,goBacklabel:"Go back",title:"404"})}var l=e(a,[["render",r]]);export{l as default};
