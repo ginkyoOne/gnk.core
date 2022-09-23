@@ -23,7 +23,7 @@ vue gnk.core v0.1 alfa
 - [x] Button
 - [ ] Calendar/Date picker
 - [x] Card/Expandable Card
-- [ ] Checkbox
+- [x] Checkbox
 - [ ] Chip
 - [ ] Collapse
 - [ ] Contacts List
@@ -33,21 +33,21 @@ vue gnk.core v0.1 alfa
 - [ ] Dropdown
 - [ ] Editable
 - [ ] Export pdf/xls
-- [ ] Images
-- [ ] Input
+- [x] Images
+- [x] Input
 - [ ] List
-- [ ] Loading
+- [x] Loading
 - [ ] Navbar
 - [ ] Notification
-- [ ] Number Input
+- [x] Number Input
 - [ ] Pagination
 - [ ] Picker
 - [ ] PopOver
 - [ ] Popup
 - [x] Progress
 - [ ] Properties Grid
-- [ ] Radio
-- [ ] SearchBar
+- [x] Radio
+- [x] SearchBar
 - [ ] Select
 - [ ] Sheet Modal
 - [ ] Sidebar
@@ -56,8 +56,8 @@ vue gnk.core v0.1 alfa
 - [ ] Slider
 - [ ] Sortable/Drag list
 - [ ] Swipeout
-- [ ] Swiper
-- [ ] Switch
+- [x] Swiper
+- [x] Switch
 - [ ] Tabs
 - [ ] Textarea
 - [ ] Timeline
@@ -114,11 +114,11 @@ APP.mount('#app')
 <!-- USAGE EXAMPLES -->
 ## Usage
 ```sh
-    <gnkButton label="Outlined" primary size="xl" > xl</gnkButton>
-    <gnkButton label="Outlined" info size="xl" > xl</gnkButton>
-    <gnkButton label="Outlined" warning size="l"> l </gnkButton>
-    <gnkButton label="Outlined" danger size="default"> default </gnkButton>
-    <gnkButton label="Outlined" success size="small"> small </gnkButton>
+    <gnk-button primary size="xl" > xl</gnk-button>
+    <gnk-button info size="xl" > xl</gnk-button>
+    <gnk-button warning size="l"> l </gnk-button>
+    <gnk-button danger size="default"> default </gnk-button>
+    <gnk-button success size="small"> small </gnk-button>
 ```
 
 <!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
