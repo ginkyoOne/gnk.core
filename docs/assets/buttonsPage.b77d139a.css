@@ -1,0 +1,1 @@
+.modal{transition:all .5s!important;position:absolute!important;z-index:9999;top:50%!important;left:50%!important;transform:scale(.5)!important;width:60%!important}.v-enter-active,.v-leave-active{transition:all .5s ease}.v-enter-from,.v-leave-to{transform:scale(1)!important}
