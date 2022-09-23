@@ -5817,7 +5817,7 @@ const _sfc_main$5 = {
         "--animate": !this.animateInactive,
         "--overflow-hidden": this.overflow == "hidden",
         "--overflow-scroll": this.overflow == "scroll",
-        "--overflow-visible": this.overflow == "visible",
+        "--overflow-visible": this.overflow == "visible" && (this.type === "cardType01" || !this.hasValidHeaderBackground),
         "--cardType01": this.type === "cardType01" || !this.hasValidHeaderBackground,
         "--cardType02": this.type === "cardType02" && this.hasValidHeaderBackground,
         "--cardType03": this.type === "cardType03" && this.hasValidHeaderBackground

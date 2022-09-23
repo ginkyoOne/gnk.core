@@ -71,7 +71,7 @@ export default {
 
                 '--overflow-hidden': this.overflow == 'hidden',
                 '--overflow-scroll': this.overflow == 'scroll',
-                '--overflow-visible': this.overflow == 'visible',
+                '--overflow-visible': this.overflow == 'visible' &&  (this.type === 'cardType01' || !this.hasValidHeaderBackground),
 
 
                 '--cardType01': this.type === 'cardType01' || !this.hasValidHeaderBackground,
@@ -180,12 +180,6 @@ export default {
     &:is(.--overflow-hidden){
         &>.--content>.--content-body {
             overflow-y: hidden;
-        }
-    }
-
-    &:is(.--overflow-visible){
-        &>.--content.--content-body {
-            overflow-y: visible;
         }
     }
 
@@ -345,6 +339,18 @@ export default {
                     border-bottom: var(--BORDER-SIZE) solid -color('LEVEL-0', 0.5);
                 }
             }
+    }
+
+
+    &:is(.--overflow-visible){
+        height: max-content !important;
+        overflow: initial !important;
+        &>.--content{
+            &>.--content-body {
+                height: max-content !important;
+                overflow-y: visible !important;
+            }
+        }
     }
 }
 

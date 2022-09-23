@@ -71,6 +71,8 @@ export default {
         overflow-y: auto;
         position: relative;
 
+        margin:5px;
+
         background: -color('LEVEL-2');
 
         border-radius: var(--BORDER-RADIUS);
