@@ -111,6 +111,12 @@ export default {
         :id="componentId"
         class="fill">
 
+        <div v-if="!!this.$slots.slideSidebar"  class="--slideSidebar | ">
+            <slot name="slideSidebar">
+                overflow-vertical
+            </slot>
+        </div>
+
         <div class="--header | grid">
             <div class="row">
                 <div class="col-12">
@@ -127,7 +133,7 @@ export default {
                             <gnk-buttonGroup v-if="showSidebarToggle" clear>
                                 <gnk-button size="xl" clear>
                                     <span class="material-symbols-rounded">
-                                        view_sidebar
+                                        menu
                                     </span>
                                 </gnk-button>
                             </gnk-buttonGroup>
@@ -192,11 +198,7 @@ export default {
         </div>
 
 
-        <div v-if="!!this.$slots.slideSidebar"  class="--slideSidebar | ">
-            <slot name="slideSidebar">
-                overflow-vertical
-            </slot>
-        </div>
+
 
 
     </div>
@@ -214,7 +216,6 @@ export default {
         inset: 0;
         height: 100%;
         width: 100%;
-        z-index: 100;
     }
     
     &>.--header{

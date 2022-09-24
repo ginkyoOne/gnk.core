@@ -6207,29 +6207,29 @@ const _sfc_main$2 = {
   }
 };
 const _hoisted_1$2 = ["id"];
-const _hoisted_2$1 = { class: "--header | grid" };
-const _hoisted_3$1 = { class: "row" };
-const _hoisted_4$1 = { class: "col-12" };
-const _hoisted_5$1 = { class: "row" };
-const _hoisted_6$1 = {
-  key: 0,
-  class: "col-12"
-};
-const _hoisted_7 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " view_sidebar ", -1);
-const _hoisted_8 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " search ", -1);
-const _hoisted_9 = { class: "--body | fill grid" };
-const _hoisted_10 = { class: "row fill" };
-const _hoisted_11 = {
-  key: 0,
-  class: "--sidebar | lg-hide-smaller col-4 overflow-vertical"
-};
-const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
-const _hoisted_13 = { class: "--gnkApp-content | col-12" };
-const _hoisted_14 = {
+const _hoisted_2$1 = {
   key: 0,
   class: "--slideSidebar |"
 };
-const _hoisted_15 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_3$1 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_4$1 = { class: "--header | grid" };
+const _hoisted_5$1 = { class: "row" };
+const _hoisted_6$1 = { class: "col-12" };
+const _hoisted_7 = { class: "row" };
+const _hoisted_8 = {
+  key: 0,
+  class: "col-12"
+};
+const _hoisted_9 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " menu ", -1);
+const _hoisted_10 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " search ", -1);
+const _hoisted_11 = { class: "--body | fill grid" };
+const _hoisted_12 = { class: "row fill" };
+const _hoisted_13 = {
+  key: 0,
+  class: "--sidebar | lg-hide-smaller col-4 overflow-vertical"
+};
+const _hoisted_14 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_15 = { class: "--gnkApp-content | col-12" };
 function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Progressbar = resolveComponent("gnk-Progressbar");
   const _component_gnk_button = resolveComponent("gnk-button");
@@ -6241,9 +6241,14 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "fill"]),
     id: _ctx.componentId
   }, [
-    createElementVNode("div", _hoisted_2$1, [
-      createElementVNode("div", _hoisted_3$1, [
-        createElementVNode("div", _hoisted_4$1, [
+    !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+      renderSlot(_ctx.$slots, "slideSidebar", {}, () => [
+        _hoisted_3$1
+      ])
+    ])) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_4$1, [
+      createElementVNode("div", _hoisted_5$1, [
+        createElementVNode("div", _hoisted_6$1, [
           withDirectives(createVNode(_component_gnk_Progressbar, {
             loading: "",
             square: "",
@@ -6253,8 +6258,8 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
           ])
         ])
       ]),
-      createElementVNode("div", _hoisted_5$1, [
-        $props.showHeader ? (openBlock(), createElementBlock("div", _hoisted_6$1, [
+      createElementVNode("div", _hoisted_7, [
+        $props.showHeader ? (openBlock(), createElementBlock("div", _hoisted_8, [
           createVNode(_component_gnkNavbar, null, {
             left: withCtx(() => [
               $props.showSidebarToggle ? (openBlock(), createBlock(_component_gnk_buttonGroup, {
@@ -6267,7 +6272,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
                     clear: ""
                   }, {
                     default: withCtx(() => [
-                      _hoisted_7
+                      _hoisted_9
                     ]),
                     _: 1
                   })
@@ -6289,7 +6294,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
                     clear: ""
                   }, {
                     default: withCtx(() => [
-                      _hoisted_8
+                      _hoisted_10
                     ]),
                     _: 1
                   })
@@ -6302,11 +6307,11 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
         ])) : createCommentVNode("", true)
       ])
     ]),
-    createElementVNode("div", _hoisted_9, [
-      createElementVNode("div", _hoisted_10, [
-        !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_11, [
+    createElementVNode("div", _hoisted_11, [
+      createElementVNode("div", _hoisted_12, [
+        !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_13, [
           renderSlot(_ctx.$slots, "sidebar", {}, () => [
-            _hoisted_12
+            _hoisted_14
           ])
         ])) : createCommentVNode("", true),
         createVNode(_component_gnkSwipeManager, {
@@ -6322,7 +6327,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
           captureDirection: "horizontal"
         }, {
           default: withCtx(() => [
-            createElementVNode("div", _hoisted_13, [
+            createElementVNode("div", _hoisted_15, [
               renderSlot(_ctx.$slots, "default", {}, () => [
                 $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
                   default: withCtx(({ Component }) => [
@@ -6343,12 +6348,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
           _: 3
         })
       ])
-    ]),
-    !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_14, [
-      renderSlot(_ctx.$slots, "slideSidebar", {}, () => [
-        _hoisted_15
-      ])
-    ])) : createCommentVNode("", true)
+    ])
   ], 10, _hoisted_1$2);
 }
 var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
