@@ -7,17 +7,18 @@ import gnkCheckbox from './components/Checkbox/Checkbox.vue'
 import gnkSwitch from './components/Switch/Switch.vue'
 import gnkRadio from './components/Radio/Radio.vue'
 import gnkSwipeManager from './components/SwipeManager/SwipeManager.vue'
+import gnkInput from './components/Input/Input.vue'
 
 
 
 
 // : WORK IN PROGRESS 
-import gnkInput from './components/Input/Input.vue'
 import gnkCounter from './components/Counter/Counter.vue'
 import gnkProgressbar from './components/ProgressBar/ProgressBar.vue'
 import gnkButtonGroup from './components/ButtonGroup/ButtonGroup.vue'
 import gnkLoading from './components/Loading/Loading.vue'
 import gnkCard from './components/Card/Card.vue'
+import gnkSidebar from  './components/Sidebar/Sidebar.vue'
 
 
 
@@ -65,6 +66,8 @@ export default {
     gnkCheckbox,
     gnkSwitch,
     gnkRadio,
+    gnkSidebar,
+    
 
 
     

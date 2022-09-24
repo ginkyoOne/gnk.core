@@ -5,9 +5,6 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import EVENTS from '../../index'
-import EventBus from '../../index'
 import Sidebar from '../../index'
 
 const ESCAPE_KEY = 27

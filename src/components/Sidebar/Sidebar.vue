@@ -1,224 +1,212 @@
-<template>
-  <transition name="fade">
-    <div
-      v-if="isOpen"
-      :css="false"
-      class="c-Sidebar__overlay"
-      @click="$emit('close')"
-    />
-  </transition>
-  <transition
-    :name="slideAnimation"
-    @before-enter="beforeSidebarOpen()"
-    @enter="sidebarOpening()"
-    @before-leave="beforeSidebarClose()"
-    @after-leave="afterSidebarClose()"
-  >
-    <div
-      v-if="isOpen"
-      ref="sidebar"
-      :css="false"
-      class="c-Sidebar"
-      :class="sidebarClassObject"
-      role="dialog"
-      tabindex="0"
-    >
-      <slot />
-    </div>
-  </transition>
-</template>
 <script>
-import lockScroll from '../../index'
-import unlockScroll  from '../../index'
-import { tabbable } from 'tabbable'
-
-const ESCAPE_KEY = 27
-const TAB_KEY = 9
-
-let previouslyFocusedElement
+import gnkComponent from "../ComponentBase/gnkComponent.vue"
+import createRipple from "../../utils/ripple"
+import Tooltip from "../Tooltip/Tooltip.vue"
 
 export default {
-  name: 'Sidebar',
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: false,
-      required: false,
+    name: "gnkSidebar",
+    extends: gnkComponent,
+    emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
+    data() {
+        return {
+            //store: gnk.Store,
+            isOpen: false,
+        };
     },
-    position: {
-      type: String,
-      required: false,
-      default: 'right',
-      validator(type) {
-        return ['right', 'left'].includes(type)
-      },
+    props: {
+        modelValue: {
+          default: null,
+          required: false,
+          skip: true
+        },
+
+        square: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        align: {
+            type: String,
+            default: "right",
+            skip: true,
+            validator: (value) => ["left", "center", "right"].includes(value)
+        },
+        border: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        gradient: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        shadow: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        animate: {
+            type: String,
+            required: false,
+            skip: true,
+            default: "default",
+            validator(type) {
+                return ["fade", "scale", "flip", "default"].includes(type);
+            },
+        },
     },
-  },
-  emits: ['close'],
   computed: {
-    sidebarClassObject() {
-      return {
-        'is-right': this.position === 'right',
-        'is-left': this.position === 'left',
+       //STYLING CLASSES  
+        componentClassObject: function () {
+            return {
+              "--open" : this.modelValue,
+            };
+        },
+    },
+    mounted() {
+      this.isOpen = this.modelValue
+    },
+    watch: {
+        value(newValue) {
+        },
+    },
+    methods: {
+      onchange(event) {
+          console.log(event)
+      },
+      
+      close(event) {
+        this.isOpen = !this.modelValue
+        this.$emit('update:modelValue', this.isOpen)
       }
     },
-    slideAnimation() {
-      return this.position === 'right' ? 'slideFromRight' : 'slideFromLeft'
-    },
-  },
-  methods: {
-    beforeSidebarOpen() {
-      previouslyFocusedElement = document.activeElement
-      lockScroll()
-    },
-    sidebarOpening() {
-      this.focusSidebar()
-      document.addEventListener('keydown', this.handleKeyDown)
-    },
-    beforeSidebarClose() {
-      document.removeEventListener('keydown', this.handleKeyDown)
-      previouslyFocusedElement?.focus()
-    },
-    afterSidebarClose() {
-      unlockScroll()
-    },
-    getFocusableElements() {
-      return tabbable(this.$refs.sidebar)
-    },
-    focusSidebar() {
-      const focusableElements = this.getFocusableElements()
-
-      if (!focusableElements.length) {
-        this.$refs.sidebar.focus()
-        return
-      }
-
-      const firstFocusableElement = focusableElements[0]
-      firstFocusableElement.focus()
-    },
-    handleKeyDown(event) {
-      if (event.keyCode === ESCAPE_KEY) {
-        this.$emit('close')
-        return
-      }
-
-      /**
-       * Trap focus inside Modal
-       * SHIFT + TAB - focus previous element
-       * TAB - focus next element
-       */
-      if (event.keyCode === TAB_KEY) {
-        const focusableElements = this.getFocusableElements()
-
-        /**
-         * If there are no focusable elements, keep the focus on the modal div
-         */
-        if (!focusableElements.length) {
-          event.preventDefault()
-          this.$refs.sidebar.focus()
-          return
-        }
-
-        const firstFocusableElement = focusableElements[0]
-        const lastFocusableElement =
-          focusableElements[focusableElements.length - 1]
-
-        /**
-         * If the current focus is the first focusable element and the user wants to go back
-         * then let's focus on the last element
-         */
-        if (
-          event.shiftKey &&
-          document.activeElement === firstFocusableElement
-        ) {
-          event.preventDefault()
-          lastFocusableElement.focus()
-        }
-
-        /**
-         * If the current focus is the last focusable element on the modal then let's focus
-         * on the first
-         */
-        if (
-          !event.shiftKey &&
-          document.activeElement === lastFocusableElement
-        ) {
-          event.preventDefault()
-          firstFocusableElement.focus()
-        }
-      }
-    },
-  },
 }
 </script>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+<template>
+  
 
-.slideFromRight-enter-active,
-.slideFromRight-leave-active {
-  transform: unset;
-  transition: transform 0.2s;
-}
+  <div :disabled="disabled" :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+    :id="componentId"
 
-.slideFromRight-enter-from,
-.slideFromRight-leave-to {
-  transform: translateX(100%);
-}
+    @click="onchange($event)"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
+    @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+    @keypress.prevent="onchange($event)"
+    @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
 
-.slideFromLeft-enter-active,
-.slideFromLeft-leave-active {
-  transform: unset;
-  transition: transform 0.2s;
-}
+      <div class="--backdrop" @click="close($event)">
+      </div>
 
-.slideFromLeft-enter-from,
-.slideFromLeft-leave-to {
-  transform: translateX(-100%);
-}
 
-.c-Sidebar__overlay {
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+      <div class="--base">
+        <div class="--content">  
+          <div class="--header">
+            <slot name="header">
 
-.c-Sidebar {
-  position: fixed;
-  top: 0;
-  z-index: 11;
-  background-color: white;
-  box-shadow: 0px 10px 10px rgba(174, 185, 203, 0.26),
-    0px 14px 28px rgba(174, 185, 203, 0.25);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 40%;
-}
+            </slot>
+          </div>
+          <div class="--content-body">
+            <slot>
 
-.c-Sidebar.is-left {
-  left: 0;
-}
+            </slot>
+          </div>
+          <div class="--footer">
+            <slot name="footer">
+          
+            </slot>
+          </div>
+        </div>
 
-.c-Sidebar.is-right {
-  right: 0;
-}
+      </div>
+      
+      <gnk-loading v-if="this.busy" :target="'#' + componentId + '> .--base'" />
+  </div>
 
-@media (max-width: 768px) {
-  .c-Sidebar {
+
+
+</template>
+
+<style  lang="scss">
+  .gnkSidebar{
+    
+    position: fixed;
+    height: 100%;
     width: 100%;
+    inset: 0;
+
+    display: flex;
+    isolation: isolate;
+    overflow: hidden;
+    z-index: 10000;
+
+    pointer-events:none;
+
+    &>.--backdrop{
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+
+      z-index: -1;
+
+      opacity: 0%;
+      background-color: -color('LEVEL-0');
+    }
+
+
+    &>.--base{
+
+      position: absolute;
+      top:0;
+      left:0;
+
+      height: 100%;
+      width: calc(100% - 50px);
+      max-width: 360px;
+
+      display: flex;
+
+
+      transition: all .25s ease-in-out;
+
+
+      background: -color('LEVEL-1');
+      border-radius: var(--BORDER-RADIUS);
+
+      border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
+
+      transform: translateX(-100vmax);
+      box-shadow: 0px 5px 8px -color('SHADOW', 0);
+
+      &>.--content{
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+
+        &>.--header, &>.--content-body, .--footer{
+          width: 100%;
+          display: flex;
+        }
+      }
+    }
+
+
+  &:is(.--open){
+    pointer-events:all;
+    &>.--base{
+      transform: translate(0);
+      box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+    }
+
+    &>.--backdrop{
+      opacity: .5;
+      cursor: pointer;
+    }
   }
-}
+
+  }
 </style>
