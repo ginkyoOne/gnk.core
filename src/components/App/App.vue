@@ -159,7 +159,8 @@ export default {
 
         <div class=" --body | fill grid">
             <div class="row fill">
-                <div v-if="!!this.$slots.sidebar"  class="--sidebar | lg-hide col-4 overflow-vertical">
+
+                <div v-if="!!this.$slots.sidebar"  class="--sidebar | lg-hide-smaller col-4 overflow-vertical">
                     <slot name="sidebar">
                         overflow-vertical
                     </slot>
@@ -186,8 +187,17 @@ export default {
 
 
                 </gnkSwipeManager>
+
             </div>
         </div>
+
+
+        <div v-if="!!this.$slots.slideSidebar"  class="--slideSidebar | ">
+            <slot name="slideSidebar">
+                overflow-vertical
+            </slot>
+        </div>
+
 
     </div>
 </template>
@@ -199,6 +209,13 @@ export default {
     position: relative;
     height: 100%;
 
+    &>.--slideSidebar{
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 100;
+    }
     
     &>.--header{
         position:absolute;
@@ -218,7 +235,7 @@ export default {
         height: 100%!important;
         overflow: hidden;
 
-        &>.--sidebar{
+        .--sidebar{
             height: 100% !important;
             border-right: 1px solid -color('BASE',1,0,0,1.5);
             box-shadow: var(--SHADOW);

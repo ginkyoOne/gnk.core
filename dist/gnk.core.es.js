@@ -5902,8 +5902,6 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   ], 42, _hoisted_1$6);
 }
 var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-var tippy = "";
-var Tooltip_vue_vue_type_style_index_0_scoped_true_lang = "";
 var Sidebar_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$5 = {
   name: "gnkSidebar",
@@ -5927,9 +5925,9 @@ const _sfc_main$5 = {
     },
     align: {
       type: String,
-      default: "right",
+      default: "left",
       skip: true,
-      validator: (value) => ["left", "center", "right"].includes(value)
+      validator: (value) => ["left", "top", "right", "bottom"].includes(value)
     },
     border: {
       type: Boolean,
@@ -5959,7 +5957,11 @@ const _sfc_main$5 = {
   computed: {
     componentClassObject: function() {
       return {
-        "--open": this.modelValue
+        "--open": this.modelValue,
+        "--align-left": this.align == "left",
+        "--align-right": this.align == "right",
+        "--align-top": this.align == "top",
+        "--align-bottom": this.align == "bottom"
       };
     }
   },
@@ -6219,10 +6221,15 @@ const _hoisted_9 = { class: "--body | fill grid" };
 const _hoisted_10 = { class: "row fill" };
 const _hoisted_11 = {
   key: 0,
-  class: "--sidebar | lg-hide col-4 overflow-vertical"
+  class: "--sidebar | lg-hide-smaller col-4 overflow-vertical"
 };
 const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
 const _hoisted_13 = { class: "--gnkApp-content | col-12" };
+const _hoisted_14 = {
+  key: 0,
+  class: "--slideSidebar |"
+};
+const _hoisted_15 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
 function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Progressbar = resolveComponent("gnk-Progressbar");
   const _component_gnk_button = resolveComponent("gnk-button");
@@ -6336,7 +6343,12 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
           _: 3
         })
       ])
-    ])
+    ]),
+    !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_14, [
+      renderSlot(_ctx.$slots, "slideSidebar", {}, () => [
+        _hoisted_15
+      ])
+    ])) : createCommentVNode("", true)
   ], 10, _hoisted_1$2);
 }
 var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);

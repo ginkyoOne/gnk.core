@@ -1,7 +1,5 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import createRipple from "../../utils/ripple"
-import Tooltip from "../Tooltip/Tooltip.vue"
 
 export default {
     name: "gnkSidebar",
@@ -27,9 +25,9 @@ export default {
         },
         align: {
             type: String,
-            default: "right",
+            default: "left",
             skip: true,
-            validator: (value) => ["left", "center", "right"].includes(value)
+            validator: (value) => ["left", "top", "right","bottom"].includes(value)
         },
         border: {
             type: Boolean,
@@ -60,7 +58,12 @@ export default {
        //STYLING CLASSES  
         componentClassObject: function () {
             return {
-              "--open" : this.modelValue,
+              "--open": this.modelValue,
+              "--align-left": this.align == 'left',
+              "--align-right": this.align == 'right',
+              "--align-top": this.align == 'top',
+              "--align-bottom": this.align == 'bottom',
+              
             };
         },
     },
@@ -145,6 +148,8 @@ export default {
     pointer-events:none;
 
     &>.--backdrop{
+      transition: all .25s ease-in-out;
+
       position: absolute;
       inset: 0;
       height: 100%;
@@ -160,25 +165,16 @@ export default {
     &>.--base{
 
       position: absolute;
-      top:0;
-      left:0;
-
-      height: 100%;
-      width: calc(100% - 50px);
-      max-width: 360px;
-
       display: flex;
+      overflow: hidden;
 
 
-      transition: all .25s ease-in-out;
+      transition: all .4s ease-in-out;
 
 
       background: -color('LEVEL-1');
-      border-radius: var(--BORDER-RADIUS);
 
       border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
-
-      transform: translateX(-100vmax);
       box-shadow: 0px 5px 8px -color('SHADOW', 0);
 
       &>.--content{
@@ -191,14 +187,85 @@ export default {
           width: 100%;
           display: flex;
         }
+
+        .gnkListview{
+          
+          background: unset !important;
+          border-radius: unset !important;
+          border : unset !important;
+          box-shadow: unset !important;
+
+        }
       }
     }
 
 
-  &:is(.--open){
+  
+
+
+  &:is(.--align-left){
+    &>.--base{
+      border-radius: 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+      transform: translate( -360px, 0px);
+      
+      top:0;
+      left:0;
+
+      height: 100%;
+      width: calc(100% - 50px);
+      max-width: 360px;
+
+    }
+  }
+
+  &:is(.--align-right){
+    &>.--base{
+      border-radius: var(--BORDER-RADIUS) 0 0  var(--BORDER-RADIUS);
+      transform: translate(calc(100% + 360px) , 0);
+
+      top:0;
+      right:0;
+
+      height: 100%;
+      width: calc(100% - 50px);
+      max-width: 360px;
+    }
+  }
+  
+  &:is(.--align-top){
+    &>.--base{
+      border-radius: 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+      transform: translateX(0, - 360px);
+
+      top:0;
+      left:0;
+
+      width: 100%;
+      height: calc(100% - 50px);
+      max-height: 360px;
+    }
+  }
+  
+  &:is(.--align-bottom){
+    &>.--base{
+      border-radius: 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0;
+      transform: translateX(0, calc(100% + 360px));
+
+      bottom:0;
+      left:0;
+
+      width: 100%;
+      height: calc(100% - 50px);
+      max-height: 360px;
+    }
+  }
+
+
+
+&:is(.--open){
     pointer-events:all;
     &>.--base{
-      transform: translate(0);
+      transform: translate(0px, 0px);
       box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
     }
 
@@ -207,6 +274,7 @@ export default {
       cursor: pointer;
     }
   }
+
 
   }
 </style>
