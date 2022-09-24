@@ -45,6 +45,7 @@ import gnkNavbar from './components/Navbar/Navbar.vue'
 import {router, registerRoutes } from './Router/Router'
 import Store from './Store/Store'
 import registerModuleComponents from './utils/registerComponents'
+import {setColors} from './utils/colorsUtils'
 
 /* Vue.directive('img', function(url) {
     var img = new Image();
@@ -89,7 +90,8 @@ export default {
     Store,
 
     registerRoutes,
-    registerModuleComponents
+    registerModuleComponents,
+    setColors
 }
 
 

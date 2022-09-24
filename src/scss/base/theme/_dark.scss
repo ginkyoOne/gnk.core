@@ -1,29 +1,16 @@
 
 [gnk-theme-colorMode="dark"] {
+    
 
-    --COLOR-PRIMARY-H: 215;
-    --COLOR-PRIMARY-S: 73%;
-    --COLOR-PRIMARY-L: 51%;
+    --COLOR-PRIMARY-L: 30%;
+    --COLOR-INFO-L: 30%;
+    --COLOR-SUCCESS-L: 30%;
+    --COLOR-WARNING-L: 30%;
+    --COLOR-DANGER-L: 30%;
+    --COLOR-BUG-L: 30%;
 
-    --COLOR-INFO-H: 215;
-    --COLOR-INFO-S: 53%;
-    --COLOR-INFO-L: 20%;
 
-    --COLOR-SUCCESS-H: 142;
-    --COLOR-SUCCESS-S: 50%;
-    --COLOR-SUCCESS-L: 38%;
 
-    --COLOR-WARNING-H: 44;
-    --COLOR-WARNING-S: 100%;
-    --COLOR-WARNING-L: 35%;
-
-    --COLOR-DANGER-H: 356;
-    --COLOR-DANGER-S: 62%;
-    --COLOR-DANGER-L: 41%;
-
-    --COLOR-BUG-H: 356;
-    --COLOR-BUG-S: 62%;
-    --COLOR-BUG-L: 28%;
 
     --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
     --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);

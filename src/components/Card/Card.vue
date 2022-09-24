@@ -50,7 +50,7 @@ export default {
             }
         },
         overflow: {
-            type: Boolean,
+            type: String,
             default: 'visible',
             skip: true,
             validator: function(value) {

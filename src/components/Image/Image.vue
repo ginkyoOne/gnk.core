@@ -3,7 +3,6 @@
 
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
 import imageData from "../../utils/imageData"
-import imgUrl from '../../assets/placeholder-1024x512.png?url'
 
 
 export default {

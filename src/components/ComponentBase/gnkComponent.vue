@@ -1,6 +1,8 @@
 <script>
 import gnk from "../../index"
 import createRipple from "../../utils/ripple"
+import { setColors, hexToHsl } from '../../utils/colorsUtils'
+import { setCssVariable } from "../../utils/cssUtils"
 
 export default {
     name: 'gnkComponent',
@@ -122,78 +124,17 @@ export default {
             //this.$el.dispatchEvent(event)
         },
 
-
-        //CSS HELPERS
-        setCssVariable(element,propertyName, value) {
-            if (typeof element !== 'undefined') {
-                element.style.setProperty(propertyName, value)
-            }
-        },
-
-        //HEX COLOR TO HSLA
-        hexToHsla(hex) {
-
-            //check if hex starts with #, if not add #
-            hex = (hex?.charAt(0) == "#") ? hex : '#' + hex
-
-            //Check if hex is valid
-            if (/^#[0-9A-F]{6}$/i.test(hex) === false) return null
-
-            // Convert hex to RGB first
-            let r = 0, g = 0, b = 0;
-            if (hex.length == 4) {
-                r = "0x" + hex[1] + hex[1];
-                g = "0x" + hex[2] + hex[2];
-                b = "0x" + hex[3] + hex[3];
-            } else if (hex.length == 7) {
-                r = "0x" + hex[1] + hex[2];
-                g = "0x" + hex[3] + hex[4];
-                b = "0x" + hex[5] + hex[6];
-            }
-
-            // Then to HSL
-            r /= 255;
-            g /= 255;
-            b /= 255;
-            let cmin = Math.min(r,g,b),
-                cmax = Math.max(r,g,b),
-                delta = cmax - cmin,
-                h = 0,
-                s = 0,
-                l = 0;
-
-            if (delta == 0)
-                h = 0;
-            else if (cmax == r)
-                h = ((g - b) / delta) % 6;
-            else if (cmax == g)
-                h = (b - r) / delta + 2;
-            else
-                h = (r - g) / delta + 4;
-
-            h = Math.round(h * 60);
-
-            if (h < 0) h += 360;
-
-            l = (cmax + cmin) / 2;
-            s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-            s = +(s * 100).toFixed(1);
-            l = +(l * 100).toFixed(1);
-
-            return { 'H': h, 'S': s + '%', 'L': l + '%' };
-        },
-
         //REPLACE BASE COLOR
         setBaseColor(color) {
 
-            let result = this.hexToHsla(color)
+            let result = hexToHsl(color)
             if(!result) return
 
             let { H, S, L } = result
             
-            this.setCssVariable(this.$el,'--COLOR-BASE-H', H)
-            this.setCssVariable(this.$el,'--COLOR-BASE-S', S)
-            this.setCssVariable(this.$el,'--COLOR-BASE-L', L)
+            setCssVariable(this.$el,'--COLOR-BASE-H', H)
+            setCssVariable(this.$el,'--COLOR-BASE-S', S)
+            setCssVariable(this.$el,'--COLOR-BASE-L', L)
         },
 
 

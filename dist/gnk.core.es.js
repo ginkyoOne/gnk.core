@@ -49,6 +49,62 @@ function createRipple(event) {
 var createRipple$1 = {
   createRipple
 };
+function setCssVariable(element, propertyName, value) {
+  if (typeof element !== "undefined") {
+    element.style.setProperty(propertyName, value);
+  }
+}
+function hexToHsl(hex) {
+  hex = (hex == null ? void 0 : hex.charAt(0)) == "#" ? hex : "#" + hex;
+  if (/^#[0-9A-F]{6}$/i.test(hex) === false)
+    return null;
+  let r = 0, g = 0, b = 0;
+  if (hex.length == 4) {
+    r = "0x" + hex[1] + hex[1];
+    g = "0x" + hex[2] + hex[2];
+    b = "0x" + hex[3] + hex[3];
+  } else if (hex.length == 7) {
+    r = "0x" + hex[1] + hex[2];
+    g = "0x" + hex[3] + hex[4];
+    b = "0x" + hex[5] + hex[6];
+  }
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  let cmin = Math.min(r, g, b), cmax = Math.max(r, g, b), delta = cmax - cmin, h2 = 0, s = 0, l = 0;
+  if (delta == 0)
+    h2 = 0;
+  else if (cmax == r)
+    h2 = (g - b) / delta % 6;
+  else if (cmax == g)
+    h2 = (b - r) / delta + 2;
+  else
+    h2 = (r - g) / delta + 4;
+  h2 = Math.round(h2 * 60);
+  if (h2 < 0)
+    h2 += 360;
+  l = (cmax + cmin) / 2;
+  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+  return { "H": h2, "S": s + "%", "L": l + "%" };
+}
+function setColors(colors) {
+  if (!Array.isArray(colors))
+    colors = [colors];
+  colors.forEach((color) => {
+    if (!Object.keys(color).length > 0)
+      return;
+    let result2 = hexToHsl(color[Object.keys(color)[0]]);
+    if (!result2)
+      return;
+    let { H, S, L } = result2;
+    document.querySelectorAll("[gnk-theme-colorMode=dark], [gnk-theme-colorMode=light]").forEach((element) => {
+      setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-H`, H);
+      setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-S`, S);
+    });
+  });
+}
 const _sfc_main$j = {
   name: "gnkComponent",
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click"],
@@ -148,54 +204,14 @@ const _sfc_main$j = {
       let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
       this.$emit(eventName, event);
     },
-    setCssVariable(element, propertyName, value) {
-      if (typeof element !== "undefined") {
-        element.style.setProperty(propertyName, value);
-      }
-    },
-    hexToHsla(hex) {
-      hex = (hex == null ? void 0 : hex.charAt(0)) == "#" ? hex : "#" + hex;
-      if (/^#[0-9A-F]{6}$/i.test(hex) === false)
-        return null;
-      let r = 0, g = 0, b = 0;
-      if (hex.length == 4) {
-        r = "0x" + hex[1] + hex[1];
-        g = "0x" + hex[2] + hex[2];
-        b = "0x" + hex[3] + hex[3];
-      } else if (hex.length == 7) {
-        r = "0x" + hex[1] + hex[2];
-        g = "0x" + hex[3] + hex[4];
-        b = "0x" + hex[5] + hex[6];
-      }
-      r /= 255;
-      g /= 255;
-      b /= 255;
-      let cmin = Math.min(r, g, b), cmax = Math.max(r, g, b), delta = cmax - cmin, h2 = 0, s = 0, l = 0;
-      if (delta == 0)
-        h2 = 0;
-      else if (cmax == r)
-        h2 = (g - b) / delta % 6;
-      else if (cmax == g)
-        h2 = (b - r) / delta + 2;
-      else
-        h2 = (r - g) / delta + 4;
-      h2 = Math.round(h2 * 60);
-      if (h2 < 0)
-        h2 += 360;
-      l = (cmax + cmin) / 2;
-      s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-      s = +(s * 100).toFixed(1);
-      l = +(l * 100).toFixed(1);
-      return { "H": h2, "S": s + "%", "L": l + "%" };
-    },
     setBaseColor(color) {
-      let result2 = this.hexToHsla(color);
+      let result2 = hexToHsl(color);
       if (!result2)
         return;
       let { H, S, L } = result2;
-      this.setCssVariable(this.$el, "--COLOR-BASE-H", H);
-      this.setCssVariable(this.$el, "--COLOR-BASE-S", S);
-      this.setCssVariable(this.$el, "--COLOR-BASE-L", L);
+      setCssVariable(this.$el, "--COLOR-BASE-H", H);
+      setCssVariable(this.$el, "--COLOR-BASE-S", S);
+      setCssVariable(this.$el, "--COLOR-BASE-L", L);
     },
     objectToArray(obj) {
       return Object.keys(obj).map(function(key) {
@@ -5799,7 +5815,7 @@ const _sfc_main$5 = {
       }
     },
     overflow: {
-      type: Boolean,
+      type: String,
       default: "visible",
       skip: true,
       validator: function(value) {
@@ -8011,6 +8027,7 @@ var gnk = {
   router,
   Store,
   registerRoutes,
-  registerModuleComponents
+  registerModuleComponents,
+  setColors
 };
 export { gnk as default };
