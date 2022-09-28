@@ -1,14 +1,14 @@
 import Store from "../Store/Store"
-function registerModuleComponents(App, components) {
+function registerModuleComponents(components) {
     
-    App.provide('store', Store )
+    window.APP.provide('store', Store )
 
     if (!components) {
         return;
     }
     for (var componentName in components) {
         if (components.hasOwnProperty(componentName)) {
-            App.component(componentName, components[componentName]);
+            window.APP.component(componentName, components[componentName]);
         }
     }
 }

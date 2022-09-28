@@ -6491,7 +6491,6 @@ var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]
 const state = reactive({
   busy: false,
   loading: false,
-  loadingValue: 0,
   swipeCapturedBy: null
 });
 const theme = reactive({
@@ -8194,21 +8193,21 @@ router.beforeResolve((to, from, next) => {
   Store.state.loading = false;
   next();
 });
-function registerRoutes(App, routes2) {
+function registerRoutes(routes2) {
   if (!routes2)
     return null;
-  App.use(router);
+  window.APP.use(router);
   routes2.forEach((route) => router.addRoute(route));
   router.push(routes2[0]);
 }
-function registerModuleComponents(App, components) {
-  App.provide("store", Store);
+function registerModuleComponents(components) {
+  window.APP.provide("store", Store);
   if (!components) {
     return;
   }
   for (var componentName in components) {
     if (components.hasOwnProperty(componentName)) {
-      App.component(componentName, components[componentName]);
+      window.APP.component(componentName, components[componentName]);
     }
   }
 }

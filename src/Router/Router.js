@@ -48,9 +48,8 @@ import store from '../Store/Store'
 import { createWebHistory, createRouter, createWebHashHistory  } from "vue-router";
 
 let routes = []
-      
 let router = createRouter({
-        history: createWebHashHistory(),
+  history: createWebHashHistory(),
 
   scrollBehavior(to, from, savedPosition) {
             if (to.hash) {
@@ -65,9 +64,7 @@ let router = createRouter({
             }
         },
         routes,
-    });
-
-
+});
 
 
 
@@ -83,18 +80,16 @@ router.beforeEach((to, from, next) => {
   
 })
 
-
-
 router.beforeResolve((to, from, next) => {
     store.state.loading = false
     next()
 })
 
 
-function registerRoutes(App, routes) {
+function registerRoutes(routes) {
     if (!routes) return null
 
-  App.use(router)
+  window.APP.use(router)
   routes.forEach(route => router.addRoute(route))
   router.push(routes[0])
 }
