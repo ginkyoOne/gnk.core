@@ -13,9 +13,9 @@ vue gnk.core v0.1 alfa
 - [x] .core.autoLoader(FULL)
 - [ ] .core.autoLoader(mobile)
 - [ ] .core.autoLoader(WEB)
-- [ ] .core.configs
+- [x] .core.configs
 - [x] .core.grid
-- [ ] .core.theme
+- [x] .core.theme
 - [ ] Alert
 - [ ] Avatar
 - [ ] Backdrop
@@ -86,23 +86,26 @@ git clone https://github.com/ginkyoOne/gnk.core/
 2. Open VS Code
 3. On your project main.js
 ```sh
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import App from './App.vue'
-
-//IMPORT GNK Framework
 import GNK from 'gnk.core'
+import routes from './router'
 
-//IMPORT GNK Framework Styles
+
 import "gnk.core/dist/style.css"
 
 //CREATE APP
-let APP = createApp(App)
+window.APP = createApp({
+    render: () => h(App)
+})
 
-//REGISTER GNK FULL Framework
-GNK.registerModuleComponents(APP, GNK)
+
+//REGISTER GNK FRAMEWORK
+GNK.registerModuleComponents( GNK)
+GNK.registerRoutes( routes)
 
 //MOUNT APP
-APP.mount('#app')
+window.APP.mount('#app')
 ```
 
 
