@@ -13,9 +13,9 @@ vue gnk.core v0.1 alfa
 - [x] .core.autoLoader(FULL)
 - [ ] .core.autoLoader(mobile)
 - [ ] .core.autoLoader(WEB)
-- [ ] .core.configs
+- [x] .core.configs
 - [x] .core.grid
-- [ ] .core.theme
+- [x] .core.theme
 - [ ] Alert
 - [ ] Avatar
 - [ ] Backdrop
