@@ -231,7 +231,7 @@ export default {
             width: 100%;
             margin: 0!important;
             
-            z-index: 100;
+            z-index: 100000;
         }
     }
 
