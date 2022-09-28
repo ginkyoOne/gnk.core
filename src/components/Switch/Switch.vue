@@ -6,12 +6,12 @@ import createRipple from "../../utils/ripple"
 export default {
   name: 'gnkSwitch',
   extends: gnkComponent,
-  emits: ['update:modelValue','click','mouseleave','mouseover','keydown','keypress','keyup'],
+  //emits: ['update:modelValue','click','mouseleave','mouseover','keydown','keypress','keyup'],
 
   data() {
     return {
       //store: gnk.Store,
-      defaultValue: null,
+      defaultValue: Math.random().toString(36).substr(2, 9),
     }
   },
 
@@ -24,6 +24,12 @@ export default {
     },
 
     value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+
+    notValue: {
       default: null,
       required: false,
       skip: true
@@ -122,11 +128,14 @@ export default {
 
   computed: {
     isChecked() {
-      return (Array.isArray( this.modelValue) ? this.modelValue.includes(this.defaultValue) : this.modelValue === this.defaultValue)
+      return (Array.isArray( this.modelValue) ? this.modelValue.includes(this.isValueNull) : this.modelValue === this.isValueNull)
     },
 
+    isValueNull() {
+      return this.value === null ? this.defaultValue : this.value
+    },
     //STYLING CLASSES  
-    componentClassObject: function () {
+    componentClassObject() {
       return {
           '--primary': true,
           '--checked': this.isChecked,
@@ -148,46 +157,52 @@ export default {
   },
 
   mounted() {
-    this.defaultValue = (this.value === null ? Math.random().toString(36).substr(2, 9) : this.value)
     if(this.checked) this.onchange(null)
   },
 
-  watch: {
-    value(newValue) {
-      this.defaultValue = (newValue === null ? Math.random().toString(36).substr(2, 9) : newValue)
-    },
-  },
-
   methods: {
-    onchange(event) {
+    onchange(eventName, event) {
+
+      //CREATE RIPPLE EFFECT
       if (!!event & !this.disabled & !this.busy & !this.loading) createRipple.createRipple(event)
 
-      
-      //CHECK IF MODELVALUE IS AN ARRAY
-      if (Array.isArray(this.modelValue)) {
 
-        //IF CHECKED, REMOVE VALUE FROM MODELVALUE
-        if (this.isChecked){
+      //VALIDATE VALUE AND PUSH MODELVALUE
+      if (this.isChecked) {
 
-          this.modelValue.splice(this.modelValue.indexOf(this.defaultValue), 1)
-        }else {
+        //CHECK IF MODELVALUE IS AN ARRAY
+        if (Array.isArray(this.modelValue)) {
+          //REMOVE VALUE FROM ARRAY
+          this.modelValue.splice(this.modelValue.indexOf(this.isValueNull), 1)
+          this.$emit('update:modelValue', this.modelValue)
+        } else {
 
-          this.modelValue.push(this.defaultValue)
+          //PUSH NOT VALUE
+          this.$emit('update:modelValue', this.notValue)
         }
 
-        this.modelValue.sort()
-        this.$emit('update:modelValue', this.modelValue)
 
       } else {
 
-        if (this.isChecked) {
-          this.$emit('update:modelValue', null)
+        //CHECK IF MODELVALUE IS AN ARRAY
+        if (Array.isArray(this.modelValue)) {
+          //PUSH VALUE TO ARRAY
+          this.modelValue.push(this.isValueNull)
+
+          //SORT ARRAY
+          this.modelValue.sort()
+          this.$emit('update:modelValue', this.modelValue)
         } else {
-          this.$emit('update:modelValue', this.defaultValue)
+
+          //PUSH VALUE
+          this.$emit('update:modelValue', this.isValueNull)
         }
       }
-          
-    }
+
+      this.componentRaiseEvent(eventName,{event: event})
+      
+    },
+
   }
 
 }
@@ -198,11 +213,11 @@ export default {
   <div :disabled="disabled" :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
     :id="componentId"
 
-    @click.prevent="onchange($event)"
+    @click.prevent="onchange('click',$event)"
     @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
     @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
     @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
-    @keypress.prevent="onchange($event)"
+    @keypress.prevent="onchange('keypress', $event)"
     @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
 
         <input

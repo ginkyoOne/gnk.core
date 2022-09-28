@@ -3,6 +3,7 @@
     
 
     --COLOR-PRIMARY-L: 30%;
+    --COLOR-SECONDARY-L:30%;
     --COLOR-INFO-L: 30%;
     --COLOR-SUCCESS-L: 30%;
     --COLOR-WARNING-L: 30%;
@@ -85,6 +86,20 @@
         --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
         --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
         --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 100%;
+    }
+
+    [class*="--secondary"] {
+        --COLOR-BASE-H: var(--COLOR-SECONDARY-H);
+        --COLOR-BASE-S: var(--COLOR-SECONDARY-S);
+        --COLOR-BASE-L: var(--COLOR-SECONDARY-L);
 
         --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
         --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);

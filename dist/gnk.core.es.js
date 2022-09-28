@@ -29,7 +29,7 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-import { openBlock, createElementBlock, normalizeClass, normalizeStyle, createElementVNode, toDisplayString, createCommentVNode, renderSlot, resolveComponent, createVNode, withCtx, createTextVNode, withModifiers, Transition, createBlock, Fragment, renderList, Teleport, withDirectives, vShow, resolveDynamicComponent, shallowRef, unref, computed, reactive, nextTick, defineComponent, inject, h, provide, ref, watch } from "vue";
+import { openBlock, createElementBlock, normalizeClass, normalizeStyle, createElementVNode, toDisplayString, createCommentVNode, renderSlot, resolveComponent, createVNode, withCtx, createTextVNode, withModifiers, Transition, createBlock, Fragment, renderList, Teleport, withDirectives, vShow, resolveDynamicComponent, reactive, computed, watch, shallowRef, unref, nextTick, defineComponent, inject, h, provide, ref } from "vue";
 function createRipple(event) {
   if (!event.currentTarget.querySelector(".--ripple"))
     return;
@@ -89,9 +89,10 @@ function hexToHsl(hex) {
   l = +(l * 100).toFixed(1);
   return { "H": h2, "S": s + "%", "L": l + "%" };
 }
-function setColors(colors) {
+function setColors(colors, forceLight = true) {
   if (!Array.isArray(colors))
     colors = [colors];
+  console.log(colors);
   colors.forEach((color) => {
     if (!Object.keys(color).length > 0)
       return;
@@ -102,19 +103,24 @@ function setColors(colors) {
     document.querySelectorAll("[gnk-theme-colorMode=dark], [gnk-theme-colorMode=light]").forEach((element) => {
       setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-H`, H);
       setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-S`, S);
+      if (forceLight)
+        setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-L`, L);
     });
   });
 }
 const _sfc_main$k = {
   name: "gnkComponent",
-  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click"],
+  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click", "onClick"],
   data() {
-    return {
-      store: gnk.Store
-    };
+    return {};
   },
   props: {
     primary: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    secondary: {
       type: Boolean,
       required: false,
       default: false
@@ -201,8 +207,11 @@ const _sfc_main$k = {
       };
     },
     componentRaiseEvent(eventName, data) {
-      let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
-      this.$emit(eventName, event);
+      try {
+        let event = new CustomEvent(eventName, { detail: __spreadValues({ target: this.$el, component: this }, data) });
+        this.$emit(eventName, event);
+      } catch {
+      }
     },
     setBaseColor(color) {
       let result2 = hexToHsl(color);
@@ -235,7 +244,7 @@ const _sfc_main$k = {
       uiLevel: this.uiLevel + 1
     };
   },
-  inject: {}
+  inject: ["store"]
 };
 var Image_vue_vue_type_style_index_0_lang = "";
 var _export_sfc = (sfc, props) => {
@@ -440,50 +449,52 @@ const _sfc_main$h = {
 };
 const _hoisted_1$h = ["id"];
 const _hoisted_2$c = { class: "grid fill" };
-const _hoisted_3$b = { class: "row" };
-const _hoisted_4$a = { class: "col-12 flex-centered" };
-const _hoisted_5$a = { class: "P404-500" };
-const _hoisted_6$9 = { class: "row" };
-const _hoisted_7$6 = { class: "col-12 flex-centered" };
-const _hoisted_8$5 = { class: "row" };
-const _hoisted_9$3 = {
+const _hoisted_3$b = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_4$a = { class: "row" };
+const _hoisted_5$a = { class: "col-12 flex-centered" };
+const _hoisted_6$9 = { class: "P404-500" };
+const _hoisted_7$6 = { class: "row" };
+const _hoisted_8$5 = { class: "col-12 flex-centered" };
+const _hoisted_9$3 = { class: "row" };
+const _hoisted_10$2 = {
   key: 0,
   class: "col-12 flex-centered p-t-20"
 };
-const _hoisted_10$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+const _hoisted_11$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_13$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
 function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_row = resolveComponent("row");
   const _component_gnk_button = resolveComponent("gnk-button");
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
-    class: normalizeClass([_ctx.componentName + " |", _ctx.componentClassObject, _ctx.componentGeneralClasses])
+    class: normalizeClass([_ctx.componentName + " |", _ctx.componentGeneralClasses])
   }, [
     createElementVNode("div", _hoisted_2$c, [
-      createVNode(_component_row, { class: "fill" }),
-      createElementVNode("div", _hoisted_3$b, [
-        createElementVNode("div", _hoisted_4$a, [
-          createElementVNode("h1", _hoisted_5$a, toDisplayString($props.title), 1)
+      _hoisted_3$b,
+      createElementVNode("div", _hoisted_4$a, [
+        createElementVNode("div", _hoisted_5$a, [
+          createElementVNode("h1", _hoisted_6$9, toDisplayString($props.title), 1)
         ])
       ]),
-      createElementVNode("div", _hoisted_6$9, [
-        createElementVNode("div", _hoisted_7$6, toDisplayString($props.label), 1)
+      createElementVNode("div", _hoisted_7$6, [
+        createElementVNode("div", _hoisted_8$5, toDisplayString($props.label), 1)
       ]),
-      createElementVNode("div", _hoisted_8$5, [
-        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_9$3, [
+      createElementVNode("div", _hoisted_9$3, [
+        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_10$2, [
           createVNode(_component_gnk_button, {
-            success: "",
+            bug: "",
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
           }, {
             default: withCtx(() => [
-              _hoisted_10$2,
+              _hoisted_11$2,
               createTextVNode(" " + toDisplayString($props.goBackLable), 1)
             ]),
             _: 1
           })
         ])) : createCommentVNode("", true)
       ]),
-      createVNode(_component_row, { class: "fill" }),
-      createVNode(_component_row, { class: "fill" })
+      _hoisted_12$2,
+      _hoisted_13$2
     ])
   ], 10, _hoisted_1$h);
 }
@@ -893,10 +904,9 @@ var Switch_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$e = {
   name: "gnkSwitch",
   extends: _sfc_main$k,
-  emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   data() {
     return {
-      defaultValue: null
+      defaultValue: Math.random().toString(36).substr(2, 9)
     };
   },
   props: {
@@ -907,6 +917,11 @@ const _sfc_main$e = {
       skip: true
     },
     value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    notValue: {
       default: null,
       required: false,
       skip: true
@@ -989,9 +1004,12 @@ const _sfc_main$e = {
   },
   computed: {
     isChecked() {
-      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.defaultValue) : this.modelValue === this.defaultValue;
+      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.isValueNull) : this.modelValue === this.isValueNull;
     },
-    componentClassObject: function() {
+    isValueNull() {
+      return this.value === null ? this.defaultValue : this.value;
+    },
+    componentClassObject() {
       return {
         "--primary": true,
         "--checked": this.isChecked,
@@ -1007,34 +1025,30 @@ const _sfc_main$e = {
     }
   },
   mounted() {
-    this.defaultValue = this.value === null ? Math.random().toString(36).substr(2, 9) : this.value;
     if (this.checked)
       this.onchange(null);
   },
-  watch: {
-    value(newValue) {
-      this.defaultValue = newValue === null ? Math.random().toString(36).substr(2, 9) : newValue;
-    }
-  },
   methods: {
-    onchange(event) {
+    onchange(eventName, event) {
       if (!!event & !this.disabled & !this.busy & !this.loading)
         createRipple$1.createRipple(event);
-      if (Array.isArray(this.modelValue)) {
-        if (this.isChecked) {
-          this.modelValue.splice(this.modelValue.indexOf(this.defaultValue), 1);
+      if (this.isChecked) {
+        if (Array.isArray(this.modelValue)) {
+          this.modelValue.splice(this.modelValue.indexOf(this.isValueNull), 1);
+          this.$emit("update:modelValue", this.modelValue);
         } else {
-          this.modelValue.push(this.defaultValue);
+          this.$emit("update:modelValue", this.notValue);
         }
-        this.modelValue.sort();
-        this.$emit("update:modelValue", this.modelValue);
       } else {
-        if (this.isChecked) {
-          this.$emit("update:modelValue", null);
+        if (Array.isArray(this.modelValue)) {
+          this.modelValue.push(this.isValueNull);
+          this.modelValue.sort();
+          this.$emit("update:modelValue", this.modelValue);
         } else {
-          this.$emit("update:modelValue", this.defaultValue);
+          this.$emit("update:modelValue", this.isValueNull);
         }
       }
+      this.componentRaiseEvent(eventName, { event });
     }
   }
 };
@@ -1059,11 +1073,11 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: _ctx.disabled,
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
-    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange("click", $event), ["prevent"])),
     onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
     onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
     onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
-    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange("keypress", $event), ["prevent"])),
     onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
   }, [
     createElementVNode("input", {
@@ -2043,8 +2057,8 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
         class: "--progressBar"
       }, null, 4),
       this.sections ? (openBlock(), createElementBlock("div", _hoisted_2$6, [
-        (openBlock(true), createElementBlock(Fragment, null, renderList(this.max - 1, (index) => {
-          return openBlock(), createElementBlock("div", { key: index });
+        (openBlock(true), createElementBlock(Fragment, null, renderList(this.max - 1, (index2) => {
+          return openBlock(), createElementBlock("div", { key: index2 });
         }), 128))
       ])) : createCommentVNode("", true)
     ])
@@ -2141,8 +2155,8 @@ class CssSyntaxError$3 extends Error {
     } else {
       mark = aside = (str) => str;
     }
-    return lines.slice(start, end).map((line, index) => {
-      let number = start + 1 + index;
+    return lines.slice(start, end).map((line, index2) => {
+      let number = start + 1 + index2;
       let gutter = " " + (" " + number).slice(-maxWidth) + " | ";
       if (number === this.line) {
         let spacing = aside(gutter.replace(/\d/g, " ")) + line.slice(0, this.column - 1).replace(/[^\t]/g, " ");
@@ -2608,14 +2622,14 @@ class Node$4 {
   next() {
     if (!this.parent)
       return void 0;
-    let index = this.parent.index(this);
-    return this.parent.nodes[index + 1];
+    let index2 = this.parent.index(this);
+    return this.parent.nodes[index2 + 1];
   }
   prev() {
     if (!this.parent)
       return void 0;
-    let index = this.parent.index(this);
-    return this.parent.nodes[index - 1];
+    let index2 = this.parent.index(this);
+    return this.parent.nodes[index2 - 1];
   }
   before(add) {
     this.parent.insertBefore(this, add);
@@ -2685,11 +2699,11 @@ class Node$4 {
     }
     return fixed;
   }
-  positionInside(index) {
+  positionInside(index2) {
     let string = this.toString();
     let column = this.source.start.column;
     let line = this.source.start.line;
-    for (let i = 0; i < index; i++) {
+    for (let i = 0; i < index2; i++) {
       if (string[i] === "\n") {
         column = 1;
         line += 1;
@@ -2704,9 +2718,9 @@ class Node$4 {
     if (opts.index) {
       pos = this.positionInside(opts.index);
     } else if (opts.word) {
-      let index = this.toString().indexOf(opts.word);
-      if (index !== -1)
-        pos = this.positionInside(index);
+      let index2 = this.toString().indexOf(opts.word);
+      if (index2 !== -1)
+        pos = this.positionInside(index2);
     }
     return pos;
   }
@@ -2723,10 +2737,10 @@ class Node$4 {
       column: start.column + 1
     };
     if (opts.word) {
-      let index = this.toString().indexOf(opts.word);
-      if (index !== -1) {
-        start = this.positionInside(index);
-        end = this.positionInside(index + opts.word.length);
+      let index2 = this.toString().indexOf(opts.word);
+      if (index2 !== -1) {
+        start = this.positionInside(index2);
+        end = this.positionInside(index2 + opts.word.length);
       }
     } else {
       if (opts.start) {
@@ -3477,10 +3491,10 @@ class Container$7 extends Node$1 {
     if (!this.proxyOf.nodes)
       return void 0;
     let iterator = this.getIterator();
-    let index, result2;
+    let index2, result2;
     while (this.indexes[iterator] < this.proxyOf.nodes.length) {
-      index = this.indexes[iterator];
-      result2 = callback(this.proxyOf.nodes[index], index);
+      index2 = this.indexes[iterator];
+      result2 = callback(this.proxyOf.nodes[index2], index2);
       if (result2 === false)
         break;
       this.indexes[iterator] += 1;
@@ -3610,11 +3624,11 @@ class Container$7 extends Node$1 {
     let nodes = this.normalize(add, this.proxyOf.nodes[exist], type).reverse();
     for (let node of nodes)
       this.proxyOf.nodes.splice(exist, 0, node);
-    let index;
+    let index2;
     for (let id in this.indexes) {
-      index = this.indexes[id];
-      if (exist <= index) {
-        this.indexes[id] = index + nodes.length;
+      index2 = this.indexes[id];
+      if (exist <= index2) {
+        this.indexes[id] = index2 + nodes.length;
       }
     }
     this.markDirty();
@@ -3625,11 +3639,11 @@ class Container$7 extends Node$1 {
     let nodes = this.normalize(add, this.proxyOf.nodes[exist]).reverse();
     for (let node of nodes)
       this.proxyOf.nodes.splice(exist + 1, 0, node);
-    let index;
+    let index2;
     for (let id in this.indexes) {
-      index = this.indexes[id];
-      if (exist < index) {
-        this.indexes[id] = index + nodes.length;
+      index2 = this.indexes[id];
+      if (exist < index2) {
+        this.indexes[id] = index2 + nodes.length;
       }
     }
     this.markDirty();
@@ -3639,11 +3653,11 @@ class Container$7 extends Node$1 {
     child = this.index(child);
     this.proxyOf.nodes[child].parent = void 0;
     this.proxyOf.nodes.splice(child, 1);
-    let index;
+    let index2;
     for (let id in this.indexes) {
-      index = this.indexes[id];
-      if (index >= child) {
-        this.indexes[id] = index - 1;
+      index2 = this.indexes[id];
+      if (index2 >= child) {
+        this.indexes[id] = index2 - 1;
       }
     }
     this.markDirty();
@@ -3765,7 +3779,7 @@ class Container$7 extends Node$1 {
           return (...args) => {
             return node[prop](...args.map((i) => {
               if (typeof i === "function") {
-                return (child, index) => i(child.toProxy(), index);
+                return (child, index2) => i(child.toProxy(), index2);
               } else {
                 return i;
               }
@@ -4150,9 +4164,9 @@ class Root$5 extends Container$4 {
       this.nodes = [];
   }
   removeChild(child, ignore) {
-    let index = this.index(child);
-    if (!ignore && index === 0 && this.nodes.length > 1) {
-      this.nodes[1].raws.before = this.nodes[index].raws.before;
+    let index2 = this.index(child);
+    if (!ignore && index2 === 0 && this.nodes.length > 1) {
+      this.nodes[1].raws.before = this.nodes[index2].raws.before;
     }
     return super.removeChild(child);
   }
@@ -6104,7 +6118,7 @@ const _sfc_main$3 = {
       var _a;
       createRipple$1.createRipple(event);
       (_a = this == null ? void 0 : this.$router) == null ? void 0 : _a.push(this.to);
-      this.componentRaiseEvent("onclick");
+      this.componentRaiseEvent("click");
     }
   },
   mounted() {
@@ -6220,16 +6234,15 @@ const _hoisted_8 = {
   key: 0,
   class: "col-12"
 };
-const _hoisted_9 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " menu ", -1);
-const _hoisted_10 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " search ", -1);
-const _hoisted_11 = { class: "--body | fill grid" };
-const _hoisted_12 = { class: "row fill" };
-const _hoisted_13 = {
+const _hoisted_9 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " search ", -1);
+const _hoisted_10 = { class: "--body | fill grid" };
+const _hoisted_11 = { class: "row fill" };
+const _hoisted_12 = {
   key: 0,
   class: "--sidebar | lg-hide-smaller col-4 overflow-vertical"
 };
-const _hoisted_14 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
-const _hoisted_15 = { class: "--gnkApp-content | col-12" };
+const _hoisted_13 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_14 = { class: "--gnkApp-content | col-12" };
 function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Progressbar = resolveComponent("gnk-Progressbar");
   const _component_gnk_button = resolveComponent("gnk-button");
@@ -6249,37 +6262,24 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_4$1, [
       createElementVNode("div", _hoisted_5$1, [
         createElementVNode("div", _hoisted_6$1, [
-          withDirectives(createVNode(_component_gnk_Progressbar, {
-            loading: "",
-            square: "",
-            class: "full-width"
-          }, null, 512), [
-            [vShow, $props.loading]
-          ])
+          createVNode(Transition, { name: "fade" }, {
+            default: withCtx(() => [
+              withDirectives(createVNode(_component_gnk_Progressbar, {
+                loading: "",
+                square: "",
+                class: "full-width"
+              }, null, 512), [
+                [vShow, this.store.state.loading]
+              ])
+            ]),
+            _: 1
+          })
         ])
       ]),
       createElementVNode("div", _hoisted_7, [
         $props.showHeader ? (openBlock(), createElementBlock("div", _hoisted_8, [
           createVNode(_component_gnkNavbar, null, {
-            left: withCtx(() => [
-              $props.showSidebarToggle ? (openBlock(), createBlock(_component_gnk_buttonGroup, {
-                key: 0,
-                clear: ""
-              }, {
-                default: withCtx(() => [
-                  createVNode(_component_gnk_button, {
-                    size: "xl",
-                    clear: ""
-                  }, {
-                    default: withCtx(() => [
-                      _hoisted_9
-                    ]),
-                    _: 1
-                  })
-                ]),
-                _: 1
-              })) : createCommentVNode("", true)
-            ]),
+            left: withCtx(() => []),
             title: withCtx(() => {
               var _a;
               return [
@@ -6294,7 +6294,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
                     clear: ""
                   }, {
                     default: withCtx(() => [
-                      _hoisted_10
+                      _hoisted_9
                     ]),
                     _: 1
                   })
@@ -6307,11 +6307,11 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
         ])) : createCommentVNode("", true)
       ])
     ]),
-    createElementVNode("div", _hoisted_11, [
-      createElementVNode("div", _hoisted_12, [
-        !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_13, [
+    createElementVNode("div", _hoisted_10, [
+      createElementVNode("div", _hoisted_11, [
+        !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_12, [
           renderSlot(_ctx.$slots, "sidebar", {}, () => [
-            _hoisted_14
+            _hoisted_13
           ])
         ])) : createCommentVNode("", true),
         createVNode(_component_gnkSwipeManager, {
@@ -6327,7 +6327,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
           captureDirection: "horizontal"
         }, {
           default: withCtx(() => [
-            createElementVNode("div", _hoisted_15, [
+            createElementVNode("div", _hoisted_14, [
               renderSlot(_ctx.$slots, "default", {}, () => [
                 $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
                   default: withCtx(({ Component }) => [
@@ -6488,6 +6488,70 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   ]);
 }
 var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+const state = reactive({
+  busy: false,
+  loading: false,
+  loadingValue: 0,
+  swipeCapturedBy: null
+});
+const theme = reactive({
+  colorMode: "",
+  isDarkMode: computed(() => theme.colorMode == "dark"),
+  colorPrimary: "#2773dd",
+  colorInfo: "#2651cc",
+  colorSuccess: "#43cb75",
+  colorWarning: "#ffbb00",
+  colorDanger: "#ee2b48",
+  colorBug: "#ff2e4e"
+});
+watch(() => theme.colorMode, (newValue = null, prevValue = null) => {
+  if (newValue === prevValue)
+    return;
+  console.log(newValue);
+  document.querySelector("body").setAttribute("gnk-theme-colorMode", newValue);
+  localStorage.setItem("gnk-theme-colorMode", newValue);
+});
+watch(() => theme.colorPrimary, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ PRIMARY: newValue });
+});
+watch(() => theme.colorInfo, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ INFO: newValue });
+});
+watch(() => theme.colorSuccess, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ SUCCESS: newValue });
+});
+watch(() => theme.colorWarning, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ WARNING: newValue });
+});
+watch(() => theme.colorDanger, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ DANGER: newValue });
+});
+watch(() => theme.colorBug, (newValue = null, prevValue = null) => {
+  console.log(newValue);
+  if (newValue === prevValue)
+    return;
+  setColors({ BUG: newValue });
+});
+theme.colorMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+var Store = {
+  state,
+  theme
+};
 /*!
   * vue-router v4.0.16
   * (c) 2022 Eduardo San Martin Morote
@@ -6683,19 +6747,19 @@ function useHistoryListeners(base, historyState, currentLocation, replace) {
   let listeners = [];
   let teardowns = [];
   let pauseState = null;
-  const popStateHandler = ({ state }) => {
+  const popStateHandler = ({ state: state2 }) => {
     const to = createCurrentLocation(base, location);
     const from = currentLocation.value;
     const fromState = historyState.value;
     let delta = 0;
-    if (state) {
+    if (state2) {
       currentLocation.value = to;
-      historyState.value = state;
+      historyState.value = state2;
       if (pauseState && pauseState === from) {
         pauseState = null;
         return;
       }
-      delta = fromState ? state.position - fromState.position : 0;
+      delta = fromState ? state2.position - fromState.position : 0;
     } else {
       replace(to);
     }
@@ -6713,9 +6777,9 @@ function useHistoryListeners(base, historyState, currentLocation, replace) {
   function listen(callback) {
     listeners.push(callback);
     const teardown = () => {
-      const index = listeners.indexOf(callback);
-      if (index > -1)
-        listeners.splice(index, 1);
+      const index2 = listeners.indexOf(callback);
+      if (index2 > -1)
+        listeners.splice(index2, 1);
     };
     teardowns.push(teardown);
     return teardown;
@@ -6767,12 +6831,12 @@ function useHistoryStateNavigation(base) {
       scroll: null
     }, true);
   }
-  function changeLocation(to, state, replace2) {
+  function changeLocation(to, state2, replace2) {
     const hashIndex = base.indexOf("#");
     const url = hashIndex > -1 ? (location2.host && document.querySelector("base") ? base : base.slice(hashIndex)) + to : createBaseLocation() + base + to;
     try {
-      history2[replace2 ? "replaceState" : "pushState"](state, "", url);
-      historyState.value = state;
+      history2[replace2 ? "replaceState" : "pushState"](state2, "", url);
+      historyState.value = state2;
     } catch (err) {
       {
         console.error(err);
@@ -6781,8 +6845,8 @@ function useHistoryStateNavigation(base) {
     }
   }
   function replace(to, data) {
-    const state = assign({}, history2.state, buildState(historyState.value.back, to, historyState.value.forward, true), data, { position: historyState.value.position });
-    changeLocation(to, state, true);
+    const state2 = assign({}, history2.state, buildState(historyState.value.back, to, historyState.value.forward, true), data, { position: historyState.value.position });
+    changeLocation(to, state2, true);
     currentLocation.value = to;
   }
   function push(to, data) {
@@ -6791,8 +6855,8 @@ function useHistoryStateNavigation(base) {
       scroll: computeScrollPosition()
     });
     changeLocation(currentState.current, currentState, true);
-    const state = assign({}, buildState(currentLocation.value, to, null), { position: currentState.position + 1 }, data);
-    changeLocation(to, state, false);
+    const state2 = assign({}, buildState(currentLocation.value, to, null), { position: currentState.position + 1 }, data);
+    changeLocation(to, state2, false);
     currentLocation.value = to;
   }
   return {
@@ -6826,6 +6890,12 @@ function createWebHistory(base) {
     get: () => historyNavigation.state.value
   });
   return routerHistory;
+}
+function createWebHashHistory(base) {
+  base = location.host ? base || location.pathname + location.search : "";
+  if (!base.includes("#"))
+    base += "#";
+  return createWebHistory(base);
 }
 function isRouteLocation(route) {
   return typeof route === "string" || route && typeof route === "object";
@@ -7036,10 +7106,10 @@ function tokenizePath(path) {
     throw new Error(`Invalid path "${path}"`);
   }
   function crash(message) {
-    throw new Error(`ERR (${state})/"${buffer}": ${message}`);
+    throw new Error(`ERR (${state2})/"${buffer}": ${message}`);
   }
-  let state = 0;
-  let previousState = state;
+  let state2 = 0;
+  let previousState = state2;
   const tokens = [];
   let segment;
   function finalizeSegment() {
@@ -7054,12 +7124,12 @@ function tokenizePath(path) {
   function consumeBuffer() {
     if (!buffer)
       return;
-    if (state === 0) {
+    if (state2 === 0) {
       segment.push({
         type: 0,
         value: buffer
       });
-    } else if (state === 1 || state === 2 || state === 3) {
+    } else if (state2 === 1 || state2 === 2 || state2 === 3) {
       if (segment.length > 1 && (char === "*" || char === "+"))
         crash(`A repeatable param (${buffer}) must be alone in its segment. eg: '/:ids+.`);
       segment.push({
@@ -7079,12 +7149,12 @@ function tokenizePath(path) {
   }
   while (i < path.length) {
     char = path[i++];
-    if (char === "\\" && state !== 2) {
-      previousState = state;
-      state = 4;
+    if (char === "\\" && state2 !== 2) {
+      previousState = state2;
+      state2 = 4;
       continue;
     }
-    switch (state) {
+    switch (state2) {
       case 0:
         if (char === "/") {
           if (buffer) {
@@ -7093,23 +7163,23 @@ function tokenizePath(path) {
           finalizeSegment();
         } else if (char === ":") {
           consumeBuffer();
-          state = 1;
+          state2 = 1;
         } else {
           addCharToBuffer();
         }
         break;
       case 4:
         addCharToBuffer();
-        state = previousState;
+        state2 = previousState;
         break;
       case 1:
         if (char === "(") {
-          state = 2;
+          state2 = 2;
         } else if (VALID_PARAM_RE.test(char)) {
           addCharToBuffer();
         } else {
           consumeBuffer();
-          state = 0;
+          state2 = 0;
           if (char !== "*" && char !== "?" && char !== "+")
             i--;
         }
@@ -7119,14 +7189,14 @@ function tokenizePath(path) {
           if (customRe[customRe.length - 1] == "\\")
             customRe = customRe.slice(0, -1) + char;
           else
-            state = 3;
+            state2 = 3;
         } else {
           customRe += char;
         }
         break;
       case 3:
         consumeBuffer();
-        state = 0;
+        state2 = 0;
         if (char !== "*" && char !== "?" && char !== "+")
           i--;
         customRe = "";
@@ -7136,7 +7206,7 @@ function tokenizePath(path) {
         break;
     }
   }
-  if (state === 2)
+  if (state2 === 2)
     crash(`Unfinished custom RegExp for param "${buffer}"`);
   consumeBuffer();
   finalizeSegment();
@@ -7156,7 +7226,7 @@ function createRouteRecordMatcher(record, parent, options) {
   }
   return matcher;
 }
-function createRouterMatcher(routes, globalOptions) {
+function createRouterMatcher(routes2, globalOptions) {
   const matchers = [];
   const matcherMap = /* @__PURE__ */ new Map();
   globalOptions = mergeOptions({ strict: false, end: true, sensitive: false }, globalOptions);
@@ -7223,9 +7293,9 @@ function createRouterMatcher(routes, globalOptions) {
         matcher.alias.forEach(removeRoute);
       }
     } else {
-      const index = matchers.indexOf(matcherRef);
-      if (index > -1) {
-        matchers.splice(index, 1);
+      const index2 = matchers.indexOf(matcherRef);
+      if (index2 > -1) {
+        matchers.splice(index2, 1);
         if (matcherRef.record.name)
           matcherMap.delete(matcherRef.record.name);
         matcherRef.children.forEach(removeRoute);
@@ -7290,7 +7360,7 @@ function createRouterMatcher(routes, globalOptions) {
       meta: mergeMetaFields(matched)
     };
   }
-  routes.forEach((route) => addRoute(route));
+  routes2.forEach((route) => addRoute(route));
   return { addRoute, resolve: resolve2, removeRoute, getRoutes, getRecordMatcher };
 }
 function paramsFromLocation(params, keys) {
@@ -7533,11 +7603,11 @@ function useLink(props) {
     const currentMatched = currentRoute.matched;
     if (!routeMatched || !currentMatched.length)
       return -1;
-    const index = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
-    if (index > -1)
-      return index;
+    const index2 = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
+    if (index2 > -1)
+      return index2;
     const parentRecordPath = getOriginalPath(matched[length - 2]);
-    return length > 1 && getOriginalPath(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2])) : index;
+    return length > 1 && getOriginalPath(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2])) : index2;
   });
   const isActive = computed(() => activeRecordIndex.value > -1 && includesParams(currentRoute.params, route.value.params));
   const isExactActive = computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params));
@@ -7915,11 +7985,11 @@ function createRouter(options) {
     if (error)
       return error;
     const isFirstNavigation = from === START_LOCATION_NORMALIZED;
-    const state = !isBrowser ? {} : history.state;
+    const state2 = !isBrowser ? {} : history.state;
     if (isPush) {
       if (replace2 || isFirstNavigation)
         routerHistory.replace(toLocation.fullPath, assign({
-          scroll: isFirstNavigation && state && state.scroll
+          scroll: isFirstNavigation && state2 && state2.scroll
         }, data));
       else
         routerHistory.push(toLocation.fullPath, data);
@@ -8093,41 +8163,46 @@ function extractChangingRecords(to, from) {
   }
   return [leavingRecords, updatingRecords, enteringRecords];
 }
-let router;
-router == null ? void 0 : router.beforeEach((to, from, next) => {
-  if (to.component !== null)
+let routes = [];
+let router = createRouter({
+  history: createWebHashHistory(),
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash
+      };
+    }
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
+  routes
+});
+router.beforeEach((to, from, next) => {
+  var _a;
+  if (to.component !== null) {
+    if (typeof ((_a = to.matched[0]) == null ? void 0 : _a.components.default) === "function") {
+      Store.state.loading = true;
+    }
     next();
-  else
+  } else
     next("/404");
 });
-function registerRoutes(App, routes) {
-  if (!routes)
-    return null;
-  router = createRouter({
-    history: createWebHistory(),
-    scrollBehavior(to, from, savedPosition) {
-      if (savedPosition) {
-        return savedPosition;
-      } else {
-        return { top: 0 };
-      }
-    },
-    routes
-  });
-  App.use(router);
-  router.push(routes[0]);
-}
-const Store = reactive({
-  colorMode: ref("light"),
-  alternateColorMode(isDark = null) {
-    this.colorMode = isDark === null ? this.colorMode === "light" ? "dark" : "light" : isDark;
-    document.querySelector("body").setAttribute("gnk-theme-colorMode", this.colorMode);
-    localStorage.setItem("gnk-theme-colorMode", this.colorMode);
-  },
-  swipeCapturedBy: null
+router.beforeResolve((to, from, next) => {
+  Store.state.loading = false;
+  next();
 });
-Store.alternateColorMode(localStorage.getItem("gnk-theme-colorMode"));
+function registerRoutes(App, routes2) {
+  if (!routes2)
+    return null;
+  App.use(router);
+  routes2.forEach((route) => router.addRoute(route));
+  router.push(routes2[0]);
+}
 function registerModuleComponents(App, components) {
+  App.provide("store", Store);
   if (!components) {
     return;
   }
@@ -8137,7 +8212,7 @@ function registerModuleComponents(App, components) {
     }
   }
 }
-var gnk = {
+var index = {
   gnkImage,
   gnkBadge,
   gnk404,
@@ -8164,4 +8239,4 @@ var gnk = {
   registerModuleComponents,
   setColors
 };
-export { gnk as default };
+export { index as default };

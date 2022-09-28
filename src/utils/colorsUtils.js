@@ -57,8 +57,10 @@ function hexToHsl(hex) {
 //! { PRIMARY: '#1231231' }
 
 import { setCssVariable } from "./cssUtils";
-function setColors(colors) {
+function setColors(colors, forceLight = true) {
     if (!Array.isArray(colors)) colors = [colors]
+
+    console.log(colors)
 
     colors.forEach((color) => {
 
@@ -71,7 +73,7 @@ function setColors(colors) {
         document.querySelectorAll('[gnk-theme-colorMode=dark], [gnk-theme-colorMode=light]').forEach((element) => {
             setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-H`, H)
             setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-S`, S)
-            //setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-L`, L)    
+            if(forceLight) setCssVariable(element, `--COLOR-${Object.keys(color)[0]}-L`, L)    
         })
     })
 

@@ -120,9 +120,9 @@ export default {
         <div class="--header | grid">
             <div class="row">
                 <div class="col-12">
-                    
-                    <gnk-Progressbar v-show="loading" loading square class="full-width" />
-
+                    <transition :name="'fade'">
+                        <gnk-Progressbar v-show="this.store.state.loading" loading square class="full-width" />
+                    </transition>
                 </div>
             </div>
             <div class="row">
@@ -130,13 +130,13 @@ export default {
 
                     <gnkNavbar >
                         <template #left>
-                            <gnk-buttonGroup v-if="showSidebarToggle" clear>
+                        <!--  <gnk-buttonGroup v-if="showSidebarToggle" clear>
                                 <gnk-button size="xl" clear>
                                     <span class="material-symbols-rounded">
                                         menu
                                     </span>
                                 </gnk-button>
-                            </gnk-buttonGroup>
+                            </gnk-buttonGroup> -->
                         </template>
 
 
@@ -224,9 +224,14 @@ export default {
         left:0px;
         z-index: 99;
         //background: -color('LEVEL-2');
-
         & .gnkProgressbar{
+            position:fixed;
+            top:0;
+            left:0;
+            width: 100%;
             margin: 0!important;
+            
+            z-index: 100;
         }
     }
 
@@ -262,6 +267,8 @@ export default {
             }
         }
     }
+
+
 
 }
 

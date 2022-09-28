@@ -34,9 +34,9 @@ export default {
 }
 </script>
 <template>
-    <div :id="componentId" :class="[componentName + ' |', componentClassObject, componentGeneralClasses]">
+    <div :id="componentId" :class="[componentName + ' |', componentGeneralClasses]">
         <div class="grid fill">
-            <row class="fill"></row>
+            <div class="fill"></div>
             <div class="row">
                 <div class="col-12 flex-centered">
                     <h1 class="P404-500">
@@ -51,7 +51,7 @@ export default {
             </div>
             <div class="row">
                 <div v-if="showGoBack" class="col-12 flex-centered p-t-20">
-                    <gnk-button success @click="$router.go(-1)">
+                    <gnk-button bug @click="$router.go(-1)">
 
                         <span class="material-symbols-rounded">
                             chevron_left
@@ -60,8 +60,8 @@ export default {
                     </gnk-button>
                 </div>
             </div>
-            <row class="fill"></row>
-            <row class="fill"></row>
+            <div class="fill"></div>
+            <div class="fill"></div>
         </div>
     </div>
 </template>

@@ -10,15 +10,19 @@
     bug */
     --COLOR-PRIMARY-H: 215;
     --COLOR-PRIMARY-S: 73%;
-    --COLOR-PRIMARY-L: 51%;
+    --COLOR-PRIMARY-L: 50%;
+
+    --COLOR-SECONDARY-H: 8;
+    --COLOR-SECONDARY-S: 100%;
+    --COLOR-SECONDARY-L: 66%;
 
     --COLOR-INFO-H: 215;
     --COLOR-INFO-S: 72%;
-    --COLOR-INFO-L: 90%;
+    --COLOR-INFO-L: 50%;
 
     --COLOR-SUCCESS-H: 142;
     --COLOR-SUCCESS-S: 57%;
-    --COLOR-SUCCESS-L: 53%;
+    --COLOR-SUCCESS-L: 50%;
 
     --COLOR-WARNING-H: 44;
     --COLOR-WARNING-S: 100%;
@@ -26,15 +30,15 @@
 
     --COLOR-DANGER-H: 351;
     --COLOR-DANGER-S: 85%;
-    --COLOR-DANGER-L: 55%;
+    --COLOR-DANGER-L: 50%;
 
     --COLOR-BUG-H: 351;
     --COLOR-BUG-S: 69%;
-    --COLOR-BUG-L: 43%;
+    --COLOR-BUG-L: 50%;
 
     --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
     --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);
-    --COLOR-DARK-L: var(--COLOR-LEVEL-0-L);
+    --COLOR-DARK-L: calc(var(--COLOR-LEVEL-0-L) - 10%);
 
     --COLOR-LIGHT-H: var(--COLOR-LEVEL-4-H);
     --COLOR-LIGHT-S: var(--COLOR-LEVEL-4-S);
@@ -94,6 +98,21 @@
         --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
         --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
         --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
+
+        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
+        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);
+        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-1-L);
+
+        --COLOR-TEXT-H: 0;
+        --COLOR-TEXT-S: 0%;
+        --COLOR-TEXT-L: 0%;
+    }
+
+
+    [class*="--secondary"] {
+        --COLOR-BASE-H: var(--COLOR-SECONDARY-H);
+        --COLOR-BASE-S: var(--COLOR-SECONDARY-S);
+        --COLOR-BASE-L: var(--COLOR-SECONDARY-L);
 
         --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-1-H);
         --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-1-S);

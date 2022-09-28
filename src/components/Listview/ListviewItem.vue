@@ -52,7 +52,7 @@ export default {
             
             createRipple.createRipple(event)
             this?.$router?.push(this.to)
-            this.componentRaiseEvent('onclick')
+            this.componentRaiseEvent('click')
         }
     },
 

@@ -6,16 +6,21 @@ import { setCssVariable } from "../../utils/cssUtils"
 
 export default {
     name: 'gnkComponent',
-    emits: ['update:modelValue', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup', 'click'],
+    emits: ['update:modelValue', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup', 'click', 'onClick'],
     
     data(){
         return {
-            store: gnk.Store,
+        
         }
     },
     
     props: {
         primary: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        secondary: {
             type: Boolean,
             required: false,
             default: false,
@@ -119,9 +124,11 @@ export default {
 
         //RAISE COMPOENT EVENT
         componentRaiseEvent(eventName, data) {
-            let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
-            this.$emit(eventName, event)
-            //this.$el.dispatchEvent(event)
+            try {
+                let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
+                this.$emit(eventName, event)    
+            } catch {   
+            }
         },
 
         //REPLACE BASE COLOR
@@ -189,9 +196,7 @@ export default {
 
         }
     },
-    inject: {
-        
-    },
+    inject: ['store'],
 }
 
 </script>

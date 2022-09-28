@@ -169,7 +169,7 @@ export default {
       overflow: hidden;
 
 
-      transition: all .4s ease-in-out;
+      transition: all .4s cubic-bezier(.76,0,.45,.99);
 
 
       background: -color('LEVEL-1');

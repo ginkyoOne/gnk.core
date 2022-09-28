@@ -41,40 +41,62 @@ const router = new VueRouter({
 export default router;
  */
 
+import store from '../Store/Store'
 
 
 
+import { createWebHistory, createRouter, createWebHashHistory  } from "vue-router";
 
-import { createWebHistory, createRouter } from "vue-router";
+let routes = []
+      
+let router = createRouter({
+        history: createWebHashHistory(),
 
-let router;
-
-router?.beforeEach((to, from, next) => {
-    if (to.component !== null) next()
-    else next('/404')
-})
-
-
-function registerRoutes(App, routes) {
-    if (!routes) return null
-    
-    router = createRouter({
-        history: createWebHistory(),
-
-        scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
+            if (to.hash) {
+              return {
+                el: to.hash,
+              }
+            }
             if (savedPosition) {
                 return savedPosition
             } else {
                 return { top: 0 }
             }
         },
-        
         routes,
     });
 
-    App.use(router)
 
-    router.push(routes[0])
+
+
+
+
+router.beforeEach((to, from, next) => {
+  if (to.component !== null) {
+    if (typeof to.matched[0]?.components.default === 'function') {
+      store.state.loading = true
+    }
+    next()
+
+  } else next('/404')
+  
+})
+
+
+
+router.beforeResolve((to, from, next) => {
+    store.state.loading = false
+    next()
+})
+
+
+function registerRoutes(App, routes) {
+    if (!routes) return null
+
+  App.use(router)
+  routes.forEach(route => router.addRoute(route))
+  router.push(routes[0])
 }
 
 export { router, registerRoutes };
