@@ -42,6 +42,7 @@ export default {
 
 
     },
+
     computed: {
         componentClassObject() {
             return {
@@ -86,7 +87,6 @@ export default {
             this.transitionName = 'next';
         }
     },
-
 
     methods: {
         registerChilds(element){
