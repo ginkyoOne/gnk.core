@@ -102,6 +102,10 @@ export default {
             return componentProps
         },
 
+        //HAS STYLE
+        hasStyle() {
+            return (this.primary==true||this.secondary==true||this.info==true||this.success==true||this.warning==true||this.danger==true||this.bug==true||this.dark==true||this.light==true||this.hexColor!=null)
+        }
 
     },
 

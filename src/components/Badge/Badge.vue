@@ -109,8 +109,8 @@ export default {
     min-width: 16px;
     
     background-color: -color('BASE');
-    color: -color('BASE-TEXT');
-    box-shadow: 0px 2px 8px -color('SHADOW', 0.4);
+    color: -color('CONTRAST-TEXT');
+    box-shadow: var(--SHADOW);
 
     &.--size-xl {
         font-size: calc(var(--FONT-SIZE)/ 0.5) !important;

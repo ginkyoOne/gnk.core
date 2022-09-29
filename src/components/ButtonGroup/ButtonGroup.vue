@@ -160,7 +160,7 @@ export default {
 
 
     background-color: -color('LEVEL-2');
-    color: -color('BASE-TEXT');
+    color: -color('MAIN-TEXT');
 
     border: var(--BORDER-SIZE) solid -color('LEVEL-2',1,0,0,1.5); 
     border-radius: var(--BORDER-RADIUS);
@@ -248,8 +248,8 @@ export default {
             height: 50%;
             width: 2px;
 
-            border-left : 2px dotted -color('TEXT',.5);
-            border-right : 2px dotted -color('TEXT',.5);
+            border-left : 2px dotted -color('MAIN-TEXT',.3);
+            border-right : 2px dotted -color('MAIN-TEXT',.3);
         
         }
     }

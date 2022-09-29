@@ -185,7 +185,7 @@ export default {
   border: var(--BORDER-SIZE)  solid -color('DARK',1,0,0,1);
 
   background-color: -color('DARK');
-  color: -color('BASE-TEXT');
+  color: -color('MAIN-TEXT');
 
   //PROGRESSBAR CONTAINER
   &>div{
@@ -235,7 +235,7 @@ export default {
       font-size: .6rem;
       line-height: .7rem;
 
-      color:inherit;
+      color: -color('CONTRAST-TEXT');
       background-color: -color('BASE',1,0,0,0);
       border-radius: 5px;
       border: var(--BORDER-SIZE) solid -color('BASE',1,0,0,1);

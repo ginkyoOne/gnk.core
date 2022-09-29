@@ -195,12 +195,12 @@ export default {
         padding: 15px;
         text-align: center;
 
-        color: -color('TEXT');
+        color: -color('CONTRAST-TEXT');
         
         z-index: 1;
 
         background: rgb(0,0,0);
-        background: linear-gradient(0deg, -color(BASE-TEXT,.5) 0%, -color(BASE-TEXT,.0) 100%);
+        background: linear-gradient(0deg, -color(LIGHT-TEXT,.5) 0%, -color(LIGHT-TEXT,.0) 100%);
     }
 
 

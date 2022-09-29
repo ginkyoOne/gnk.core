@@ -137,6 +137,7 @@
 
       componentClassObject() {
         return {
+          '--dark': !this.hasStyle,
           '--checked': this.type === 'toggle' && this.checked,
 
           '--size-xl': this.size === 'xl',
@@ -255,7 +256,7 @@
 <style lang="scss">
 
   .gnkButton{
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.2s ease-in-out; 
     isolation: isolate;
     user-select: none;
 
@@ -263,7 +264,7 @@
 
   
     background-color: -color('BASE');
-    color: -color('BASE-TEXT');
+    color: -color('CONTRAST-TEXT');
   
     border-radius: var(--BORDER-RADIUS);
     border-width: var(--BORDER-SIZE);
@@ -321,7 +322,7 @@
       }
       
       &:not(.--clear):is(:checked , .--checked){
-        box-shadow: inset 0px 0px 10px  -color('LEVEL-0', .5,0,0,-10);
+        box-shadow: inset 0px 0px 10px  -color('SHADOW', .5);
 
         &::after{
           background-color: -color('BASE', .2, 0, 0, -10);
@@ -341,7 +342,7 @@
       pointer-events: none;
       cursor: auto;
       &>.--content-holder>[class*="--content-step"]{
-        color: -color('BASE-TEXT', .5);
+        color: -color('MAIN-TEXT', .5);
       }
     }
 
@@ -473,6 +474,10 @@
     &.--border{
       border-width: calc(var(--BORDER-SIZE) * 2);
       background-color: transparent;
+      color: -color('MAIN-TEXT');
+      &:is(:active, :checked,:hover, :focus, :hover ){
+        color: -color('CONTRAST-TEXT');
+      }
 
     }
 
@@ -489,8 +494,8 @@
       background-color: transparent;
       border: none;
 
-      &:is(:active, :checked,:hover, :focus ){
-        color: -color('BASE-TEXT');
+      &:is(:active, :checked,:hover, :focus, :hover ){
+        color: -color('CONTRAST-TEXT');
       }
     }
 

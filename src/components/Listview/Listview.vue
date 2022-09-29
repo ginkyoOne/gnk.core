@@ -78,7 +78,7 @@ export default {
         border-radius: var(--BORDER-RADIUS);
         border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
         
-        box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+        box-shadow: var(--SHADOW);
         
         .gnkListviewItem:is(.gnkListviewItem + .gnkListviewItem)::after {
             content: '';

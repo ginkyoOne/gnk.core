@@ -80,7 +80,7 @@ export default {
             font-size: calc(20vw + 10vh + 5vmin);
             line-height: calc(20vw + 10vh + 5vmin);
             font-weight: 700;
-            color: -color('TEXT');
+            color: -colors(var(--COLOR-PRIMARY));
             margin: 0;
     }
 

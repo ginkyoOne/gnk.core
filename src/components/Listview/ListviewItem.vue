@@ -32,7 +32,7 @@ export default {
     computed: {
         componentClassObject() {
             return {
-                '--light': true,
+                '--default': true,
                 '--active': this.checked & this.type == 'toggle',
                 
                 }
@@ -84,18 +84,25 @@ export default {
         align-items: center;
         justify-content: flex-start;
         
-        color: -color('TEXT-BASE');
+        color: -color('CONTRAST-TEXT-BASE');
         overflow: hidden;
 
-
         &:is(:hover, :active){
-            background-color: -color('BASE',1,0,0,-.1);
-            color: -color('TEXT',1);
+            background-color: -color('BASE');
+            color: -color('CONTRAST-TEXT');
+            border-radius: var(--BORDER-RADIUS);
+            border-width: var(--BORDER-SIZE);
+            border-style: solid;
+            border-color: -color('BASE',1,0,0,1.5); 
         }
 
         &:is(.--active){
-            background-color: -color('BASE',1,0,0,-.1);
-            color: -color('TEXT',1);
+            background-color: -color('BASE');
+            color: -color('CONTRAST-TEXT');
+            border-radius: var(--BORDER-RADIUS);
+            border-width: var(--BORDER-SIZE);
+            border-style: solid;
+            border-color: -color('BASE',1,0,0,1.5); 
         }
     }
 

@@ -442,8 +442,8 @@ export default {
 
     background: -color('DARK');
     border-radius: var(--border-radius);
-    border: var(--border-size) solid -color('LIGHT',1,0,0,-5);
-    box-shadow: var(--BOX-SHADOW);    
+    border: var(--border-size) solid -color('LIGHT');
+    box-shadow: var(--SHADOW-COMPONENT);    
 
 
     &:is(.--no-placeholder){
@@ -536,7 +536,7 @@ export default {
 
       opacity: 0;
 
-      color: -color('TEXT');
+      color: -color('MAIN-TEXT');
 
       &::selection{
         background: -color('BASE');
@@ -555,7 +555,7 @@ export default {
     &>.--base>.--placeholder{
       transition: all .25s ease-in-out;
 
-      color: -color('TEXT');  
+      color: -color('MAIN-TEXT');  
       opacity: .8;
       font-size: 1rem;
 
@@ -705,10 +705,10 @@ export default {
  //TEXT
   &:is(.--lineThrough){
     &:is(.--checked)>label{
-      color: -color('TEXT',.6);
+      color: -color('MAIN-TEXT',.6);
 
       &::after{
-        background-color: -color('TEXT',.6);
+        background-color: -color('MAIN-TEXT',.6);
         transform: scaleX(1);
       }
     }

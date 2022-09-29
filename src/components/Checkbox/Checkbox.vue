@@ -289,7 +289,7 @@ export default {
   }
 
   &>label{
-    color: -color('TEXT');
+    color: -color('MAIN-TEXT');
     &::after{
       transition: all 0.2s ease-in-out;
 
@@ -300,7 +300,7 @@ export default {
       width: 100%;
       height: 2px;
       
-      background-color: -color('TEXT');
+      background-color: -color('MAIN-TEXT');
       border-radius: inherit;
 
       transform: scaleX(0);
@@ -325,9 +325,9 @@ export default {
     
     background: -color('DARK');
     border-radius: var(--border-radius);
-    border: var(--border-size) solid -color('LIGHT',1,0,0,-5);
+    border: var(--border-size) solid -color('LIGHT');
     
-    box-shadow: var(--BOX-SHADOW);
+    box-shadow: var(--SHADOW-COMPONENT);  
 
     &::after{
       transition: all .25s ease-in-out;
@@ -355,6 +355,8 @@ export default {
 
     transform:scale(0) rotate(45deg);
     text-align: center;
+
+    color: -color('CONTRAST-TEXT');
   }
 
 
@@ -390,10 +392,10 @@ export default {
   //LABEL
   &:is(.--lineThrough){
     &:is(.--checked)>label{
-      color: -color('TEXT',.6);
+      color: -color('MAIN-TEXT',.6);
 
       &::after{
-        background-color: -color('TEXT',.6);
+        background-color: -color('MAIN-TEXT',.6);
         transform: scaleX(1);
       }
     }
@@ -469,6 +471,7 @@ export default {
       }
       &>.--thumb{
         transform:scale(0);
+        color: -color('BASE')
       }
     }
 

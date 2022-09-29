@@ -1,14 +1,66 @@
 
 //MIXINGS
 @function -color($color, $alpha: 1, $H: 0, $S: 0, $L: 0) {
+    //@return  unquote('hsla(calc(var(--COLOR-#{$color}-H) + #{$H}), calc(var(--COLOR-#{$color}-S) + #{$S}),calc(var(--COLOR-#{$color}-L) + #{$L}),#{$alpha})');
+
     @return unquote('hsla(calc(var(--COLOR-#{$color}-H) + #{$H}),calc(var(--COLOR-#{$color}-S) + #{$S}%),calc(var(--COLOR-#{$color}-L) + #{$L}%), #{$alpha})');
 };
+
+
+
+@mixin defineColorHSL($color, $hue, $saturation, $lightness){
+    #{$color}: unquote("hsl(#{$hue}, #{$saturation}, #{$lightness})");#{$color}-H: #{$hue};#{$color}-S: #{$saturation};#{$color}-L: #{$lightness};
+}
+
+
+@function alpha($color, $alpha: 1, $H: 0, $S: 0, $L: 0){
+    
+    $color: str-replace($color, 'var(');
+    $color: str-replace($color, ')');
+    $color-h: var(#{$color+'-h'});
+    $color-s: var(#{$color+'-s'});
+    $color-l: var(#{$color+'-l'});
+    @return hsla(calc($color-h + $H), calc($color-s + $S), calc($color-l + $L), $alpha);
+
+}
+
+// replace substring with another string
+// credits: https://css-tricks.com/snippets/sass/str-replace-function/
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@function -textcontrast($baseL,$p){
+    @if($baseL < 50%){
+        @return unquote('var(--COLOR-MAIN-TEXT-#{$p})');
+    }
+    @else{
+        @return unquote('var(--COLOR-CONTRAST-TEXT-#{$p})');
+    }
+}
 
 
 @function -status($var) {
     @return unquote('var(--COLOR-#{$var})');
 };
-
 
 $breakpoints: ("phone": 400px,
     "phone-wide": 480px,

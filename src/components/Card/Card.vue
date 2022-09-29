@@ -174,7 +174,7 @@ export default {
     background: -color('LEVEL-1');
     border-radius: var(--BORDER-RADIUS);
 
-    box-shadow: 0px 5px 8px -color('SHADOW', 0.4);
+    box-shadow: var(--SHADOW);
     border : var(--BORDER-SIZE) solid -color('LEVEL-0', 0.8);
     
     &:is(.--overflow-hidden){
@@ -279,7 +279,7 @@ export default {
 
     &.--animate:is(:active, :hover) {
         transform: translateY(-10px);
-        box-shadow: 0px 5px 10px -color('SHADOW', 0.8);
+        box-shadow: var(--SHADOW);
 
         
             &>.--content {

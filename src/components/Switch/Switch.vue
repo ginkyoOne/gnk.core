@@ -164,7 +164,7 @@ export default {
     onchange(eventName, event) {
 
       //CREATE RIPPLE EFFECT
-      if (!!event & !this.disabled & !this.busy & !this.loading) createRipple.createRipple(event)
+      //if (!!event & !this.disabled & !this.busy & !this.loading) createRipple.createRipple(event)
 
 
       //VALIDATE VALUE AND PUSH MODELVALUE
@@ -304,7 +304,7 @@ export default {
   }
 
   &>label{
-    color: -color('TEXT');
+    color: -color('MAIN-TEXT');
 
     &::after{
       transition: all 0.2s ease-in-out;
@@ -316,7 +316,7 @@ export default {
       width: 100%;
       height: 2px;
       
-      background-color: -color('TEXT');
+      background-color: -color('MAIN-TEXT');
       border-radius: inherit;
 
       transform: scaleX(0);
@@ -342,10 +342,9 @@ export default {
     
     background: -color('DARK');
     border-radius: var(--border-radius);
-    border: var(--border-size) solid -color('LIGHT',1,0,0,-5);
+    border: var(--border-size) solid -color('LIGHT');
+    box-shadow: var(--SHADOW-COMPONENT);  
     
-    box-shadow: var(--BOX-SHADOW);
-
     &::after{
       content: "";
       position: absolute;
@@ -361,7 +360,7 @@ export default {
   }
 
   &>.--base>.--thumb{
-    transition: all .3s ease-in-out;
+    transition: all .2s ease-in-out;
 
     
 
@@ -379,6 +378,8 @@ export default {
 
     top: calc(var(--border-size)*2);
     left: calc(var(--border-size)*2);  
+
+    box-shadow: var(--SHADOW);
   }
 
 
@@ -466,10 +467,10 @@ export default {
   //LABEL
   &:is(.--lineThrough){
     &:is(.--checked)>label{
-      color: -color('TEXT',.6);
+      color: -color('MAIN-TEXT',.6);
 
       &::after{
-        background-color: -color('TEXT',.6);
+        background-color: -color('MAIN-TEXT',.6);
         transform: scaleX(1);
       }
     }

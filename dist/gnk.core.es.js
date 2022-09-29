@@ -193,6 +193,9 @@ const _sfc_main$k = {
       }
       componentProps["|"] = true;
       return componentProps;
+    },
+    hasStyle() {
+      return this.primary == true || this.secondary == true || this.info == true || this.success == true || this.warning == true || this.danger == true || this.bug == true || this.dark == true || this.light == true || this.hexColor != null;
     }
   },
   methods: {
@@ -606,6 +609,7 @@ const _sfc_main$g = {
     componentClassObject() {
       var _a;
       return {
+        "--dark": !this.hasStyle,
         "--checked": this.type === "toggle" && this.checked,
         "--size-xl": this.size === "xl",
         "--size-l": this.size === "l",
@@ -1030,8 +1034,6 @@ const _sfc_main$e = {
   },
   methods: {
     onchange(eventName, event) {
-      if (!!event & !this.disabled & !this.busy & !this.loading)
-        createRipple$1.createRipple(event);
       if (this.isChecked) {
         if (Array.isArray(this.modelValue)) {
           this.modelValue.splice(this.modelValue.indexOf(this.isValueNull), 1);
@@ -6106,7 +6108,7 @@ const _sfc_main$3 = {
   computed: {
     componentClassObject() {
       return {
-        "--light": true,
+        "--default": true,
         "--active": this.checked & this.type == "toggle"
       };
     }

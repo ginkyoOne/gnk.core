@@ -1,210 +1,120 @@
 
 [gnk-theme-colorMode="dark"] {
+
+    --dark-percentage: 0%;
     
-
-    --COLOR-PRIMARY-L: 30%;
-    --COLOR-SECONDARY-L:30%;
-    --COLOR-INFO-L: 30%;
-    --COLOR-SUCCESS-L: 30%;
-    --COLOR-WARNING-L: 30%;
-    --COLOR-DANGER-L: 30%;
-    --COLOR-BUG-L: 30%;
-
-
-
-
-    --COLOR-DARK-H: var(--COLOR-LEVEL-0-H);
-    --COLOR-DARK-S: var(--COLOR-LEVEL-0-S);
-    --COLOR-DARK-L: var(--COLOR-LEVEL-0-L);
-
-    --COLOR-LIGHT-H: var(--COLOR-LEVEL-4-H);
-    --COLOR-LIGHT-S: var(--COLOR-LEVEL-4-S);
-    --COLOR-LIGHT-L: var(--COLOR-LEVEL-4-L);
-
-    --COLOR-BASE-H: var(--COLOR-LEVEL-2-H);
-    --COLOR-BASE-S: var(--COLOR-LEVEL-2-S);
-    --COLOR-BASE-L: var(--COLOR-LEVEL-2-L);
-
-    --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-    --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-    --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-    --COLOR-TEXT-H: 0;
-    --COLOR-TEXT-S: 0%;
-    --COLOR-TEXT-L: 100%;
+    //?BACKGROUND
+    @include defineColorHSL(--COLOR-LEVEL-0, 227, 25%, 11%);
+    @include defineColorHSL(--COLOR-LEVEL-1, 227, 19%, 14%);
+    @include defineColorHSL(--COLOR-LEVEL-2, 226, 17%, 15%);
+    @include defineColorHSL(--COLOR-LEVEL-3, 226, 20%, 17%);
+    @include defineColorHSL(--COLOR-LEVEL-4, 226, 25%, 20%);
+    @include defineColorHSL(--COLOR-SHADOW, 227, 25%, 5%);
     
     
-    --COLOR-LEVEL-0-H: 0;
-    --COLOR-LEVEL-0-S: 0%;
-    --COLOR-LEVEL-0-L: 7%;
-
-    --COLOR-LEVEL-1-H: 0;
-    --COLOR-LEVEL-1-S: 0%;
-    --COLOR-LEVEL-1-L: 12%;
-
-    --COLOR-LEVEL-2-H: 0;
-    --COLOR-LEVEL-2-S: 0%;
-    --COLOR-LEVEL-2-L: 14%;
+    //? COLORS
+    @include defineColorHSL(--COLOR-PRIMARY, 227, 80%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-SECONDARY, 215, 72%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-INFO, 215, 72%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-SUCCESS, 142, 57%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-WARNING, 44, 100%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DANGER, 351, 85%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-BUG, 351, 69%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DARK, 227, 25%, 11%);
+    @include defineColorHSL(--COLOR-LIGHT,226, 25%, 20%);
+    @include defineColorHSL(--COLOR-BASE, 227, 19%, 14%);
     
-    --COLOR-LEVEL-3-H: 0;
-    --COLOR-LEVEL-3-S: 0%;
-    --COLOR-LEVEL-3-L: 15%;
 
-    --COLOR-LEVEL-4-H: 0;
-    --COLOR-LEVEL-4-S: 0%;
-    --COLOR-LEVEL-4-L: 16%;
-
-    --COLOR-SHADOW-H: 0;
-    --COLOR-SHADOW-S: 0%;
-    --COLOR-SHADOW-L: 5%;
-
-    --BOX-SHADOW:  0px .2rem .3rem -color('DARK',.3);;
+    --SHADOW:  0px .2rem .5rem hsla( 227, 25%, 5% , .2);
+    --SHADOW-COMPONENT:  0px 1px 5px 1px hsla( 227, 25%, 5% , .1);
+    
+    //? TEXT
+    @include defineColorHSL(--COLOR-MAIN-TEXT, 0, 0%, 100%);
+    @include defineColorHSL(--COLOR-SECONDARY-TEXT, 0, 0%, 75%);
+    @include defineColorHSL(--COLOR-CONTRAST-TEXT, 0, 0%, 0%);
 
 
-    .gnk-ripple {
-        --COLOR-BASE-H: 0;
-        --COLOR-BASE-S: 0%;
-        --COLOR-BASE-L: 0%;
+    //OTHER COLORS
+    @include defineColorHSL(--COLOR-RED, 0, 66%, calc(51% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-RED-ORANGE, 11, 74%, calc(53% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-ORANGE, 20, 85%, calc(53% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-ORANGE-YELLOW, 35, 97%, calc(54% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-YELLOW, 41, 97%, calc(61% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-LIGHT-GREEN, 117, 42%, calc(61% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-GREEN, 116, 35%, calc(46% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DARK-GREEN, 140, 71%, calc(27% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DARK-TEAL, 183, 58%, calc(23% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-TEAL, 175, 54%, calc(34% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-LIGHT-TEAL, 164, 48%, calc(51% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-LIGHT-BLUE, 200, 59%, calc(58% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-BLUE, 214, 100%, calc(57% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DARK-BLUE, 206, 66%, calc(34% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-DARK-PURPLE, 260, 44%, calc(43% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-PURPLE, 261, 35%, calc(54% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-LIGHT-PURPLE, 280, 53%, calc(70% - var(--dark-percentage)));
+
+
+    //! GLOBAL CLASSES
+    [class*="gnk-ripple"] {
+        @include defineColorHSL(--COLOR-BASE, 0, 0%, 0%);
     }
-
-    [class*="--default"] {
-        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
-        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
-        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
-    
-        --COLOR-BASE-TEXT-H: var(--COLOR-LEVEL-0-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-LEVEL-0-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-LEVEL-0-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
-    }
-
 
     [class*="--primary"] {
-        --COLOR-BASE-H: var(--COLOR-PRIMARY-H);
-        --COLOR-BASE-S: var(--COLOR-PRIMARY-S);
-        --COLOR-BASE-L: var(--COLOR-PRIMARY-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-PRIMARY-H), var(--COLOR-PRIMARY-S), var(--COLOR-PRIMARY-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--secondary"] {
-        --COLOR-BASE-H: var(--COLOR-SECONDARY-H);
-        --COLOR-BASE-S: var(--COLOR-SECONDARY-S);
-        --COLOR-BASE-L: var(--COLOR-SECONDARY-L);
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-SECONDARY-H), var(--COLOR-SECONDARY-S), var(--COLOR-SECONDARY-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
+    }
 
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+    [class*="--default"] {
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-PRIMARY-H), var(--COLOR-PRIMARY-S), var(--COLOR-PRIMARY-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--info"] {
-        --COLOR-BASE-H: var(--COLOR-INFO-H);
-        --COLOR-BASE-S: var(--COLOR-INFO-S);
-        --COLOR-BASE-L: var(--COLOR-INFO-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-INFO-H), var(--COLOR-INFO-S), var(--COLOR-INFO-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--success"] {
-        --COLOR-BASE-H: var(--COLOR-SUCCESS-H);
-        --COLOR-BASE-S: var(--COLOR-SUCCESS-S);
-        --COLOR-BASE-L: var(--COLOR-SUCCESS-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-SUCCESS-H), var(--COLOR-SUCCESS-S), var(--COLOR-SUCCESS-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--warning"] {
-        --COLOR-BASE-H: var(--COLOR-WARNING-H);
-        --COLOR-BASE-S: var(--COLOR-WARNING-S);
-        --COLOR-BASE-L: var(--COLOR-WARNING-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-WARNING-H), var(--COLOR-WARNING-S), var(--COLOR-WARNING-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--danger"] {
-        --COLOR-BASE-H: var(--COLOR-DANGER-H);
-        --COLOR-BASE-S: var(--COLOR-DANGER-S);
-        --COLOR-BASE-L: var(--COLOR-DANGER-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-DANGER-H), var(--COLOR-DANGER-S), var(--COLOR-DANGER-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--bug"] {
-        --COLOR-BASE-H: var(--COLOR-BUG-H);
-        --COLOR-BASE-S: var(--COLOR-BUG-S);
-        --COLOR-BASE-L: var(--COLOR-BUG-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-BUG-H), var(--COLOR-BUG-S), var(--COLOR-BUG-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--dark"] {
-        --COLOR-BASE-H: var(--COLOR-DARK-H);
-        --COLOR-BASE-S: var(--COLOR-DARK-S);
-        --COLOR-BASE-L: var(--COLOR-DARK-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-DARK-H), var(--COLOR-DARK-S), var(--COLOR-DARK-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
     }
 
     [class*="--light"] {
-        --COLOR-BASE-H: var(--COLOR-LIGHT-H);
-        --COLOR-BASE-S: var(--COLOR-LIGHT-S);
-        --COLOR-BASE-L: var(--COLOR-LIGHT-L);
-
-        --COLOR-BASE-TEXT-H: var(--COLOR-TEXT-H);
-        --COLOR-BASE-TEXT-S: var(--COLOR-TEXT-S);
-        --COLOR-BASE-TEXT-L: var(--COLOR-TEXT-L);
-
-        --COLOR-TEXT-H: 0;
-        --COLOR-TEXT-S: 0%;
-        --COLOR-TEXT-L: 100%;
+        @include defineColorHSL(--COLOR-BASE, var(--COLOR-LIGHT-H), var(--COLOR-LIGHT-S), var(--COLOR-LIGHT-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
     }
+
+
+
+    @for $i from 0 through 4 {
+        [class*="--level-#{$i}"] {
+            @include defineColorHSL(--COLOR-BASE, var(--COLOR-LEVEL-#{$i}-H), var(--COLOR-LEVEL-#{$i}-S), var(--COLOR-LEVEL-#{$i}-L));
+        }
+    }
+    
 } 
