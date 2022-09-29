@@ -31,6 +31,8 @@ import gnkApp from './components/App/App.vue'
 import gnkPage from './components/Page/Page.vue'
 import gnkNavbar from './components/Navbar/Navbar.vue'
 
+import gnkSyntaxHighlight from './components/SyntaxHighlight/SyntaxHighlight.vue'
+
 
 
 
@@ -94,7 +96,9 @@ export default {
 
     registerRoutes,
     registerModuleComponents,
-    setColors
+    setColors,
+    
+    gnkSyntaxHighlight
 }
 
 

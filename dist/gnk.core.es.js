@@ -108,7 +108,7 @@ function setColors(colors, forceLight = true) {
     });
   });
 }
-const _sfc_main$k = {
+const _sfc_main$l = {
   name: "gnkComponent",
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click", "onClick"],
   data() {
@@ -257,9 +257,9 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$j = {
+const _sfc_main$k = {
   name: "gnkImage",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {};
   },
@@ -335,34 +335,34 @@ const _sfc_main$j = {
   },
   methods: {}
 };
-const _hoisted_1$j = ["id"];
-const _hoisted_2$d = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
-const _hoisted_3$c = ["alt"];
+const _hoisted_1$k = ["id"];
+const _hoisted_2$e = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
+const _hoisted_3$d = ["alt"];
 const _hoisted_4$b = {
   key: 0,
   class: "--title | flex flex-centered"
 };
-function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
   }, [
-    _hoisted_2$d,
+    _hoisted_2$e,
     createElementVNode("div", {
       class: normalizeClass(["--img-background |", $options.componentClassObject]),
       alt: this.alt
-    }, null, 10, _hoisted_3$c),
+    }, null, 10, _hoisted_3$d),
     this.showTitle && (this.title.constructor === String && this.title.length > 0) ? (openBlock(), createElementBlock("div", _hoisted_4$b, [
       createElementVNode("h3", null, toDisplayString(this.title), 1)
     ])) : createCommentVNode("", true)
-  ], 14, _hoisted_1$j);
+  ], 14, _hoisted_1$k);
 }
-var gnkImage = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
+var gnkImage = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
 var Badge_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$i = {
+const _sfc_main$j = {
   name: "gnkBadge",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       parentClientRect: null
@@ -410,21 +410,21 @@ const _sfc_main$i = {
     this.parentClientRect = this.$parent.componentElementClientRect();
   }
 };
-const _hoisted_1$i = ["id"];
-function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$j = ["id"];
+function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 14, _hoisted_1$i);
+  ], 14, _hoisted_1$j);
 }
-var gnkBadge = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
+var gnkBadge = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
 var _404_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$h = {
+const _sfc_main$i = {
   name: "gnk404",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   props: {
     title: {
       type: String,
@@ -450,9 +450,9 @@ const _sfc_main$h = {
   mounted() {
   }
 };
-const _hoisted_1$h = ["id"];
-const _hoisted_2$c = { class: "grid fill" };
-const _hoisted_3$b = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_1$i = ["id"];
+const _hoisted_2$d = { class: "grid fill" };
+const _hoisted_3$c = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
 const _hoisted_4$a = { class: "row" };
 const _hoisted_5$a = { class: "col-12 flex-centered" };
 const _hoisted_6$9 = { class: "P404-500" };
@@ -466,14 +466,14 @@ const _hoisted_10$2 = {
 const _hoisted_11$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
 const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
 const _hoisted_13$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName + " |", _ctx.componentGeneralClasses])
   }, [
-    createElementVNode("div", _hoisted_2$c, [
-      _hoisted_3$b,
+    createElementVNode("div", _hoisted_2$d, [
+      _hoisted_3$c,
       createElementVNode("div", _hoisted_4$a, [
         createElementVNode("div", _hoisted_5$a, [
           createElementVNode("h1", _hoisted_6$9, toDisplayString($props.title), 1)
@@ -499,13 +499,13 @@ function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
       _hoisted_12$2,
       _hoisted_13$2
     ])
-  ], 10, _hoisted_1$h);
+  ], 10, _hoisted_1$i);
 }
-var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
+var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
 var Button_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$g = {
+const _sfc_main$h = {
   name: "gnkButton",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
@@ -644,16 +644,16 @@ const _sfc_main$g = {
   mounted() {
   }
 };
-const _hoisted_1$g = ["checked", "disabled", "id", "type"];
-const _hoisted_2$b = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_3$a = { class: "--content-holder" };
+const _hoisted_1$h = ["checked", "disabled", "id", "type"];
+const _hoisted_2$c = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_3$b = { class: "--content-holder" };
 const _hoisted_4$9 = { class: "--content-step1" };
 const _hoisted_5$9 = {
   key: 0,
   class: "--content-step2"
 };
 const _hoisted_6$8 = { class: "--badge-holder" };
-function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("button", {
@@ -679,8 +679,8 @@ function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
       ]),
       _: 1
     }),
-    _hoisted_2$b,
-    createElementVNode("div", _hoisted_3$a, [
+    _hoisted_2$c,
+    createElementVNode("div", _hoisted_3$b, [
       createElementVNode("div", _hoisted_4$9, [
         renderSlot(_ctx.$slots, "default")
       ]),
@@ -700,13 +700,13 @@ function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_6$8, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$g);
+  ], 42, _hoisted_1$h);
 }
-var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
+var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
 var Checkbox_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$f = {
+const _sfc_main$g = {
   name: "gnkCheckbox",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   data() {
     return {
@@ -853,9 +853,9 @@ const _sfc_main$f = {
     }
   }
 };
-const _hoisted_1$f = ["disabled", "id"];
-const _hoisted_2$a = ["id", "name", "checked", "value"];
-const _hoisted_3$9 = { class: "--base" };
+const _hoisted_1$g = ["disabled", "id"];
+const _hoisted_2$b = ["id", "name", "checked", "value"];
+const _hoisted_3$a = { class: "--base" };
 const _hoisted_4$8 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
 const _hoisted_5$8 = {
   key: 0,
@@ -867,7 +867,7 @@ const _hoisted_6$7 = {
 };
 const _hoisted_7$5 = ["for"];
 const _hoisted_8$4 = { class: "--badge-holder" };
-function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
@@ -886,8 +886,8 @@ function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
       type: "Checkbox",
       checked: $options.isChecked,
       value: $data.defaultValue
-    }, null, 8, _hoisted_2$a),
-    createElementVNode("div", _hoisted_3$9, [
+    }, null, 8, _hoisted_2$b),
+    createElementVNode("div", _hoisted_3$a, [
       _hoisted_4$8,
       !$props.indeterminate ? (openBlock(), createElementBlock("span", _hoisted_5$8, " done ")) : (openBlock(), createElementBlock("span", _hoisted_6$7, " remove "))
     ]),
@@ -901,13 +901,13 @@ function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_8$4, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$f);
+  ], 42, _hoisted_1$g);
 }
-var gnkCheckbox = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
+var gnkCheckbox = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
 var Switch_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$e = {
+const _sfc_main$f = {
   name: "gnkSwitch",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       defaultValue: Math.random().toString(36).substr(2, 9)
@@ -1054,9 +1054,9 @@ const _sfc_main$e = {
     }
   }
 };
-const _hoisted_1$e = ["disabled", "id"];
-const _hoisted_2$9 = ["id", "name", "checked", "value"];
-const _hoisted_3$8 = { class: "--base" };
+const _hoisted_1$f = ["disabled", "id"];
+const _hoisted_2$a = ["id", "name", "checked", "value"];
+const _hoisted_3$9 = { class: "--base" };
 const _hoisted_4$7 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
 const _hoisted_5$7 = {
   key: 0,
@@ -1069,7 +1069,7 @@ const _hoisted_7$4 = {
 };
 const _hoisted_8$3 = ["for"];
 const _hoisted_9$2 = { class: "--badge-holder" };
-function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
@@ -1088,8 +1088,8 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
       type: "checkbox",
       checked: $options.isChecked,
       value: $data.defaultValue
-    }, null, 8, _hoisted_2$9),
-    createElementVNode("div", _hoisted_3$8, [
+    }, null, 8, _hoisted_2$a),
+    createElementVNode("div", _hoisted_3$9, [
       _hoisted_4$7,
       !!this.$slots.on ? (openBlock(), createElementBlock("div", _hoisted_5$7, [
         renderSlot(_ctx.$slots, "on")
@@ -1109,13 +1109,13 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_9$2, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$e);
+  ], 42, _hoisted_1$f);
 }
-var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
+var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
 var Radio_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$d = {
+const _sfc_main$e = {
   name: "gnkRadio",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   data() {
     return {
@@ -1247,16 +1247,16 @@ const _sfc_main$d = {
     }
   }
 };
-const _hoisted_1$d = ["disabled", "id"];
-const _hoisted_2$8 = ["id", "name", "checked", "value"];
-const _hoisted_3$7 = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
+const _hoisted_1$e = ["disabled", "id"];
+const _hoisted_2$9 = ["id", "name", "checked", "value"];
+const _hoisted_3$8 = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
   /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, [
     /* @__PURE__ */ createElementVNode("div", { class: "--ripple" })
   ])
 ], -1);
 const _hoisted_4$6 = ["for"];
 const _hoisted_5$6 = { class: "--badge-holder" };
-function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
@@ -1275,8 +1275,8 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
       type: "radio",
       checked: $options.isChecked,
       value: $data.defaultValue
-    }, null, 8, _hoisted_2$8),
-    _hoisted_3$7,
+    }, null, 8, _hoisted_2$9),
+    _hoisted_3$8,
     createElementVNode("label", { for: _ctx.componentId }, [
       renderSlot(_ctx.$slots, "label")
     ], 8, _hoisted_4$6),
@@ -1287,9 +1287,9 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_5$6, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$d);
+  ], 42, _hoisted_1$e);
 }
-var gnkRadio = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+var gnkRadio = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
 async function animateValue(startValue, endValue, duration, updateCallback, finalCallback) {
   const sycles = Math.floor(duration / Math.abs(startValue - endValue));
   if (typeof updateCallback === "function")
@@ -1309,9 +1309,9 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var SwipeManager_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$c = {
+const _sfc_main$d = {
   name: "gnkSwipeManager",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       swipe: {
@@ -1495,20 +1495,20 @@ const _sfc_main$c = {
     this.observeSwipe(this.$el);
   }
 };
-const _hoisted_1$c = ["id"];
-function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$d = ["id"];
+function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["p-0 m-0 fill", [_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$c);
+  ], 10, _hoisted_1$d);
 }
-var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
 var Input_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$b = {
+const _sfc_main$c = {
   name: "gnkInput",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "valueChanged"],
   data() {
     return {
@@ -1738,9 +1738,9 @@ const _sfc_main$b = {
     }
   }
 };
-const _hoisted_1$b = ["disabled", "id"];
-const _hoisted_2$7 = { class: "--base" };
-const _hoisted_3$6 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_1$c = ["disabled", "id"];
+const _hoisted_2$8 = { class: "--base" };
+const _hoisted_3$7 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
 const _hoisted_4$5 = {
   key: 0,
   class: "--icon | material-symbols-rounded"
@@ -1763,7 +1763,7 @@ const _hoisted_11$1 = {
 };
 const _hoisted_12$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
 const _hoisted_13$1 = { class: "--badge-holder" };
-function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
   const _component_gnk_loading = resolveComponent("gnk-loading");
@@ -1778,8 +1778,8 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
     onKeypress: _cache[9] || (_cache[9] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
     onKeyup: _cache[10] || (_cache[10] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
   }, [
-    createElementVNode("div", _hoisted_2$7, [
-      _hoisted_3$6,
+    createElementVNode("div", _hoisted_2$8, [
+      _hoisted_3$7,
       this.icon != void 0 ? (openBlock(), createElementBlock("span", _hoisted_4$5, toDisplayString(this.icon), 1)) : createCommentVNode("", true),
       createElementVNode("input", {
         class: "--input",
@@ -1873,13 +1873,13 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", _hoisted_13$1, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$b);
+  ], 42, _hoisted_1$c);
 }
-var gnkInput = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+var gnkInput = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var Counter_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$a = {
+const _sfc_main$b = {
   name: "gnkCounter",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       currentValue: 0
@@ -1930,19 +1930,19 @@ const _sfc_main$a = {
     });
   }
 };
-const _hoisted_1$a = ["id"];
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$b = ["id"];
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
-  }, toDisplayString($data.currentValue), 15, _hoisted_1$a);
+  }, toDisplayString($data.currentValue), 15, _hoisted_1$b);
 }
-var gnkCounter = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
+var gnkCounter = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
 var ProgressBar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$9 = {
+const _sfc_main$a = {
   name: "gnkProgressbar",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       progressPercentage: 0
@@ -2037,12 +2037,12 @@ const _sfc_main$9 = {
     this.progressPercentage = this.value;
   }
 };
-const _hoisted_1$9 = ["aria-valuemax", "aria-valuenow", "title", "id"];
-const _hoisted_2$6 = {
+const _hoisted_1$a = ["aria-valuemax", "aria-valuenow", "title", "id"];
+const _hoisted_2$7 = {
   key: 0,
   class: "--sections-steps"
 };
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     "aria-valuemin": "0",
     "aria-valuemax": $props.max,
@@ -2058,15 +2058,15 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
         style: normalizeStyle(`width: ${Math.round($data.progressPercentage / $props.max * 100)}%`),
         class: "--progressBar"
       }, null, 4),
-      this.sections ? (openBlock(), createElementBlock("div", _hoisted_2$6, [
+      this.sections ? (openBlock(), createElementBlock("div", _hoisted_2$7, [
         (openBlock(true), createElementBlock(Fragment, null, renderList(this.max - 1, (index2) => {
           return openBlock(), createElementBlock("div", { key: index2 });
         }), 128))
       ])) : createCommentVNode("", true)
     ])
-  ], 14, _hoisted_1$9);
+  ], 14, _hoisted_1$a);
 }
-var gnkProgressbar = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+var gnkProgressbar = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
 function getAugmentedNamespace(n) {
   if (n.__esModule)
     return n;
@@ -3924,7 +3924,7 @@ class Result$3 {
     return this.css;
   }
 }
-var result = Result$3;
+var result$1 = Result$3;
 Result$3.default = Result$3;
 const SINGLE_QUOTE = "'".charCodeAt(0);
 const DOUBLE_QUOTE = '"'.charCodeAt(0);
@@ -4804,7 +4804,7 @@ let MapGenerator$1 = mapGenerator;
 let stringify$2 = stringify_1;
 let Container$1 = container;
 let Document$2 = document$1;
-let Result$2 = result;
+let Result$2 = result$1;
 let parse$2 = parse_1;
 let Root$3 = root;
 const TYPE_TO_CLASS_NAME = {
@@ -5261,7 +5261,7 @@ Document$2.registerLazyResult(LazyResult$2);
 let MapGenerator = mapGenerator;
 let stringify$1 = stringify_1;
 let parse$1 = parse_1;
-const Result$1 = result;
+const Result$1 = result$1;
 class NoWorkResult$1 {
   constructor(processor2, css, opts) {
     css = css.toString();
@@ -5465,7 +5465,7 @@ let Document = document$1;
 let Warning = warning;
 let Comment = comment;
 let AtRule = atRule;
-let Result = result;
+let Result = result$1;
 let Input = input;
 let parse = parse_1;
 let list = list_1;
@@ -5530,9 +5530,9 @@ postcss.Node = Node;
 LazyResult.registerPostcss(postcss);
 postcss.default = postcss;
 var ButtonGroup_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$8 = {
+const _sfc_main$9 = {
   name: "gnkButtonGroup",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       childButtons: [],
@@ -5620,31 +5620,31 @@ const _sfc_main$8 = {
   mounted() {
   }
 };
-const _hoisted_1$8 = ["id"];
-const _hoisted_2$5 = {
+const _hoisted_1$9 = ["id"];
+const _hoisted_2$6 = {
   key: 0,
   class: "--title"
 };
-const _hoisted_3$5 = { class: "--buttons" };
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_3$6 = { class: "--buttons" };
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     onOnchange: _cache[0] || (_cache[0] = ($event) => $options.childChanged())
   }, [
-    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$5, [
+    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$6, [
       renderSlot(_ctx.$slots, "title")
     ])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_3$5, [
+    createElementVNode("div", _hoisted_3$6, [
       renderSlot(_ctx.$slots, "default")
     ])
-  ], 42, _hoisted_1$8);
+  ], 42, _hoisted_1$9);
 }
-var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
 var Loading_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$7 = {
+const _sfc_main$8 = {
   name: "gnkLoading",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       loaded: false
@@ -5731,9 +5731,9 @@ const _sfc_main$7 = {
     this.loaded = true;
   }
 };
-const _hoisted_1$7 = ["id"];
-const _hoisted_2$4 = { class: "row full-height" };
-const _hoisted_3$4 = { class: "col-block" };
+const _hoisted_1$8 = ["id"];
+const _hoisted_2$5 = { class: "row full-height" };
+const _hoisted_3$5 = { class: "col-block" };
 const _hoisted_4$4 = { class: "fill flex-centered" };
 const _hoisted_5$4 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
 const _hoisted_6$4 = {
@@ -5742,7 +5742,7 @@ const _hoisted_6$4 = {
 };
 const _hoisted_7$2 = /* @__PURE__ */ createTextVNode("% ");
 const _hoisted_8$1 = { class: "--loading-label | text-bold" };
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnkProgressbar = resolveComponent("gnkProgressbar");
   const _component_gnk_Counter = resolveComponent("gnk-Counter");
   return $data.loaded ? (openBlock(), createBlock(Teleport, {
@@ -5770,8 +5770,8 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
             block: "",
             value: $props.percentage
           }, null, 8, ["value"])) : createCommentVNode("", true),
-          createElementVNode("div", _hoisted_2$4, [
-            createElementVNode("div", _hoisted_3$4, [
+          createElementVNode("div", _hoisted_2$5, [
+            createElementVNode("div", _hoisted_3$5, [
               createElementVNode("div", _hoisted_4$4, [
                 _hoisted_5$4,
                 $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_6$4, [
@@ -5782,17 +5782,17 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
               createElementVNode("p", _hoisted_8$1, toDisplayString($props.label), 1)
             ])
           ])
-        ], 46, _hoisted_1$7)
+        ], 46, _hoisted_1$8)
       ]),
       _: 1
     })
   ], 8, ["to"])) : createCommentVNode("", true);
 }
-var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
 var Card_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$7 = {
   name: "gnkCard",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {};
   },
@@ -5858,12 +5858,12 @@ const _sfc_main$6 = {
   },
   emits: ["click", "mouseover", "mouseleave", "mouseover", "keydown", "keypress", "keyup"]
 };
-const _hoisted_1$6 = ["id"];
-const _hoisted_2$3 = {
+const _hoisted_1$7 = ["id"];
+const _hoisted_2$4 = {
   key: 0,
   class: "--hero-container"
 };
-const _hoisted_3$3 = {
+const _hoisted_3$4 = {
   key: 1,
   class: "--interactions"
 };
@@ -5880,7 +5880,7 @@ const _hoisted_7$1 = {
   key: 1,
   class: "--footer | flex"
 };
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_image = resolveComponent("gnk-image");
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
@@ -5892,7 +5892,7 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     onKeypress: _cache[4] || (_cache[4] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
     onKeyup: _cache[5] || (_cache[5] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
   }, [
-    this.hasValidHeaderBackground || !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_2$3, [
+    this.hasValidHeaderBackground || !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_2$4, [
       this.hasValidHeaderBackground ? (openBlock(), createBlock(_component_gnk_image, {
         key: 0,
         class: "--hero-background",
@@ -5900,7 +5900,7 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
         alt: $props.headerBackgroundAlt,
         animation: "zoomIn-light"
       }, null, 8, ["src", "alt"])) : createCommentVNode("", true),
-      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$3, [
+      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$4, [
         renderSlot(_ctx.$slots, "interactions")
       ])) : createCommentVNode("", true)
     ])) : createCommentVNode("", true),
@@ -5915,13 +5915,13 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_7$1, [
       renderSlot(_ctx.$slots, "footer")
     ])) : createCommentVNode("", true)
-  ], 42, _hoisted_1$6);
+  ], 42, _hoisted_1$7);
 }
-var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
 var Sidebar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$5 = {
+const _sfc_main$6 = {
   name: "gnkSidebar",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   data() {
     return {
@@ -5998,13 +5998,13 @@ const _sfc_main$5 = {
     }
   }
 };
-const _hoisted_1$5 = ["disabled", "id"];
-const _hoisted_2$2 = { class: "--base" };
-const _hoisted_3$2 = { class: "--content" };
+const _hoisted_1$6 = ["disabled", "id"];
+const _hoisted_2$3 = { class: "--base" };
+const _hoisted_3$3 = { class: "--content" };
 const _hoisted_4$2 = { class: "--header" };
 const _hoisted_5$2 = { class: "--content-body" };
 const _hoisted_6$2 = { class: "--footer" };
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
@@ -6021,8 +6021,8 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
       class: "--backdrop",
       onClick: _cache[0] || (_cache[0] = ($event) => $options.close($event))
     }),
-    createElementVNode("div", _hoisted_2$2, [
-      createElementVNode("div", _hoisted_3$2, [
+    createElementVNode("div", _hoisted_2$3, [
+      createElementVNode("div", _hoisted_3$3, [
         createElementVNode("div", _hoisted_4$2, [
           renderSlot(_ctx.$slots, "header")
         ]),
@@ -6038,13 +6038,13 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true)
-  ], 42, _hoisted_1$5);
+  ], 42, _hoisted_1$6);
 }
-var gnkSidebar = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+var gnkSidebar = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
 var Listview_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$4 = {
+const _sfc_main$5 = {
   name: "gnkListview",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       childElements: []
@@ -6071,20 +6071,20 @@ const _sfc_main$4 = {
   mounted() {
   }
 };
-const _hoisted_1$4 = ["id"];
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$5 = ["id"];
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$4);
+  ], 10, _hoisted_1$5);
 }
-var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
 var ListviewItem_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$3 = {
+const _sfc_main$4 = {
   name: "gnkListviewItem",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       childElements: [],
@@ -6126,21 +6126,21 @@ const _sfc_main$3 = {
   mounted() {
   }
 };
-const _hoisted_1$3 = ["id"];
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$4 = ["id"];
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args)),
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$3);
+  ], 10, _hoisted_1$4);
 }
-var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
 var App_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$2 = {
+const _sfc_main$3 = {
   name: "gnkApp",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       childElements: [],
@@ -6222,12 +6222,12 @@ const _sfc_main$2 = {
     };
   }
 };
-const _hoisted_1$2 = ["id"];
-const _hoisted_2$1 = {
+const _hoisted_1$3 = ["id"];
+const _hoisted_2$2 = {
   key: 0,
   class: "--slideSidebar |"
 };
-const _hoisted_3$1 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_3$2 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
 const _hoisted_4$1 = { class: "--header | grid" };
 const _hoisted_5$1 = { class: "row" };
 const _hoisted_6$1 = { class: "col-12" };
@@ -6245,7 +6245,7 @@ const _hoisted_12 = {
 };
 const _hoisted_13 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
 const _hoisted_14 = { class: "--gnkApp-content | col-12" };
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Progressbar = resolveComponent("gnk-Progressbar");
   const _component_gnk_button = resolveComponent("gnk-button");
   const _component_gnk_buttonGroup = resolveComponent("gnk-buttonGroup");
@@ -6256,9 +6256,9 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "fill"]),
     id: _ctx.componentId
   }, [
-    !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+    !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_2$2, [
       renderSlot(_ctx.$slots, "slideSidebar", {}, () => [
-        _hoisted_3$1
+        _hoisted_3$2
       ])
     ])) : createCommentVNode("", true),
     createElementVNode("div", _hoisted_4$1, [
@@ -6351,13 +6351,13 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
         })
       ])
     ])
-  ], 10, _hoisted_1$2);
+  ], 10, _hoisted_1$3);
 }
-var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
 var Page_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$1 = {
+const _sfc_main$2 = {
   name: "gnkPage",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   data() {
     return {
       childElements: [],
@@ -6395,8 +6395,8 @@ const _sfc_main$1 = {
     this.loaded = true;
   }
 };
-const _hoisted_1$1 = ["id"];
-function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$2 = ["id"];
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["grid col-12", [_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]])
@@ -6408,13 +6408,13 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       _: 3
     }),
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$1);
+  ], 10, _hoisted_1$2);
 }
-var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
 var Navbar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main = {
+const _sfc_main$1 = {
   name: "gnkNavbar",
-  extends: _sfc_main$k,
+  extends: _sfc_main$l,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
@@ -6461,19 +6461,19 @@ const _sfc_main = {
     window.addEventListener("scroll", this.handleScroll, true);
   }
 };
-const _hoisted_1 = ["id"];
-const _hoisted_2 = { class: "--content | row flex-centered" };
-const _hoisted_3 = { class: "--left | col-3 flex-centered flex-left" };
+const _hoisted_1$1 = ["id"];
+const _hoisted_2$1 = { class: "--content | row flex-centered" };
+const _hoisted_3$1 = { class: "--left | col-3 flex-centered flex-left" };
 const _hoisted_4 = { class: "col-6" };
 const _hoisted_5 = { class: "--title | flex-centered" };
 const _hoisted_6 = { class: "--right | col-3 flex-centered flex-right" };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   return withDirectives((openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "grid flex-centered"])
   }, [
-    createElementVNode("div", _hoisted_2, [
-      createElementVNode("div", _hoisted_3, [
+    createElementVNode("div", _hoisted_2$1, [
+      createElementVNode("div", _hoisted_3$1, [
         renderSlot(_ctx.$slots, "left")
       ]),
       createElementVNode("div", _hoisted_4, [
@@ -6485,11 +6485,500 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         renderSlot(_ctx.$slots, "right")
       ])
     ])
-  ], 10, _hoisted_1)), [
+  ], 10, _hoisted_1$1)), [
     [vShow, !$data.hide]
   ]);
 }
-var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+var SyntaxHighlight_vue_vue_type_style_index_0_lang = "";
+const _sfc_main = {
+  name: "gnkSyntaxHighlight",
+  extends: _sfc_main$l,
+  data() {
+    return {
+      parentClientRect: null
+    };
+  },
+  props: {
+    code: {
+      type: String,
+      default: "<html>hello world</html>"
+    },
+    language: {
+      type: String,
+      default: "css",
+      validator: (value) => {
+        return ["html", "css", "js"].includes(value);
+      }
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--primary": true
+      };
+    }
+  },
+  methods: {
+    CodeColor() {
+      var lang = this.language || "html";
+      var elmntObj = document.getElementById("--code");
+      var elmntTxt = elmntObj.innerHTML;
+      var tagcolor = "mediumblue";
+      var tagnamecolor = "brown";
+      var attributecolor = "hsl(var(--COLOR-SECONDARY-H), var(--COLOR-SECONDARY-S), var(--COLOR-SECONDARY-L))";
+      var attributevaluecolor = "mediumblue";
+      var commentcolor = "green";
+      var cssselectorcolor = "brown";
+      var csspropertycolor = "hsl(var(--COLOR-PRIMARY-H), var(--COLOR-PRIMARY-S), var(--COLOR-PRIMARY-L))";
+      var csspropertyvaluecolor = "mediumblue";
+      var cssdelimitercolor = "black";
+      var cssimportantcolor = "hsl(var(--COLOR-SECONDARY-H), var(--COLOR-SECONDARY-S), var(--COLOR-SECONDARY-L))";
+      var jscolor = "hsl(var(--COLOR-LIGHT-H), var(--COLOR-LIGHT-S), var(--COLOR-LIGHT-L))";
+      var jskeywordcolor = "mediumblue";
+      var jsstringcolor = "brown";
+      var jsnumbercolor = "red";
+      var jspropertycolor = "black";
+      elmntObj.style.fontFamily = "Consolas,'Courier New', monospace";
+      if (!lang) {
+        lang = "html";
+      }
+      if (lang == "html") {
+        elmntTxt = htmlMode(elmntTxt);
+      }
+      if (lang == "css") {
+        elmntTxt = cssMode(elmntTxt);
+      }
+      if (lang == "js") {
+        elmntTxt = jsMode(elmntTxt);
+      }
+      elmntObj.innerHTML = elmntTxt;
+      function extract(str, start, end, func, repl) {
+        var s, e, d = "", a = [];
+        while (str.search(start) > -1) {
+          s = str.search(start);
+          e = str.indexOf(end, s);
+          if (e == -1) {
+            e = str.length;
+          }
+          if (repl) {
+            a.push(func(str.substring(s, e + end.length)));
+            str = str.substring(0, s) + repl + str.substr(e + end.length);
+          } else {
+            d += str.substring(0, s);
+            d += func(str.substring(s, e + end.length));
+            str = str.substr(e + end.length);
+          }
+        }
+        this.rest = d + str;
+        this.arr = a;
+      }
+      function htmlMode(txt) {
+        var rest = txt, done = "", comment2, startpos, endpos, note, i;
+        comment2 = new extract(rest, "&lt;!--", "--&gt;", commentMode, "W3HTMLCOMMENTPOS");
+        rest = comment2.rest;
+        while (rest.indexOf("&lt;") > -1) {
+          note = "";
+          startpos = rest.indexOf("&lt;");
+          if (rest.substr(startpos, 9).toUpperCase() == "&LT;STYLE") {
+            note = "css";
+          }
+          if (rest.substr(startpos, 10).toUpperCase() == "&LT;SCRIPT") {
+            note = "javascript";
+          }
+          endpos = rest.indexOf("&gt;", startpos);
+          if (endpos == -1) {
+            endpos = rest.length;
+          }
+          done += rest.substring(0, startpos);
+          done += tagMode(rest.substring(startpos, endpos + 4));
+          rest = rest.substr(endpos + 4);
+          if (note == "css") {
+            endpos = rest.indexOf("&lt;/style&gt;");
+            if (endpos > -1) {
+              done += cssMode(rest.substring(0, endpos));
+              rest = rest.substr(endpos);
+            }
+          }
+          if (note == "javascript") {
+            endpos = rest.indexOf("&lt;/script&gt;");
+            if (endpos > -1) {
+              done += jsMode(rest.substring(0, endpos));
+              rest = rest.substr(endpos);
+            }
+          }
+        }
+        rest = done + rest;
+        for (i = 0; i < comment2.arr.length; i++) {
+          rest = rest.replace("W3HTMLCOMMENTPOS", comment2.arr[i]);
+        }
+        return rest;
+      }
+      function tagMode(txt) {
+        var rest = txt, done = "", startpos, endpos, result2;
+        while (rest.search(/(\s|<br>)/) > -1) {
+          startpos = rest.search(/(\s|<br>)/);
+          endpos = rest.indexOf("&gt;");
+          if (endpos == -1) {
+            endpos = rest.length;
+          }
+          done += rest.substring(0, startpos);
+          done += attributeMode(rest.substring(startpos, endpos));
+          rest = rest.substr(endpos);
+        }
+        result2 = done + rest;
+        result2 = "<span style=color:" + tagcolor + ">&lt;</span>" + result2.substring(4);
+        if (result2.substr(result2.length - 4, 4) == "&gt;") {
+          result2 = result2.substring(0, result2.length - 4) + "<span style=color:" + tagcolor + ">&gt;</span>";
+        }
+        return "<span style=color:" + tagnamecolor + ">" + result2 + "</span>";
+      }
+      function attributeMode(txt) {
+        var rest = txt, done = "", startpos, endpos, singlefnuttpos, doublefnuttpos, spacepos;
+        while (rest.indexOf("=") > -1) {
+          endpos = -1;
+          startpos = rest.indexOf("=");
+          singlefnuttpos = rest.indexOf("'", startpos);
+          doublefnuttpos = rest.indexOf('"', startpos);
+          spacepos = rest.indexOf(" ", startpos + 2);
+          if (spacepos > -1 && (spacepos < singlefnuttpos || singlefnuttpos == -1) && (spacepos < doublefnuttpos || doublefnuttpos == -1)) {
+            endpos = rest.indexOf(" ", startpos);
+          } else if (doublefnuttpos > -1 && (doublefnuttpos < singlefnuttpos || singlefnuttpos == -1) && (doublefnuttpos < spacepos || spacepos == -1)) {
+            endpos = rest.indexOf('"', rest.indexOf('"', startpos) + 1);
+          } else if (singlefnuttpos > -1 && (singlefnuttpos < doublefnuttpos || doublefnuttpos == -1) && (singlefnuttpos < spacepos || spacepos == -1)) {
+            endpos = rest.indexOf("'", rest.indexOf("'", startpos) + 1);
+          }
+          if (!endpos || endpos == -1 || endpos < startpos) {
+            endpos = rest.length;
+          }
+          done += rest.substring(0, startpos);
+          done += attributeValueMode(rest.substring(startpos, endpos + 1));
+          rest = rest.substr(endpos + 1);
+        }
+        return "<span style=color:" + attributecolor + ">" + done + rest + "</span>";
+      }
+      function attributeValueMode(txt) {
+        return "<span style=color:" + attributevaluecolor + ">" + txt + "</span>";
+      }
+      function commentMode(txt) {
+        return "<span style=color:" + commentcolor + ">" + txt + "</span>";
+      }
+      function cssMode(txt) {
+        var rest = txt, done = "", s, e, comment2, i, midz, c, cc2;
+        comment2 = new extract(rest, /\/\*/, "*/", commentMode, "W3CSSCOMMENTPOS");
+        rest = comment2.rest;
+        while (rest.search("{") > -1) {
+          s = rest.search("{");
+          midz = rest.substr(s + 1);
+          cc2 = 1;
+          c = 0;
+          for (i = 0; i < midz.length; i++) {
+            if (midz.substr(i, 1) == "{") {
+              cc2++;
+              c++;
+            }
+            if (midz.substr(i, 1) == "}") {
+              cc2--;
+            }
+            if (cc2 == 0) {
+              break;
+            }
+          }
+          if (cc2 != 0) {
+            c = 0;
+          }
+          e = s;
+          for (i = 0; i <= c; i++) {
+            e = rest.indexOf("}", e + 1);
+          }
+          if (e == -1) {
+            e = rest.length;
+          }
+          done += rest.substring(0, s + 1);
+          done += cssPropertyMode(rest.substring(s + 1, e));
+          rest = rest.substr(e);
+        }
+        rest = done + rest;
+        rest = rest.replace(/{/g, "<span style=color:" + cssdelimitercolor + ">{</span>");
+        rest = rest.replace(/}/g, "<span style=color:" + cssdelimitercolor + ">}</span>");
+        for (i = 0; i < comment2.arr.length; i++) {
+          rest = rest.replace("W3CSSCOMMENTPOS", comment2.arr[i]);
+        }
+        return "<span style=color:" + cssselectorcolor + ">" + rest + "</span>";
+      }
+      function cssPropertyMode(txt) {
+        var rest = txt, done = "", s, e, n, loop;
+        if (rest.indexOf("{") > -1) {
+          return cssMode(rest);
+        }
+        while (rest.search(":") > -1) {
+          s = rest.search(":");
+          loop = true;
+          n = s;
+          while (loop == true) {
+            loop = false;
+            e = rest.indexOf(";", n);
+            if (rest.substring(e - 5, e + 1) == "&nbsp;") {
+              loop = true;
+              n = e + 1;
+            }
+          }
+          if (e == -1) {
+            e = rest.length;
+          }
+          done += rest.substring(0, s);
+          done += cssPropertyValueMode(rest.substring(s, e + 1));
+          rest = rest.substr(e + 1);
+        }
+        return "<span style=color:" + csspropertycolor + ">" + done + rest + "</span>";
+      }
+      function cssPropertyValueMode(txt) {
+        var rest = txt, done = "", s;
+        rest = "<span style=color:" + cssdelimitercolor + ">:</span>" + rest.substring(1);
+        while (rest.search(/!important/i) > -1) {
+          s = rest.search(/!important/i);
+          done += rest.substring(0, s);
+          done += cssImportantMode(rest.substring(s, s + 10));
+          rest = rest.substr(s + 10);
+        }
+        result = done + rest;
+        if (result.substr(result.length - 1, 1) == ";" && result.substr(result.length - 6, 6) != "&nbsp;" && result.substr(result.length - 4, 4) != "&lt;" && result.substr(result.length - 4, 4) != "&gt;" && result.substr(result.length - 5, 5) != "&amp;") {
+          result = result.substring(0, result.length - 1) + "<span style=color:" + cssdelimitercolor + ">;</span>";
+        }
+        return "<span style=color:" + csspropertyvaluecolor + ">" + result + "</span>";
+      }
+      function cssImportantMode(txt) {
+        return "<span style=color:" + cssimportantcolor + ";font-weight:bold;>" + txt + "</span>";
+      }
+      function jsMode(txt) {
+        var rest = txt, done = "", esc = [], i, cc2, tt = "", sfnuttpos, dfnuttpos, compos, comlinepos, keywordpos, numpos, mypos, dotpos, y;
+        for (i = 0; i < rest.length; i++) {
+          cc2 = rest.substr(i, 1);
+          if (cc2 == "\\") {
+            esc.push(rest.substr(i, 2));
+            cc2 = "W3JSESCAPE";
+            i++;
+          }
+          tt += cc2;
+        }
+        rest = tt;
+        y = 1;
+        while (y == 1) {
+          sfnuttpos = getPos(rest, "'", "'", jsStringMode);
+          dfnuttpos = getPos(rest, '"', '"', jsStringMode);
+          compos = getPos(rest, /\/\*/, "*/", commentMode);
+          comlinepos = getPos(rest, /\/\//, "<br>", commentMode);
+          numpos = getNumPos(rest, jsNumberMode);
+          keywordpos = getKeywordPos("js", rest, jsKeywordMode);
+          dotpos = getDotPos(rest, jsPropertyMode);
+          if (Math.max(numpos[0], sfnuttpos[0], dfnuttpos[0], compos[0], comlinepos[0], keywordpos[0], dotpos[0]) == -1) {
+            break;
+          }
+          mypos = getMinPos(numpos, sfnuttpos, dfnuttpos, compos, comlinepos, keywordpos, dotpos);
+          if (mypos[0] == -1) {
+            break;
+          }
+          if (mypos[0] > -1) {
+            done += rest.substring(0, mypos[0]);
+            done += mypos[2](rest.substring(mypos[0], mypos[1]));
+            rest = rest.substr(mypos[1]);
+          }
+        }
+        rest = done + rest;
+        for (i = 0; i < esc.length; i++) {
+          rest = rest.replace("W3JSESCAPE", esc[i]);
+        }
+        return "<span style=color:" + jscolor + ">" + rest + "</span>";
+      }
+      function jsStringMode(txt) {
+        return "<span style=color:" + jsstringcolor + ">" + txt + "</span>";
+      }
+      function jsKeywordMode(txt) {
+        return "<span style=color:" + jskeywordcolor + ">" + txt + "</span>";
+      }
+      function jsNumberMode(txt) {
+        return "<span style=color:" + jsnumbercolor + ">" + txt + "</span>";
+      }
+      function jsPropertyMode(txt) {
+        return "<span style=color:" + jspropertycolor + ">" + txt + "</span>";
+      }
+      function getDotPos(txt, func) {
+        var x2, i, j, s, e, arr = [".", "<", " ", ";", "(", "+", ")", "[", "]", ",", "&", ":", "{", "}", "/", "-", "*", "|", "%"];
+        s = txt.indexOf(".");
+        if (s > -1) {
+          x2 = txt.substr(s + 1);
+          for (j = 0; j < x2.length; j++) {
+            cc = x2[j];
+            for (i = 0; i < arr.length; i++) {
+              if (cc.indexOf(arr[i]) > -1) {
+                e = j;
+                return [s + 1, e + s + 1, func];
+              }
+            }
+          }
+        }
+        return [-1, -1, func];
+      }
+      function getMinPos() {
+        var i, arr = [];
+        for (i = 0; i < arguments.length; i++) {
+          if (arguments[i][0] > -1) {
+            if (arr.length == 0 || arguments[i][0] < arr[0]) {
+              arr = arguments[i];
+            }
+          }
+        }
+        if (arr.length == 0) {
+          arr = arguments[i];
+        }
+        return arr;
+      }
+      function getKeywordPos(typ, txt, func) {
+        var words, i, pos, rpos = -1, rpos2 = -1, patt;
+        if (typ == "js") {
+          words = [
+            "abstract",
+            "arguments",
+            "boolean",
+            "break",
+            "byte",
+            "case",
+            "catch",
+            "char",
+            "class",
+            "const",
+            "continue",
+            "debugger",
+            "default",
+            "delete",
+            "do",
+            "double",
+            "else",
+            "enum",
+            "eval",
+            "export",
+            "extends",
+            "false",
+            "final",
+            "finally",
+            "float",
+            "for",
+            "function",
+            "goto",
+            "if",
+            "implements",
+            "import",
+            "in",
+            "instanceof",
+            "int",
+            "interface",
+            "let",
+            "long",
+            "NaN",
+            "native",
+            "new",
+            "null",
+            "package",
+            "private",
+            "protected",
+            "public",
+            "return",
+            "short",
+            "static",
+            "super",
+            "switch",
+            "synchronized",
+            "this",
+            "throw",
+            "throws",
+            "transient",
+            "true",
+            "try",
+            "typeof",
+            "var",
+            "void",
+            "volatile",
+            "while",
+            "with",
+            "yield"
+          ];
+        }
+        for (i = 0; i < words.length; i++) {
+          pos = txt.indexOf(words[i]);
+          if (pos > -1) {
+            patt = /\W/g;
+            if (txt.substr(pos + words[i].length, 1).match(patt) && txt.substr(pos - 1, 1).match(patt)) {
+              if (pos > -1 && (rpos == -1 || pos < rpos)) {
+                rpos = pos;
+                rpos2 = rpos + words[i].length;
+              }
+            }
+          }
+        }
+        return [rpos, rpos2, func];
+      }
+      function getPos(txt, start, end, func) {
+        var s, e;
+        s = txt.search(start);
+        e = txt.indexOf(end, s + end.length);
+        if (e == -1) {
+          e = txt.length;
+        }
+        return [s, e + end.length, func];
+      }
+      function getNumPos(txt, func) {
+        var arr = ["<br>", " ", ";", "(", "+", ")", "[", "]", ",", "&", ":", "{", "}", "/", "-", "*", "|", "%", "="], i, j, c, startpos = 0, endpos, word;
+        for (i = 0; i < txt.length; i++) {
+          for (j = 0; j < arr.length; j++) {
+            c = txt.substr(i, arr[j].length);
+            if (c == arr[j]) {
+              if (c == "-" && (txt.substr(i - 1, 1) == "e" || txt.substr(i - 1, 1) == "E")) {
+                continue;
+              }
+              endpos = i;
+              if (startpos < endpos) {
+                word = txt.substring(startpos, endpos);
+                if (!isNaN(word)) {
+                  return [startpos, endpos, func];
+                }
+              }
+              i += arr[j].length;
+              startpos = i;
+              i -= 1;
+              break;
+            }
+          }
+        }
+        return [-1, -1, func];
+      }
+    }
+  },
+  mounted() {
+    this.CodeColor();
+  }
+};
+const _hoisted_1 = ["id"];
+const _hoisted_2 = /* @__PURE__ */ createTextVNode(" code ");
+const _hoisted_3 = { id: "--code" };
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnkCard = resolveComponent("gnkCard");
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "g-10 col-12"]),
+    id: _ctx.componentId,
+    style: normalizeStyle(_ctx.componentStyleObject)
+  }, [
+    createVNode(_component_gnkCard, null, {
+      title: withCtx(() => [
+        _hoisted_2
+      ]),
+      default: withCtx(() => [
+        createElementVNode("pre", _hoisted_3, " \r\n                    " + toDisplayString($props.code) + "\r\n                ", 1)
+      ]),
+      _: 1
+    })
+  ], 14, _hoisted_1);
+}
+var gnkSyntaxHighlight = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 const state = reactive({
   busy: false,
   loading: false,
@@ -8238,6 +8727,7 @@ var index = {
   Store,
   registerRoutes,
   registerModuleComponents,
-  setColors
+  setColors,
+  gnkSyntaxHighlight
 };
 export { index as default };
