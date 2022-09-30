@@ -17,8 +17,8 @@
     @include defineColorHSL(--COLOR-WARNING, 44, 100%, 50%);
     @include defineColorHSL(--COLOR-DANGER, 351, 85%, 50%);
     @include defineColorHSL(--COLOR-BUG, 351, 69%, 50%);
-    @include defineColorHSL(--COLOR-DARK, 195, 22%, 96%);
-    @include defineColorHSL(--COLOR-LIGHT, var(--COLOR-LEVEL-1-H), var(--COLOR-LEVEL-1-S), var(--COLOR-LEVEL-1-L));
+    @include defineColorHSL(--COLOR-DARK, var(--COLOR-LEVEL-0-H), var(--COLOR-LEVEL-0-S), calc(var(--COLOR-LEVEL-0-L) - 5% ));//195, 22%, 96%);
+    @include defineColorHSL(--COLOR-LIGHT, var(--COLOR-LEVEL-1-H), var(--COLOR-LEVEL-1-S), calc(var(--COLOR-LEVEL-1-L) - 5% ));
     @include defineColorHSL(--COLOR-BASE, var(--COLOR-LEVEL-2-H), var(--COLOR-LEVEL-2-S), var(--COLOR-LEVEL-2-L));
     
 
@@ -92,12 +92,12 @@
 
     [class*="--dark"] {
         @include defineColorHSL(--COLOR-BASE, var(--COLOR-DARK-H), var(--COLOR-DARK-S), var(--COLOR-DARK-L));
-        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
     [class*="--light"] {
         @include defineColorHSL(--COLOR-BASE, var(--COLOR-LIGHT-H), var(--COLOR-LIGHT-S), var(--COLOR-LIGHT-L));
-        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
+        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-MAIN-TEXT-H), var(--COLOR-MAIN-TEXT-S), var(--COLOR-MAIN-TEXT-L));
     }
 
 

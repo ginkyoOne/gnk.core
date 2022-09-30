@@ -355,7 +355,7 @@
     }
 
     &>.--ripple{
-      border-radius: var(--BORDER-RADIUS);
+      //border-radius: var(--BORDER-RADIUS);
       overflow: hidden;
     }
 
@@ -391,7 +391,7 @@
         font-size: inherit !important;
         line-height: inherit !important;
 
-        transition: all .25s ease-in-out;
+        transition: all .2s ease-in-out;
       }
       &>.--content-step2{
         opacity: 0;
