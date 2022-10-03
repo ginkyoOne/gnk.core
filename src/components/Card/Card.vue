@@ -197,7 +197,7 @@ export default {
         padding: 15px;
         width: 100%;
         height: fit-content;
-        max-height:100vmax;
+        //max-height:100vmax;
         
 
 

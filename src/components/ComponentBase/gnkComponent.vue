@@ -116,8 +116,8 @@ export default {
 
     methods: {
         //GET ELEMENTE SIZE ON SCREEN
-        componentElementClientRect() {
-            let modalPosition = this?.$el?.getBoundingClientRect()
+        componentElementClientRect(el=this?.$el) {
+            let modalPosition = el?.getBoundingClientRect()
             return {
                 top: (!modalPosition ? 0 : modalPosition.top),
                 left: (!modalPosition ? 0 : modalPosition.left),
@@ -194,10 +194,7 @@ export default {
 
     provide() {
         return {
-
             registerChild: (typeof this.registerChild == 'function' ? this.registerChild : null),
-            uiLevel: this.uiLevel + 1,
-
         }
     },
     inject: ['store'],

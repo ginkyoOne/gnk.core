@@ -84,7 +84,7 @@ export default {
         getTargetSize() {
             let target = document.querySelector(this.target)
             if (target) {
-                return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 10, 64)
+                return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 20, 64)
             }
             return 64
         },

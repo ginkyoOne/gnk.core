@@ -66,6 +66,7 @@ export default {
     computed: {
         componentClassObject() {
             return {
+                '--primary': true,
                 '--none': this.animation === 'none',
                 '--zoomIn-light': this.animation ==  'zoomIn-light',
                 '--zoomIn-bw': this.animation == 'zoomIn-bw',
@@ -78,7 +79,6 @@ export default {
                 '--zoomOut-saturation': this.animation == 'zoomOut-saturation',
                 '--zoomOut-sepia': this.animation == 'zoomOut-sepia',
                 '--zoomOut-blur': this.animation == 'zoomOut-blur',
-                '--default': true
             }
         },
         componentStyleObject() {
@@ -199,8 +199,7 @@ export default {
         
         z-index: 1;
 
-        background: rgb(0,0,0);
-        background: linear-gradient(0deg, -color(LIGHT-TEXT,.5) 0%, -color(LIGHT-TEXT,.0) 100%);
+        background: linear-gradient(0deg, -color(MAIN-TEXT,.5) 0%, -color(MAIN-TEXT,.0) 100%);
     }
 
 

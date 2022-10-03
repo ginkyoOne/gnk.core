@@ -29,7 +29,7 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-import { openBlock, createElementBlock, normalizeClass, normalizeStyle, createElementVNode, toDisplayString, createCommentVNode, renderSlot, resolveComponent, createVNode, withCtx, createTextVNode, withModifiers, Transition, createBlock, Fragment, renderList, Teleport, withDirectives, vShow, resolveDynamicComponent, reactive, computed, watch, shallowRef, unref, nextTick, defineComponent, inject, h, provide, ref } from "vue";
+import { openBlock, createElementBlock, normalizeClass, normalizeStyle, createElementVNode, toDisplayString, createCommentVNode, renderSlot, resolveComponent, createVNode, withCtx, createTextVNode, createBlock, withModifiers, Transition, Fragment, renderList, Teleport, withDirectives, vShow, resolveDynamicComponent, reactive, computed, watch, shallowRef, unref, nextTick, defineComponent, inject, h, provide, ref } from "vue";
 function createRipple(event) {
   if (!event.currentTarget.querySelector(".--ripple"))
     return;
@@ -108,7 +108,7 @@ function setColors(colors, forceLight = true) {
     });
   });
 }
-const _sfc_main$l = {
+const _sfc_main$o = {
   name: "gnkComponent",
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click", "onClick"],
   data() {
@@ -199,9 +199,8 @@ const _sfc_main$l = {
     }
   },
   methods: {
-    componentElementClientRect() {
-      var _a;
-      let modalPosition = (_a = this == null ? void 0 : this.$el) == null ? void 0 : _a.getBoundingClientRect();
+    componentElementClientRect(el = this == null ? void 0 : this.$el) {
+      let modalPosition = el == null ? void 0 : el.getBoundingClientRect();
       return {
         top: !modalPosition ? 0 : modalPosition.top,
         left: !modalPosition ? 0 : modalPosition.left,
@@ -243,8 +242,7 @@ const _sfc_main$l = {
   },
   provide() {
     return {
-      registerChild: typeof this.registerChild == "function" ? this.registerChild : null,
-      uiLevel: this.uiLevel + 1
+      registerChild: typeof this.registerChild == "function" ? this.registerChild : null
     };
   },
   inject: ["store"]
@@ -257,9 +255,9 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$k = {
+const _sfc_main$n = {
   name: "gnkImage",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {};
   },
@@ -308,6 +306,7 @@ const _sfc_main$k = {
   computed: {
     componentClassObject() {
       return {
+        "--primary": true,
         "--none": this.animation === "none",
         "--zoomIn-light": this.animation == "zoomIn-light",
         "--zoomIn-bw": this.animation == "zoomIn-bw",
@@ -319,8 +318,7 @@ const _sfc_main$k = {
         "--zoomOut-bw": this.animation == "zoomOut-bw",
         "--zoomOut-saturation": this.animation == "zoomOut-saturation",
         "--zoomOut-sepia": this.animation == "zoomOut-sepia",
-        "--zoomOut-blur": this.animation == "zoomOut-blur",
-        "--default": true
+        "--zoomOut-blur": this.animation == "zoomOut-blur"
       };
     },
     componentStyleObject() {
@@ -335,34 +333,34 @@ const _sfc_main$k = {
   },
   methods: {}
 };
-const _hoisted_1$k = ["id"];
-const _hoisted_2$e = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
-const _hoisted_3$d = ["alt"];
-const _hoisted_4$b = {
+const _hoisted_1$n = ["id"];
+const _hoisted_2$h = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
+const _hoisted_3$g = ["alt"];
+const _hoisted_4$d = {
   key: 0,
   class: "--title | flex flex-centered"
 };
-function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
   }, [
-    _hoisted_2$e,
+    _hoisted_2$h,
     createElementVNode("div", {
       class: normalizeClass(["--img-background |", $options.componentClassObject]),
       alt: this.alt
-    }, null, 10, _hoisted_3$d),
-    this.showTitle && (this.title.constructor === String && this.title.length > 0) ? (openBlock(), createElementBlock("div", _hoisted_4$b, [
+    }, null, 10, _hoisted_3$g),
+    this.showTitle && (this.title.constructor === String && this.title.length > 0) ? (openBlock(), createElementBlock("div", _hoisted_4$d, [
       createElementVNode("h3", null, toDisplayString(this.title), 1)
     ])) : createCommentVNode("", true)
-  ], 14, _hoisted_1$k);
+  ], 14, _hoisted_1$n);
 }
-var gnkImage = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
+var gnkImage = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
 var Badge_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$j = {
+const _sfc_main$m = {
   name: "gnkBadge",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       parentClientRect: null
@@ -410,21 +408,21 @@ const _sfc_main$j = {
     this.parentClientRect = this.$parent.componentElementClientRect();
   }
 };
-const _hoisted_1$j = ["id"];
-function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$m = ["id"];
+function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 14, _hoisted_1$j);
+  ], 14, _hoisted_1$m);
 }
-var gnkBadge = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
+var gnkBadge = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
 var _404_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$i = {
+const _sfc_main$l = {
   name: "gnk404",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   props: {
     title: {
       type: String,
@@ -450,82 +448,129 @@ const _sfc_main$i = {
   mounted() {
   }
 };
-const _hoisted_1$i = ["id"];
-const _hoisted_2$d = { class: "grid fill" };
-const _hoisted_3$c = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-const _hoisted_4$a = { class: "row" };
-const _hoisted_5$a = { class: "col-12 flex-centered" };
-const _hoisted_6$9 = { class: "P404-500" };
-const _hoisted_7$6 = { class: "row" };
-const _hoisted_8$5 = { class: "col-12 flex-centered" };
-const _hoisted_9$3 = { class: "row" };
-const _hoisted_10$2 = {
+const _hoisted_1$l = ["id"];
+const _hoisted_2$g = { class: "grid fill" };
+const _hoisted_3$f = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_4$c = { class: "row" };
+const _hoisted_5$c = { class: "col-12 flex-centered" };
+const _hoisted_6$b = { class: "P404-500" };
+const _hoisted_7$8 = { class: "row" };
+const _hoisted_8$7 = { class: "col-12 flex-centered" };
+const _hoisted_9$5 = { class: "row" };
+const _hoisted_10$3 = {
   key: 0,
   class: "col-12 flex-centered p-t-20"
 };
-const _hoisted_11$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
-const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-const _hoisted_13$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_11$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+const _hoisted_12$3 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_13$3 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([_ctx.componentName + " |", _ctx.componentGeneralClasses])
   }, [
-    createElementVNode("div", _hoisted_2$d, [
-      _hoisted_3$c,
-      createElementVNode("div", _hoisted_4$a, [
-        createElementVNode("div", _hoisted_5$a, [
-          createElementVNode("h1", _hoisted_6$9, toDisplayString($props.title), 1)
+    createElementVNode("div", _hoisted_2$g, [
+      _hoisted_3$f,
+      createElementVNode("div", _hoisted_4$c, [
+        createElementVNode("div", _hoisted_5$c, [
+          createElementVNode("h1", _hoisted_6$b, toDisplayString($props.title), 1)
         ])
       ]),
-      createElementVNode("div", _hoisted_7$6, [
-        createElementVNode("div", _hoisted_8$5, toDisplayString($props.label), 1)
+      createElementVNode("div", _hoisted_7$8, [
+        createElementVNode("div", _hoisted_8$7, toDisplayString($props.label), 1)
       ]),
-      createElementVNode("div", _hoisted_9$3, [
-        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_10$2, [
+      createElementVNode("div", _hoisted_9$5, [
+        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_10$3, [
           createVNode(_component_gnk_button, {
             bug: "",
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
           }, {
             default: withCtx(() => [
-              _hoisted_11$2,
+              _hoisted_11$3,
               createTextVNode(" " + toDisplayString($props.goBackLable), 1)
             ]),
             _: 1
           })
         ])) : createCommentVNode("", true)
       ]),
-      _hoisted_12$2,
-      _hoisted_13$2
+      _hoisted_12$3,
+      _hoisted_13$3
     ])
-  ], 10, _hoisted_1$i);
+  ], 10, _hoisted_1$l);
 }
-var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
-var Button_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$h = {
-  name: "gnkButton",
-  extends: _sfc_main$l,
-  emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
+var gnk404 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
+var Icon_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$k = {
+  name: "gnkIcon",
+  extends: _sfc_main$o,
+  data() {
+    return {};
+  },
+  props: {
+    size: {
+      type: String,
+      required: false,
+      default: "mini",
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    }
+  },
+  computed: {
+    componentClassObject() {
+      return {
+        "--noStyle": !this.hasStyle,
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini"
+      };
+    },
+    componentStyleObject() {
+      return {};
+    }
+  }
+};
+const _hoisted_1$k = ["id"];
+const _hoisted_2$f = { class: "material-symbols-rounded" };
+const _hoisted_3$e = /* @__PURE__ */ createTextVNode(" report ");
+function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    style: normalizeStyle($options.componentStyleObject)
+  }, [
+    createElementVNode("span", _hoisted_2$f, [
+      renderSlot(_ctx.$slots, "default", {}, () => [
+        _hoisted_3$e
+      ])
+    ])
+  ], 14, _hoisted_1$k);
+}
+var gnkIcon = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
+var ExpandPanel_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$j = {
+  name: "gnkExpandPanel",
+  extends: _sfc_main$o,
+  emits: ["update:expand", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "click", "onClick"],
   data() {
     return {
-      checked: false,
-      activeStep: 0
+      isolatedIsExpanded: this.expand
     };
   },
   props: {
-    to: {
-      type: String,
-      skip: true,
-      default: ""
-    },
-    type: {
-      type: String,
+    expand: {
+      default: false,
       required: false,
+      skip: true
+    },
+    position: {
+      type: String,
       skip: true,
-      default: "button",
-      validator(type) {
-        return ["submit", "button", "reset", "toggle"].includes(type);
+      default: "top-right",
+      validator: (value) => {
+        return ["none", "top-right", "top-left", "bottom-right", "bottom-left"].includes(value);
       }
     },
     busy: {
@@ -534,16 +579,6 @@ const _sfc_main$h = {
       default: false
     },
     loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    pill: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    circular: {
       type: Boolean,
       required: false,
       default: false
@@ -568,728 +603,140 @@ const _sfc_main$h = {
       required: false,
       default: false
     },
-    clear: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     shadow: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    size: {
-      type: String,
-      required: false,
-      default: "default",
-      skip: true,
-      validator(type) {
-        return ["xl", "l", "default", "small", "mini"].includes(type);
-      }
-    },
-    animate: {
-      type: String,
-      required: false,
-      skip: true,
-      default: "default",
-      validator(type) {
-        return ["slide-up", "slide-left", "fade", "scale", "rotate", "default"].includes(type);
-      }
-    },
-    animateInactive: {
       type: Boolean,
       required: false,
       default: false
     }
   },
   computed: {
-    buttonType() {
-      return this.type;
-    },
     componentClassObject() {
-      var _a;
       return {
         "--dark": !this.hasStyle,
-        "--checked": this.type === "toggle" && this.checked,
-        "--size-xl": this.size === "xl",
-        "--size-l": this.size === "l",
-        "--size-small": this.size === "small",
-        "--size-mini": this.size === "mini",
-        "--animate": ((_a = this.$slots) == null ? void 0 : _a.animate) && !this.animateInactive ? true : false,
-        "--animate-slide-up": this.animate === "slide-up" && !this.loading && !this.busy && !this.animateInactive ? true : false,
-        "--animate-slide-left": this.animate === "slide-left" && !this.loading && !this.busy && !this.animateInactive ? true : false,
-        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy && !this.animateInactive ? true : false,
-        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy && !this.animateInactive ? true : false,
-        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.busy && !this.animateInactive ? true : false
+        "--open": this.isOpen
       };
+    },
+    componentStyleObject() {
+      return {};
+    },
+    isOpen() {
+      switch (true) {
+        case Array.isArray(this.expand):
+          this.isolatedIsExpanded = this.expand.includes(this.componentId);
+          break;
+        case typeof this.expand == "boolean":
+          this.isolatedIsExpanded = this.expand;
+          break;
+        default:
+          this.isolatedIsExpanded = this.expand === this.componentId;
+          break;
+      }
+      return this.isolatedIsExpanded;
     }
   },
-  emits: ["onchange", "click", "mouseover", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   methods: {
-    onToggle(eventName, event) {
-      if (!!event)
-        createRipple$1.createRipple(event);
-      if (this.type === "toggle") {
-        this.checked = !this.checked;
-        let thisEvent = { componentId: this.componentId, newValue: this.checked, oldValue: !this.checked, event };
-        if (typeof this.$parent.childChanged === "function")
-          this.$parent.childChanged(thisEvent);
-        this.componentRaiseEvent("onchange", thisEvent);
+    onToggle(event) {
+      this.isolatedIsExpanded = !this.isolatedIsExpanded;
+      switch (true) {
+        case this.expand === null:
+          this.$emit("update:expand", this.isolatedIsExpanded);
+          break;
+        case Array.isArray(this.expand):
+          if (this.expand.includes(this.componentId)) {
+            this.expand.splice(this.expand.indexOf(this.componentId), 1);
+          } else {
+            this.expand.push(this.componentId);
+            this.expand.sort();
+          }
+          this.$emit("update:expand", this.expand);
+          break;
+        case typeof this.expand == "boolean":
+          this.$emit("update:expand", this.isolatedIsExpanded);
+          break;
+        default:
+          this.$emit("update:expand", this.expand == this.componentId ? "" : this.componentId);
       }
-      this.componentRaiseEvent(eventName, { event });
-      if (this.to !== "")
-        this.$router.push(this.to);
+      createRipple$1.createRipple(event);
     }
   },
   mounted() {
   }
 };
-const _hoisted_1$h = ["checked", "disabled", "id", "type"];
-const _hoisted_2$c = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_3$b = { class: "--content-holder" };
-const _hoisted_4$9 = { class: "--content-step1" };
-const _hoisted_5$9 = {
-  key: 0,
-  class: "--content-step2"
+const _hoisted_1$j = ["id"];
+const _hoisted_2$e = { class: "--base" };
+const _hoisted_3$d = {
+  ref: "title",
+  class: "--title"
 };
-const _hoisted_6$8 = { class: "--badge-holder" };
-function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
-  const _component_gnk_loading = resolveComponent("gnk-loading");
-  return openBlock(), createElementBlock("button", {
-    checked: $data.checked,
-    class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "cursor-pointer inline-flex flex-centered"]),
-    disabled: _ctx.disabled,
-    id: _ctx.componentId,
-    type: $options.buttonType,
-    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onToggle("click", $event), ["prevent"])),
-    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
-    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
-    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
-    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onToggle("keypress", $event), ["prevent"])),
-    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
-  }, [
-    createVNode(Transition, { name: "fade" }, {
-      default: withCtx(() => [
-        this.loading ? (openBlock(), createBlock(_component_gnk_progressbar, {
-          key: 0,
-          loading: "",
-          class: "fill"
-        })) : createCommentVNode("", true)
-      ]),
-      _: 1
-    }),
-    _hoisted_2$c,
-    createElementVNode("div", _hoisted_3$b, [
-      createElementVNode("div", _hoisted_4$9, [
-        renderSlot(_ctx.$slots, "default")
-      ]),
-      !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_5$9, [
-        renderSlot(_ctx.$slots, "animate")
-      ])) : createCommentVNode("", true)
-    ]),
-    createVNode(Transition, { name: "fade" }, {
-      default: withCtx(() => [
-        this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
-          key: 0,
-          target: "#" + _ctx.componentId
-        }, null, 8, ["target"])) : createCommentVNode("", true)
-      ]),
-      _: 1
-    }),
-    createElementVNode("div", _hoisted_6$8, [
-      renderSlot(_ctx.$slots, "badge")
-    ])
-  ], 42, _hoisted_1$h);
-}
-var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
-var Checkbox_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$g = {
-  name: "gnkCheckbox",
-  extends: _sfc_main$l,
-  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
-  data() {
-    return {
-      defaultValue: null
-    };
-  },
-  props: {
-    name: {
-      type: String,
-      require: false,
-      default: "",
-      skip: true
-    },
-    value: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    modelValue: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    checked: {
-      type: Boolean,
-      required: false,
-      default: false,
-      skip: true
-    },
-    busy: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    indeterminate: {
-      type: Boolean,
-      default: false,
-      skip: true
-    },
-    square: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    lineThrough: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    align: {
-      type: String,
-      default: "right",
-      skip: true,
-      validator: (value) => ["left", "center", "right"].includes(value)
-    },
-    border: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    gradient: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    shadow: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    size: {
-      type: String,
-      required: false,
-      default: "default",
-      skip: true,
-      validator(type) {
-        return ["xl", "l", "default", "small", "mini"].includes(type);
-      }
-    },
-    animate: {
-      type: String,
-      required: false,
-      skip: true,
-      default: "default",
-      validator(type) {
-        return ["rotate", "fade", "scale", "flip", "default"].includes(type);
-      }
-    }
-  },
-  computed: {
-    isChecked() {
-      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.defaultValue) : this.modelValue === this.defaultValue;
-    },
-    componentClassObject: function() {
-      return {
-        "--primary": true,
-        "--checked": this.isChecked,
-        "--align-left": this.align === "left",
-        "--size-xl": this.size === "xl",
-        "--size-l": this.size === "l",
-        "--size-small": this.size === "small",
-        "--size-mini": this.size === "mini",
-        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
-        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
-        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false,
-        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.busy ? true : false
-      };
-    }
-  },
-  mounted() {
-    this.defaultValue = this.value === null ? Math.random().toString(36).substr(2, 9) : this.value;
-    if (this.checked)
-      this.onchange(null);
-  },
-  watch: {
-    value(newValue) {
-      this.defaultValue = newValue === null ? Math.random().toString(36).substr(2, 9) : newValue;
-    }
-  },
-  methods: {
-    onchange(event) {
-      if (!!event & !this.disabled & !this.busy & !this.loading)
-        createRipple$1.createRipple(event);
-      if (Array.isArray(this.modelValue)) {
-        if (this.isChecked) {
-          this.modelValue.splice(this.modelValue.indexOf(this.defaultValue), 1);
-        } else {
-          this.modelValue.push(this.defaultValue);
-        }
-        this.modelValue.sort();
-        this.$emit("update:modelValue", this.modelValue);
-      } else {
-        if (this.isChecked) {
-          this.$emit("update:modelValue", null);
-        } else {
-          this.$emit("update:modelValue", this.defaultValue);
-        }
-      }
-    }
-  }
+const _hoisted_4$b = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_5$b = /* @__PURE__ */ createTextVNode(" title ");
+const _hoisted_6$a = { class: "--content" };
+const _hoisted_7$7 = {
+  ref: "contentBody",
+  class: "--content-body"
 };
-const _hoisted_1$g = ["disabled", "id"];
-const _hoisted_2$b = ["id", "name", "checked", "value"];
-const _hoisted_3$a = { class: "--base" };
-const _hoisted_4$8 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_5$8 = {
-  key: 0,
-  class: "--thumb | material-symbols-rounded"
+const _hoisted_8$6 = {
+  ref: "contentFooter",
+  class: "--footer"
 };
-const _hoisted_6$7 = {
-  key: 1,
-  class: "--thumb | material-symbols-rounded"
-};
-const _hoisted_7$5 = ["for"];
-const _hoisted_8$4 = { class: "--badge-holder" };
-function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_9$4 = { class: "--badge-holder" };
+function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_button = resolveComponent("gnk-button");
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
-    disabled: _ctx.disabled,
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
-    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
-    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
-    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
-    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
-    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
-    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
+    style: normalizeStyle($options.componentStyleObject)
   }, [
-    createElementVNode("input", {
-      id: _ctx.componentId,
-      name: $props.name,
-      type: "Checkbox",
-      checked: $options.isChecked,
-      value: $data.defaultValue
-    }, null, 8, _hoisted_2$b),
-    createElementVNode("div", _hoisted_3$a, [
-      _hoisted_4$8,
-      !$props.indeterminate ? (openBlock(), createElementBlock("span", _hoisted_5$8, " done ")) : (openBlock(), createElementBlock("span", _hoisted_6$7, " remove "))
+    createElementVNode("div", _hoisted_2$e, [
+      createElementVNode("div", _hoisted_3$d, [
+        _hoisted_4$b,
+        createVNode(_component_gnk_button, {
+          primary: this.primary,
+          secondary: this.secondary,
+          info: this.info,
+          success: this.success,
+          warning: this.warning,
+          danger: this.danger,
+          bug: this.bug,
+          dark: this.dark,
+          light: this.light,
+          square: this.square,
+          clear: "",
+          block: "",
+          onClick: _cache[0] || (_cache[0] = ($event) => $options.onToggle($event))
+        }, {
+          default: withCtx(() => [
+            renderSlot(_ctx.$slots, "title", {}, () => [
+              _hoisted_5$b
+            ])
+          ]),
+          _: 3
+        }, 8, ["primary", "secondary", "info", "success", "warning", "danger", "bug", "dark", "light", "square"]),
+        createElementVNode("span", {
+          class: "--icon | material-symbols-rounded",
+          onClick: _cache[1] || (_cache[1] = ($event) => $options.onToggle($event))
+        }, " expand_less ")
+      ], 512),
+      createElementVNode("div", _hoisted_6$a, [
+        createElementVNode("div", _hoisted_7$7, [
+          renderSlot(_ctx.$slots, "default")
+        ], 512),
+        createElementVNode("div", _hoisted_8$6, [
+          renderSlot(_ctx.$slots, "footer")
+        ], 512)
+      ])
     ]),
-    createElementVNode("label", { for: _ctx.componentId }, [
-      renderSlot(_ctx.$slots, "label")
-    ], 8, _hoisted_7$5),
+    createElementVNode("div", _hoisted_9$4, [
+      renderSlot(_ctx.$slots, "badge")
+    ]),
     this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
-    }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_8$4, [
-      renderSlot(_ctx.$slots, "badge")
-    ])
-  ], 42, _hoisted_1$g);
+    }, null, 8, ["target"])) : createCommentVNode("", true)
+  ], 14, _hoisted_1$j);
 }
-var gnkCheckbox = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
-var Switch_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$f = {
-  name: "gnkSwitch",
-  extends: _sfc_main$l,
-  data() {
-    return {
-      defaultValue: Math.random().toString(36).substr(2, 9)
-    };
-  },
-  props: {
-    name: {
-      type: String,
-      require: false,
-      default: "",
-      skip: true
-    },
-    value: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    notValue: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    modelValue: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    checked: {
-      type: Boolean,
-      required: false,
-      default: false,
-      skip: true
-    },
-    busy: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    indeterminate: {
-      type: Boolean,
-      default: false,
-      skip: true
-    },
-    square: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    lineThrough: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    align: {
-      type: String,
-      default: "right",
-      skip: true,
-      validator: (value) => ["left", "center", "right"].includes(value)
-    },
-    border: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    gradient: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    shadow: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    size: {
-      type: String,
-      required: false,
-      default: "default",
-      skip: true,
-      validator(type) {
-        return ["xl", "l", "default", "small", "mini"].includes(type);
-      }
-    },
-    animate: {
-      type: String,
-      required: false,
-      skip: true,
-      default: "default",
-      validator(type) {
-        return ["fade", "scale", "flip", "default"].includes(type);
-      }
-    }
-  },
-  computed: {
-    isChecked() {
-      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.isValueNull) : this.modelValue === this.isValueNull;
-    },
-    isValueNull() {
-      return this.value === null ? this.defaultValue : this.value;
-    },
-    componentClassObject() {
-      return {
-        "--primary": true,
-        "--checked": this.isChecked,
-        "--align-left": this.align === "left",
-        "--size-xl": this.size === "xl",
-        "--size-l": this.size === "l",
-        "--size-small": this.size === "small",
-        "--size-mini": this.size === "mini",
-        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
-        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
-        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false
-      };
-    }
-  },
-  mounted() {
-    if (this.checked)
-      this.onchange(null);
-  },
-  methods: {
-    onchange(eventName, event) {
-      if (this.isChecked) {
-        if (Array.isArray(this.modelValue)) {
-          this.modelValue.splice(this.modelValue.indexOf(this.isValueNull), 1);
-          this.$emit("update:modelValue", this.modelValue);
-        } else {
-          this.$emit("update:modelValue", this.notValue);
-        }
-      } else {
-        if (Array.isArray(this.modelValue)) {
-          this.modelValue.push(this.isValueNull);
-          this.modelValue.sort();
-          this.$emit("update:modelValue", this.modelValue);
-        } else {
-          this.$emit("update:modelValue", this.isValueNull);
-        }
-      }
-      this.componentRaiseEvent(eventName, { event });
-    }
-  }
-};
-const _hoisted_1$f = ["disabled", "id"];
-const _hoisted_2$a = ["id", "name", "checked", "value"];
-const _hoisted_3$9 = { class: "--base" };
-const _hoisted_4$7 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_5$7 = {
-  key: 0,
-  class: "--switch-on"
-};
-const _hoisted_6$6 = /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, null, -1);
-const _hoisted_7$4 = {
-  key: 1,
-  class: "--switch-off"
-};
-const _hoisted_8$3 = ["for"];
-const _hoisted_9$2 = { class: "--badge-holder" };
-function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_gnk_loading = resolveComponent("gnk-loading");
-  return openBlock(), createElementBlock("div", {
-    disabled: _ctx.disabled,
-    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
-    id: _ctx.componentId,
-    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange("click", $event), ["prevent"])),
-    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
-    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
-    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
-    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange("keypress", $event), ["prevent"])),
-    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
-  }, [
-    createElementVNode("input", {
-      id: _ctx.componentId,
-      name: $props.name,
-      type: "checkbox",
-      checked: $options.isChecked,
-      value: $data.defaultValue
-    }, null, 8, _hoisted_2$a),
-    createElementVNode("div", _hoisted_3$9, [
-      _hoisted_4$7,
-      !!this.$slots.on ? (openBlock(), createElementBlock("div", _hoisted_5$7, [
-        renderSlot(_ctx.$slots, "on")
-      ])) : createCommentVNode("", true),
-      _hoisted_6$6,
-      !!this.$slots.off ? (openBlock(), createElementBlock("div", _hoisted_7$4, [
-        renderSlot(_ctx.$slots, "off")
-      ])) : createCommentVNode("", true)
-    ]),
-    createElementVNode("label", { for: _ctx.componentId }, [
-      renderSlot(_ctx.$slots, "label")
-    ], 8, _hoisted_8$3),
-    this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
-      key: 0,
-      target: "#" + _ctx.componentId + "> .--base"
-    }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_9$2, [
-      renderSlot(_ctx.$slots, "badge")
-    ])
-  ], 42, _hoisted_1$f);
-}
-var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
-var Radio_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$e = {
-  name: "gnkRadio",
-  extends: _sfc_main$l,
-  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
-  data() {
-    return {
-      defaultValue: null
-    };
-  },
-  props: {
-    name: {
-      type: String,
-      require: false,
-      default: "",
-      skip: true
-    },
-    value: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    modelValue: {
-      default: null,
-      required: false,
-      skip: true
-    },
-    checked: {
-      type: Boolean,
-      required: false,
-      default: false,
-      skip: true
-    },
-    busy: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    indeterminate: {
-      type: Boolean,
-      default: false,
-      skip: true
-    },
-    square: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    lineThrough: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    align: {
-      type: String,
-      default: "right",
-      skip: true,
-      validator: (value) => ["left", "center", "right"].includes(value)
-    },
-    border: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    gradient: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    shadow: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    size: {
-      type: String,
-      required: false,
-      default: "default",
-      skip: true,
-      validator(type) {
-        return ["xl", "l", "default", "small", "mini"].includes(type);
-      }
-    },
-    animate: {
-      type: String,
-      required: false,
-      skip: true,
-      default: "default",
-      validator(type) {
-        return ["fade", "scale", "flip", "default"].includes(type);
-      }
-    }
-  },
-  computed: {
-    isChecked() {
-      return this.modelValue === this.defaultValue;
-    },
-    componentClassObject: function() {
-      return {
-        "--primary": true,
-        "--checked": this.isChecked,
-        "--align-left": this.align === "left",
-        "--size-xl": this.size === "xl",
-        "--size-l": this.size === "l",
-        "--size-small": this.size === "small",
-        "--size-mini": this.size === "mini",
-        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
-        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
-        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false
-      };
-    }
-  },
-  mounted() {
-    this.defaultValue = this.value === null ? Math.random().toString(36).substr(2, 9) : this.value;
-    if (this.checked)
-      this.onchange(null);
-  },
-  watch: {
-    value(newValue) {
-      this.defaultValue = newValue === null ? Math.random().toString(36).substr(2, 9) : newValue;
-    }
-  },
-  methods: {
-    onchange(event) {
-      if (!!event & !this.disabled & !this.busy & !this.loading)
-        createRipple$1.createRipple(event);
-      this.$emit("update:modelValue", this.defaultValue);
-    }
-  }
-};
-const _hoisted_1$e = ["disabled", "id"];
-const _hoisted_2$9 = ["id", "name", "checked", "value"];
-const _hoisted_3$8 = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
-  /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, [
-    /* @__PURE__ */ createElementVNode("div", { class: "--ripple" })
-  ])
-], -1);
-const _hoisted_4$6 = ["for"];
-const _hoisted_5$6 = { class: "--badge-holder" };
-function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_gnk_loading = resolveComponent("gnk-loading");
-  return openBlock(), createElementBlock("div", {
-    disabled: _ctx.disabled,
-    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
-    id: _ctx.componentId,
-    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
-    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
-    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
-    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
-    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
-    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
-  }, [
-    createElementVNode("input", {
-      id: _ctx.componentId,
-      name: $props.name,
-      type: "radio",
-      checked: $options.isChecked,
-      value: $data.defaultValue
-    }, null, 8, _hoisted_2$9),
-    _hoisted_3$8,
-    createElementVNode("label", { for: _ctx.componentId }, [
-      renderSlot(_ctx.$slots, "label")
-    ], 8, _hoisted_4$6),
-    this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
-      key: 0,
-      target: "#" + _ctx.componentId + "> .--base"
-    }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_5$6, [
-      renderSlot(_ctx.$slots, "badge")
-    ])
-  ], 42, _hoisted_1$e);
-}
-var gnkRadio = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
+var gnkExpandPanel = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
 async function animateValue(startValue, endValue, duration, updateCallback, finalCallback) {
   const sycles = Math.floor(duration / Math.abs(startValue - endValue));
   if (typeof updateCallback === "function")
@@ -1309,9 +756,9 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var SwipeManager_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$d = {
+const _sfc_main$i = {
   name: "gnkSwipeManager",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       swipe: {
@@ -1495,20 +942,808 @@ const _sfc_main$d = {
     this.observeSwipe(this.$el);
   }
 };
-const _hoisted_1$d = ["id"];
-function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$i = ["id"];
+function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass(["p-0 m-0 fill", [_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]])
   }, [
     renderSlot(_ctx.$slots, "default")
-  ], 10, _hoisted_1$d);
+  ], 10, _hoisted_1$i);
 }
-var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+var gnkSwipeManager = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
+var Button_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$h = {
+  name: "gnkButton",
+  extends: _sfc_main$o,
+  emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
+  data() {
+    return {
+      checked: false,
+      activeStep: 0
+    };
+  },
+  props: {
+    to: {
+      type: String,
+      skip: true,
+      default: ""
+    },
+    type: {
+      type: String,
+      required: false,
+      skip: true,
+      default: "button",
+      validator(type) {
+        return ["submit", "button", "reset", "toggle"].includes(type);
+      }
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    pill: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    circular: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    border: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    gradient: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    transparent: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    clear: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    shadow: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "default",
+      skip: true,
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    },
+    animate: {
+      type: String,
+      required: false,
+      skip: true,
+      default: "default",
+      validator(type) {
+        return ["slide-up", "slide-left", "fade", "scale", "rotate", "default"].includes(type);
+      }
+    },
+    animateInactive: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  computed: {
+    buttonType() {
+      return this.type;
+    },
+    componentClassObject() {
+      var _a;
+      return {
+        "--dark": !this.hasStyle,
+        "--checked": this.type === "toggle" && this.checked,
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini",
+        "--animate": ((_a = this.$slots) == null ? void 0 : _a.animate) && !this.animateInactive ? true : false,
+        "--animate-slide-up": this.animate === "slide-up" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-slide-left": this.animate === "slide-left" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy && !this.animateInactive ? true : false,
+        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.busy && !this.animateInactive ? true : false
+      };
+    }
+  },
+  emits: ["onchange", "click", "mouseover", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
+  methods: {
+    onToggle(eventName, event) {
+      if (!!event)
+        createRipple$1.createRipple(event);
+      if (this.type === "toggle") {
+        this.checked = !this.checked;
+        let thisEvent = { componentId: this.componentId, newValue: this.checked, oldValue: !this.checked, event };
+        if (typeof this.$parent.childChanged === "function")
+          this.$parent.childChanged(thisEvent);
+        this.componentRaiseEvent("onchange", thisEvent);
+      }
+      this.componentRaiseEvent(eventName, { event });
+      if (this.to !== "")
+        this.$router.push(this.to);
+    }
+  },
+  mounted() {
+  }
+};
+const _hoisted_1$h = ["checked", "disabled", "id", "type"];
+const _hoisted_2$d = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_3$c = { class: "--content-holder" };
+const _hoisted_4$a = { class: "--content-step1" };
+const _hoisted_5$a = {
+  key: 0,
+  class: "--content-step2"
+};
+const _hoisted_6$9 = { class: "--badge-holder" };
+function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
+  const _component_gnk_loading = resolveComponent("gnk-loading");
+  return openBlock(), createElementBlock("button", {
+    checked: $data.checked,
+    class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "cursor-pointer inline-flex flex-centered"]),
+    disabled: _ctx.disabled,
+    id: _ctx.componentId,
+    type: $options.buttonType,
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onToggle("click", $event), ["prevent"])),
+    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
+    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
+    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
+    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onToggle("keypress", $event), ["prevent"])),
+    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
+  }, [
+    createVNode(Transition, { name: "fade" }, {
+      default: withCtx(() => [
+        this.loading ? (openBlock(), createBlock(_component_gnk_progressbar, {
+          key: 0,
+          loading: "",
+          class: "fill"
+        })) : createCommentVNode("", true)
+      ]),
+      _: 1
+    }),
+    _hoisted_2$d,
+    createElementVNode("div", _hoisted_3$c, [
+      createElementVNode("div", _hoisted_4$a, [
+        renderSlot(_ctx.$slots, "default")
+      ]),
+      !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_5$a, [
+        renderSlot(_ctx.$slots, "animate")
+      ])) : createCommentVNode("", true)
+    ]),
+    createVNode(Transition, { name: "fade" }, {
+      default: withCtx(() => [
+        this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
+          key: 0,
+          target: "#" + _ctx.componentId
+        }, null, 8, ["target"])) : createCommentVNode("", true)
+      ]),
+      _: 1
+    }),
+    createElementVNode("div", _hoisted_6$9, [
+      renderSlot(_ctx.$slots, "badge")
+    ])
+  ], 42, _hoisted_1$h);
+}
+var gnkButton = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
+var Checkbox_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$g = {
+  name: "gnkCheckbox",
+  extends: _sfc_main$o,
+  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
+  data() {
+    return {
+      defaultValue: null
+    };
+  },
+  props: {
+    name: {
+      type: String,
+      require: false,
+      default: "",
+      skip: true
+    },
+    value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    modelValue: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false,
+      skip: true
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    indeterminate: {
+      type: Boolean,
+      default: false,
+      skip: true
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    lineThrough: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    align: {
+      type: String,
+      default: "right",
+      skip: true,
+      validator: (value) => ["left", "center", "right"].includes(value)
+    },
+    border: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    gradient: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    shadow: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "default",
+      skip: true,
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    },
+    animate: {
+      type: String,
+      required: false,
+      skip: true,
+      default: "default",
+      validator(type) {
+        return ["rotate", "fade", "scale", "flip", "default"].includes(type);
+      }
+    }
+  },
+  computed: {
+    isChecked() {
+      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.defaultValue) : this.modelValue === this.defaultValue;
+    },
+    componentClassObject: function() {
+      return {
+        "--primary": true,
+        "--checked": this.isChecked,
+        "--align-left": this.align === "left",
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini",
+        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
+        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
+        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false,
+        "--animate-rotate": this.animate === "rotate" && !this.loading && !this.busy ? true : false
+      };
+    }
+  },
+  mounted() {
+    this.defaultValue = this.value === null ? Math.random().toString(36).substr(2, 9) : this.value;
+    if (this.checked)
+      this.onchange(null);
+  },
+  watch: {
+    value(newValue) {
+      this.defaultValue = newValue === null ? Math.random().toString(36).substr(2, 9) : newValue;
+    }
+  },
+  methods: {
+    onchange(event) {
+      if (!!event & !this.disabled & !this.busy & !this.loading)
+        createRipple$1.createRipple(event);
+      if (Array.isArray(this.modelValue)) {
+        if (this.isChecked) {
+          this.modelValue.splice(this.modelValue.indexOf(this.defaultValue), 1);
+        } else {
+          this.modelValue.push(this.defaultValue);
+        }
+        this.modelValue.sort();
+        this.$emit("update:modelValue", this.modelValue);
+      } else {
+        if (this.isChecked) {
+          this.$emit("update:modelValue", null);
+        } else {
+          this.$emit("update:modelValue", this.defaultValue);
+        }
+      }
+    }
+  }
+};
+const _hoisted_1$g = ["disabled", "id"];
+const _hoisted_2$c = ["id", "name", "checked", "value"];
+const _hoisted_3$b = { class: "--base" };
+const _hoisted_4$9 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_5$9 = {
+  key: 0,
+  class: "--thumb | material-symbols-rounded"
+};
+const _hoisted_6$8 = {
+  key: 1,
+  class: "--thumb | material-symbols-rounded"
+};
+const _hoisted_7$6 = ["for"];
+const _hoisted_8$5 = { class: "--badge-holder" };
+function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_loading = resolveComponent("gnk-loading");
+  return openBlock(), createElementBlock("div", {
+    disabled: _ctx.disabled,
+    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
+    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
+    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
+    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
+  }, [
+    createElementVNode("input", {
+      id: _ctx.componentId,
+      name: $props.name,
+      type: "Checkbox",
+      checked: $options.isChecked,
+      value: $data.defaultValue
+    }, null, 8, _hoisted_2$c),
+    createElementVNode("div", _hoisted_3$b, [
+      _hoisted_4$9,
+      !$props.indeterminate ? (openBlock(), createElementBlock("span", _hoisted_5$9, " done ")) : (openBlock(), createElementBlock("span", _hoisted_6$8, " remove "))
+    ]),
+    createElementVNode("label", { for: _ctx.componentId }, [
+      renderSlot(_ctx.$slots, "label")
+    ], 8, _hoisted_7$6),
+    this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
+      key: 0,
+      target: "#" + _ctx.componentId + "> .--base"
+    }, null, 8, ["target"])) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_8$5, [
+      renderSlot(_ctx.$slots, "badge")
+    ])
+  ], 42, _hoisted_1$g);
+}
+var gnkCheckbox = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
+var Switch_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$f = {
+  name: "gnkSwitch",
+  extends: _sfc_main$o,
+  data() {
+    return {
+      defaultValue: Math.random().toString(36).substr(2, 9)
+    };
+  },
+  props: {
+    name: {
+      type: String,
+      require: false,
+      default: "",
+      skip: true
+    },
+    value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    notValue: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    modelValue: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false,
+      skip: true
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    indeterminate: {
+      type: Boolean,
+      default: false,
+      skip: true
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    lineThrough: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    align: {
+      type: String,
+      default: "right",
+      skip: true,
+      validator: (value) => ["left", "center", "right"].includes(value)
+    },
+    border: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    gradient: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    shadow: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "default",
+      skip: true,
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    },
+    animate: {
+      type: String,
+      required: false,
+      skip: true,
+      default: "default",
+      validator(type) {
+        return ["fade", "scale", "flip", "default"].includes(type);
+      }
+    }
+  },
+  computed: {
+    isChecked() {
+      return Array.isArray(this.modelValue) ? this.modelValue.includes(this.isValueNull) : this.modelValue === this.isValueNull;
+    },
+    isValueNull() {
+      return this.value === null ? this.defaultValue : this.value;
+    },
+    componentClassObject() {
+      return {
+        "--primary": true,
+        "--checked": this.isChecked,
+        "--align-left": this.align === "left",
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini",
+        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
+        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
+        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false
+      };
+    }
+  },
+  mounted() {
+    if (this.checked)
+      this.onchange(null);
+  },
+  methods: {
+    onchange(eventName, event) {
+      if (this.isChecked) {
+        if (Array.isArray(this.modelValue)) {
+          this.modelValue.splice(this.modelValue.indexOf(this.isValueNull), 1);
+          this.$emit("update:modelValue", this.modelValue);
+        } else {
+          this.$emit("update:modelValue", this.notValue);
+        }
+      } else {
+        if (Array.isArray(this.modelValue)) {
+          this.modelValue.push(this.isValueNull);
+          this.modelValue.sort();
+          this.$emit("update:modelValue", this.modelValue);
+        } else {
+          this.$emit("update:modelValue", this.isValueNull);
+        }
+      }
+      this.componentRaiseEvent(eventName, { event });
+    }
+  }
+};
+const _hoisted_1$f = ["disabled", "id"];
+const _hoisted_2$b = ["id", "name", "checked", "value"];
+const _hoisted_3$a = { class: "--base" };
+const _hoisted_4$8 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_5$8 = {
+  key: 0,
+  class: "--switch-on"
+};
+const _hoisted_6$7 = /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, null, -1);
+const _hoisted_7$5 = {
+  key: 1,
+  class: "--switch-off"
+};
+const _hoisted_8$4 = ["for"];
+const _hoisted_9$3 = { class: "--badge-holder" };
+function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_loading = resolveComponent("gnk-loading");
+  return openBlock(), createElementBlock("div", {
+    disabled: _ctx.disabled,
+    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange("click", $event), ["prevent"])),
+    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
+    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
+    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
+    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange("keypress", $event), ["prevent"])),
+    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
+  }, [
+    createElementVNode("input", {
+      id: _ctx.componentId,
+      name: $props.name,
+      type: "checkbox",
+      checked: $options.isChecked,
+      value: $data.defaultValue
+    }, null, 8, _hoisted_2$b),
+    createElementVNode("div", _hoisted_3$a, [
+      _hoisted_4$8,
+      !!this.$slots.on ? (openBlock(), createElementBlock("div", _hoisted_5$8, [
+        renderSlot(_ctx.$slots, "on")
+      ])) : createCommentVNode("", true),
+      _hoisted_6$7,
+      !!this.$slots.off ? (openBlock(), createElementBlock("div", _hoisted_7$5, [
+        renderSlot(_ctx.$slots, "off")
+      ])) : createCommentVNode("", true)
+    ]),
+    createElementVNode("label", { for: _ctx.componentId }, [
+      renderSlot(_ctx.$slots, "label")
+    ], 8, _hoisted_8$4),
+    this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
+      key: 0,
+      target: "#" + _ctx.componentId + "> .--base"
+    }, null, 8, ["target"])) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_9$3, [
+      renderSlot(_ctx.$slots, "badge")
+    ])
+  ], 42, _hoisted_1$f);
+}
+var gnkSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
+var Radio_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$e = {
+  name: "gnkRadio",
+  extends: _sfc_main$o,
+  emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
+  data() {
+    return {
+      defaultValue: null
+    };
+  },
+  props: {
+    name: {
+      type: String,
+      require: false,
+      default: "",
+      skip: true
+    },
+    value: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    modelValue: {
+      default: null,
+      required: false,
+      skip: true
+    },
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false,
+      skip: true
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    indeterminate: {
+      type: Boolean,
+      default: false,
+      skip: true
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    lineThrough: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    align: {
+      type: String,
+      default: "right",
+      skip: true,
+      validator: (value) => ["left", "center", "right"].includes(value)
+    },
+    border: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    gradient: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    shadow: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "default",
+      skip: true,
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    },
+    animate: {
+      type: String,
+      required: false,
+      skip: true,
+      default: "default",
+      validator(type) {
+        return ["fade", "scale", "flip", "default"].includes(type);
+      }
+    }
+  },
+  computed: {
+    isChecked() {
+      return this.modelValue === this.defaultValue;
+    },
+    componentClassObject: function() {
+      return {
+        "--primary": true,
+        "--checked": this.isChecked,
+        "--align-left": this.align === "left",
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini",
+        "--animate-fade": this.animate === "fade" && !this.loading && !this.busy ? true : false,
+        "--animate-scale": this.animate === "scale" && !this.loading && !this.busy ? true : false,
+        "--animate-flip": this.animate === "flip" && !this.loading && !this.busy ? true : false
+      };
+    }
+  },
+  mounted() {
+    this.defaultValue = this.value === null ? Math.random().toString(36).substr(2, 9) : this.value;
+    if (this.checked)
+      this.onchange(null);
+  },
+  watch: {
+    value(newValue) {
+      this.defaultValue = newValue === null ? Math.random().toString(36).substr(2, 9) : newValue;
+    }
+  },
+  methods: {
+    onchange(event) {
+      if (!!event & !this.disabled & !this.busy & !this.loading)
+        createRipple$1.createRipple(event);
+      this.$emit("update:modelValue", this.defaultValue);
+    }
+  }
+};
+const _hoisted_1$e = ["disabled", "id"];
+const _hoisted_2$a = ["id", "name", "checked", "value"];
+const _hoisted_3$9 = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
+  /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, [
+    /* @__PURE__ */ createElementVNode("div", { class: "--ripple" })
+  ])
+], -1);
+const _hoisted_4$7 = ["for"];
+const _hoisted_5$7 = { class: "--badge-holder" };
+function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnk_loading = resolveComponent("gnk-loading");
+  return openBlock(), createElementBlock("div", {
+    disabled: _ctx.disabled,
+    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    onClick: _cache[0] || (_cache[0] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onMouseleave: _cache[1] || (_cache[1] = withModifiers(($event) => this.componentRaiseEvent("mouseleave", { event: $event }), ["prevent"])),
+    onMouseover: _cache[2] || (_cache[2] = withModifiers(($event) => this.componentRaiseEvent("mouseover", { event: $event }), ["prevent"])),
+    onKeydown: _cache[3] || (_cache[3] = withModifiers(($event) => this.componentRaiseEvent("keydown", { event: $event }), ["prevent"])),
+    onKeypress: _cache[4] || (_cache[4] = withModifiers(($event) => $options.onchange($event), ["prevent"])),
+    onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", { event: $event }), ["prevent"]))
+  }, [
+    createElementVNode("input", {
+      id: _ctx.componentId,
+      name: $props.name,
+      type: "radio",
+      checked: $options.isChecked,
+      value: $data.defaultValue
+    }, null, 8, _hoisted_2$a),
+    _hoisted_3$9,
+    createElementVNode("label", { for: _ctx.componentId }, [
+      renderSlot(_ctx.$slots, "label")
+    ], 8, _hoisted_4$7),
+    this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
+      key: 0,
+      target: "#" + _ctx.componentId + "> .--base"
+    }, null, 8, ["target"])) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_5$7, [
+      renderSlot(_ctx.$slots, "badge")
+    ])
+  ], 42, _hoisted_1$e);
+}
+var gnkRadio = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
 var Input_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$c = {
+const _sfc_main$d = {
   name: "gnkInput",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "valueChanged"],
   data() {
     return {
@@ -1738,32 +1973,32 @@ const _sfc_main$c = {
     }
   }
 };
-const _hoisted_1$c = ["disabled", "id"];
-const _hoisted_2$8 = { class: "--base" };
-const _hoisted_3$7 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_4$5 = {
+const _hoisted_1$d = ["disabled", "id"];
+const _hoisted_2$9 = { class: "--base" };
+const _hoisted_3$8 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_4$6 = {
   key: 0,
   class: "--icon | material-symbols-rounded"
 };
-const _hoisted_5$5 = ["type", "value", "name", "disabled", "min", "max", "step", "required", "minlenght", "maxlenght", "pattern"];
-const _hoisted_6$5 = ["for"];
-const _hoisted_7$3 = {
+const _hoisted_5$6 = ["type", "value", "name", "disabled", "min", "max", "step", "required", "minlenght", "maxlenght", "pattern"];
+const _hoisted_6$6 = ["for"];
+const _hoisted_7$4 = {
   key: 1,
   class: "--button-upDown | flex flex-row"
 };
-const _hoisted_8$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_upward ", -1);
-const _hoisted_9$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_downward ", -1);
-const _hoisted_10$1 = {
+const _hoisted_8$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_upward ", -1);
+const _hoisted_9$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_downward ", -1);
+const _hoisted_10$2 = {
   key: 0,
   class: "material-symbols-rounded"
 };
-const _hoisted_11$1 = {
+const _hoisted_11$2 = {
   key: 1,
   class: "material-symbols-rounded"
 };
-const _hoisted_12$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
-const _hoisted_13$1 = { class: "--badge-holder" };
-function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
+const _hoisted_13$2 = { class: "--badge-holder" };
+function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
   const _component_gnk_loading = resolveComponent("gnk-loading");
@@ -1778,9 +2013,9 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
     onKeypress: _cache[9] || (_cache[9] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
     onKeyup: _cache[10] || (_cache[10] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
   }, [
-    createElementVNode("div", _hoisted_2$8, [
-      _hoisted_3$7,
-      this.icon != void 0 ? (openBlock(), createElementBlock("span", _hoisted_4$5, toDisplayString(this.icon), 1)) : createCommentVNode("", true),
+    createElementVNode("div", _hoisted_2$9, [
+      _hoisted_3$8,
+      this.icon != void 0 ? (openBlock(), createElementBlock("span", _hoisted_4$6, toDisplayString(this.icon), 1)) : createCommentVNode("", true),
       createElementVNode("input", {
         class: "--input",
         ref: "input",
@@ -1798,12 +2033,12 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         maxlenght: _ctx.maxlenght,
         pattern: $props.pattern,
         autofocus: ""
-      }, null, 40, _hoisted_5$5),
+      }, null, 40, _hoisted_5$6),
       createElementVNode("label", {
         class: "--placeholder",
         for: _ctx.componentId
-      }, toDisplayString($props.placeholder), 9, _hoisted_6$5),
-      this.type == "number" ? (openBlock(), createElementBlock("div", _hoisted_7$3, [
+      }, toDisplayString($props.placeholder), 9, _hoisted_6$6),
+      this.type == "number" ? (openBlock(), createElementBlock("div", _hoisted_7$4, [
         createVNode(_component_gnk_button, {
           disabled: _ctx.disabled,
           class: "--button-down",
@@ -1813,7 +2048,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[1] || (_cache[1] = ($event) => $options.buttonClicked("numberUp"))
         }, {
           default: withCtx(() => [
-            _hoisted_8$2
+            _hoisted_8$3
           ]),
           _: 1
         }, 8, ["disabled"]),
@@ -1826,7 +2061,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[2] || (_cache[2] = ($event) => $options.buttonClicked("numberDown"))
         }, {
           default: withCtx(() => [
-            _hoisted_9$1
+            _hoisted_9$2
           ]),
           _: 1
         }, 8, ["disabled"])
@@ -1841,7 +2076,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[3] || (_cache[3] = ($event) => $options.buttonClicked("showPassword"))
       }, {
         default: withCtx(() => [
-          this.passwordVisible ? (openBlock(), createElementBlock("span", _hoisted_10$1, " visibility_off ")) : (openBlock(), createElementBlock("span", _hoisted_11$1, " visibility "))
+          this.passwordVisible ? (openBlock(), createElementBlock("span", _hoisted_10$2, " visibility_off ")) : (openBlock(), createElementBlock("span", _hoisted_11$2, " visibility "))
         ]),
         _: 1
       }, 8, ["disabled"])) : createCommentVNode("", true),
@@ -1854,7 +2089,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[4] || (_cache[4] = ($event) => $options.buttonClicked("clear"))
       }, {
         default: withCtx(() => [
-          _hoisted_12$1
+          _hoisted_12$2
         ]),
         _: 1
       }, 8, ["disabled"]),
@@ -1870,16 +2105,16 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
       class: "--loading",
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_13$1, [
+    createElementVNode("div", _hoisted_13$2, [
       renderSlot(_ctx.$slots, "badge")
     ])
-  ], 42, _hoisted_1$c);
+  ], 42, _hoisted_1$d);
 }
-var gnkInput = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+var gnkInput = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
 var Counter_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$b = {
+const _sfc_main$c = {
   name: "gnkCounter",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       currentValue: 0
@@ -1930,19 +2165,19 @@ const _sfc_main$b = {
     });
   }
 };
-const _hoisted_1$b = ["id"];
-function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$c = ["id"];
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     style: normalizeStyle($options.componentStyleObject)
-  }, toDisplayString($data.currentValue), 15, _hoisted_1$b);
+  }, toDisplayString($data.currentValue), 15, _hoisted_1$c);
 }
-var gnkCounter = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+var gnkCounter = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
 var ProgressBar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$a = {
+const _sfc_main$b = {
   name: "gnkProgressbar",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       progressPercentage: 0
@@ -2037,12 +2272,12 @@ const _sfc_main$a = {
     this.progressPercentage = this.value;
   }
 };
-const _hoisted_1$a = ["aria-valuemax", "aria-valuenow", "title", "id"];
-const _hoisted_2$7 = {
+const _hoisted_1$b = ["aria-valuemax", "aria-valuenow", "title", "id"];
+const _hoisted_2$8 = {
   key: 0,
   class: "--sections-steps"
 };
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     "aria-valuemin": "0",
     "aria-valuemax": $props.max,
@@ -2058,15 +2293,15 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
         style: normalizeStyle(`width: ${Math.round($data.progressPercentage / $props.max * 100)}%`),
         class: "--progressBar"
       }, null, 4),
-      this.sections ? (openBlock(), createElementBlock("div", _hoisted_2$7, [
+      this.sections ? (openBlock(), createElementBlock("div", _hoisted_2$8, [
         (openBlock(true), createElementBlock(Fragment, null, renderList(this.max - 1, (index2) => {
           return openBlock(), createElementBlock("div", { key: index2 });
         }), 128))
       ])) : createCommentVNode("", true)
     ])
-  ], 14, _hoisted_1$a);
+  ], 14, _hoisted_1$b);
 }
-var gnkProgressbar = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
+var gnkProgressbar = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
 function getAugmentedNamespace(n) {
   if (n.__esModule)
     return n;
@@ -5530,9 +5765,9 @@ postcss.Node = Node;
 LazyResult.registerPostcss(postcss);
 postcss.default = postcss;
 var ButtonGroup_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$9 = {
+const _sfc_main$a = {
   name: "gnkButtonGroup",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       childButtons: [],
@@ -5620,31 +5855,31 @@ const _sfc_main$9 = {
   mounted() {
   }
 };
-const _hoisted_1$9 = ["id"];
-const _hoisted_2$6 = {
+const _hoisted_1$a = ["id"];
+const _hoisted_2$7 = {
   key: 0,
   class: "--title"
 };
-const _hoisted_3$6 = { class: "--buttons" };
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_3$7 = { class: "--buttons" };
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
     id: _ctx.componentId,
     onOnchange: _cache[0] || (_cache[0] = ($event) => $options.childChanged())
   }, [
-    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$6, [
+    !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_2$7, [
       renderSlot(_ctx.$slots, "title")
     ])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_3$6, [
+    createElementVNode("div", _hoisted_3$7, [
       renderSlot(_ctx.$slots, "default")
     ])
-  ], 42, _hoisted_1$9);
+  ], 42, _hoisted_1$a);
 }
-var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+var gnkButtonGroup = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
 var Loading_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$8 = {
+const _sfc_main$9 = {
   name: "gnkLoading",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       loaded: false
@@ -5718,7 +5953,7 @@ const _sfc_main$8 = {
     getTargetSize() {
       let target = document.querySelector(this.target);
       if (target) {
-        return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 10, 64);
+        return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 20, 64);
       }
       return 64;
     },
@@ -5731,18 +5966,18 @@ const _sfc_main$8 = {
     this.loaded = true;
   }
 };
-const _hoisted_1$8 = ["id"];
-const _hoisted_2$5 = { class: "row full-height" };
-const _hoisted_3$5 = { class: "col-block" };
-const _hoisted_4$4 = { class: "fill flex-centered" };
-const _hoisted_5$4 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
-const _hoisted_6$4 = {
+const _hoisted_1$9 = ["id"];
+const _hoisted_2$6 = { class: "row full-height" };
+const _hoisted_3$6 = { class: "col-block" };
+const _hoisted_4$5 = { class: "fill flex-centered" };
+const _hoisted_5$5 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
+const _hoisted_6$5 = {
   key: 0,
   class: "fill flex-centered text-bold"
 };
-const _hoisted_7$2 = /* @__PURE__ */ createTextVNode("% ");
-const _hoisted_8$1 = { class: "--loading-label | text-bold" };
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_7$3 = /* @__PURE__ */ createTextVNode("% ");
+const _hoisted_8$2 = { class: "--loading-label | text-bold" };
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnkProgressbar = resolveComponent("gnkProgressbar");
   const _component_gnk_Counter = resolveComponent("gnk-Counter");
   return $data.loaded ? (openBlock(), createBlock(Teleport, {
@@ -5770,29 +6005,29 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
             block: "",
             value: $props.percentage
           }, null, 8, ["value"])) : createCommentVNode("", true),
-          createElementVNode("div", _hoisted_2$5, [
-            createElementVNode("div", _hoisted_3$5, [
-              createElementVNode("div", _hoisted_4$4, [
-                _hoisted_5$4,
-                $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_6$4, [
+          createElementVNode("div", _hoisted_2$6, [
+            createElementVNode("div", _hoisted_3$6, [
+              createElementVNode("div", _hoisted_4$5, [
+                _hoisted_5$5,
+                $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_6$5, [
                   createVNode(_component_gnk_Counter, { value: $props.percentage }, null, 8, ["value"]),
-                  _hoisted_7$2
+                  _hoisted_7$3
                 ])) : createCommentVNode("", true)
               ]),
-              createElementVNode("p", _hoisted_8$1, toDisplayString($props.label), 1)
+              createElementVNode("p", _hoisted_8$2, toDisplayString($props.label), 1)
             ])
           ])
-        ], 46, _hoisted_1$8)
+        ], 46, _hoisted_1$9)
       ]),
       _: 1
     })
   ], 8, ["to"])) : createCommentVNode("", true);
 }
-var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+var gnkLoading = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
 var Card_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$7 = {
+const _sfc_main$8 = {
   name: "gnkCard",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {};
   },
@@ -5858,29 +6093,29 @@ const _sfc_main$7 = {
   },
   emits: ["click", "mouseover", "mouseleave", "mouseover", "keydown", "keypress", "keyup"]
 };
-const _hoisted_1$7 = ["id"];
-const _hoisted_2$4 = {
+const _hoisted_1$8 = ["id"];
+const _hoisted_2$5 = {
   key: 0,
   class: "--hero-container"
 };
-const _hoisted_3$4 = {
+const _hoisted_3$5 = {
   key: 1,
   class: "--interactions"
 };
-const _hoisted_4$3 = { class: "--content" };
-const _hoisted_5$3 = {
+const _hoisted_4$4 = { class: "--content" };
+const _hoisted_5$4 = {
   key: 0,
   class: "--content-title | text-capitalize flex"
 };
-const _hoisted_6$3 = {
+const _hoisted_6$4 = {
   key: 1,
   class: "--content-body | flex"
 };
-const _hoisted_7$1 = {
+const _hoisted_7$2 = {
   key: 1,
   class: "--footer | flex"
 };
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_image = resolveComponent("gnk-image");
   return openBlock(), createElementBlock("div", {
     class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
@@ -5892,7 +6127,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     onKeypress: _cache[4] || (_cache[4] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
     onKeyup: _cache[5] || (_cache[5] = ($event) => this.componentRaiseEvent("keyup", { event: $event }))
   }, [
-    this.hasValidHeaderBackground || !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_2$4, [
+    this.hasValidHeaderBackground || !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_2$5, [
       this.hasValidHeaderBackground ? (openBlock(), createBlock(_component_gnk_image, {
         key: 0,
         class: "--hero-background",
@@ -5900,28 +6135,28 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
         alt: $props.headerBackgroundAlt,
         animation: "zoomIn-light"
       }, null, 8, ["src", "alt"])) : createCommentVNode("", true),
-      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$4, [
+      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$5, [
         renderSlot(_ctx.$slots, "interactions")
       ])) : createCommentVNode("", true)
     ])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_4$3, [
-      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_5$3, [
+    createElementVNode("div", _hoisted_4$4, [
+      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_5$4, [
         renderSlot(_ctx.$slots, "title")
       ])) : createCommentVNode("", true),
-      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_6$3, [
+      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_6$4, [
         renderSlot(_ctx.$slots, "default")
       ])) : createCommentVNode("", true)
     ]),
-    !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_7$1, [
+    !!this.$slots.footer ? (openBlock(), createElementBlock("div", _hoisted_7$2, [
       renderSlot(_ctx.$slots, "footer")
     ])) : createCommentVNode("", true)
-  ], 42, _hoisted_1$7);
+  ], 42, _hoisted_1$8);
 }
-var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+var gnkCard = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
 var Sidebar_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$7 = {
   name: "gnkSidebar",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   emits: ["update:modelValue", "mouseleave", "mouseover", "keydown", "keypress", "keyup"],
   data() {
     return {
@@ -5998,13 +6233,13 @@ const _sfc_main$6 = {
     }
   }
 };
-const _hoisted_1$6 = ["disabled", "id"];
-const _hoisted_2$3 = { class: "--base" };
-const _hoisted_3$3 = { class: "--content" };
-const _hoisted_4$2 = { class: "--header" };
-const _hoisted_5$2 = { class: "--content-body" };
-const _hoisted_6$2 = { class: "--footer" };
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$7 = ["disabled", "id"];
+const _hoisted_2$4 = { class: "--base" };
+const _hoisted_3$4 = { class: "--content" };
+const _hoisted_4$3 = { class: "--header" };
+const _hoisted_5$3 = { class: "--content-body" };
+const _hoisted_6$3 = { class: "--footer" };
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
     disabled: _ctx.disabled,
@@ -6021,15 +6256,15 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
       class: "--backdrop",
       onClick: _cache[0] || (_cache[0] = ($event) => $options.close($event))
     }),
-    createElementVNode("div", _hoisted_2$3, [
-      createElementVNode("div", _hoisted_3$3, [
-        createElementVNode("div", _hoisted_4$2, [
+    createElementVNode("div", _hoisted_2$4, [
+      createElementVNode("div", _hoisted_3$4, [
+        createElementVNode("div", _hoisted_4$3, [
           renderSlot(_ctx.$slots, "header")
         ]),
-        createElementVNode("div", _hoisted_5$2, [
+        createElementVNode("div", _hoisted_5$3, [
           renderSlot(_ctx.$slots, "default")
         ]),
-        createElementVNode("div", _hoisted_6$2, [
+        createElementVNode("div", _hoisted_6$3, [
           renderSlot(_ctx.$slots, "footer")
         ])
       ])
@@ -6038,13 +6273,265 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true)
+  ], 42, _hoisted_1$7);
+}
+var gnkSidebar = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+var Dropdown_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$6 = {
+  name: "gnkDropdown",
+  extends: _sfc_main$o,
+  emits: ["update:modelValue", "click", "mouseleave", "mouseover", "keydown", "keypress", "keyup", "valueChanged"],
+  data() {
+    return {
+      isOpen: false
+    };
+  },
+  props: {
+    value: {
+      type: Array,
+      required: false,
+      default: [],
+      skip: true
+    },
+    chips: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    collapseChips: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    multiple: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    filter: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    multiple: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    icon: {
+      type: String,
+      required: false,
+      default: void 0,
+      skip: true
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: void 0,
+      skip: true
+    },
+    busy: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    square: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    lineThrough: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    border: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    gradient: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    shadow: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "default",
+      skip: true,
+      validator(type) {
+        return ["xl", "l", "default", "small", "mini"].includes(type);
+      }
+    },
+    clearButton: {
+      type: Boolean,
+      require: false,
+      default: true
+    }
+  },
+  computed: {
+    componentClassObject: function() {
+      return {
+        "--align-left": this.align === "left",
+        "--size-xl": this.size === "xl",
+        "--size-l": this.size === "l",
+        "--size-small": this.size === "small",
+        "--size-mini": this.size === "mini",
+        "--open": this.isOpen
+      };
+    }
+  },
+  watch: {},
+  methods: {
+    hasFocus(has = false) {
+      if (has) {
+        let { top, height, left, width } = this.componentElementClientRect(this.$refs.base);
+        let list2 = this.$refs.list;
+        setCssVariable(list2, "--top", `${top + height - 5}px`);
+        setCssVariable(list2, "--left", `${left}px`);
+        setCssVariable(list2, "--width", `${width}px`);
+      }
+      this.isOpen = has;
+    }
+  }
+};
+const _hoisted_1$6 = ["disabled", "id"];
+const _hoisted_2$3 = {
+  ref: "base",
+  class: "--base"
+};
+const _hoisted_3$3 = /* @__PURE__ */ createElementVNode("input", {
+  class: "--input",
+  type: "text",
+  value: "teste"
+}, null, -1);
+const _hoisted_4$2 = [
+  _hoisted_3$3
+];
+const _hoisted_5$2 = /* @__PURE__ */ createTextVNode(" Home ");
+const _hoisted_6$2 = /* @__PURE__ */ createTextVNode(" Dropdown ");
+const _hoisted_7$1 = /* @__PURE__ */ createTextVNode(" Expand Panel ");
+const _hoisted_8$1 = /* @__PURE__ */ createTextVNode(" Input ");
+const _hoisted_9$1 = /* @__PURE__ */ createTextVNode(" Radio ");
+const _hoisted_10$1 = /* @__PURE__ */ createTextVNode(" Switch ");
+const _hoisted_11$1 = /* @__PURE__ */ createTextVNode(" Checkbox ");
+const _hoisted_12$1 = /* @__PURE__ */ createTextVNode(" Buttons ");
+const _hoisted_13$1 = /* @__PURE__ */ createTextVNode(" Cards ");
+const _hoisted_14$1 = /* @__PURE__ */ createTextVNode(" ProgressBar ");
+const _hoisted_15 = /* @__PURE__ */ createTextVNode(" 404 ");
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_gnkListviewItem = resolveComponent("gnkListviewItem");
+  const _component_gnkListview = resolveComponent("gnkListview");
+  return openBlock(), createElementBlock("div", {
+    disabled: _ctx.disabled,
+    class: normalizeClass([_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses]),
+    id: _ctx.componentId,
+    onClick: _cache[0] || (_cache[0] = ($event) => this.hasFocus(true)),
+    onMouseleave: _cache[1] || (_cache[1] = ($event) => this.componentRaiseEvent("mouseleave", { event: $event })),
+    onMouseover: _cache[2] || (_cache[2] = ($event) => this.componentRaiseEvent("mouseover", { event: $event })),
+    onKeydown: _cache[3] || (_cache[3] = ($event) => this.componentRaiseEvent("keydown", { event: $event })),
+    onKeypress: _cache[4] || (_cache[4] = ($event) => this.componentRaiseEvent("keypress", { event: $event })),
+    onKeyup: _cache[5] || (_cache[5] = ($event) => this.componentRaiseEvent("keyup", { event: $event })),
+    onFocusin: _cache[6] || (_cache[6] = ($event) => this.hasFocus(true)),
+    onFocusout: _cache[7] || (_cache[7] = ($event) => this.hasFocus(false))
+  }, [
+    createElementVNode("div", _hoisted_2$3, _hoisted_4$2, 512),
+    (openBlock(), createBlock(Teleport, { to: "#app" }, [
+      createElementVNode("div", {
+        ref: "list",
+        class: normalizeClass(["gnkDropdown--list |", $options.componentClassObject])
+      }, [
+        createVNode(_component_gnkListview, { dark: "" }, {
+          default: withCtx(() => [
+            createVNode(_component_gnkListviewItem, { to: { name: "Home" } }, {
+              default: withCtx(() => [
+                _hoisted_5$2
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Dropdown" } }, {
+              default: withCtx(() => [
+                _hoisted_6$2
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "ExpandPanel" } }, {
+              default: withCtx(() => [
+                _hoisted_7$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Input" } }, {
+              default: withCtx(() => [
+                _hoisted_8$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Radio" } }, {
+              default: withCtx(() => [
+                _hoisted_9$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Switch" } }, {
+              default: withCtx(() => [
+                _hoisted_10$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Checkbox" } }, {
+              default: withCtx(() => [
+                _hoisted_11$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Buttons" } }, {
+              default: withCtx(() => [
+                _hoisted_12$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Cards" } }, {
+              default: withCtx(() => [
+                _hoisted_13$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "Progressbar" } }, {
+              default: withCtx(() => [
+                _hoisted_14$1
+              ]),
+              _: 1
+            }),
+            createVNode(_component_gnkListviewItem, { to: { name: "NotFound" } }, {
+              default: withCtx(() => [
+                _hoisted_15
+              ]),
+              _: 1
+            })
+          ]),
+          _: 1
+        })
+      ], 2)
+    ]))
   ], 42, _hoisted_1$6);
 }
-var gnkSidebar = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+var gnkDropdown = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
 var Listview_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$5 = {
   name: "gnkListview",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       childElements: []
@@ -6084,7 +6571,7 @@ var gnkListview = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_rend
 var ListviewItem_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$4 = {
   name: "gnkListviewItem",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       childElements: [],
@@ -6140,7 +6627,7 @@ var gnkListviewItem = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_
 var App_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$3 = {
   name: "gnkApp",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       childElements: [],
@@ -6357,7 +6844,7 @@ var gnkApp = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]
 var Page_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$2 = {
   name: "gnkPage",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       childElements: [],
@@ -6414,7 +6901,7 @@ var gnkPage = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2
 var Navbar_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$1 = {
   name: "gnkNavbar",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   emits: ["onsubmit", "onchange", "onclick", "ondblclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onwheel", "onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup"],
   data() {
     return {
@@ -6493,7 +6980,7 @@ var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render
 var SyntaxHighlight_vue_vue_type_style_index_0_lang = "";
 const _sfc_main = {
   name: "gnkSyntaxHighlight",
-  extends: _sfc_main$l,
+  extends: _sfc_main$o,
   data() {
     return {
       parentClientRect: null
@@ -8728,6 +9215,9 @@ var index = {
   registerRoutes,
   registerModuleComponents,
   setColors,
-  gnkSyntaxHighlight
+  gnkSyntaxHighlight,
+  gnkExpandPanel,
+  gnkIcon,
+  gnkDropdown
 };
 export { index as default };

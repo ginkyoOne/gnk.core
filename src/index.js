@@ -2,24 +2,26 @@
 import gnkImage from './components/Image/Image.vue'
 import gnkBadge from './components/Badge/Badge.vue'
 import gnk404 from './components/Page/404.vue'
-import gnkButton from './components/Button/Button.vue'
-import gnkCheckbox from './components/Checkbox/Checkbox.vue'
-import gnkSwitch from './components/Switch/Switch.vue'
-import gnkRadio from './components/Radio/Radio.vue'
-import gnkSwipeManager from './components/SwipeManager/SwipeManager.vue'
-import gnkInput from './components/Input/Input.vue'
+import gnkIcon from './components/Icon/Icon.vue'
+import gnkExpandPanel from './components/ExpandPanel/ExpandPanel.vue'
 
 
 
 
 // : WORK IN PROGRESS 
+import gnkSwipeManager from './components/SwipeManager/SwipeManager.vue'
+import gnkButton from './components/Button/Button.vue'
+import gnkCheckbox from './components/Checkbox/Checkbox.vue'
+import gnkSwitch from './components/Switch/Switch.vue'
+import gnkRadio from './components/Radio/Radio.vue'
+import gnkInput from './components/Input/Input.vue'
 import gnkCounter from './components/Counter/Counter.vue'
 import gnkProgressbar from './components/ProgressBar/ProgressBar.vue'
 import gnkButtonGroup from './components/ButtonGroup/ButtonGroup.vue'
 import gnkLoading from './components/Loading/Loading.vue'
 import gnkCard from './components/Card/Card.vue'
 import gnkSidebar from  './components/Sidebar/Sidebar.vue'
-
+import gnkDropdown from './components/Dropdown/Dropdown.vue'
 
 
 
@@ -32,8 +34,6 @@ import gnkPage from './components/Page/Page.vue'
 import gnkNavbar from './components/Navbar/Navbar.vue'
 
 import gnkSyntaxHighlight from './components/SyntaxHighlight/SyntaxHighlight.vue'
-
-
 
 
 
@@ -98,7 +98,10 @@ export default {
     registerModuleComponents,
     setColors,
     
-    gnkSyntaxHighlight
+    gnkSyntaxHighlight,
+    gnkExpandPanel,
+    gnkIcon,
+    gnkDropdown
 }
 
 

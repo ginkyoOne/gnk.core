@@ -86,14 +86,15 @@ export default {
         
         color: -color('CONTRAST-TEXT-BASE');
         overflow: hidden;
+        gap: 5px;
 
         &:is(:hover, :active){
             background-color: -color('BASE');
             color: -color('CONTRAST-TEXT');
             border-radius: var(--BORDER-RADIUS);
-            border-width: var(--BORDER-SIZE);
-            border-style: solid;
-            border-color: -color('BASE',1,0,0,1.5); 
+            &::after{
+                border-top: unset !important;
+            }
         }
 
         &:is(.--active){

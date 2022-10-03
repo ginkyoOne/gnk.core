@@ -243,10 +243,7 @@ export default {
   &>.--badge-holder, &>.--base>.--handle>.--ripple{
     inset: 0;
     border-radius: var(--border-radius);
-  }
-
-  &>.--badge-holder{
-    z-index: 3;
+    pointer-events: none;
   }
 
 

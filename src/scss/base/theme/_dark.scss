@@ -101,12 +101,12 @@
 
     [class*="--dark"] {
         @include defineColorHSL(--COLOR-BASE, var(--COLOR-DARK-H), var(--COLOR-DARK-S), var(--COLOR-DARK-L));
-        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
+        //@include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
     }
 
     [class*="--light"] {
         @include defineColorHSL(--COLOR-BASE, var(--COLOR-LIGHT-H), var(--COLOR-LIGHT-S), var(--COLOR-LIGHT-L));
-        @include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
+        //@include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
     }
 
 
