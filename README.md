@@ -1,8 +1,8 @@
 # Vue 3 UI Framework
 
-[DEMO](https://ginkyoone.github.io/gnk.core/#/expandPanel)
+## [DEMO](https://ginkyoone.github.io/gnk.core/) vue gnk.core v0.1 alfa
 
-vue gnk.core v0.1 alfa
+
 ### Built With
 
 * 🖊️ scss
