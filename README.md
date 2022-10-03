@@ -8,6 +8,7 @@ vue gnk.core v0.1 alfa
 * 🖊️ scss
 * 🐙 Vue 3 (options api)
 * 💻 Vite
+* ☕ Coffee 
 * 💕 Love
 
 
