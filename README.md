@@ -1,12 +1,14 @@
 # Vue 3 UI Framework
 
+## [DEMO](https://ginkyoone.github.io/gnk.core/) vue gnk.core v0.1 alfa
 
-vue gnk.core v0.1 alfa
+
 ### Built With
 
 * 🖊️ scss
-* 🐙 Vue 3
+* 🐙 Vue 3 (options api)
 * 💻 Vite
+* ☕ Coffee 
 * 💕 Love
 
 
@@ -47,12 +49,12 @@ vue gnk.core v0.1 alfa
 - [x] Progress
 - [ ] Properties Grid
 - [x] Radio
-- [x] SearchBar
+- [ ] SearchBar
 - [ ] Select
 - [ ] Sheet Modal
 - [ ] Sidebar
 - [ ] Skeleton
-- [ ] Slide Pannel
+- [x] Expand Pannel
 - [ ] Slider
 - [ ] Sortable/Drag list
 - [ ] Swipeout
