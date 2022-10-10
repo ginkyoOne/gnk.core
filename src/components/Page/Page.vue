@@ -1,5 +1,6 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
+import { setCssVariable, getCssVariable } from "../../utils/cssUtils"
 
 export default {
     name: 'gnkPage',
@@ -9,107 +10,158 @@ export default {
             childElements: [],
             loaded: false,
             parentPage: null,
-            }
+            parentTopPadding: 0,
+            parentBottomPadding: 0,
+
+        }
     },
     props: {
-        title: {
-            type: String,
-            required: false,
-            default: "page",
-        },
-    },
-    computed: {
-        componentClassObject() {
-            return {
-            }
-        },
 
-        hasRouter() {
-            return !!this.$router
-        },
     },
     watch: {
-        
-    },
-    emits: [
-
-
-    ],
-    methods: {
-        registerChilds(element){
-
+        parentTopPadding() {
+            this.updateContentPadding()  
         },
-    },
-
-        
-
-    provide() {
-        return {
-            uiLevel: this.uiLevel
+        parentBottomPadding() {
+            this.updateContentPadding()
         }
     },
 
+    updated() { 
+        this.updateContentPadding()
+    },
 
+    computed: {
+        componentClassObject() {
+            return {
+                '--level-0': true,
+            }
+        },
+    },
+
+    methods: {
+        updateContentPadding() {
+
+            let { height: headerHeight } = this.componentElementClientRect(this.$refs.header)
+            let { height: footerHeight } = this.componentElementClientRect(this.$refs.footer)
+            
+            setCssVariable(this.$refs.content, '--padding-top', `${(this.parentTopPadding > 0 ? this.parentTopPadding : headerHeight)}px`)
+            setCssVariable(this.$refs.content, '--padding-bottom', `${this.parentBottomPadding > 0 ? this.parentBottomPadding : footerHeight}px`)
+
+            console.log('this')
+        }
+    },
 
     mounted() { 
-        this.loaded = true;
-        },
+        this.updateContentPadding()
+    }
+
 
 }
 </script>
 <template>
-    <div :id="componentId" class="grid col-12" :class="[componentName + ' |', componentClassObject , componentGeneralClasses]">
+    <div :disabled="disabled" 
+    :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+    :id="componentId"
+
+    @click.prevent="this.componentRaiseEvent('click',$event)"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',$event)"
+    @keydown.prevent="this.componentRaiseEvent('keydown',$event)"
+    @keypress.prevent="this.componentRaiseEvent('keypress', $event)"
+    @keyup.prevent="this.componentRaiseEvent('keyup',$event)">
+
+        <div class="--base">
         
-            <transition name="next">
-                <slot v-if="loaded" name="navbar">
+            <div ref="header" class="--header">
+                <slot name="header">
 
                 </slot>
-            </transition>
+            </div>
+            
+            
+            <div ref="content" class="--content | g-10">
+                <slot>
 
-        <slot>
+                </slot>
+            </div>
+            
+            <div ref="footer" class="--footer">
+                <slot name="footer">
 
-        </slot>
+                </slot>
+            </div>
+
+        </div>
+        <gnk-loading :hidden="!this.busy" primary :target="'#' + componentId + '> .--base'" />
     </div>
 </template>
 <style lang="scss">
 
+.gnkPage{
+
+    --border-color: #{-color('BASE',1,8,0,8)};
+    --background-color:#{-color('BASE')};
+    --color:#{-color('MAIN-TEXT')};
+
+    --padding-top: 0px;
+    --padding-bottom: 0px;
 
 
+    transition: all .25s ease-in-out;
 
+    background: -color('BASE');
+    height:100% !important;
+    width: 100%;       
+    overflow: hidden;
+    overflow-y: scroll;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    .gnkPage{
-
-        background: -color('LEVEL-0');
-        height:100%;
-        width: 100%;        
-        overflow: hidden;
-        overflow-y: scroll;
-
-
-
-        &> :first-child {
-            padding: 2%;
-            padding-top:100px;
-            padding-bottom:50px;
-            height: auto;
-
-        }
+    &>.--base{
+        display: grid;
+        width: 100%;
+        height: fit-content;
     }
+
+    &>.--base>.--header, &>.--base>.--footer, &>.--base>.--content{
+        display: flex;
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    &>.--base>.--header, &>.--base>.--footer{
+        position: fixed;
+        
+        width:calc(100% - 5px);
+        height: fit-content;
+
+        z-index: 1;
+    }
+
+    &>.--base>.--header{
+        top:0;
+        left: 0;
+    }
+
+    &>.--base>.--footer{
+        bottom: 0;
+        left: 0;
+    }
+
+    &>.--base>.--content{
+        padding: 0;
+        margin: 0;
+
+        padding-top: var(--padding-top);
+        padding-bottom: var(--padding-bottom);
+        height: fit-content;
+        width: 100%;
+    }
+
+
+    
+
+
+}
 </style>
+
 

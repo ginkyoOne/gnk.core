@@ -9,7 +9,8 @@ export default {
   emits: ['update:modelValue','click','mouseleave','mouseover','keydown','keypress','keyup','valueChanged'],
   data() {
     return {
-        isOpen: false
+      isOpen: false,
+      zLevel: -1
     }
   },
 
@@ -148,20 +149,21 @@ export default {
     //STYLING CLASSES  
     componentClassObject: function () {
       return {
-          '--align-left': this.align === 'left',
-
-          '--size-xl': this.size === 'xl',
-          '--size-l': this.size === 'l',
-          '--size-small': this.size === 'small',
-          '--size-mini': this.size === 'mini',
           '--open': this.isOpen,
         }
     },
+    componentStyleObject: function () {
+      return {
+          '--z-index': this.zLevel
+        }
+    },
+
   },
 
 
   watch: {
   },
+
 
   methods: {
     hasFocus(has = false) {
@@ -176,9 +178,15 @@ export default {
       }
 
       this.isOpen = has
-      
+      }
+  },
 
-    }
+  mounted() {
+    this.zLevel = this.store.ui.registerDropdown(this.componentId)
+  },
+  
+  unmounted() {
+    this.store.ui.dropDropdown(this.componentId)
   }
 
 
@@ -191,14 +199,16 @@ export default {
 
   <div :disabled="disabled" :class="[componentName + ' |', componentClassObject , componentGeneralClasses ]"
     :id="componentId"
+    :style="componentStyleObject"
 
     @click="this.hasFocus(true)"
     
-    @mouseleave="this.componentRaiseEvent('mouseleave',{event: $event})"
-    @mouseover="this.componentRaiseEvent('mouseover',{event: $event})"
-    @keydown="this.componentRaiseEvent('keydown',{event: $event})"
-    @keypress="this.componentRaiseEvent('keypress',{event: $event})"
-    @keyup="this.componentRaiseEvent('keyup',{event: $event})"
+    @mouseleave="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover="this.componentRaiseEvent('mouseover',$event)"
+    @keydown="this.componentRaiseEvent('keydown',$event)"
+    @keypress="this.componentRaiseEvent('keypress',$event)"
+    @keyup="this.componentRaiseEvent('keyup',$event)"
+
     @focusin="this.hasFocus(true)"
     @focusout="this.hasFocus(false)"
 
@@ -207,12 +217,13 @@ export default {
           <input class="--input"
             type="text"
             value="teste"/>
+            <gnk-Chip>0912356234234</gnk-Chip>
         </div>
 
 
 
         <Teleport to="#app">
-          <div ref="list" :class="['gnkDropdown--list |', componentClassObject]">
+          <div ref="list" :class="['gnkDropdown--list |', componentClassObject]" :style="componentStyleObject">
             <gnkListview dark>
                 <gnkListviewItem :to="{ name: 'Home' }">
                     Home
@@ -276,8 +287,7 @@ export default {
   .gnkDropdown{
     display: flex;
     flex-direction: column;
-
-
+    
     &>.--base{
 
       transition: all .25s ease-in-out;
@@ -318,8 +328,7 @@ export default {
 
         margin: 0 !important;
 
-        opacity: 0;
-
+        
         color: -color('MAIN-TEXT');
 
         &::selection{
@@ -341,7 +350,7 @@ export default {
       border-bottom-style: unset;
       box-shadow: unset;  
 
-      z-index: 999999;
+      z-index: var(--z-index);
       transform: translateY(-5px);
     }
     
@@ -379,7 +388,7 @@ export default {
 
       
     &:is(.--open){
-      z-index: 99999;
+      z-index: var(--z-index);
 
       opacity: 1;
       transform: translateY(-5px);

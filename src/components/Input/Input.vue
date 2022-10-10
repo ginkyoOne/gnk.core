@@ -321,12 +321,12 @@ export default {
   <div :disabled="disabled" :class="[componentName + ' |', componentClassObject , componentGeneralClasses ]"
     :id="componentId"
 
-    @click="[buttonClicked('base'), this.onchange('click',{event: $event})]"
-    @mouseleave="this.componentRaiseEvent('mouseleave',{event: $event})"
-    @mouseover="this.componentRaiseEvent('mouseover',{event: $event})"
-    @keydown="this.componentRaiseEvent('keydown',{event: $event})"
-    @keypress="this.componentRaiseEvent('keypress',{event: $event})"
-    @keyup="this.componentRaiseEvent('keyup',{event: $event})">
+    @click="[buttonClicked('base'), this.onchange('click',$event)]"
+    @mouseleave="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover="this.componentRaiseEvent('mouseover',$event)"
+    @keydown="this.componentRaiseEvent('keydown',$event)"
+    @keypress="this.componentRaiseEvent('keypress',$event)"
+    @keyup="this.componentRaiseEvent('keyup',$event)">
 
         <div class="--base">
           <div class="--ripple" />
@@ -341,7 +341,7 @@ export default {
           placeholder="  "
           :value="text"
           :name="componentId"
-          @input="this.onchange('valueChanged',{event: $event})"
+          @input="this.onchange('valueChanged',$event)"
           :disabled="disabled"
           :min="min"
           :max="max"

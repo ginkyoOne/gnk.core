@@ -60,8 +60,6 @@ import { setCssVariable } from "./cssUtils";
 function setColors(colors, forceLight = true) {
     if (!Array.isArray(colors)) colors = [colors]
 
-    console.log(colors)
-
     colors.forEach((color) => {
 
         if(!Object.keys(color).length > 0) return

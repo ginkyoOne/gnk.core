@@ -5,4 +5,11 @@ function setCssVariable(element,propertyName, value) {
     }
 }
 
-export {setCssVariable}
+function getCssVariable(element, propertyName) {
+    if (typeof element !== 'undefined') {
+        return getComputedStyle(element)
+            .getPropertyValue(propertyName);
+    }
+}
+
+export {setCssVariable,getCssVariable}

@@ -96,12 +96,12 @@ export default {
 	:class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
 	:id="componentId"
     
-    @click="this.componentRaiseEvent('click',{event: $event})"
-    @mouseleave="this.componentRaiseEvent('mouseleave',{event: $event})"
-    @mouseover="this.componentRaiseEvent('mouseover',{event: $event})"
-    @keydown="this.componentRaiseEvent('keydown',{event: $event})"
-    @keypress="this.componentRaiseEvent('keypress',{event: $event})"
-    @keyup="this.componentRaiseEvent('keyup',{event: $event})">
+    @click="this.componentRaiseEvent('click',$event)"
+    @mouseleave="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover="this.componentRaiseEvent('mouseover',$event)"
+    @keydown="this.componentRaiseEvent('keydown',$event)"
+    @keypress="this.componentRaiseEvent('keypress',$event)"
+    @keyup="this.componentRaiseEvent('keyup',$event)">
     
 
 

@@ -12,6 +12,10 @@ export default {
         }
     },
     props: {
+        hidden: {
+            type: Boolean,
+            default: false,
+        },
         modal: {
             type: Boolean,
             default: false,
@@ -84,7 +88,11 @@ export default {
         getTargetSize() {
             let target = document.querySelector(this.target)
             if (target) {
-                return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 20, 64)
+                if (this.modal == false && this.percentage == -1 && this.target != null) {
+
+                    return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 10 , 64)
+
+                }else return Math.min(Math.min(target.offsetWidth, target.offsetHeight) - 20, 64)
             }
             return 64
         },
@@ -161,8 +169,14 @@ export default {
     pointer-events: none !important;
     user-select: none;
 
-    background: -color('DARK', .50);
+    background: -color('BASE', .70);
     
+    &:is(.--hidden){
+        display: none;
+        pointer-events: all;
+    }
+
+
     &.--progress{
         position: absolute;
         top: 0;
@@ -207,15 +221,15 @@ export default {
 
     &.--loadingType01 .--loading {
         
-            border: calc(var(--BORDER-SIZE) * 2) solid -color('BASE', 0.5);
-            border-bottom-color: -color('BASE');
+            border: calc(var(--BORDER-SIZE) * 2) solid -color('CONTRAST-TEXT', .5);
+            border-bottom-color: -color('CONTRAST-TEXT');
             border-radius: 50%;
             animation: rotation 1s linear infinite;
         }
 
     &.--loadingType02 .--loading {
         
-        border:calc(var(--BORDER-SIZE) * 2) solid -color('BASE', 0.5);
+        border:calc(var(--BORDER-SIZE) * 2) solid -color('CONTRAST-TEXT', .5);
         border-radius: 50%;
         
 
@@ -228,17 +242,17 @@ export default {
 
             border-radius: 50%;
             border: calc(var(--BORDER-SIZE) * 2) solid transparent;
-            border-bottom-color: -color('BASE');
+            border-bottom-color: -color('CONTRAST-TEXT');
             animation: rotation 1s linear infinite;
         }
     }
     
     &.--loadingType03 .--loading {
             
-            border: calc(var(--BORDER-SIZE) * 4) solid -color('BASE',.5);
-            border-top-color: -color('BASE',.35);
-            border-right-color: -color('BASE',.25);
-            border-bottom-color: -color('BASE',.15);
+            border: calc(var(--BORDER-SIZE) * 4) solid -color('CONTRAST-TEXT',.5);
+            border-top-color: -color('CONTRAST-TEXT',.35);
+            border-right-color: -color('CONTRAST-TEXT',.25);
+            border-bottom-color: -color('CONTRAST-TEXT',.15);
 
             border-radius: 50%;
             animation: rotation 2s linear infinite;
@@ -246,7 +260,7 @@ export default {
 
     &.--loadingType04 .--loading {
 
-        border: calc(var(--BORDER-SIZE) * 4) solid -color('BASE');
+        border: calc(var(--BORDER-SIZE) * 4) solid -color('CONTRAST-TEXT');
         border-radius: 50%;
         animation: rotationBorderLevels 1s linear infinite alternate;
     }
@@ -262,7 +276,7 @@ export default {
 
             border-radius: 50%;
             border: calc(var(--BORDER-SIZE) * 2) solid transparent;
-            border-top-color: -color('BASE',1);
+            border-top-color: -color('CONTRAST-TEXT',1);
 
             animation: rotationMaterial 1s linear infinite alternate;
         }

@@ -1,25 +1,19 @@
 <script>
 
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import createRipple from "../../utils/ripple"
-
 
 export default {
     name: "gnkExpandPanel",
     extends: gnkComponent,
-    emits: ['update:expand', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup', 'click', 'onClick'],
+    
 
     data() {
         return {
-            isolatedIsExpanded: this.expand
+
         };
     },
+
     props: {
-        expand: {
-            default: false,
-            required: false,
-            skip: true
-        },
         position: {
             type: String,
             skip:true,
@@ -65,70 +59,23 @@ export default {
         },
 
     },
+
     computed: {
         componentClassObject() {
             return {
                 '--dark': !this.hasStyle,
-                '--open': this.isOpen,
             };
         },
         componentStyleObject() {
             return {};
         },
-        
-        isOpen() {
-            
 
-            switch (true) {
-                case Array.isArray(this.expand):
-                    this.isolatedIsExpanded = this.expand.includes(this.componentId)
-                    break;
-
-                case typeof this.expand == "boolean":
-                    this.isolatedIsExpanded = this.expand;
-                    break;
-
-                default:
-                    this.isolatedIsExpanded = this.expand === this.componentId
-                    break;
-            }
-            return this.isolatedIsExpanded
-
-        }
     },
+
     methods: {
-        onToggle(event) {
 
-            this.isolatedIsExpanded = !this.isolatedIsExpanded
-
-            switch (true) {
-                case (this.expand === null):
-                    this.$emit('update:expand', this.isolatedIsExpanded);
-                    break;
-
-                case Array.isArray(this.expand):
-                    if (this.expand.includes(this.componentId)) {
-                        this.expand.splice(this.expand.indexOf(this.componentId), 1)
-                    }else{
-                        this.expand.push(this.componentId)
-                        this.expand.sort()
-                    }
-                    
-                    this.$emit('update:expand', this.expand);
-                    break;
-
-                case typeof this.expand == "boolean":
-                    this.$emit('update:expand', this.isolatedIsExpanded);
-                    break;
-
-                default:
-                
-                    this.$emit('update:expand', (this.expand == this.componentId ? '' : this.componentId));
-            }
-
-            createRipple.createRipple(event)
-        }
     },
+
 
     mounted() {
         
@@ -150,18 +97,41 @@ export default {
 
         <div class="--base">
             <div ref="title" class="--title">
-                <div class="--ripple" />
-                <gnk-button  :primary="this.primary" :secondary="this.secondary" :info="this.info" :success="this.success" :warning="this.warning" :danger="this.danger" :bug="this.bug" :dark="this.dark" :light="this.light" :square="this.square" clear block 
-                @click="onToggle($event)">
+
+                <gnk-button 
+                class="--expand-button"
+                :primary="this.primary" 
+                :secondary="this.secondary" 
+                :info="this.info" 
+                :success="this.success" 
+                :warning="this.warning" 
+                :danger="this.danger" 
+                :bug="this.bug" 
+                :dark="this.dark" 
+                :light="this.light" 
+                
+                :align="left" 
+
+                transparent 
+                block 
+                square
+
+                @click="onChecked('click',$event)">
                     <template #>
-                        <slot name="title">
-                            title
-                        </slot>        
+                        <div class="grid row col-12">
+                            <div class="col-12">
+                                <slot name="title">
+                                    teste
+                                </slot>        
+                            </div>
+                            <div class="col">
+                                <gnk-icon size="small" class="--expand-icon">
+                                    expand_less
+                                </gnk-icon>
+                            </div>
+                        </div>
                     </template>
                 </gnk-button>
-                <span class="--icon | material-symbols-rounded" @click="onToggle($event)" >
-                        expand_less
-                </span>
             </div>
             <div  class="--content">
                 <div ref="contentBody" class="--content-body">                
@@ -174,14 +144,14 @@ export default {
                         
                     </slot>
                 </div>
-            </div>
+            </div>    
         </div>
 
         <div class="--badge-holder">
             <slot name="badge" />
         </div>
 
-        <gnk-loading v-if="this.busy" :target="'#' + componentId + '> .--base'" />
+        <gnk-loading v-if="this.busy" :primary="this.primary" :secondary="this.secondary" :info="this.info" :success="this.success" :warning="this.warning" :danger="this.danger" :bug="this.bug" :dark="this.dark" :light="this.light" :square="this.square" :target="'#' + componentId + '> .--base'" />
 
     </div>
 
@@ -205,7 +175,7 @@ export default {
     color: -color('MAIN-TEXT');
     
 
-    &>.--badge-holder, &>.--base>.--title>.--ripple{
+    &>.--badge-holder{
         inset: 0;
         border-radius: var(--border-radius);
         pointer-events: none;
@@ -245,81 +215,113 @@ export default {
             //background-color: -color('CONTRAST-TEXT',.1);
             color: -color('CONTRAST-TEXT');
 
-            padding: 0px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-items: center;
             
+            padding:0;
 
-            &>.gnkButton{
-                color: inherit !important;
-                &>.--content-holder>[class*=--content-step]{
-                    color : inherit  !important;
-                    justify-content: flex-start;
-                }
+            overflow: hidden;
 
-                &:active{
-                    transform: scale(1);
+            &>.--expand-button{
+                --shadow: unset;
+                --inner-shadow: unset;
+                --color:  -color('MAIN-TEXT');
+                
+                &:is(:hover, :active, :focus){
+                    --color:  -color('MAIN-TEXT');
                 }
             }
-            &>.--icon{
-                position: absolute;
-                right: 15px;
-                top:auto;
-                left: auto;
-
+            &>.--expand-button .--expand-icon{
+                
                 transition: all .5s ease-in-out;
                 transform: rotate(0) scale(1);
 
                 cursor: pointer;
             }
+
         }
 
         &>.--content{
-            transition: max-height .5s ease-in-out, opacity .25s ease-in-out;
-
+            
+            //OPEN ANIMATION
+            transition-property:  max-height, opacity;
+            transition-timing-function: ease-in-out;
+            transition-duration: .6s;
+            transition-delay: 0s;
+            
+            max-height: 100vmax;
+            
             display: grid;
             grid-template-columns: 1fr;
             grid-template-rows: repeat(2,auto);
-            max-height: 100vmax;
-            opacity: 1;
             padding: 0;
+            
+            &>.--content-body, &>.--footer{
+                transition-property: opacity, transform;
+                transition-timing-function: ease-in-out;
+
+                transform: translateY(0);
+
+            }
 
             &>.--content-body{
-                transition: opacity .4s ease-in-out;
+                
+                transition-duration: .3s;
+                transition-delay: .4s;
+
                 display: flex;
                 background-color:  -color('CONTRAST-TEXT',.03);
                 color: -color('CONTRAST-TEXT');
+
                 p{
                     color: -color('CONTRAST-TEXT',.7);
                 }
             }
 
             &>.--footer{
-                transition: opacity .2s ease-in-out;
+
+                transition-duration: .2s;
+                transition-delay: .6s;
+                
+                transform: translateY(0);
+
                 width: 100%;
             }
         }
 
         &>.gnkLoading .--loading{
             left: auto;
-            right: 5%;
+            right: 30px;
         }
 
     }
 
-    &:not(.--open){
+    &:not(.--checked){
         &>.--base>.--content{
+            //CLOSE ANIMATION
+            transition-delay: .3s;
             max-height:0px;
             pointer-events: none;
 
+
             &>.--content-body, &>.--footer{
+                transform: translateY(-10px);
                 opacity: 0;
+            }
+            &>.--content-body{
+                transition-duration: .3s;
+                transition-delay: .2s;
+            }
+            
+            &>.--footer{
+                transition-duration: .2s;
+                transition-delay: 0s;
             }
         }
 
-        &>.--base>.--title>.--icon{
+        &>.--base>.--title>.--expand-button .--expand-icon{
             transform: rotate(180deg) scale(1.5);
         }
     }
@@ -329,7 +331,6 @@ export default {
         cursor:not-allowed;
         pointer-events: none;
     }
-
 
 
     //STYLES          
@@ -370,6 +371,42 @@ export default {
             box-shadow: 0px 0.25rem 0.5rem -color('BASE', 0.4);
         }
     }
+
+    @keyframes close-fade-out{
+        from{
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
+        }
+    }
+    @keyframes close-fade-in{
+        from{
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    } 
+
+    @keyframes close-panel{
+        from{
+            max-height: 100vmax;
+        }
+        to{
+            max-height: 0vmax;
+        }
+    } 
+
+    @keyframes open-panel{
+        from{
+            max-height: 0vmax;
+        }
+        to{
+            max-height: 100vmax;
+        }
+    } 
+    
 
 }
 

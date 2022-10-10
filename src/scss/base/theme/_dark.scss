@@ -13,13 +13,13 @@
     
     
     //? COLORS
-    @include defineColorHSL(--COLOR-PRIMARY, 227, 80%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-SECONDARY, 215, 72%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-INFO, 215, 72%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-SUCCESS, 142, 57%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-WARNING, 44, 100%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-DANGER, 351, 85%, calc(50% - var(--dark-percentage)));
-    @include defineColorHSL(--COLOR-BUG, 351, 69%, calc(50% - var(--dark-percentage)));
+    @include defineColorHSL(--COLOR-PRIMARY, 211, 100%, 50%);
+    @include defineColorHSL(--COLOR-SECONDARY, 215, 72%, 50%);
+    @include defineColorHSL(--COLOR-INFO, 0, 88, 255);
+    @include defineColorHSL(--COLOR-SUCCESS, 130, 65%, 57%);
+    @include defineColorHSL(--COLOR-WARNING, 40, 100%, 50%);
+    @include defineColorHSL(--COLOR-DANGER, 3, 100%, 59%);
+    @include defineColorHSL(--COLOR-BUG, 3, 69%, 47%);
     @include defineColorHSL(--COLOR-DARK, 227, 25%, 11%);
     @include defineColorHSL(--COLOR-LIGHT,226, 25%, 20%);
     @include defineColorHSL(--COLOR-BASE, 227, 19%, 14%);
@@ -108,7 +108,6 @@
         @include defineColorHSL(--COLOR-BASE, var(--COLOR-LIGHT-H), var(--COLOR-LIGHT-S), var(--COLOR-LIGHT-L));
         //@include defineColorHSL(--COLOR-CONTRAST-TEXT, var(--COLOR-CONTRAST-TEXT-H), var(--COLOR-CONTRAST-TEXT-S), var(--COLOR-CONTRAST-TEXT-L));
     }
-
 
 
     @for $i from 0 through 4 {

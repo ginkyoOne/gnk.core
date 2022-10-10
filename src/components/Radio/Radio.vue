@@ -174,11 +174,11 @@ export default {
     :id="componentId"
 
     @click.prevent="onchange($event)"
-    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
-    @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
-    @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',$event)"
+    @keydown.prevent="this.componentRaiseEvent('keydown',$event)"
     @keypress.prevent="onchange($event)"
-    @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+    @keyup.prevent="this.componentRaiseEvent('keyup',$event)">
 
         <input
           :id="componentId"

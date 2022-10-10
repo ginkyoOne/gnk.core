@@ -9,7 +9,7 @@ export default {
     data() {
         return {
             childElements: [],
-            checked: false,
+            //checked: false,
         }
     },
 

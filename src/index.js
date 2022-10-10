@@ -34,7 +34,7 @@ import gnkPage from './components/Page/Page.vue'
 import gnkNavbar from './components/Navbar/Navbar.vue'
 
 import gnkSyntaxHighlight from './components/SyntaxHighlight/SyntaxHighlight.vue'
-
+import gnkChip from './components/Chip/Chip.vue'
 
 
 
@@ -60,6 +60,12 @@ import {setColors} from './utils/colorsUtils'
 }); */
 
 export default {
+    gnkButton,
+    gnkExpandPanel,
+    gnkButtonGroup,
+    
+
+
 
     gnkImage,
     gnkBadge,
@@ -71,14 +77,14 @@ export default {
     gnkSidebar,
     
 
-
     
     gnkInput,
     gnkCounter,
-    gnkButton,
+
+    
     gnkProgressbar,
     gnkLoading,
-    gnkButtonGroup,
+
 
 
     gnkApp,
@@ -99,8 +105,8 @@ export default {
     setColors,
     
     gnkSyntaxHighlight,
-    gnkExpandPanel,
     gnkIcon,
+    gnkChip,
     gnkDropdown
 }
 

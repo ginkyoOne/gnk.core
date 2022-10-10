@@ -81,8 +81,7 @@ export default {
     align: {
       type: String,
       default: 'right',
-      skip: true,
-      validator: (value) => ['left', 'center', 'right'].includes(value)
+      validator: (value) => ['left', 'right'].includes(value)
     },
 
     border:{
@@ -107,7 +106,6 @@ export default {
       type: String,      
       required: false,
       default: 'default',
-      skip: true,
       validator(type) {
         return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
       },
@@ -117,7 +115,6 @@ export default {
     animate:{
       type: String,      
       required: false,
-      skip: true,
       default: 'default',
       validator(type) {
         return ['fade','scale', 'flip','default'].includes(type)
@@ -139,19 +136,6 @@ export default {
       return {
           '--primary': true,
           '--checked': this.isChecked,
-          '--align-left': this.align === 'left',
-
-
-          '--size-xl': this.size === 'xl',
-          '--size-l': this.size === 'l',
-          '--size-small': this.size === 'small',
-          '--size-mini': this.size === 'mini',
-
-
-          '--animate-fade': this.animate === 'fade' && !this.loading && !this.busy ? true : false,
-          '--animate-scale': this.animate === 'scale'  && !this.loading  && !this.busy ? true : false,
-          '--animate-flip': this.animate === 'flip'  && !this.loading && !this.busy ? true : false,
-
         }
     },
   },
@@ -214,11 +198,11 @@ export default {
     :id="componentId"
 
     @click.prevent="onchange('click',$event)"
-    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
-    @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
-    @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',$event)"
+    @keydown.prevent="this.componentRaiseEvent('keydown',$event)"
     @keypress.prevent="onchange('keypress', $event)"
-    @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+    @keyup.prevent="this.componentRaiseEvent('keyup',$event)">
 
         <input
           :id="componentId"

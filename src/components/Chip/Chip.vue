@@ -5,18 +5,23 @@ import gnkComponent from "../ComponentBase/gnkComponent.vue"
 
 
 export default {
-    name: 'gnkBadge',
+    name: 'gnkChip',
     extends: gnkComponent,
     
     data() {
-        return {
-            parentClientRect: null  ,      
-        }
     },
     props: {
-        position: {
+        value: {
+            type: String,
+            default: 'value',
+            skip: true
+        },
+
+
+        iconPosition: {
             type: String,
             default: 'top-right',
+            skip: true,
             validator: (value) => {
                 return ['none','top-right', 'top-left', 'bottom-right', 'bottom-left'].includes(value)
             }
@@ -26,7 +31,8 @@ export default {
         size: {
             type: String,
             required: false,
-            default: 'mini',
+            default: 'default',
+            skip: true,
             validator(type) {
                 return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
             },
@@ -36,23 +42,11 @@ export default {
     computed: {
         componentClassObject() {
             return {
-                '--primary': true,
-                '--top-right': this.position === 'top-right',
-                '--top-left': this.position === 'top-left',
-                '--bottom-right': this.position === 'bottom-right',
-                '--bottom-left': this.position === 'bottom-left',
-
-
-                '--size-xl': this.size === 'xl',
-                '--size-l': this.size === 'l',
-                '--size-small': this.size === 'small',
-                '--size-mini': this.size === 'mini',
-
-
+                '--primary': !this.hasStyle,
+                [`--size-${this.size}`]: this.size != 'default',
             }
         },
         componentStyleObject() {
-            if (this.parentClientRect === null) return
             return {
                 
             }
@@ -62,7 +56,7 @@ export default {
     methods: {
     },
     mounted() {
-        this.parentClientRect = this?.$parent?.componentElementClientRect();
+        this.parentClientRect = this.$parent.componentElementClientRect();
     },
 }
 </script>
@@ -74,9 +68,11 @@ export default {
         :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
         :id="componentId"
         :style="componentStyleObject">
-        <slot>
+        <div class="--content">
+            <slot>
 
-        </slot>
+            </slot>
+        </div>
     </div>
 
 
@@ -85,32 +81,39 @@ export default {
 
 <style lang="scss">
 
-.gnkBadge{
+.gnkChip{
     position: relative;
     
-    display: inline-flex;
+    display: flex;
     align-items: center;
     align-content: center;
     justify-content: center;
     vertical-align: middle;
 
-    
-    font-weight: 600;
-    font-size: var(--FONT-SIZE) !important;
-    line-height: var(--FONT-SIZE) !important;
     text-align: center;
     
 
     border: calc(var(--BORDER-SIZE) /2) solid  -color('BASE',0,0,0,0.5);
-    border-radius: 100vmax;
-    padding: 0px 4px;
+    border-radius: var(--BORDER-RADIUS);
     
     min-height: 16px;
     min-width: 16px;
+
+    width: max-content;
+    height: max-content;
     
     background-color: -color('BASE');
     color: -color('CONTRAST-TEXT');
     box-shadow: var(--SHADOW);
+
+
+    &>.--content{
+        display: flex;
+        margin: 5px;
+    }
+
+
+
 
     &.--size-xl {
         font-size: calc(var(--FONT-SIZE)/ 0.5) !important;

@@ -17,9 +17,7 @@ export default {
                     end: 0,
                     elapsed: 0
                 }
-            },
-            busy: false,
-            
+            },            
         }
     },
     props: {

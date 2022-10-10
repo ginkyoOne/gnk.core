@@ -10,46 +10,47 @@
 
     data() {
       return {
-        checked: false,
-        activeStep: 0,
       }
     },
 
     props: {
-
-      to: {
-        type: String,
-        skip: true,
-        default: '',
-      },
-
 
       type: {
         type: String,
         required: false,
         skip: true,
         default: 'button',
-        validator(type) {
-          return ['submit', 'button', 'reset', 'toggle'].includes(type)
-        },
+        /* validator(type) {
+          return ['submit', 'button', 'reset', 'toggle'].includes(type.toString())
+        }, */
       },
 
 
 
+      to: {
+        type: String,
+        skip: true,
+        require: false,
+        default: '',
+      },
 
+      href: {
+        type: String,
+        default: '',
+        require: false,
+        skip: true
 
+      },
 
-      busy: {
+      blank: {
         type: Boolean,
-        required: false,
         default: false,
+        require: false,
+        skip: true
       },
 
-      loading: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
+
+
 
       pill: {
           type: Boolean,
@@ -63,60 +64,48 @@
           default: false,
       },
 
-      square: {
-          type: Boolean,
-          required: false,
-          default: false,
-      },
 
-
-
-      border:{
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-      gradient:{
-        type: Boolean,
-        required: false,
-        default: false,
-      },
 
       transparent:{
         type: Boolean,
         required: false,
         default: false,
       },
+
       clear: {
         type: Boolean,
         required: false,
         default: false,
       },
-      shadow:{
-        type: Boolean,
-        required: false,
-        default: false,
-      },
+
+
 
       size:{
         type: String,      
         required: false,
-        default: 'default',
-        skip: true,
+        default: '',
+      /*  validator(type) {
+          return ['xl', 'l', 'small', 'mini'].includes(type)
+        }, */
+      },
+
+      align: {
+        type: String,
+        default: 'middle',
+        required: false,
+
         validator(type) {
-          return ['xl', 'l', 'default', 'small', 'mini'].includes(type)
+          return ['left', 'right','middle', 'vertical'].includes(type)
         },
       },
 
-
-      animate:{
+      animationType:{
         type: String,      
         required: false,
-        skip: true,
-        default: 'default',
-        validator(type) {
-          return ['slide-up','slide-left', 'fade', 'scale', 'rotate', 'default'].includes(type)
-        },
+        default: '',
+/*         validator(type) {
+          return ['slide-up','slide-down','slide-left','slide-right', 'fade', 'scale', 'rotate'].includes(type)
+        }, */
       },
       
       animateInactive:{
@@ -125,499 +114,750 @@
         default: false,
       },
 
-
-
-
     },
 
     computed: {
-      buttonType() {
-          return this.type
-      },
-
       componentClassObject() {
         return {
           '--dark': !this.hasStyle,
-          '--checked': this.type === 'toggle' && this.checked,
-
-          '--size-xl': this.size === 'xl',
-          '--size-l': this.size === 'l',
-          '--size-small': this.size === 'small',
-          '--size-mini': this.size === 'mini',
-
-
-          '--animate': this.$slots?.animate && !this.animateInactive  ? true : false,
-
-          '--animate-slide-up': this.animate === 'slide-up' && !this.loading && !this.busy && !this.animateInactive ? true : false,
-          '--animate-slide-left': this.animate === 'slide-left'  && !this.loading  && !this.busy && !this.animateInactive? true : false,
-          '--animate-fade': this.animate === 'fade'  && !this.loading && !this.busy && !this.animateInactive ? true : false,
-          '--animate-scale': this.animate === 'scale'  && !this.loading && !this.busy && !this.animateInactive? true : false,
-          '--animate-rotate': this.animate === 'rotate'  && !this.loading && !this.busy && !this.animateInactive? true : false,
-
+          '--checked': this.type == 'toggle' && this.isCheched,
         }
       },
     },
-
-    emits: ['onchange','click', 'mouseover','mouseleave','mouseover','keydown','keypress','keyup'],
 
     methods: {
 
-      onToggle(eventName, event) {
-        // if thers an click event show the ripple  
-        if(!!event) createRipple.createRipple(event)
-
-        //check if the button is a toggle button
-        if (this.type === 'toggle') {
-
-          // if the button is checked then uncheck it
-          this.checked = !this.checked 
-
-          // create the event
-          let thisEvent = { componentId: this.componentId, newValue: this.checked, oldValue: !this.checked, event: event }
-
-          // call parent childchange event if it exists(only on button group)
-          if ((typeof this.$parent.childChanged === 'function')) this.$parent.childChanged(thisEvent)
-
-          // raise event
-          this.componentRaiseEvent('onchange',thisEvent)
-        }
-
-        // raise event
-        this.componentRaiseEvent(eventName, { event: event })
-        if(this.to !== '') this.$router.push(this.to)
-      },
-
-
     },
 
-    mounted() {
+    watch: {
 
+    },
+    
+    mounted() {
+    
     },
 
   }
   </script>
 
 <template>
-    <button
-      :checked="checked"
-      :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
-      class="cursor-pointer inline-flex flex-centered "
-      :disabled="disabled"
-      :id="componentId"
-      :type="buttonType "
+
+  <div 
+    
+    :disabled="disabled" 
+    :class="[componentName + ' |', componentClassObject , componentGeneralClasses]"
+    :id="componentId"
+
+    @click.prevent="onChecked('click',$event)"
+    @mouseleave.prevent="this.componentRaiseEvent('mouseleave',$event)"
+    @mouseover.prevent="this.componentRaiseEvent('mouseover',$event)"
+    @keydown.prevent="this.componentRaiseEvent('keydown',$event)"
+    @keypress.prevent="onChecked('keypress', $event)"
+    @keyup.prevent="this.componentRaiseEvent('keyup',$event)">
+
+        <button
+          ref="internalButton"
+          :id="componentId"
+          :type="this.type"
+        />
 
 
-      @click.prevent="onToggle('click',$event)"
-      @mouseleave.prevent="this.componentRaiseEvent('mouseleave',{event: $event})"
-      @mouseover.prevent="this.componentRaiseEvent('mouseover',{event: $event})"
-      @keydown.prevent="this.componentRaiseEvent('keydown',{event: $event})"
-      @keypress.prevent="onToggle('keypress',$event)"
-      @keyup.prevent="this.componentRaiseEvent('keyup',{event: $event})">
+        <div class="--base">
 
-
-      <transition name="fade">
-        <gnk-progressbar v-if="this.loading" loading class="fill " />
-      </transition>
-
-
-
-      <div class="--ripple" />
-
-
-      <div class="--content-holder">
-        <div class="--content-step1">
-          <slot>
-
-
-          </slot>
-        </div>
-          <div class="--content-step2" v-if="!!this.$slots.animate">
-            <slot name="animate">
-
-
+          <div v-if="!!this.$slots.checked" class="--button-on">
+            <slot name="checked">
             </slot>
           </div>
-      </div>
+
+          <div v-if="!!this.$slots.loading" class="--button-busy">
+            <slot name="loading">
+            </slot>
+          </div>
+
+          <div class="--button-default">
+            <slot>
+            </slot>
+          </div>
+          
+          <div v-if="!!this.$slots.animate" class="--button-off">
+            <slot name="animate">
+            </slot>
+          </div>
+
+          <div class="--ripple" />
+          
+          <gnk-progressbar v-if="this.loading" :class="componentGeneralClasses" loading/>
+          <gnk-loading :hidden="!this.busy" :primary="this.primary" :secondary="this.secondary" :info="this.info" :success="this.success" :warning="this.warning" :danger="this.danger" :bug="this.bug" :dark="this.dark" :light="this.light" :square="this.square" :target="'#' + componentId + '> .--base'" />
+        
+        </div>
+        
+          <div  v-if="!!this.$slots.badge" class="--badge-holder">
+            <slot name="badge" />
+          </div>
 
 
-      <transition name="fade">
-        <gnk-loading v-if="this.busy" :target="'#' + componentId" />
-      </transition>
-
-
-      <div class="--badge-holder">
-        <slot name="badge" />
-      </div>
-
-
-  </button>
+  </div>
 </template>
 
 <style lang="scss">
 
-  .gnkButton{
-    transition: all 0.2s ease-in-out; 
-    isolation: isolate;
-    user-select: none;
+.gnkButton{
 
-    position: relative;
+    //SET CONTAINER AND VARIABLES 
+    --border-radius: var(--BORDER-RADIUS);
+    --border-style: solid;
+    --border-size: var(--BORDER-SIZE);
+    --border-color: #{-color('BASE',1,8,0,8)};
 
-  
-    background-color: -color('BASE');
-    color: -color('CONTRAST-TEXT');
-  
-    border-radius: var(--BORDER-RADIUS);
-    border-width: var(--BORDER-SIZE);
-    border-style: solid;
-    border-color: -color('BASE',1,0,0,1.5); 
-  
-    width: max-content;
+    --background-color:#{-color('BASE')};
+    --color:#{-color('CONTRAST-TEXT')};
+
+    --shadow: var(--SHADOW-COMPONENT);
+    --inner-shadow: inset 0px 0px 10px  -color('SHADOW', .5);
+
+
+
+    --leftRightPadding: 12px;
+    --topBottomPadding: 8px;
+
+    --translate-x: 0px;
+    --translate-y: 0px;
+
+
+
+    transition: all .25s ease-in-out;
+    transform: translateX(var(--translate-x)) translateY(var(--translate-y));
+        
     height: fit-content;
-  
-    margin:5px;
-    padding: 8px 12px;
-  
-    font-size: .8rem;
-    line-height: 1rem;
-  
-    //box-shadow: 0px 5px 1rem -color('BASE', 0.4);
-    &::after{
-      transition: all .2s ease-in-out;
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      -moz-border-radius: inherit;
-      -webkit-border-radius: inherit;
+    width: fit-content;
 
-      z-index: -1;
-      transform:scale(0);
+    font-size: 1rem;
+    line-height: 1.1rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+
+    //HIDE BUTTON(FOR ARIA READERS)
+    &>button{
+        display: none;
     }
 
-    //INTERACTION
-    &:is(:disabled, .--disabled){
-      pointer-events: none;
-      opacity: .8;
-      filter:brightness(80%);
-    }
+    //SET BUTTON BASE
+    &>.--base{  
+      height: 100%;
+      width: 100%;
 
-    &:is(:hover, :focus){
-      border-width: var(--BORDER-SIZE);
-      &>.--content-holder{
-        opacity: 1;
-      }
-      &::after{
-        background-color: -color('BASE', .5,0,0,5);
-        transform:scale(1);
-      }
-    }       
+      transition: all .25s ease-in-out;
 
-    &:is(:active, :checked, .--checked) {
-      opacity: 1;
-      border-width: var(--BORDER-SIZE);
-
-      &::after {
-        background-color: -color('BASE', .5, 0, 0, 10);
-        transform:scale(1);
-      }
-      
-      &:not(.--clear):is(:checked , .--checked){
-        box-shadow: inset 0px 0px 10px  -color('SHADOW', .5);
-
-        &::after{
-          background-color: -color('BASE', .2, 0, 0, -10);
-        }
-      }
-
-
-    }
-
-    &:active{
-      transform: scale(.9);
-    }
-
-
-    //BASE STYLES
-    &.--loading, &.--busy{
-      pointer-events: none;
-      cursor: auto;
-      &>.--content-holder>[class*="--content-step"]{
-        color: -color('MAIN-TEXT', .5);
-      }
-    }
-
-    &>.gnkProgressbar,&>.gnkLoading,&>.--badge-holder,&>.--ripple{
-      border-radius: inherit !important;
-      position: absolute;
-      inset: 0;
-      margin: 0;
-      border: unset;
-    }
-
-    &>.--ripple{
-      //border-radius: var(--BORDER-RADIUS);
       overflow: hidden;
-    }
+      isolation: isolate;
 
-    &>.--content-holder{
-      transition: all .2s ease-in-out;
-      position: relative;
+      font-size: inherit;
+      line-height: inherit;
+
+      color: var(--color);
+      background: var(--background-color);
+      border-radius: var(--border-radius);
+      border: var(--border-size) var(--border-style) var(--border-color);
+      box-shadow: var(--shadow);   
+
 
       display: grid;
       grid: 1fr / 1fr;
-
       align-items: center;
-      justify-content: center;
-      width: 100%;
+      
       height: 100%;
-      font-size: inherit !important;
-      line-height: inherit !important;
+      width: 100%;
+      z-index: 1;  
 
-      overflow: hidden;
+      cursor:pointer; 
 
-      &>[class*="--content-step"]{
-        
-        border-radius: inherit;
-        position: relative;
-        display: flex;
+    }
+
+    //DAFAULT DEFENITIONS OF ALL LAYERS
+    
+    &>.--base>.--ripple,  &>.--base>.--loading,&>.--base>.--button-on,&>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked, &>.--base>.--button-default {
+        border-radius: var(--border-radius);
         grid-column: 1;
         grid-row: 1;
-
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        gap: 5px;
-        font-size: inherit !important;
-        line-height: inherit !important;
-
-        transition: all .2s ease-in-out;
-      }
-      &>.--content-step2{
-        opacity: 0;
-      }
     }
+
+    &>.--badge-holder, &>.--base>.--ripple{
+        inset: 0;
+        border-radius: var(--border-radius);
+        pointer-events: none;
+        z-index: 4;
+    }
+
+    //ANIMATION BUTTON STATES 
+    &>.--base>.--button-default, &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      transition: all .25s ease-in-out;
+
+      color:inherit;
+      padding: var(--topBottomPadding)  var(--leftRightPadding);
+      z-index: 2;
+
+      display: flex;
+    
+      gap: 5px;
+      
+      height:100%;
+      width: 100%;
+
+      font-size: inherit;
+      line-height: inherit;
+      text-shadow: 0px 0px 2px #{-color('BASE',.5,8,0,0)};
+
+    }
+    &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      position: absolute;
+      z-index: 3;
+    }
+    &>.--base>.--button-on{
+      transform: translateX(-100%);  
+    }
+    &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      transform: translateX(100%);  
+    }
+    
+
+
+    //BUSY STATUS AND LOADING STATUS
+    &>.--base>.gnkLoading, &>.--base>.gnkProgressbar{
+        position: absolute;
+        inset: 0;
+    }
+    &>.--base>.gnkLoading{
+      z-index: 4;
+    }
+    //LOADING STATUS
+    &>.--base>.gnkProgressbar{
+      margin: 0 !important;
+      height:100%!important;
+      border: unset !important;
+      z-index: 1;
+    }
+
+
+
+ 
+    
+ //TEXT
+
+  &:is(.--align-middle) {
+    &>.--base>.--button-default, &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      flex-direction: row;
+      align-items:center;
+      justify-content:center;
+      text-align: center;
+    }
+  }
+  &:is(.--align-left) {
+    &>.--base>.--button-default, &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      flex-direction: row;
+      align-items:flex-start;
+      justify-content: center;
+      text-align: left;
+    }
+  }
+  &:is(.--align-right) {
+    &>.--base>.--button-default, &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      flex-direction: row;
+      align-items:flex-end;
+      justify-content: center;
+      text-align: right;
+    }
+  }
+  &:is(.--align-vertical) {
+    &>.--base>.--button-default, &>.--base>.--button-on, &>.--base>.--button-off, &>.--base>.--button-busy,&>.--base>.--button-checked{
+      flex-direction: column;
+      align-items:center;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+
+
+//FORMAT
+  &:is(.--pill) {
+    --border-radius: 100vmax;
+  }
+
+  &:is(.--circular) {
+    --border-radius: 100vmax;
+    aspect-ratio: 1/1;
+  }
+
+  &:is(.--square) {
+    --border-radius: 0px;
+  }
+
+  &:is(.--block) {
+    width: 100% ;
+  }
+
+
+
+  // SIZING
+  &:is(.--size-xl) {
+      font-size: 1.4rem;
+      line-height: 1.5rem;
+      --leftRightPadding: 20px;
+      --topBottomPadding: 15px;
+      --border-radius: calc(var(--BORDER-RADIUS) + 8px );
+  }
+
+  &:is(.--size-l) {
+      font-size: 1.2rem;
+      line-height: 1.3rem;
+      --leftRightPadding: 15px ;
+      --topBottomPadding: 10px;
+      --border-radius: calc(var(--BORDER-RADIUS) + 3px );
+  }
+
+  &:is(.--size-small) {
+      font-size: .8rem;
+      line-height: .9rem;
+      --leftRightPadding: 10px ;
+      --topBottomPadding: 5px;
+      --border-radius: calc(var(--BORDER-RADIUS) - 3px );
+  }
+
+  &:is(.--size-mini) {
+      font-size: .6rem;
+      line-height: .7rem;
+      --leftRightPadding: 8px ;
+      --topBottomPadding: 3px;
+      --border-radius: calc(var(--BORDER-RADIUS) - 5px );
+  }
   
 
-    // SIZING
-    &.--size-xl {
-      //border-radius: 20px;
-      padding: 15px 20px;
-      font-size: calc(var(--FONT-SIZE) + 0.2rem);
-      line-height: calc(var(--LINE-HEIGHT) + 0.2rem);
-    }
 
-    &.--size-l {
-      border-radius: 15px;
-      padding: 10px 15px;
-      font-size: calc(var(--FONT-SIZE) + 0.1rem);
-      line-height: calc(var(--LINE-HEIGHT) + 0.1rem);
-    }
+  //STYLE
 
-    &.--size-small {
-      border-radius: 9px;
-      padding: 5px 10px;
-      font-size: calc(var(--FONT-SIZE) - 0.1rem);
-      line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
-    }
-
-    &.--size-mini {
-      border-radius: 7px;
-      padding: 3px 8px;
-      font-size: calc(var(--FONT-SIZE) - 0.2rem);
-      line-height: calc(var(--LINE-HEIGHT) - 0.1rem);
-    }
-    
-    
-
-    //FORMAT 
-    &.--pill{
-      border-radius: 100vmax;
-    }
-                          
-    &.--circular {
-      height: 34px;
-      width: 34px;
-      border-radius: 50%;
-      aspect-ratio: 1/1;
-
-      & .--size-xl{
-        height: 44px;
-        width: 44px;
-      }
-      & .--size-l{
-        height: 40px;
-        width: 40px;
-      }
-      & .--size-small{
-        height: 32px;
-        width: 32px;
-      }
-      & .--size-mini{
-        height: 28px;
-        width: 28px;
-      }
-      
-    }
-
-    &.--square {
-      border-radius: 0px;
-    }
-
-    &.--block {
-        width: 100% !important;
-        display: block !important;
-    }
-
-
-    //STYLES          
     &.--border{
-      border-width: calc(var(--BORDER-SIZE) * 2);
-      background-color: transparent;
-      color: -color('MAIN-TEXT');
-      &:is(:active, :checked,:hover, :focus, :hover ){
-        color: -color('CONTRAST-TEXT');
-      }
-
+        //--border-size: calc(var(--BORDER-SIZE) * 2);
+        &:not([gnk-theme-colorMode="dark"]){
+          --border-color:#{-color('BASE',1,8,0,-5)};
+        }
+        --background-color: transparent;
     }
 
     &.--gradient{
-      background-image: linear-gradient(30deg, -color('BASE', 0) 50%, -color('BASE', 1, 45, 15, 10) 100%);
-    }
-
-    &.--transparent{
-      
-      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
-        color: -color('BASE');
-      }
-
-      background-color: transparent;
-      border: none;
-
-      &:is(:active, :checked,:hover, :focus, :hover ){
-        color: -color('CONTRAST-TEXT');
-      }
+        --background-color: linear-gradient(30deg, #{-color('BASE', 1)} 50%, #{-color('BASE', 1, 45, 15, 10)} 100%);
     }
 
     &.--clear{
+      --background-color: transparent;
+      --border-style: unset;
+      --shadow:unset;
+      --inner-shadow:unset;
+      --color: #{-color('BASE')};
 
-      &:is(.--info,.--primary, .--success,.--warning,.--danger,.--bug){
-        color: -color('BASE');
+      .--ripple{
+        opacity: 0;
       }
       
+      &:is(:focus-within, :hover, :focus, :active){
+        &:not(.darkmode){
+          --color: #{-color('MAIN-TEXT')};  
+        }
 
-      background-color: transparent;
-      border: none;
-      opacity: 0.9;
-
-      &::after{
-        visibility: hidden;
+        --color: #{-color('CONTRAST-TEXT')};
+        --background-color: transparent;
+        --border-style: unset;
+        --inner-shadow:unset;
       }
 
-      /* &>.--ripple{
-        visibility: hidden;
-      } */
+    }
 
-      &:is(:hover, :focus){
+    &.--transparent{
+
+        --border-style: none;
+        --color: #{-color('BASE')};
+
+        &>.--base{
+          box-shadow: unset;
+          background-color: transparent;
+        }        
+
+      &:is(:focus-within, :hover, :focus, :active){
+        &:not(.darkmode){
+          --color: #{-color('MAIN-TEXT')};  
+        }
+
+        --color: #{-color('CONTRAST-TEXT')};
+        
+        &>.--base{
+          box-shadow: var(--shadow);
+        }
+      }
+
+
+    }
+
+    &.--shadow{
+        --shadow: 0px 0.25rem 0.5rem #{-color('BASE', 0.4)};
+    }
+
+
+    &:is(.--clear, .--transparent):not(.darkmode):is(.--default,.--light,.--dark){
+      --color:-color('MAIN-TEXT');
+    }
+    &:is(.--clear, .--transparent):is(.darkmode):is(.--default,.--light,.--dark){
+      --color:-color('CONTRAST-TEXT');
+    }
+
+
+ //STATUS
+    &:is(:focus-within, :hover, :focus){
+      --translate-y : -1px;
+    }
+
+    &:is(:active,.--checked){
+      --border-color: #{-color('BASE',1,8,0,12)};
+      --background-color: #{-color('BASE',1,0,0,-10)};
+      --color: #{-color('CONTRAST-TEXT',.6)};
+      --translate-y : 1px;
+      --shadow: unset;
+      &>.--base{
+          box-shadow: var(--inner-shadow);
+      }
+    }
+
+    &:is(:disabled, .--disabled,.--busy,.--loading){
+      cursor:not-allowed;
+      pointer-events: none;
+    }
+
+    &:is(:disabled, .--disabled){
+      --shadow: unset;
+      --border-style: unset;
+
+      &>.--base{
+        opacity: .6;
+        filter:brightness(50%);
+      }
+    }
+
+    &:is(.--busy,.--loading){
+      cursor:progress;
+    }
+
+
+//'slide-up','slide-left', 'fade', 'scale', 'rotate'
+
+
+  &:is(.--animationType-slide-up):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: translateY(0);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-off{
+        transform: translateY(0);
         opacity: 1;
       }
+    }
 
-      &:is(:active, :checked){
-        opacity: .8;
+    &:is(.--checked){
+      &>.--base>.--button-default, &>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+  &:is(.--animationType-slide-down):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: translateY(0);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: translateY(100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-off{
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: translateY(100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: rotateZ(100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+  &:is(.--animationType-slide-left):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: translateX(0);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      &>.--base>.--button-off{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  }
+  &:is(.--animationType-slide-right):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: translateX(0);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      &>.--base>.--button-off{
+        transform: translateX(0);
+        opacity: 1;
       }
     }
     
-    &.--shadow{
-      box-shadow: 0px 0.25rem 0.5rem -color('BASE', 0.4);
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  }
+  &:is(.--animationType-fade):not(.--animateInactive){
+    &>.--base>.--button-default{
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      opacity: 0;
+      transform: translateX(0);
+    }
+    
+    &:is(:hover){
+      &>.--base>.--button-default{
+        opacity: 0;
+      }
+      &>.--base>.--button-off{
+        opacity: 1;
+      }
+    }
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  }
+  &:is(.--animationType-scale):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: scale(1);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: scale(0);
+      opacity: 0;
+    }
+    
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: scale(0);
+        opacity: 0;
+      }
+      &>.--base>.--button-off{
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: scale(0);
+        opacity: 0;
+      }
 
-
-
-    &.--animate{     
-        &.--animate-slide-up{
-          .--content-step2{
-            transform: translateY(100%);
-            opacity: 0;
-          }
-          &:is(:hover, :focus,:active){
-            .--content-step1{
-              transform: translateY(-100%);
-              opacity: 0;
-            }
-            .--content-step2{
-              transform: translateY(0%);
-              opacity: 1;
-            }
-          }
-        }
-
-        &.--animate-slide-left{
-            .--content-step2{
-              transform: translateX(-100%);
-              opacity:0;
-            }
-          &:is(:hover, :focus,:active){
-            .--content-step1{
-              transform: translateX(100%);
-              opacity: 0;
-            }
-            .--content-step2{
-              transform: translateX(0);
-              opacity: 1;
-            }
-          }
-        }
-
-        &.--animate-fade{
-            .--content-step2{
-              opacity: 0;
-            }
-          &:is(:hover, :focus,:active){
-            .--content-step1{
-              opacity: 0;
-            }
-            .--content-step2{
-              opacity: 1;
-            }
-          }
-        }
-
-        &.--animate-scale{
-            .--content-step2{
-              transform: scale(-1);
-              opacity: 0;
-            }
-          &:is(:hover, :focus,:active){
-            .--content-step1{
-              transform:scale(1.5);
-              opacity: 0;
-            }
-            .--content-step2{
-              transform:scale(1);
-              opacity: 1;
-            }
-          }
-        }
-
-        &.--animate-rotate{
-            .--content-step2{
-              transform: rotate(-180deg);
-              opacity: 0;
-            }
-          &:is(:hover, :focus,:active){
-            .--content-step1{
-              transform: rotate(180deg);
-              opacity: 0;
-            }
-            .--content-step2{
-              transform: rotate(0deg);
-              opacity: 1;
-            }
-          }
-        }
+      &>.--base>.--button-busy{
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
+  } 
+  &:is(.--animationType-rotate):not(.--animateInactive){
+    &>.--base>.--button-default{
+      transform: rotateZ(0);
+      opacity: 1;
+    }
+    &>.--base>.--button-off, &>.--base>.--button-on, &>.--base>.--button-busy{
+      transform: rotateZ(-180deg);
+      opacity: 0;
+    }
+    
+    &:is(:hover){
+      &>.--base>.--button-default{
+        transform: rotateZ(180deg);
+        opacity: 0;
+      }
+      &>.--base>.--button-off{
+        transform: rotateZ(0);
+        opacity: 1;
+      }
+    }
+
+    &:is(.--checked){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-busy{
+        transform: rotateZ(180deg);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-on{
+        transform: rotateZ(0);
+        opacity: 1;
+      }
+    }
+    &:is(.--loading,.--busy){
+      &>.--base>.--button-default,&>.--base>.--button-off, &>.--base>.--button-on{
+        transform: rotateZ(180deg);
+        opacity: 0;
+      }
+
+      &>.--base>.--button-busy{
+        transform: rotateZ(0);
+        opacity: 1;
+      }
+    }
+  } 
+  
 
 
 
@@ -626,32 +866,47 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      //ANIMATIONS
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .25s ease-in-out;
+  //ANIMATION
+  &:is(.--animate-fade){
+    &>.--base>.--thumb, &>.--base::after{
+      animation: animation-fade-in .5s ease-in-out 1;
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb, &>.--base::after{
+        animation: animation-fade-out .5s ease-in-out 1;
+      } 
+    }
+  }
+  &:is(.--animate-scale){
+    &>.--base>.--thumb{
+      transition: all 0.5s ease-in-out;
+      transform:scale(.8);
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb{
+        transition: all 0.5s ease-in-out;
+        transform:scale(1);
+      } 
+    }
+  }
+  &:is(.--animate-flip){
+    &>.--base>.--thumb{
+      transition: all 0.5s ease-in-out;
+      transform: rotateY(180deg);
+    }
+    &:is(.--checked){
+      &>.--base>.--thumb{
+        transition: all 0.5s ease-in-out;
+        transform: rotateY(0deg);
+      }
+    }
+  }
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-
-
-}
 </style>
+
+
+
+
+
+

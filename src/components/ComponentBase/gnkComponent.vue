@@ -2,19 +2,81 @@
 import gnk from "../../index"
 import createRipple from "../../utils/ripple"
 import { setColors, hexToHsl } from '../../utils/colorsUtils'
-import { setCssVariable } from "../../utils/cssUtils"
+import { setCssVariable, getCssVariable  } from "../../utils/cssUtils"
+
 
 export default {
     name: 'gnkComponent',
-    emits: ['update:modelValue', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup', 'click', 'onClick'],
+    emits: ['update:modelValue','update:checked', 'mouseleave', 'mouseover', 'keydown', 'keypress', 'keyup', 'click', 'onClick'],
     
     data(){
         return {
-        
+            isolatedCheck: false,
         }
     },
     
     props: {
+
+        type: {
+            type: String,
+            required: false,
+            skip: true,
+            default: 'toggle',
+        },
+
+        checked: {
+            default: undefined,
+            require: false,
+            skip: true,
+            /* validator(type) {
+                return ((typeof type == "boolean") || (typeof type == "string") || ( Array.isArray(type)|| ( typeof type == (type)))
+            }, */
+        },
+
+        value: {
+            require: false,
+            skip: true,
+            default: undefined,
+        },
+
+
+
+
+        busy: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        loading: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+
+
+        square: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        gradient:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        shadow:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        border:{
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+
+
         primary: {
             type: Boolean,
             required: false,
@@ -60,6 +122,14 @@ export default {
             required: false,
             default: false,
         },
+
+        level: {
+            type: String,
+            required: false,
+            default: null,
+        },
+
+
         block: {
             type: Boolean,
             required: false,
@@ -76,9 +146,11 @@ export default {
         hexColor:{
             type: String,
             required: false,
-            default: null,
+            default: undefined,
             skip: true,
         },
+
+
     },
 
     computed: {
@@ -95,16 +167,63 @@ export default {
         //GENERIC CLASSES
         componentGeneralClasses() {
             let componentProps = {}
+            //itenerate all props in component
             for (let prop in this.$options.props) {
-                if (!this.$options.props[prop]?.skip) componentProps['--' + prop] = this[prop]
+                //check for skip to be false
+                if (!this.$options.props[prop]?.skip) {
+
+                    //prop is a string an not skipable, multiple options
+                    
+                    //CHECK IF PROP IS EMPTY
+                    if ( !(this[prop] === false || this[prop] === '' ||  this[prop] === undefined || this[prop] === null)) {
+                        if (this.$options.props[prop]?.type === String) {
+                            componentProps['--' + prop + '-' + this[prop]] = true
+
+                        } else {
+                            //standard prop
+                            componentProps['--' + prop] = this[prop]
+                        }
+                    }
+                } 
             }
+
+            componentProps['--checked']=this.isCheched
+            componentProps['--default']=!this.hasStyle
+            componentProps['darkmode']=this.store.theme.isDarkMode
             componentProps['|'] = true
             return componentProps
         },
 
         //HAS STYLE
         hasStyle() {
-            return (this.primary==true||this.secondary==true||this.info==true||this.success==true||this.warning==true||this.danger==true||this.bug==true||this.dark==true||this.light==true||this.hexColor!=null)
+            return (this.primary==true||this.secondary==true||this.info==true||this.success==true||this.warning==true||this.danger==true||this.bug==true||this.dark==true||this.light==true||this.hexColor!=null||this.level!=null)
+        },
+
+        isCheched() {
+            if (this?.type == 'toggle') {
+
+                let isolatedValue = (this.value === null || this.value === undefined ? this.componentId : this.value)
+
+                switch (true) {
+                    case typeof this.checked == "boolean":
+                        this.isolatedCheck = this.checked;
+                        break;
+
+                    case Array.isArray(this.checked):
+                        this.isolatedCheck = this.checked.includes(isolatedValue)
+                        break;
+
+                    case this.checked === undefined || this.checked === null:
+                        this.isolatedCheck = this.isolatedCheck
+                        break
+
+                    default:
+                        this.isolatedCheck = ((JSON.stringify(this.checked) === JSON.stringify(isolatedValue)))
+                        break;
+                    }
+            }
+            return this.isolatedCheck
+            
         }
 
     },
@@ -129,9 +248,13 @@ export default {
         //RAISE COMPOENT EVENT
         componentRaiseEvent(eventName, data) {
             try {
-                let event = new CustomEvent(eventName, { detail: { target: this.$el, component: this, ...data } })
-                this.$emit(eventName, event)    
-            } catch {   
+
+                this.$emit(eventName, data) 
+                if (typeof this.$parent.registerChildEvents == 'function') this.$parent.registerChildEvents(this, eventName, data)
+                
+
+            } catch(ex) {   
+                console.error(ex)
             }
         },
 
@@ -157,6 +280,59 @@ export default {
                 });
         },
 
+
+        //TOGGLE CHECK STATE
+        onChecked(eventName, event) {
+
+            if(this?.href != '') window.open(this.href,(this.black ? "_blank" : "_self"));
+            if (this?.to !== '') this.$router.push(this.to)  
+
+                
+            if (this?.type == 'toggle') {
+
+                
+                this.isolatedCheck = !this.isolatedCheck
+                let isolatedValue = (this.value === null || this.value === undefined ? this.componentId : this.value)
+
+                
+                switch (true) {
+                    case Array.isArray(this.checked):
+
+                        if (this.checked.includes(isolatedValue)) {
+                            this.checked.splice(this.checked.indexOf(isolatedValue), 1)
+                        }else{
+                            this.checked.push(isolatedValue)
+                            this.checked.sort()
+                        }
+                        
+                        this.componentRaiseEvent('update:checked', this.checked);
+                        break;
+
+                    case typeof this.checked == "boolean":
+                        this.componentRaiseEvent('update:checked', this.isolatedCheck);
+                        break;
+
+                    case this.checked === undefined || this.checked === null:
+                            this.componentRaiseEvent('update:checked', this.isolatedCheck);
+                            break
+
+                    default:
+                            this.componentRaiseEvent('update:checked', ((JSON.stringify(this.checked) === JSON.stringify(isolatedValue)) ? '' : isolatedValue));
+                        
+                }
+
+            } else {
+                // raise event
+                if(this?.type != 'button' && this?.type != 'toggle') this.$refs.internalButton.click()
+                this.componentRaiseEvent(eventName, event )
+
+            }
+
+            // if thers an click event show the ripple  
+            if(!!event) createRipple.createRipple(event)
+
+        },
+
     },
 
 
@@ -168,8 +344,14 @@ export default {
 
     mounted() {
         if (typeof this.registerChild == 'function') this.registerChild(this)
+        
+        //set hexacolor to
+        if (typeof this.hexColor != "undefined") this.setBaseColor(this?.hexColor)
 
-        this.setBaseColor(this?.hexColor)
+        if (typeof this.updateContentPadding != "undefined") this.updateContentPadding()
+        if (typeof this.updateChildContentPadding != "undefined") this.updateChildContentPadding()
+
+        
     },
 
 
@@ -194,10 +376,20 @@ export default {
 
     provide() {
         return {
-            registerChild: (typeof this.registerChild == 'function' ? this.registerChild : null),
+            registerChild: (typeof this?.registerChild == 'function' ? this?.registerChild : null),
         }
     },
-    inject: ['store'],
+
+    inject: {
+        store: {
+            default: this.store
+        },
+
+
+        registerChild: {
+            default: (typeof registerChild == 'function' && this.$options.provide()?.registerChild === null ? registerChild : null),
+        }
+    }
 }
 
 </script>

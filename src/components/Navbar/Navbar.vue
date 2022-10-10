@@ -104,7 +104,7 @@ export default {
 
         display: flex  !important;
 
-        background: -color('BASE', 0);
+        background: -color('LEVEL-2', 0);
         //box-shadow: var(--SHADOW);
         
         margin:0px;
@@ -133,7 +133,7 @@ export default {
         }
 
         &.--solid-on-scroll{
-            background: -color('BASE');
+            background: -color('LEVEL-2');
             box-shadow: var(--SHADOW);
         }
     }
