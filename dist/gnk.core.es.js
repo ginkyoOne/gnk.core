@@ -340,7 +340,6 @@ const _sfc_main$p = {
       this.updateChildContentPadding();
   },
   unmounted() {
-    this.$el.parentNode.removeChild(this.$el);
     if (typeof this.childButtons !== "undefined")
       this.childButtons.length = 0;
   },
@@ -449,8 +448,8 @@ const _sfc_main$o = {
 };
 const _hoisted_1$o = ["id"];
 const _hoisted_2$j = /* @__PURE__ */ createElementVNode("div", { class: "--img-placeholder" }, null, -1);
-const _hoisted_3$g = ["alt"];
-const _hoisted_4$f = {
+const _hoisted_3$f = ["alt"];
+const _hoisted_4$e = {
   key: 0,
   class: "--title | flex flex-centered"
 };
@@ -464,8 +463,8 @@ function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       class: normalizeClass(["--img-background |", $options.componentClassObject]),
       alt: this.alt
-    }, null, 10, _hoisted_3$g),
-    this.showTitle && (this.title.constructor === String && this.title.length > 0) ? (openBlock(), createElementBlock("div", _hoisted_4$f, [
+    }, null, 10, _hoisted_3$f),
+    this.showTitle && (this.title.constructor === String && this.title.length > 0) ? (openBlock(), createElementBlock("div", _hoisted_4$e, [
       createElementVNode("h3", null, toDisplayString(this.title), 1)
     ])) : createCommentVNode("", true)
   ], 14, _hoisted_1$o);
@@ -565,20 +564,20 @@ const _sfc_main$m = {
 };
 const _hoisted_1$m = ["id"];
 const _hoisted_2$i = { class: "grid fill" };
-const _hoisted_3$f = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-const _hoisted_4$e = { class: "row" };
-const _hoisted_5$e = { class: "col-12 flex-centered" };
-const _hoisted_6$c = { class: "P404-500" };
+const _hoisted_3$e = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_4$d = { class: "row" };
+const _hoisted_5$d = { class: "col-12 flex-centered" };
+const _hoisted_6$b = { class: "P404-500" };
 const _hoisted_7$a = { class: "row" };
-const _hoisted_8$9 = { class: "col-12 flex-centered" };
-const _hoisted_9$6 = { class: "row" };
-const _hoisted_10$4 = {
+const _hoisted_8$8 = { class: "col-12 flex-centered" };
+const _hoisted_9$7 = { class: "row" };
+const _hoisted_10$3 = {
   key: 0,
   class: "col-12 flex-centered p-t-20"
 };
-const _hoisted_11$4 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
-const _hoisted_12$4 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
-const _hoisted_13$3 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_11$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " chevron_left ", -1);
+const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
+const _hoisted_13$1 = /* @__PURE__ */ createElementVNode("div", { class: "fill" }, null, -1);
 function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   return openBlock(), createElementBlock("div", {
@@ -586,31 +585,31 @@ function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
     class: normalizeClass([_ctx.componentName + " |", _ctx.componentGeneralClasses])
   }, [
     createElementVNode("div", _hoisted_2$i, [
-      _hoisted_3$f,
-      createElementVNode("div", _hoisted_4$e, [
-        createElementVNode("div", _hoisted_5$e, [
-          createElementVNode("h1", _hoisted_6$c, toDisplayString($props.title), 1)
+      _hoisted_3$e,
+      createElementVNode("div", _hoisted_4$d, [
+        createElementVNode("div", _hoisted_5$d, [
+          createElementVNode("h1", _hoisted_6$b, toDisplayString($props.title), 1)
         ])
       ]),
       createElementVNode("div", _hoisted_7$a, [
-        createElementVNode("div", _hoisted_8$9, toDisplayString($props.label), 1)
+        createElementVNode("div", _hoisted_8$8, toDisplayString($props.label), 1)
       ]),
-      createElementVNode("div", _hoisted_9$6, [
-        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_10$4, [
+      createElementVNode("div", _hoisted_9$7, [
+        $props.showGoBack ? (openBlock(), createElementBlock("div", _hoisted_10$3, [
           createVNode(_component_gnk_button, {
             bug: "",
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.go(-1))
           }, {
             default: withCtx(() => [
-              _hoisted_11$4,
+              _hoisted_11$2,
               createTextVNode(" " + toDisplayString($props.goBackLable), 1)
             ]),
             _: 1
           })
         ])) : createCommentVNode("", true)
       ]),
-      _hoisted_12$4,
-      _hoisted_13$3
+      _hoisted_12$2,
+      _hoisted_13$1
     ])
   ], 10, _hoisted_1$m);
 }
@@ -729,25 +728,23 @@ const _sfc_main$k = {
 };
 const _hoisted_1$k = ["id"];
 const _hoisted_2$g = { class: "--base" };
-const _hoisted_3$e = {
+const _hoisted_3$d = {
   ref: "title",
   class: "--title"
 };
-const _hoisted_4$d = { class: "grid row col-12" };
-const _hoisted_5$d = { class: "col-12" };
-const _hoisted_6$b = /* @__PURE__ */ createTextVNode(" teste ");
-const _hoisted_7$9 = { class: "col" };
-const _hoisted_8$8 = /* @__PURE__ */ createTextVNode(" expand_less ");
-const _hoisted_9$5 = { class: "--content" };
-const _hoisted_10$3 = {
+const _hoisted_4$c = { class: "grid row col-12" };
+const _hoisted_5$c = { class: "col-12" };
+const _hoisted_6$a = { class: "col" };
+const _hoisted_7$9 = { class: "--content" };
+const _hoisted_8$7 = {
   ref: "contentBody",
   class: "--content-body"
 };
-const _hoisted_11$3 = {
+const _hoisted_9$6 = {
   ref: "contentFooter",
   class: "--footer"
 };
-const _hoisted_12$3 = { class: "--badge-holder" };
+const _hoisted_10$2 = { class: "--badge-holder" };
 function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_icon = resolveComponent("gnk-icon");
   const _component_gnk_button = resolveComponent("gnk-button");
@@ -758,7 +755,7 @@ function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
     style: normalizeStyle($options.componentStyleObject)
   }, [
     createElementVNode("div", _hoisted_2$g, [
-      createElementVNode("div", _hoisted_3$e, [
+      createElementVNode("div", _hoisted_3$d, [
         createVNode(_component_gnk_button, {
           class: "--expand-button",
           primary: this.primary,
@@ -777,19 +774,19 @@ function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.onChecked("click", $event))
         }, {
           default: withCtx(() => [
-            createElementVNode("div", _hoisted_4$d, [
-              createElementVNode("div", _hoisted_5$d, [
+            createElementVNode("div", _hoisted_4$c, [
+              createElementVNode("div", _hoisted_5$c, [
                 renderSlot(_ctx.$slots, "title", {}, () => [
-                  _hoisted_6$b
+                  createTextVNode(" teste ")
                 ])
               ]),
-              createElementVNode("div", _hoisted_7$9, [
+              createElementVNode("div", _hoisted_6$a, [
                 createVNode(_component_gnk_icon, {
                   size: "small",
                   class: "--expand-icon"
                 }, {
                   default: withCtx(() => [
-                    _hoisted_8$8
+                    createTextVNode(" expand_less ")
                   ]),
                   _: 1
                 })
@@ -799,16 +796,16 @@ function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
           _: 3
         }, 8, ["primary", "secondary", "info", "success", "warning", "danger", "bug", "dark", "light", "align"])
       ], 512),
-      createElementVNode("div", _hoisted_9$5, [
-        createElementVNode("div", _hoisted_10$3, [
+      createElementVNode("div", _hoisted_7$9, [
+        createElementVNode("div", _hoisted_8$7, [
           renderSlot(_ctx.$slots, "default")
         ], 512),
-        createElementVNode("div", _hoisted_11$3, [
+        createElementVNode("div", _hoisted_9$6, [
           renderSlot(_ctx.$slots, "footer")
         ], 512)
       ])
     ]),
-    createElementVNode("div", _hoisted_12$3, [
+    createElementVNode("div", _hoisted_10$2, [
       renderSlot(_ctx.$slots, "badge")
     ]),
     this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
@@ -840,7 +837,12 @@ async function animateValue(startValue, endValue, duration, updateCallback, fina
   if (typeof finalCallback === "function")
     finalCallback(endValue);
 }
-function sleep(ms = 2e3) {
+async function sleep(ms = 2e3, finalCallback = null) {
+  if (typeof finalCallback === "function") {
+    await sleep(ms);
+    finalCallback();
+    return true;
+  }
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 function random(min, max) {
@@ -1134,22 +1136,22 @@ const _sfc_main$i = {
 };
 const _hoisted_1$i = ["disabled", "id"];
 const _hoisted_2$f = ["id", "type"];
-const _hoisted_3$d = { class: "--base" };
-const _hoisted_4$c = {
+const _hoisted_3$c = { class: "--base" };
+const _hoisted_4$b = {
   key: 0,
   class: "--button-on"
 };
-const _hoisted_5$c = {
+const _hoisted_5$b = {
   key: 1,
   class: "--button-busy"
 };
-const _hoisted_6$a = { class: "--button-default" };
+const _hoisted_6$9 = { class: "--button-default" };
 const _hoisted_7$8 = {
   key: 2,
   class: "--button-off"
 };
-const _hoisted_8$7 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_9$4 = {
+const _hoisted_8$6 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_9$5 = {
   key: 0,
   class: "--badge-holder"
 };
@@ -1172,20 +1174,20 @@ function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
       id: _ctx.componentId,
       type: this.type
     }, null, 8, _hoisted_2$f),
-    createElementVNode("div", _hoisted_3$d, [
-      !!this.$slots.checked ? (openBlock(), createElementBlock("div", _hoisted_4$c, [
+    createElementVNode("div", _hoisted_3$c, [
+      !!this.$slots.checked ? (openBlock(), createElementBlock("div", _hoisted_4$b, [
         renderSlot(_ctx.$slots, "checked")
       ])) : createCommentVNode("", true),
-      !!this.$slots.loading ? (openBlock(), createElementBlock("div", _hoisted_5$c, [
+      !!this.$slots.loading ? (openBlock(), createElementBlock("div", _hoisted_5$b, [
         renderSlot(_ctx.$slots, "loading")
       ])) : createCommentVNode("", true),
-      createElementVNode("div", _hoisted_6$a, [
+      createElementVNode("div", _hoisted_6$9, [
         renderSlot(_ctx.$slots, "default")
       ]),
       !!this.$slots.animate ? (openBlock(), createElementBlock("div", _hoisted_7$8, [
         renderSlot(_ctx.$slots, "animate")
       ])) : createCommentVNode("", true),
-      _hoisted_8$7,
+      _hoisted_8$6,
       this.loading ? (openBlock(), createBlock(_component_gnk_progressbar, {
         key: 3,
         class: normalizeClass(_ctx.componentGeneralClasses),
@@ -1206,7 +1208,7 @@ function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
         target: "#" + _ctx.componentId + "> .--base"
       }, null, 8, ["hidden", "primary", "secondary", "info", "success", "warning", "danger", "bug", "dark", "light", "square", "target"])
     ]),
-    !!this.$slots.badge ? (openBlock(), createElementBlock("div", _hoisted_9$4, [
+    !!this.$slots.badge ? (openBlock(), createElementBlock("div", _hoisted_9$5, [
       renderSlot(_ctx.$slots, "badge")
     ])) : createCommentVNode("", true)
   ], 42, _hoisted_1$i);
@@ -1364,18 +1366,18 @@ const _sfc_main$h = {
 };
 const _hoisted_1$h = ["disabled", "id"];
 const _hoisted_2$e = ["id", "name", "checked", "value"];
-const _hoisted_3$c = { class: "--base" };
-const _hoisted_4$b = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_5$b = {
+const _hoisted_3$b = { class: "--base" };
+const _hoisted_4$a = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_5$a = {
   key: 0,
   class: "--thumb | material-symbols-rounded"
 };
-const _hoisted_6$9 = {
+const _hoisted_6$8 = {
   key: 1,
   class: "--thumb | material-symbols-rounded"
 };
 const _hoisted_7$7 = ["for"];
-const _hoisted_8$6 = { class: "--badge-holder" };
+const _hoisted_8$5 = { class: "--badge-holder" };
 function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
@@ -1396,9 +1398,9 @@ function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
       checked: $options.isChecked,
       value: $data.defaultValue
     }, null, 8, _hoisted_2$e),
-    createElementVNode("div", _hoisted_3$c, [
-      _hoisted_4$b,
-      !$props.indeterminate ? (openBlock(), createElementBlock("span", _hoisted_5$b, " done ")) : (openBlock(), createElementBlock("span", _hoisted_6$9, " remove "))
+    createElementVNode("div", _hoisted_3$b, [
+      _hoisted_4$a,
+      !$props.indeterminate ? (openBlock(), createElementBlock("span", _hoisted_5$a, " done ")) : (openBlock(), createElementBlock("span", _hoisted_6$8, " remove "))
     ]),
     createElementVNode("label", { for: _ctx.componentId }, [
       renderSlot(_ctx.$slots, "label")
@@ -1407,7 +1409,7 @@ function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_8$6, [
+    createElementVNode("div", _hoisted_8$5, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$h);
@@ -1554,19 +1556,19 @@ const _sfc_main$g = {
 };
 const _hoisted_1$g = ["disabled", "id"];
 const _hoisted_2$d = ["id", "name", "checked", "value"];
-const _hoisted_3$b = { class: "--base" };
-const _hoisted_4$a = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_5$a = {
+const _hoisted_3$a = { class: "--base" };
+const _hoisted_4$9 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_5$9 = {
   key: 0,
   class: "--switch-on"
 };
-const _hoisted_6$8 = /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, null, -1);
+const _hoisted_6$7 = /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, null, -1);
 const _hoisted_7$6 = {
   key: 1,
   class: "--switch-off"
 };
-const _hoisted_8$5 = ["for"];
-const _hoisted_9$3 = { class: "--badge-holder" };
+const _hoisted_8$4 = ["for"];
+const _hoisted_9$4 = { class: "--badge-holder" };
 function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
@@ -1587,24 +1589,24 @@ function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
       checked: $options.isChecked,
       value: $data.defaultValue
     }, null, 8, _hoisted_2$d),
-    createElementVNode("div", _hoisted_3$b, [
-      _hoisted_4$a,
-      !!this.$slots.on ? (openBlock(), createElementBlock("div", _hoisted_5$a, [
+    createElementVNode("div", _hoisted_3$a, [
+      _hoisted_4$9,
+      !!this.$slots.on ? (openBlock(), createElementBlock("div", _hoisted_5$9, [
         renderSlot(_ctx.$slots, "on")
       ])) : createCommentVNode("", true),
-      _hoisted_6$8,
+      _hoisted_6$7,
       !!this.$slots.off ? (openBlock(), createElementBlock("div", _hoisted_7$6, [
         renderSlot(_ctx.$slots, "off")
       ])) : createCommentVNode("", true)
     ]),
     createElementVNode("label", { for: _ctx.componentId }, [
       renderSlot(_ctx.$slots, "label")
-    ], 8, _hoisted_8$5),
+    ], 8, _hoisted_8$4),
     this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_9$3, [
+    createElementVNode("div", _hoisted_9$4, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$g);
@@ -1747,13 +1749,13 @@ const _sfc_main$f = {
 };
 const _hoisted_1$f = ["disabled", "id"];
 const _hoisted_2$c = ["id", "name", "checked", "value"];
-const _hoisted_3$a = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
+const _hoisted_3$9 = /* @__PURE__ */ createElementVNode("div", { class: "--base" }, [
   /* @__PURE__ */ createElementVNode("div", { class: "--thumb" }, [
     /* @__PURE__ */ createElementVNode("div", { class: "--ripple" })
   ])
 ], -1);
-const _hoisted_4$9 = ["for"];
-const _hoisted_5$9 = { class: "--badge-holder" };
+const _hoisted_4$8 = ["for"];
+const _hoisted_5$8 = { class: "--badge-holder" };
 function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
@@ -1774,15 +1776,15 @@ function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
       checked: $options.isChecked,
       value: $data.defaultValue
     }, null, 8, _hoisted_2$c),
-    _hoisted_3$a,
+    _hoisted_3$9,
     createElementVNode("label", { for: _ctx.componentId }, [
       renderSlot(_ctx.$slots, "label")
-    ], 8, _hoisted_4$9),
+    ], 8, _hoisted_4$8),
     this.busy ? (openBlock(), createBlock(_component_gnk_loading, {
       key: 0,
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_5$9, [
+    createElementVNode("div", _hoisted_5$8, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$f);
@@ -2023,29 +2025,29 @@ const _sfc_main$e = {
 };
 const _hoisted_1$e = ["disabled", "id"];
 const _hoisted_2$b = { class: "--base" };
-const _hoisted_3$9 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_4$8 = {
+const _hoisted_3$8 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_4$7 = {
   key: 0,
   class: "--icon | material-symbols-rounded"
 };
-const _hoisted_5$8 = ["type", "value", "name", "disabled", "min", "max", "step", "required", "minlenght", "maxlenght", "pattern"];
-const _hoisted_6$7 = ["for"];
+const _hoisted_5$7 = ["type", "value", "name", "disabled", "min", "max", "step", "required", "minlenght", "maxlenght", "pattern"];
+const _hoisted_6$6 = ["for"];
 const _hoisted_7$5 = {
   key: 1,
   class: "--button-upDown | flex flex-row"
 };
-const _hoisted_8$4 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_upward ", -1);
-const _hoisted_9$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_downward ", -1);
-const _hoisted_10$2 = {
+const _hoisted_8$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_upward ", -1);
+const _hoisted_9$3 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " arrow_downward ", -1);
+const _hoisted_10$1 = {
   key: 0,
   class: "material-symbols-rounded"
 };
-const _hoisted_11$2 = {
+const _hoisted_11$1 = {
   key: 1,
   class: "material-symbols-rounded"
 };
-const _hoisted_12$2 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
-const _hoisted_13$2 = { class: "--badge-holder" };
+const _hoisted_12$1 = /* @__PURE__ */ createElementVNode("span", { class: "material-symbols-rounded" }, " close ", -1);
+const _hoisted_13 = { class: "--badge-holder" };
 function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_button = resolveComponent("gnk-button");
   const _component_gnk_progressbar = resolveComponent("gnk-progressbar");
@@ -2062,8 +2064,8 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
     onKeyup: _cache[10] || (_cache[10] = ($event) => this.componentRaiseEvent("keyup", $event))
   }, [
     createElementVNode("div", _hoisted_2$b, [
-      _hoisted_3$9,
-      this.icon != void 0 ? (openBlock(), createElementBlock("span", _hoisted_4$8, toDisplayString(this.icon), 1)) : createCommentVNode("", true),
+      _hoisted_3$8,
+      this.icon != void 0 ? (openBlock(), createElementBlock("span", _hoisted_4$7, toDisplayString(this.icon), 1)) : createCommentVNode("", true),
       createElementVNode("input", {
         class: "--input",
         ref: "input",
@@ -2081,11 +2083,11 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
         maxlenght: _ctx.maxlenght,
         pattern: $props.pattern,
         autofocus: ""
-      }, null, 40, _hoisted_5$8),
+      }, null, 40, _hoisted_5$7),
       createElementVNode("label", {
         class: "--placeholder",
         for: _ctx.componentId
-      }, toDisplayString($props.placeholder), 9, _hoisted_6$7),
+      }, toDisplayString($props.placeholder), 9, _hoisted_6$6),
       this.type == "number" ? (openBlock(), createElementBlock("div", _hoisted_7$5, [
         createVNode(_component_gnk_button, {
           disabled: _ctx.disabled,
@@ -2096,7 +2098,7 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[1] || (_cache[1] = ($event) => $options.buttonClicked("numberUp"))
         }, {
           default: withCtx(() => [
-            _hoisted_8$4
+            _hoisted_8$3
           ]),
           _: 1
         }, 8, ["disabled"]),
@@ -2109,7 +2111,7 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[2] || (_cache[2] = ($event) => $options.buttonClicked("numberDown"))
         }, {
           default: withCtx(() => [
-            _hoisted_9$2
+            _hoisted_9$3
           ]),
           _: 1
         }, 8, ["disabled"])
@@ -2124,7 +2126,7 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[3] || (_cache[3] = ($event) => $options.buttonClicked("showPassword"))
       }, {
         default: withCtx(() => [
-          this.passwordVisible ? (openBlock(), createElementBlock("span", _hoisted_10$2, " visibility_off ")) : (openBlock(), createElementBlock("span", _hoisted_11$2, " visibility "))
+          this.passwordVisible ? (openBlock(), createElementBlock("span", _hoisted_10$1, " visibility_off ")) : (openBlock(), createElementBlock("span", _hoisted_11$1, " visibility "))
         ]),
         _: 1
       }, 8, ["disabled"])) : createCommentVNode("", true),
@@ -2137,7 +2139,7 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[4] || (_cache[4] = ($event) => $options.buttonClicked("clear"))
       }, {
         default: withCtx(() => [
-          _hoisted_12$2
+          _hoisted_12$1
         ]),
         _: 1
       }, 8, ["disabled"]),
@@ -2153,7 +2155,7 @@ function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
       class: "--loading",
       target: "#" + _ctx.componentId + "> .--base"
     }, null, 8, ["target"])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_13$2, [
+    createElementVNode("div", _hoisted_13, [
       renderSlot(_ctx.$slots, "badge")
     ])
   ], 42, _hoisted_1$e);
@@ -2197,20 +2199,32 @@ const _sfc_main$d = {
     value(newValue) {
       if (this.currentValue !== newValue) {
         this.currentValue = newValue;
-        animateValue(0, this.value, this.duration, (value) => {
-          this.currentValue = value;
-        }, (value) => {
-        });
+        animateValue(
+          0,
+          this.value,
+          this.duration,
+          (value) => {
+            this.currentValue = value;
+          },
+          (value) => {
+          }
+        );
       }
     }
   },
   methods: {},
   async mounted() {
     await sleep(2e3);
-    animateValue(0, this.value, this.duration, (value) => {
-      this.currentValue = value;
-    }, (value) => {
-    });
+    animateValue(
+      0,
+      this.value,
+      this.duration,
+      (value) => {
+        this.currentValue = value;
+      },
+      (value) => {
+      }
+    );
   }
 };
 const _hoisted_1$d = ["id"];
@@ -2447,18 +2461,25 @@ const _sfc_main$b = {
 };
 const _hoisted_1$b = ["draggable", "disabled", "id"];
 const _hoisted_2$9 = { class: "--base" };
-const _hoisted_3$8 = {
+const _hoisted_3$7 = {
   key: 0,
   class: "--title"
 };
-const _hoisted_4$7 = {
+const _hoisted_4$6 = {
   key: 1,
   class: "--buttons"
 };
-const _hoisted_5$7 = /* @__PURE__ */ createElementVNode("div", { class: "--buttons-glow" }, null, -1);
-const _hoisted_6$6 = /* @__PURE__ */ createElementVNode("div", { class: "--buttons-highlight" }, null, -1);
-const _hoisted_7$4 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
-const _hoisted_8$3 = {
+const _hoisted_5$6 = {
+  key: 0,
+  class: "--buttons-glow"
+};
+const _hoisted_6$5 = { class: "--buttons-content" };
+const _hoisted_7$4 = {
+  key: 1,
+  class: "--buttons-highlight"
+};
+const _hoisted_8$2 = /* @__PURE__ */ createElementVNode("div", { class: "--ripple" }, null, -1);
+const _hoisted_9$2 = {
   key: 0,
   class: "--badge-holder"
 };
@@ -2479,15 +2500,17 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
     onKeyup: _cache[7] || (_cache[7] = ($event) => this.componentRaiseEvent("keyup", $event))
   }, [
     createElementVNode("div", _hoisted_2$9, [
-      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_3$8, [
+      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_3$7, [
         renderSlot(_ctx.$slots, "title")
       ])) : createCommentVNode("", true),
-      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_4$7, [
-        _hoisted_5$7,
-        renderSlot(_ctx.$slots, "default"),
-        _hoisted_6$6
+      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_4$6, [
+        this.mode == "tabbar" ? (openBlock(), createElementBlock("div", _hoisted_5$6)) : createCommentVNode("", true),
+        createElementVNode("div", _hoisted_6$5, [
+          renderSlot(_ctx.$slots, "default")
+        ]),
+        this.mode == "tabbar" ? (openBlock(), createElementBlock("div", _hoisted_7$4)) : createCommentVNode("", true)
       ])) : createCommentVNode("", true),
-      _hoisted_7$4,
+      _hoisted_8$2,
       createVNode(_component_gnk_loading, {
         hidden: !this.busy,
         primary: this.primary,
@@ -2503,7 +2526,7 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
         target: "#" + _ctx.componentId + "> .--base"
       }, null, 8, ["hidden", "primary", "secondary", "info", "success", "warning", "danger", "bug", "dark", "light", "square", "target"])
     ]),
-    !!this.$slots.badge ? (openBlock(), createElementBlock("div", _hoisted_8$3, [
+    !!this.$slots.badge ? (openBlock(), createElementBlock("div", _hoisted_9$2, [
       renderSlot(_ctx.$slots, "badge")
     ])) : createCommentVNode("", true)
   ], 42, _hoisted_1$b);
@@ -2608,15 +2631,14 @@ const _sfc_main$a = {
 };
 const _hoisted_1$a = ["id"];
 const _hoisted_2$8 = { class: "row full-height" };
-const _hoisted_3$7 = { class: "col-block" };
-const _hoisted_4$6 = { class: "fill flex-centered" };
-const _hoisted_5$6 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
-const _hoisted_6$5 = {
+const _hoisted_3$6 = { class: "col-block" };
+const _hoisted_4$5 = { class: "fill flex-centered" };
+const _hoisted_5$5 = /* @__PURE__ */ createElementVNode("div", { class: "--loading" }, null, -1);
+const _hoisted_6$4 = {
   key: 0,
   class: "fill flex-centered text-bold"
 };
-const _hoisted_7$3 = /* @__PURE__ */ createTextVNode("% ");
-const _hoisted_8$2 = { class: "--loading-label | text-bold" };
+const _hoisted_7$3 = { class: "--loading-label | text-bold" };
 function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnkProgressbar = resolveComponent("gnkProgressbar");
   const _component_gnk_Counter = resolveComponent("gnk-Counter");
@@ -2646,15 +2668,15 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
             value: $props.percentage
           }, null, 8, ["value"])) : createCommentVNode("", true),
           createElementVNode("div", _hoisted_2$8, [
-            createElementVNode("div", _hoisted_3$7, [
-              createElementVNode("div", _hoisted_4$6, [
-                _hoisted_5$6,
-                $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_6$5, [
+            createElementVNode("div", _hoisted_3$6, [
+              createElementVNode("div", _hoisted_4$5, [
+                _hoisted_5$5,
+                $props.percentage >= 0 ? (openBlock(), createElementBlock("div", _hoisted_6$4, [
                   createVNode(_component_gnk_Counter, { value: $props.percentage }, null, 8, ["value"]),
-                  _hoisted_7$3
+                  createTextVNode("% ")
                 ])) : createCommentVNode("", true)
               ]),
-              createElementVNode("p", _hoisted_8$2, toDisplayString($props.label), 1)
+              createElementVNode("p", _hoisted_7$3, toDisplayString($props.label), 1)
             ])
           ])
         ], 46, _hoisted_1$a)
@@ -2738,16 +2760,16 @@ const _hoisted_2$7 = {
   key: 0,
   class: "--hero-container"
 };
-const _hoisted_3$6 = {
+const _hoisted_3$5 = {
   key: 1,
   class: "--interactions"
 };
-const _hoisted_4$5 = { class: "--content" };
-const _hoisted_5$5 = {
+const _hoisted_4$4 = { class: "--content" };
+const _hoisted_5$4 = {
   key: 0,
   class: "--content-title | text-capitalize flex"
 };
-const _hoisted_6$4 = {
+const _hoisted_6$3 = {
   key: 1,
   class: "--content-body | flex"
 };
@@ -2775,15 +2797,15 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
         alt: $props.headerBackgroundAlt,
         animation: "zoomIn-light"
       }, null, 8, ["src", "alt"])) : createCommentVNode("", true),
-      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$6, [
+      !!this.$slots.interactions ? (openBlock(), createElementBlock("div", _hoisted_3$5, [
         renderSlot(_ctx.$slots, "interactions")
       ])) : createCommentVNode("", true)
     ])) : createCommentVNode("", true),
-    createElementVNode("div", _hoisted_4$5, [
-      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_5$5, [
+    createElementVNode("div", _hoisted_4$4, [
+      !!this.$slots.title ? (openBlock(), createElementBlock("div", _hoisted_5$4, [
         renderSlot(_ctx.$slots, "title")
       ])) : createCommentVNode("", true),
-      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_6$4, [
+      !!this.$slots.default ? (openBlock(), createElementBlock("div", _hoisted_6$3, [
         renderSlot(_ctx.$slots, "default")
       ])) : createCommentVNode("", true)
     ]),
@@ -2875,10 +2897,10 @@ const _sfc_main$8 = {
 };
 const _hoisted_1$8 = ["disabled", "id"];
 const _hoisted_2$6 = { class: "--base" };
-const _hoisted_3$5 = { class: "--content" };
-const _hoisted_4$4 = { class: "--header" };
-const _hoisted_5$4 = { class: "--content-body" };
-const _hoisted_6$3 = { class: "--footer" };
+const _hoisted_3$4 = { class: "--content" };
+const _hoisted_4$3 = { class: "--header" };
+const _hoisted_5$3 = { class: "--content-body" };
+const _hoisted_6$2 = { class: "--footer" };
 function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_loading = resolveComponent("gnk-loading");
   return openBlock(), createElementBlock("div", {
@@ -2897,14 +2919,14 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: _cache[0] || (_cache[0] = ($event) => $options.close($event))
     }),
     createElementVNode("div", _hoisted_2$6, [
-      createElementVNode("div", _hoisted_3$5, [
-        createElementVNode("div", _hoisted_4$4, [
+      createElementVNode("div", _hoisted_3$4, [
+        createElementVNode("div", _hoisted_4$3, [
           renderSlot(_ctx.$slots, "header")
         ]),
-        createElementVNode("div", _hoisted_5$4, [
+        createElementVNode("div", _hoisted_5$3, [
           renderSlot(_ctx.$slots, "default")
         ]),
-        createElementVNode("div", _hoisted_6$3, [
+        createElementVNode("div", _hoisted_6$2, [
           renderSlot(_ctx.$slots, "footer")
         ])
       ])
@@ -3058,23 +3080,11 @@ const _hoisted_2$5 = {
   ref: "base",
   class: "--base"
 };
-const _hoisted_3$4 = /* @__PURE__ */ createElementVNode("input", {
+const _hoisted_3$3 = /* @__PURE__ */ createElementVNode("input", {
   class: "--input",
   type: "text",
   value: "teste"
 }, null, -1);
-const _hoisted_4$3 = /* @__PURE__ */ createTextVNode("0912356234234");
-const _hoisted_5$3 = /* @__PURE__ */ createTextVNode(" Home ");
-const _hoisted_6$2 = /* @__PURE__ */ createTextVNode(" Dropdown ");
-const _hoisted_7$1 = /* @__PURE__ */ createTextVNode(" Expand Panel ");
-const _hoisted_8$1 = /* @__PURE__ */ createTextVNode(" Input ");
-const _hoisted_9$1 = /* @__PURE__ */ createTextVNode(" Radio ");
-const _hoisted_10$1 = /* @__PURE__ */ createTextVNode(" Switch ");
-const _hoisted_11$1 = /* @__PURE__ */ createTextVNode(" Checkbox ");
-const _hoisted_12$1 = /* @__PURE__ */ createTextVNode(" Buttons ");
-const _hoisted_13$1 = /* @__PURE__ */ createTextVNode(" Cards ");
-const _hoisted_14$1 = /* @__PURE__ */ createTextVNode(" ProgressBar ");
-const _hoisted_15 = /* @__PURE__ */ createTextVNode(" 404 ");
 function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Chip = resolveComponent("gnk-Chip");
   const _component_gnkListviewItem = resolveComponent("gnkListviewItem");
@@ -3094,10 +3104,10 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     onFocusout: _cache[7] || (_cache[7] = ($event) => this.hasFocus(false))
   }, [
     createElementVNode("div", _hoisted_2$5, [
-      _hoisted_3$4,
+      _hoisted_3$3,
       createVNode(_component_gnk_Chip, null, {
         default: withCtx(() => [
-          _hoisted_4$3
+          createTextVNode("0912356234234")
         ]),
         _: 1
       })
@@ -3112,67 +3122,67 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
           default: withCtx(() => [
             createVNode(_component_gnkListviewItem, { to: { name: "Home" } }, {
               default: withCtx(() => [
-                _hoisted_5$3
+                createTextVNode(" Home ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Dropdown" } }, {
               default: withCtx(() => [
-                _hoisted_6$2
+                createTextVNode(" Dropdown ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "ExpandPanel" } }, {
               default: withCtx(() => [
-                _hoisted_7$1
+                createTextVNode(" Expand Panel ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Input" } }, {
               default: withCtx(() => [
-                _hoisted_8$1
+                createTextVNode(" Input ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Radio" } }, {
               default: withCtx(() => [
-                _hoisted_9$1
+                createTextVNode(" Radio ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Switch" } }, {
               default: withCtx(() => [
-                _hoisted_10$1
+                createTextVNode(" Switch ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Checkbox" } }, {
               default: withCtx(() => [
-                _hoisted_11$1
+                createTextVNode(" Checkbox ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Buttons" } }, {
               default: withCtx(() => [
-                _hoisted_12$1
+                createTextVNode(" Buttons ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Cards" } }, {
               default: withCtx(() => [
-                _hoisted_13$1
+                createTextVNode(" Cards ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Progressbar" } }, {
               default: withCtx(() => [
-                _hoisted_14$1
+                createTextVNode(" ProgressBar ")
               ]),
               _: 1
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "NotFound" } }, {
               default: withCtx(() => [
-                _hoisted_15
+                createTextVNode(" 404 ")
               ]),
               _: 1
             })
@@ -3286,7 +3296,7 @@ const _sfc_main$4 = {
   data() {
     return {
       childPage: void 0,
-      transitionName: "",
+      pageTransitionName: "",
       routeHistoryStartingPoint: "",
       routeHistory: [],
       routeName: "",
@@ -3302,9 +3312,6 @@ const _sfc_main$4 = {
         "--hide-footer": !!((_a2 = this.childPage) == null ? void 0 : _a2.$slots.footer),
         "--hide-header": !!((_b = this.childPage) == null ? void 0 : _b.$slots.header)
       };
-    },
-    hasRouter() {
-      return !!this.$router;
     }
   },
   watch: {
@@ -3312,28 +3319,7 @@ const _sfc_main$4 = {
       this.updateChildContentPadding();
     },
     async $route(to, from) {
-      this.store.currentRoute = to.name;
-      if (this.routeHistory.length > 35) {
-        this.routeHistory = this.routeHistory.slice(15);
-      }
-      if (!this.routeHistoryStartingPoint) {
-        this.routeHistory.push(to.name);
-        this.routeHistoryStartingPoint = to.name;
-      }
-      if (to.name == this.routeHistoryStartingPoint) {
-        this.routeHistory = [];
-        this.transitionName = "prev";
-        return;
-      }
-      if (this.routeHistory.at(-1) == to.name && this.routeHistory.length > 1) {
-        this.routeHistory.pop();
-        this.transitionName = "prev";
-        return;
-      }
-      if (to.name == from.name)
-        return;
-      this.routeHistory.push(from.name);
-      this.transitionName = "next";
+      this.store.routing.pushRouteToHistory(to, from) == 1 ? this.pageTransitionName = "next" : this.pageTransitionName = "prev";
     }
   },
   updated() {
@@ -3343,7 +3329,6 @@ const _sfc_main$4 = {
     registerChild(element) {
       var _a2;
       if (((_a2 = element == null ? void 0 : element.$options) == null ? void 0 : _a2.name) === "gnkPage") {
-        this.childPage = void 0;
         this.childPage = element;
       }
     },
@@ -3365,30 +3350,28 @@ const _sfc_main$4 = {
 };
 const _hoisted_1$4 = ["disabled", "id"];
 const _hoisted_2$4 = { class: "--base" };
-const _hoisted_3$3 = {
+const _hoisted_3$2 = {
   key: 0,
   class: "--slide-sidebar |"
 };
-const _hoisted_4$2 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
-const _hoisted_5$2 = {
+const _hoisted_4$2 = {
   ref: "header",
   class: "--header | grid"
 };
-const _hoisted_6$1 = { class: "row" };
-const _hoisted_7 = { class: "col-12" };
-const _hoisted_8 = { class: "--header-content" };
-const _hoisted_9 = {
+const _hoisted_5$2 = { class: "row" };
+const _hoisted_6$1 = { class: "col-12" };
+const _hoisted_7$1 = { class: "--header-content" };
+const _hoisted_8$1 = {
   ref: "content",
   class: "--content | grid"
 };
-const _hoisted_10 = { class: "row" };
-const _hoisted_11 = {
+const _hoisted_9$1 = { class: "row" };
+const _hoisted_10 = {
   key: 0,
   class: "--content-sidebar | lg-hide-smaller col-4 overflow-vertical"
 };
-const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
-const _hoisted_13 = { class: "--content-main" };
-const _hoisted_14 = {
+const _hoisted_11 = { class: "--content-main" };
+const _hoisted_12 = {
   ref: "footer",
   class: "--footer"
 };
@@ -3408,14 +3391,14 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     onKeyup: _cache[7] || (_cache[7] = withModifiers(($event) => this.componentRaiseEvent("keyup", $event), ["prevent"]))
   }, [
     createElementVNode("div", _hoisted_2$4, [
-      !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_3$3, [
+      !!this.$slots.slideSidebar ? (openBlock(), createElementBlock("div", _hoisted_3$2, [
         renderSlot(_ctx.$slots, "slideSidebar", {}, () => [
-          _hoisted_4$2
+          createTextVNode(" overflow-vertical ")
         ])
       ])) : createCommentVNode("", true),
-      createElementVNode("div", _hoisted_5$2, [
-        createElementVNode("div", _hoisted_6$1, [
-          createElementVNode("div", _hoisted_7, [
+      createElementVNode("div", _hoisted_4$2, [
+        createElementVNode("div", _hoisted_5$2, [
+          createElementVNode("div", _hoisted_6$1, [
             createVNode(Transition, { name: "fade" }, {
               default: withCtx(() => [
                 withDirectives(createVNode(_component_gnk_Progressbar, {
@@ -3430,15 +3413,15 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
             })
           ])
         ]),
-        createElementVNode("div", _hoisted_8, [
+        createElementVNode("div", _hoisted_7$1, [
           renderSlot(_ctx.$slots, "header")
         ])
       ], 512),
-      createElementVNode("div", _hoisted_9, [
-        createElementVNode("div", _hoisted_10, [
-          !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_11, [
+      createElementVNode("div", _hoisted_8$1, [
+        createElementVNode("div", _hoisted_9$1, [
+          !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_10, [
             renderSlot(_ctx.$slots, "sidebar", {}, () => [
-              _hoisted_12
+              createTextVNode(" overflow-vertical ")
             ])
           ])) : createCommentVNode("", true),
           createVNode(_component_gnk_swipeManager, {
@@ -3454,12 +3437,12 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
             class: "col-block"
           }, {
             default: withCtx(() => [
-              createElementVNode("div", _hoisted_13, [
+              createElementVNode("div", _hoisted_11, [
                 renderSlot(_ctx.$slots, "default", {}, () => [
-                  $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
+                  !!this.$router ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
                     default: withCtx(({ Component }) => [
                       createVNode(Transition, {
-                        name: $data.transitionName || "fade"
+                        name: $data.pageTransitionName || "fade"
                       }, {
                         default: withCtx(() => [
                           (openBlock(), createBlock(resolveDynamicComponent(Component)))
@@ -3476,7 +3459,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           })
         ])
       ], 512),
-      createElementVNode("div", _hoisted_14, [
+      createElementVNode("div", _hoisted_12, [
         renderSlot(_ctx.$slots, "footer")
       ], 512)
     ])
@@ -3529,7 +3512,7 @@ const _sfc_main$3 = {
 };
 const _hoisted_1$3 = ["disabled", "id"];
 const _hoisted_2$3 = { class: "--base" };
-const _hoisted_3$2 = {
+const _hoisted_3$1 = {
   ref: "header",
   class: "--header"
 };
@@ -3555,7 +3538,7 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     onKeyup: _cache[5] || (_cache[5] = withModifiers(($event) => this.componentRaiseEvent("keyup", $event), ["prevent"]))
   }, [
     createElementVNode("div", _hoisted_2$3, [
-      createElementVNode("div", _hoisted_3$2, [
+      createElementVNode("div", _hoisted_3$1, [
         renderSlot(_ctx.$slots, "header")
       ], 512),
       createElementVNode("div", _hoisted_4$1, [
@@ -3585,38 +3568,56 @@ const _sfc_main$2 = {
     };
   },
   props: {
+    OnScrollThreshold: {
+      type: Number,
+      default: 25,
+      skip: true
+    },
     hideOnScroll: {
       type: Boolean,
       default: false,
       skip: true
     },
-    OnScrollThreshold: {
-      type: Number,
-      default: 50,
-      skip: true
-    },
-    showTitleOnScroll: {
-      type: Boolean,
-      default: false
-    },
     solidOnScroll: {
       type: Boolean,
       default: true,
       skip: true
+    },
+    size: {
+      type: String,
+      required: false,
+      default: "",
+      validator(type) {
+        return ["xl", "l", ""].includes(type.toString());
+      }
     }
   },
   computed: {
     componentClassObject() {
       return {
         "--hide-on-scroll": this.hideOnScroll && this.hide,
-        "--show-title": this.showTitleOnScroll,
         "--solid-on-scroll": this.solidOnScroll && this.hide
       };
+    }
+  },
+  watch: {
+    async $route(to, from) {
+      this.hide = !(this.store.routing.pushRouteToHistory(to, from) != 0);
+      if (!this.hide) {
+        setCssVariable(this.$el, "--title-large-translate", `0px`);
+        setCssVariable(this.$el, "--title-large-opacity", 1);
+      }
     }
   },
   methods: {
     handleScroll(event) {
       event.target.scrollTop > this.OnScrollThreshold ? this.hide = true : this.hide = false;
+      if (this.size != "") {
+        let targetTranslate = event.target.scrollTop > 0 ? event.target.scrollTop < 50 ? event.target.scrollTop : 50 : 0;
+        let targetopacity = 1 / targetTranslate;
+        setCssVariable(this.$el, "--title-large-translate", `${targetTranslate * 1.3 * -1}px`);
+        setCssVariable(this.$el, "--title-large-opacity", targetopacity < 0.05 ? 0 : targetopacity);
+      }
     }
   },
   mounted() {
@@ -3624,32 +3625,47 @@ const _sfc_main$2 = {
   }
 };
 const _hoisted_1$2 = ["id"];
-const _hoisted_2$2 = { class: "--content | row flex-centered" };
-const _hoisted_3$1 = { class: "--left | col-3 flex-centered flex-left" };
-const _hoisted_4 = { class: "col-6" };
-const _hoisted_5 = { class: "--title | flex-centered" };
-const _hoisted_6 = { class: "--right | col-3 flex-centered flex-right" };
+const _hoisted_2$2 = { class: "--content | row flex-centered p-l-10" };
+const _hoisted_3 = { class: "--left | col-3 flex-centered flex-left" };
+const _hoisted_4 = { class: "--title | col-6 flex-centered" };
+const _hoisted_5 = { class: "--right | col-3 flex-centered flex-right" };
+const _hoisted_6 = {
+  key: 0,
+  class: "--subnavbar | row col-12 flex-center"
+};
+const _hoisted_7 = {
+  key: 1,
+  class: "--title-large | row col-12 flex-left p-10"
+};
+const _hoisted_8 = { key: 0 };
+const _hoisted_9 = { key: 1 };
 function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-  return withDirectives((openBlock(), createElementBlock("div", {
+  return openBlock(), createElementBlock("div", {
     id: _ctx.componentId,
     class: normalizeClass([[_ctx.componentName + " |", $options.componentClassObject, _ctx.componentGeneralClasses], "grid flex-centered"])
   }, [
     createElementVNode("div", _hoisted_2$2, [
-      createElementVNode("div", _hoisted_3$1, [
+      createElementVNode("div", _hoisted_3, [
         renderSlot(_ctx.$slots, "left")
       ]),
       createElementVNode("div", _hoisted_4, [
-        createElementVNode("div", _hoisted_5, [
-          renderSlot(_ctx.$slots, "title")
-        ])
+        renderSlot(_ctx.$slots, "default")
       ]),
-      createElementVNode("div", _hoisted_6, [
+      createElementVNode("div", _hoisted_5, [
         renderSlot(_ctx.$slots, "right")
       ])
-    ])
-  ], 10, _hoisted_1$2)), [
-    [vShow, !$data.hide]
-  ]);
+    ]),
+    !!this.$slots.subnavbar && this.size != "" ? (openBlock(), createElementBlock("div", _hoisted_6, [
+      renderSlot(_ctx.$slots, "subnavbar")
+    ])) : createCommentVNode("", true),
+    !!this.$slots.default && this.size != "" ? (openBlock(), createElementBlock("div", _hoisted_7, [
+      this.size == "xl" ? (openBlock(), createElementBlock("h1", _hoisted_8, [
+        renderSlot(_ctx.$slots, "default")
+      ])) : (openBlock(), createElementBlock("h2", _hoisted_9, [
+        renderSlot(_ctx.$slots, "default")
+      ]))
+    ])) : createCommentVNode("", true)
+  ], 10, _hoisted_1$2);
 }
 var gnkNavbar = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
 var SyntaxHighlight_vue_vue_type_style_index_0_lang = "";
@@ -4120,8 +4136,7 @@ const _sfc_main$1 = {
   }
 };
 const _hoisted_1$1 = ["id"];
-const _hoisted_2$1 = /* @__PURE__ */ createTextVNode(" code ");
-const _hoisted_3 = { id: "--code" };
+const _hoisted_2$1 = { id: "--code" };
 function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnkCard = resolveComponent("gnkCard");
   return openBlock(), createElementBlock("div", {
@@ -4131,10 +4146,10 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   }, [
     createVNode(_component_gnkCard, null, {
       title: withCtx(() => [
-        _hoisted_2$1
+        createTextVNode(" code ")
       ]),
       default: withCtx(() => [
-        createElementVNode("pre", _hoisted_3, " \r\n                    " + toDisplayString($props.code) + "\r\n                ", 1)
+        createElementVNode("pre", _hoisted_2$1, " \n                    " + toDisplayString($props.code) + "\n                ", 1)
       ]),
       _: 1
     })
@@ -4204,48 +4219,81 @@ var gnkChip = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 const state = reactive({
   busy: false,
   loading: false,
-  swipeCapturedBy: null
+  swipeCapturedBy: null,
+  mainSlideSidebarIsOpen: false
+});
+const routing = reactive({
+  routeCurrent: "",
+  routeHistory: ["/"],
+  pushRouteToHistory(to, from) {
+    if (to.fullPath === from.fullPath)
+      return 0;
+    if (this.routeHistory.length > 35) {
+      this.routeHistory = this.routeHistory.slice(15);
+    }
+    let indexOfFrom = this.routeHistory.indexOf(from.fullPath);
+    let indexOfTo = this.routeHistory.indexOf(to.fullPath);
+    if (indexOfFrom > 0 && indexOfTo > -1 && indexOfTo < indexOfFrom) {
+      this.routeHistory.splice(indexOfFrom, this.routeHistory.length - (indexOfTo + 1));
+      return -1;
+    } else {
+      this.routeHistory.push(to.fullPath);
+      return 1;
+    }
+  }
 });
 const ui = reactive({
-  currentRoute: "",
   dropDownLevel: [],
   dropDownStartingLevel: 8e3,
   registerDropdown(uid) {
-    let element = this.dropDownLevel.find((element2) => element2.uid == uid);
-    if (element === void 0) {
+    let elementInMemory = this.dropDownLevel.find((element) => element.uid === uid);
+    if (elementInMemory === void 0) {
       this.dropDownLevel.push({ uid, zLevel: (this.dropDownLevel.length > 0 ? this.dropDownLevel[0].zLevel : this.dropDownStartingLevel) + 1 });
       return this.dropDownLevel[this.dropDownLevel.length - 1].zLevel;
     } else
-      return element.zLevel;
+      return elementInMemory.zLevel;
   },
   dropDropdown(uid) {
-    this.dropDownLevel.splice(this.dropDownLevel.indexOf((element) => element.uid == uid));
-  },
-  modalLevel: [],
-  modalStartingLevel: 99e3,
-  registerModal(uid) {
-    let element = this.dropDownLevel.find((element2) => element2.uid == uid);
-    if (element === void 0) {
-      this.dropDownLevel.push({ uid, zLevel: (this.dropDownLevel.length > 0 ? this.dropDownLevel[0].zLevel : this.modalStartingLevel) + 1 });
-      return this.dropDownLevel[this.dropDownLevel.length - 1].zLevel;
-    } else
-      return element.zLevel;
-  },
-  dropModal(uid) {
-    this.dropDownLevel.splice(this.dropDownLevel.indexOf((element) => element.uid == uid));
+    this.dropDownLevel.splice(this.dropDownLevel.indexOf((elementInMemory) => elementInMemory.uid === uid));
   },
   menuLevel: [],
   menuStartingLevel: 9e3,
   registerMenu(uid) {
-    let element = this.dropDownLevel.find((element2) => element2.uid == uid);
-    if (element === void 0) {
-      this.dropDownLevel.push({ uid, zLevel: (this.dropDownLevel.length > 0 ? this.dropDownLevel[0].zLevel : this.menuStartingLevel) + 1 });
-      return this.dropDownLevel[this.dropDownLevel.length - 1].zLevel;
+    let elementInMemory = this.menuLevel.find((element) => element.uid === uid);
+    if (elementInMemory === void 0) {
+      this.menuLevel.push({ element: uid, zLevel: (this.menuLevel.length > 0 ? this.menuLevel[0].zLevel : this.menuStartingLevel) + 1 });
+      return this.menuLevel[this.menuLevel.length - 1].zLevel;
     } else
-      return element.zLevel;
+      return elementInMemory.zLevel;
   },
   dropMenu(uid) {
-    this.dropDownLevel.splice(this.dropDownLevel.indexOf((element) => element.uid == uid));
+    this.menuLevel.splice(this.menuLevel.indexOf((elementInMemory) => elementInMemory.uid === uid));
+  },
+  sidebarLevel: [],
+  sidebarStartingLevel: 1e4,
+  registerSidebar(uid) {
+    let elementInMemory = this.sidebarLevel.find((element) => element.uid === uid);
+    if (elementInMemory === void 0) {
+      this.sidebarLevel.push({ uid, zLevel: (this.sidebarLevel.length > 0 ? this.sidebarLevel[0].zLevel : this.sidebarStartingLevel) + 1 });
+      return this.sidebarLevel[this.sidebarLevel.length - 1].zLevel;
+    } else
+      return elementInMemory.zLevel;
+  },
+  dropSidebar(uid) {
+    this.sidebarLevel.splice(this.sidebarLevel.indexOf((elementInMemory) => elementInMemory.uid === uid));
+  },
+  modalLevel: [],
+  modalStartingLevel: 99e3,
+  registerModal(uid) {
+    let elementInMemory = this.modalLevel.find((element) => element.uid === uid);
+    if (elementInMemory === void 0) {
+      this.modalLevel.push({ uid, zLevel: (this.modalLevel.length > 0 ? this.modalLevel[0].zLevel : this.modalStartingLevel) + 1 });
+      return this.modalLevel[this.modalLevel.length - 1].zLevel;
+    } else
+      return elementInMemory.zLevel;
+  },
+  dropModal(uid) {
+    this.modalLevel.splice(this.modalLevel.indexOf((elementInMemory) => elementInMemory.uid === uid));
   }
 });
 const theme = reactive({
@@ -4258,81 +4306,100 @@ const theme = reactive({
   colorDanger: "#ee2b48",
   colorBug: "#ff2e4e"
 });
-watch(() => theme.colorMode, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  document.querySelector("body").setAttribute("gnk-theme-colorMode", newValue);
-  localStorage.setItem("gnk-theme-colorMode", newValue);
-});
-watch(() => theme.colorPrimary, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ PRIMARY: newValue });
-});
-watch(() => theme.colorInfo, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ INFO: newValue });
-});
-watch(() => theme.colorSuccess, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ SUCCESS: newValue });
-});
-watch(() => theme.colorWarning, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ WARNING: newValue });
-});
-watch(() => theme.colorDanger, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ DANGER: newValue });
-});
-watch(() => theme.colorBug, (newValue = null, prevValue = null) => {
-  if (newValue === prevValue)
-    return;
-  setColors({ BUG: newValue });
-});
+watch(
+  () => theme.colorMode,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    document.querySelector("body").setAttribute("gnk-theme-colorMode", newValue);
+    localStorage.setItem("gnk-theme-colorMode", newValue);
+  }
+);
+watch(
+  () => theme.colorPrimary,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ PRIMARY: newValue });
+  }
+);
+watch(
+  () => theme.colorInfo,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ INFO: newValue });
+  }
+);
+watch(
+  () => theme.colorSuccess,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ SUCCESS: newValue });
+  }
+);
+watch(
+  () => theme.colorWarning,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ WARNING: newValue });
+  }
+);
+watch(
+  () => theme.colorDanger,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ DANGER: newValue });
+  }
+);
+watch(
+  () => theme.colorBug,
+  (newValue = null, prevValue = null) => {
+    if (newValue === prevValue)
+      return;
+    setColors({ BUG: newValue });
+  }
+);
 theme.colorMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 var Store = {
   state,
   theme,
-  ui
+  ui,
+  routing
 };
 /*!
-  * vue-router v4.0.16
+  * vue-router v4.1.5
   * (c) 2022 Eduardo San Martin Morote
   * @license MIT
   */
-const hasSymbol = typeof Symbol === "function" && typeof Symbol.toStringTag === "symbol";
-const PolySymbol = (name) => hasSymbol ? Symbol(name) : "_vr_" + name;
-const matchedRouteKey = /* @__PURE__ */ PolySymbol("rvlm");
-const viewDepthKey = /* @__PURE__ */ PolySymbol("rvd");
-const routerKey = /* @__PURE__ */ PolySymbol("r");
-const routeLocationKey = /* @__PURE__ */ PolySymbol("rl");
-const routerViewLocationKey = /* @__PURE__ */ PolySymbol("rvl");
 const isBrowser = typeof window !== "undefined";
 function isESModule(obj) {
-  return obj.__esModule || hasSymbol && obj[Symbol.toStringTag] === "Module";
+  return obj.__esModule || obj[Symbol.toStringTag] === "Module";
 }
 const assign = Object.assign;
 function applyToParams(fn, params) {
   const newParams = {};
   for (const key in params) {
     const value = params[key];
-    newParams[key] = Array.isArray(value) ? value.map(fn) : fn(value);
+    newParams[key] = isArray(value) ? value.map(fn) : fn(value);
   }
   return newParams;
 }
 const noop = () => {
 };
+const isArray = Array.isArray;
 const TRAILING_SLASH_RE = /\/$/;
 const removeTrailingSlash = (path) => path.replace(TRAILING_SLASH_RE, "");
 function parseURL(parseQuery2, location2, currentLocation = "/") {
   let path, query = {}, searchString = "", hash = "";
-  const searchPos = location2.indexOf("?");
-  const hashPos = location2.indexOf("#", searchPos > -1 ? searchPos : 0);
+  const hashPos = location2.indexOf("#");
+  let searchPos = location2.indexOf("?");
+  if (hashPos < searchPos && hashPos >= 0) {
+    searchPos = -1;
+  }
   if (searchPos > -1) {
     path = location2.slice(0, searchPos);
     searchString = location2.slice(searchPos + 1, hashPos > -1 ? hashPos : location2.length);
@@ -4377,10 +4444,10 @@ function isSameRouteLocationParams(a, b) {
   return true;
 }
 function isSameRouteLocationParamsValue(a, b) {
-  return Array.isArray(a) ? isEquivalentArray(a, b) : Array.isArray(b) ? isEquivalentArray(b, a) : a === b;
+  return isArray(a) ? isEquivalentArray(a, b) : isArray(b) ? isEquivalentArray(b, a) : a === b;
 }
 function isEquivalentArray(a, b) {
-  return Array.isArray(b) ? a.length === b.length && a.every((value, i) => value === b[i]) : a.length === 1 && a[0] === b;
+  return isArray(b) ? a.length === b.length && a.every((value, i) => value === b[i]) : a.length === 1 && a[0] === b;
 }
 function resolveRelativePath(to, from) {
   if (to.startsWith("/"))
@@ -4394,11 +4461,12 @@ function resolveRelativePath(to, from) {
   let segment;
   for (toPosition = 0; toPosition < toSegments.length; toPosition++) {
     segment = toSegments[toPosition];
-    if (position === 1 || segment === ".")
+    if (segment === ".")
       continue;
-    if (segment === "..")
-      position--;
-    else
+    if (segment === "..") {
+      if (position > 1)
+        position--;
+    } else
       break;
   }
   return fromSegments.slice(0, position).join("/") + "/" + toSegments.slice(toPosition - (toPosition === toSegments.length ? 1 : 0)).join("/");
@@ -4593,15 +4661,25 @@ function useHistoryStateNavigation(base) {
     }
   }
   function replace(to, data) {
-    const state2 = assign({}, history2.state, buildState(historyState.value.back, to, historyState.value.forward, true), data, { position: historyState.value.position });
+    const state2 = assign({}, history2.state, buildState(
+      historyState.value.back,
+      to,
+      historyState.value.forward,
+      true
+    ), data, { position: historyState.value.position });
     changeLocation(to, state2, true);
     currentLocation.value = to;
   }
   function push(to, data) {
-    const currentState = assign({}, historyState.value, history2.state, {
-      forward: to,
-      scroll: computeScrollPosition()
-    });
+    const currentState = assign(
+      {},
+      historyState.value,
+      history2.state,
+      {
+        forward: to,
+        scroll: computeScrollPosition()
+      }
+    );
     changeLocation(currentState.current, currentState, true);
     const state2 = assign({}, buildState(currentLocation.value, to, null), { position: currentState.position + 1 }, data);
     changeLocation(to, state2, false);
@@ -4662,7 +4740,7 @@ const START_LOCATION_NORMALIZED = {
   meta: {},
   redirectedFrom: void 0
 };
-const NavigationFailureSymbol = /* @__PURE__ */ PolySymbol("nf");
+const NavigationFailureSymbol = Symbol("");
 var NavigationFailureType;
 (function(NavigationFailureType2) {
   NavigationFailureType2[NavigationFailureType2["aborted"] = 4] = "aborted";
@@ -4775,12 +4853,13 @@ function tokensToParser(segments, extraOptions) {
         } else if (token.type === 1) {
           const { value, repeatable, optional } = token;
           const param = value in params ? params[value] : "";
-          if (Array.isArray(param) && !repeatable)
+          if (isArray(param) && !repeatable) {
             throw new Error(`Provided param "${value}" is an array but it is not repeatable (* or + modifiers)`);
-          const text = Array.isArray(param) ? param.join("/") : param;
+          }
+          const text = isArray(param) ? param.join("/") : param;
           if (!text) {
             if (optional) {
-              if (segment.length < 2 && segments.length > 1) {
+              if (segment.length < 2) {
                 if (path.endsWith("/"))
                   path = path.slice(0, -1);
                 else
@@ -4793,7 +4872,7 @@ function tokensToParser(segments, extraOptions) {
         }
       }
     }
-    return path;
+    return path || "/";
   }
   return {
     re,
@@ -5018,7 +5097,7 @@ function createRouterMatcher(routes2, globalOptions) {
         if (isRootAdd && record.name && !isAliasRecord(matcher))
           removeRoute(record.name);
       }
-      if ("children" in mainNormalizedRecord) {
+      if (mainNormalizedRecord.children) {
         const children = mainNormalizedRecord.children;
         for (let i = 0; i < children.length; i++) {
           addRoute(children[i], matcher, originalRecord && originalRecord.children[i]);
@@ -5074,7 +5153,13 @@ function createRouterMatcher(routes2, globalOptions) {
           location: location2
         });
       name = matcher.record.name;
-      params = assign(paramsFromLocation(currentLocation.params, matcher.keys.filter((k) => !k.optional).map((k) => k.name)), location2.params);
+      params = assign(
+        paramsFromLocation(
+          currentLocation.params,
+          matcher.keys.filter((k) => !k.optional).map((k) => k.name)
+        ),
+        location2.params && paramsFromLocation(location2.params, matcher.keys.map((k) => k.name))
+      );
       path = matcher.stringify(params);
     } else if ("path" in location2) {
       path = location2.path;
@@ -5133,7 +5218,7 @@ function normalizeRouteRecord(record) {
     leaveGuards: /* @__PURE__ */ new Set(),
     updateGuards: /* @__PURE__ */ new Set(),
     enterCallbacks: {},
-    components: "components" in record ? record.components || {} : { default: record.component }
+    components: "components" in record ? record.components || null : record.component && { default: record.component }
   };
 }
 function normalizeRecordProps(record) {
@@ -5220,7 +5305,7 @@ function parseQuery(search) {
     const value = eqPos < 0 ? null : decode(searchParam.slice(eqPos + 1));
     if (key in query) {
       let currentValue = query[key];
-      if (!Array.isArray(currentValue)) {
+      if (!isArray(currentValue)) {
         currentValue = query[key] = [currentValue];
       }
       currentValue.push(value);
@@ -5241,7 +5326,7 @@ function stringifyQuery(query) {
       }
       continue;
     }
-    const values = Array.isArray(value) ? value.map((v) => v && encodeQueryValue(v)) : [value && encodeQueryValue(value)];
+    const values = isArray(value) ? value.map((v) => v && encodeQueryValue(v)) : [value && encodeQueryValue(value)];
     values.forEach((value2) => {
       if (value2 !== void 0) {
         search += (search.length ? "&" : "") + key;
@@ -5257,11 +5342,16 @@ function normalizeQuery(query) {
   for (const key in query) {
     const value = query[key];
     if (value !== void 0) {
-      normalizedQuery[key] = Array.isArray(value) ? value.map((v) => v == null ? null : "" + v) : value == null ? value : "" + value;
+      normalizedQuery[key] = isArray(value) ? value.map((v) => v == null ? null : "" + v) : value == null ? value : "" + value;
     }
   }
   return normalizedQuery;
 }
+const matchedRouteKey = Symbol("");
+const viewDepthKey = Symbol("");
+const routerKey = Symbol("");
+const routeLocationKey = Symbol("");
+const routerViewLocationKey = Symbol("");
 function useCallbacks() {
   let handlers = [];
   function add(handler) {
@@ -5285,12 +5375,12 @@ function guardToPromiseFn(guard, to, from, record, name) {
   const enterCallbackArray = record && (record.enterCallbacks[name] = record.enterCallbacks[name] || []);
   return () => new Promise((resolve, reject) => {
     const next = (valid) => {
-      if (valid === false)
+      if (valid === false) {
         reject(createRouterError(4, {
           from,
           to
         }));
-      else if (valid instanceof Error) {
+      } else if (valid instanceof Error) {
         reject(valid);
       } else if (isRouteLocation(valid)) {
         reject(createRouterError(2, {
@@ -5298,8 +5388,9 @@ function guardToPromiseFn(guard, to, from, record, name) {
           to: valid
         }));
       } else {
-        if (enterCallbackArray && record.enterCallbacks[name] === enterCallbackArray && typeof valid === "function")
+        if (enterCallbackArray && record.enterCallbacks[name] === enterCallbackArray && typeof valid === "function") {
           enterCallbackArray.push(valid);
+        }
         resolve();
       }
     };
@@ -5361,7 +5452,9 @@ function useLink(props) {
   const isExactActive = computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params));
   function navigate(e = {}) {
     if (guardEvent(e)) {
-      return router2[unref(props.replace) ? "replace" : "push"](unref(props.to)).catch(noop);
+      return router2[unref(props.replace) ? "replace" : "push"](
+        unref(props.to)
+      ).catch(noop);
     }
     return Promise.resolve();
   }
@@ -5434,7 +5527,7 @@ function includesParams(outer, inner) {
       if (innerValue !== outerValue)
         return false;
     } else {
-      if (!Array.isArray(outerValue) || outerValue.length !== innerValue.length || innerValue.some((value, i) => value !== outerValue[i]))
+      if (!isArray(outerValue) || outerValue.length !== innerValue.length || innerValue.some((value, i) => value !== outerValue[i]))
         return false;
     }
   }
@@ -5458,9 +5551,18 @@ const RouterViewImpl = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, slots }) {
     const injectedRoute = inject(routerViewLocationKey);
     const routeToDisplay = computed(() => props.route || injectedRoute.value);
-    const depth = inject(viewDepthKey, 0);
-    const matchedRouteRef = computed(() => routeToDisplay.value.matched[depth]);
-    provide(viewDepthKey, depth + 1);
+    const injectedDepth = inject(viewDepthKey, 0);
+    const depth = computed(() => {
+      let initialDepth = unref(injectedDepth);
+      const { matched } = routeToDisplay.value;
+      let matchedRoute;
+      while ((matchedRoute = matched[initialDepth]) && !matchedRoute.components) {
+        initialDepth++;
+      }
+      return initialDepth;
+    });
+    const matchedRouteRef = computed(() => routeToDisplay.value.matched[depth.value]);
+    provide(viewDepthKey, computed(() => depth.value + 1));
     provide(matchedRouteKey, matchedRouteRef);
     provide(routerViewLocationKey, routeToDisplay);
     const viewRef = ref();
@@ -5482,13 +5584,13 @@ const RouterViewImpl = /* @__PURE__ */ defineComponent({
     }, { flush: "post" });
     return () => {
       const route = routeToDisplay.value;
-      const matchedRoute = matchedRouteRef.value;
-      const ViewComponent = matchedRoute && matchedRoute.components[props.name];
       const currentName = props.name;
+      const matchedRoute = matchedRouteRef.value;
+      const ViewComponent = matchedRoute && matchedRoute.components[currentName];
       if (!ViewComponent) {
         return normalizeSlot(slots.default, { Component: ViewComponent, route });
       }
-      const routePropsOption = matchedRoute.props[props.name];
+      const routePropsOption = matchedRoute.props[currentName];
       const routeProps = routePropsOption ? routePropsOption === true ? route.params : typeof routePropsOption === "function" ? routePropsOption(route) : routePropsOption : null;
       const onVnodeUnmounted = (vnode) => {
         if (vnode.component.isUnmounted) {
@@ -5625,7 +5727,7 @@ function createRouter(options) {
       return assign({
         query: to.query,
         hash: to.hash,
-        params: to.params
+        params: "path" in newTargetLocation ? {} : to.params
       }, newTargetLocation);
     }
   }
@@ -5637,26 +5739,38 @@ function createRouter(options) {
     const replace2 = to.replace === true;
     const shouldRedirect = handleRedirectRecord(targetLocation);
     if (shouldRedirect)
-      return pushWithRedirect(assign(locationAsObject(shouldRedirect), {
-        state: data,
-        force,
-        replace: replace2
-      }), redirectedFrom || targetLocation);
+      return pushWithRedirect(
+        assign(locationAsObject(shouldRedirect), {
+          state: typeof shouldRedirect === "object" ? assign({}, data, shouldRedirect.state) : data,
+          force,
+          replace: replace2
+        }),
+        redirectedFrom || targetLocation
+      );
     const toLocation = targetLocation;
     toLocation.redirectedFrom = redirectedFrom;
     let failure;
     if (!force && isSameRouteLocation(stringifyQuery$1, from, targetLocation)) {
       failure = createRouterError(16, { to: toLocation, from });
-      handleScroll(from, from, true, false);
+      handleScroll(
+        from,
+        from,
+        true,
+        false
+      );
     }
     return (failure ? Promise.resolve(failure) : navigate(toLocation, from)).catch((error) => isNavigationFailure(error) ? isNavigationFailure(error, 2) ? error : markAsReady(error) : triggerError(error, toLocation, from)).then((failure2) => {
       if (failure2) {
         if (isNavigationFailure(failure2, 2)) {
-          return pushWithRedirect(assign(locationAsObject(failure2.to), {
-            state: data,
-            force,
-            replace: replace2
-          }), redirectedFrom || toLocation);
+          return pushWithRedirect(
+            assign({
+              replace: replace2
+            }, locationAsObject(failure2.to), {
+              state: typeof failure2.to === "object" ? assign({}, data, failure2.to.state) : data,
+              force
+            }),
+            redirectedFrom || toLocation
+          );
         }
       } else {
         failure2 = finalizeNavigation(toLocation, from, true, replace2, data);
@@ -5700,7 +5814,7 @@ function createRouter(options) {
       guards = [];
       for (const record of to.matched) {
         if (record.beforeEnter && !from.matched.includes(record)) {
-          if (Array.isArray(record.beforeEnter)) {
+          if (isArray(record.beforeEnter)) {
             for (const beforeEnter of record.beforeEnter)
               guards.push(guardToPromiseFn(beforeEnter, to, from));
           } else {
@@ -5751,6 +5865,8 @@ function createRouter(options) {
     if (removeHistoryListener)
       return;
     removeHistoryListener = routerHistory.listen((to, _from, info) => {
+      if (!router2.listening)
+        return;
       const toLocation = resolve(to);
       const shouldRedirect = handleRedirectRecord(toLocation);
       if (shouldRedirect) {
@@ -5767,20 +5883,28 @@ function createRouter(options) {
           return error;
         }
         if (isNavigationFailure(error, 2)) {
-          pushWithRedirect(error.to, toLocation).then((failure) => {
+          pushWithRedirect(
+            error.to,
+            toLocation
+          ).then((failure) => {
             if (isNavigationFailure(failure, 4 | 16) && !info.delta && info.type === NavigationType.pop) {
               routerHistory.go(-1, false);
             }
           }).catch(noop);
           return Promise.reject();
         }
-        if (info.delta)
+        if (info.delta) {
           routerHistory.go(-info.delta, false);
+        }
         return triggerError(error, toLocation, from);
       }).then((failure) => {
-        failure = failure || finalizeNavigation(toLocation, from, false);
+        failure = failure || finalizeNavigation(
+          toLocation,
+          from,
+          false
+        );
         if (failure) {
-          if (info.delta) {
+          if (info.delta && !isNavigationFailure(failure, 8)) {
             routerHistory.go(-info.delta, false);
           } else if (info.type === NavigationType.pop && isNavigationFailure(failure, 4 | 16)) {
             routerHistory.go(-1, false);
@@ -5831,6 +5955,7 @@ function createRouter(options) {
   const installedApps = /* @__PURE__ */ new Set();
   const router2 = {
     currentRoute,
+    listening: true,
     addRoute,
     removeRoute,
     hasRoute,
@@ -5933,6 +6058,11 @@ router.beforeEach((to, from, next) => {
   if (to.component !== null) {
     if (typeof ((_a2 = to.matched[0]) == null ? void 0 : _a2.components.default) === "function") {
       Store.state.loading = true;
+      sleep(5e3, () => {
+        if (Store.state.loading == true) {
+          router.go(-1);
+        }
+      });
     }
     next();
   } else

@@ -42,10 +42,13 @@ export default router;
  */
 
 import store from '../Store/Store'
+import sleet, { sleep } from '../utils/asyncUtils'
 
 
 
 import { createWebHistory, createRouter, createWebHashHistory  } from "vue-router";
+
+
 
 let routes = []
 let router = createRouter({
@@ -72,7 +75,16 @@ let router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.component !== null) {
     if (typeof to.matched[0]?.components.default === 'function') {
+      
       store.state.loading = true
+      
+      sleep(5000, () => {
+        if (store.state.loading == true) {
+          router.go(-1)
+        }
+        
+      })
+
     }
     next()
 

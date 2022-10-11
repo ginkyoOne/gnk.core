@@ -199,6 +199,8 @@ export default {
             return (this.primary==true||this.secondary==true||this.info==true||this.success==true||this.warning==true||this.danger==true||this.bug==true||this.dark==true||this.light==true||this.hexColor!=null||this.level!=null)
         },
 
+
+        //TOOGLE CONTROLS IS CHECKED
         isCheched() {
             if (this?.type == 'toggle') {
 
@@ -224,7 +226,8 @@ export default {
             }
             return this.isolatedCheck
             
-        }
+        },
+
 
     },
 
@@ -334,18 +337,23 @@ export default {
     },
 
 
-    watch:{
+    watch: {
+        
         hexColor(newValue) {
             this.setBaseColor(newValue)
         },
+
     },
 
     mounted() {
+
+        //register child to parents
         if (typeof this.registerChild == 'function') this.registerChild(this)
         
         //set hexacolor to
         if (typeof this.hexColor != "undefined") this.setBaseColor(this?.hexColor)
 
+        //update page contentPadding
         if (typeof this.updateContentPadding != "undefined") this.updateContentPadding()
         if (typeof this.updateChildContentPadding != "undefined") this.updateChildContentPadding()
 
@@ -355,7 +363,7 @@ export default {
     unmounted() {
         //console.log('unmounted', this.componentName, this.componentId)
 
-        this.$el.parentNode.removeChild(this.$el)
+        //this.$el.parentNode.removeChild(this.$el)
         if (typeof this.childButtons !== 'undefined') this.childButtons.length = 0
 
     },

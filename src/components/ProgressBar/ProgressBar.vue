@@ -1,6 +1,6 @@
 <script>
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import {sleep,random, animateValue} from "../../utils/animateValue"
+import {sleep,random, animateValue} from "../../utils/asyncUtils"
 
 export default {
   name: 'gnkProgressbar',

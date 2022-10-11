@@ -8,7 +8,7 @@ export default {
     data() {
         return {
             childPage: undefined,
-            transitionName: "",
+            pageTransitionName: "",
             routeHistoryStartingPoint: '',
             routeHistory: [],
             routeName: '',
@@ -29,9 +29,9 @@ export default {
             }
         },
 
-        hasRouter() {
+/*         hasRouter() {
             return !!this.$router
-        },
+        }, */
     },
     
     watch: {
@@ -40,39 +40,9 @@ export default {
         },
 
         async $route(to, from) {
-            this.store.currentRoute = to.name
-
-            if (this.routeHistory.length > 35) {
-                this.routeHistory = this.routeHistory.slice(15)
-            }
-
-            //CHECK IF THERS A STARTING POINT
-            if (!this.routeHistoryStartingPoint) {
-
-                this.routeHistory.push(to.name)
-                this.routeHistoryStartingPoint = to.name
-            }
-
-            //CHECK IF ITS THE STARTING POINT
-            if (to.name == this.routeHistoryStartingPoint) {
-                this.routeHistory = []
-                this.transitionName = 'prev'  
-                return
-            } 
-
-            if (this.routeHistory.at(-1) == to.name && this.routeHistory.length > 1) {
-                this.routeHistory.pop()
-                this.transitionName = 'prev'
-                return
-            }
-
-            if (to.name == from.name) return
-
-            this.routeHistory.push(from.name)    
-            this.transitionName = 'next';
+            //update store current route
+            (this.store.routing.pushRouteToHistory(to, from) == 1 ? this.pageTransitionName = 'next' : this.pageTransitionName = 'prev')
         }
-
-
     },
 
     updated() { 
@@ -82,7 +52,6 @@ export default {
     methods: {
         registerChild(element){
             if (element?.$options?.name === 'gnkPage') {
-                this.childPage = undefined
                 this.childPage = element
             } 
         },
@@ -169,11 +138,12 @@ export default {
                         <div class="--content-main">
                             <slot>
 
-                                <router-view v-if="hasRouter" v-slot="{ Component }">
-                                    <transition :name="transitionName || 'fade'">
+                                <router-view v-if="!!this.$router" v-slot="{ Component }">
+                                    <transition :name="pageTransitionName || 'fade'">
                                         <component :is="Component" />
                                     </transition>
                                 </router-view>
+
 
                             </slot>
                         </div>
@@ -241,10 +211,12 @@ export default {
         height: fit-content;
 
         z-index: 1;
+
     }
 
     &>.--base>.--header{
         transition: all .25s ease-in-out;
+
         top:0;
         left: 0;
         width: 100%;
@@ -261,7 +233,7 @@ export default {
 
         &>.--header-content{
             transition: all .25s ease-in-out;
-            transform: translateY(0);
+            opacity: 1;
 
             display: flex;
             height: fit-content;
@@ -271,8 +243,8 @@ export default {
     }
 
     &>.--base>.--footer{
-        transition: all .25s ease-in-out;
-        transform: translateY(0);
+        transition: all 1s ease-in-out;
+        opacity: 1;
 
         width:calc(100% - 5px);
 
@@ -325,12 +297,12 @@ export default {
 
     &:is(.--hide-header){
         &>.--base>.--header>.--header-content{
-            transform: translateY(-100%);
+            opacity: 0;
         }
     }
     &:is(.--hide-footer){
         &>.--base>.--footer{
-            transform: translateY(100%);
+            opacity: 0;
         }
     }
 
@@ -375,34 +347,34 @@ export default {
 //BOTTOM PAGE
 .next-leave-from {
     transform: translateX(0);
-    filter:brightness(1);
+    opacity:1;
 }
 
 .next-leave-active {
     transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
     z-index: 0;
-    filter:brightness(0.8);
+    opacity: .8;
 }
 
 .next-leave-to {
     transform: translateX(-25%);
-    filter:brightness(0.6);
+    opacity: .6;
 }
 
 .prev-enter-from {
     transform: translateX(-25%);
-    filter:brightness(0.6);
+    opacity: .6;
 }
 
 .prev-enter-active {
     transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
     z-index: 0;
-    filter:brightness(0.8);
+    opacity: .8;
 }
 
 .prev-enter-to {
     transform: translateX(0%);
-    filter:brightness(1);
+    opacity: 1;
 }
 
 

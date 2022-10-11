@@ -15,7 +15,15 @@ async function animateValue(startValue, endValue, duration, updateCallback, fina
     if (typeof finalCallback === "function") finalCallback(endValue);
 }
 
-function sleep(ms = 2000) {
+async function sleep(ms = 2000, finalCallback = null) {
+    if (typeof finalCallback === "function") {
+        
+        await sleep(ms);
+        
+        finalCallback();
+        return true
+    }
+
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 

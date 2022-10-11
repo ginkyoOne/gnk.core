@@ -1,7 +1,7 @@
 <script>
 
 import gnkComponent from "../ComponentBase/gnkComponent.vue"
-import {sleep, animateValue} from "../../utils/animateValue"
+import {sleep, animateValue} from "../../utils/asyncUtils"
 
 
 export default {

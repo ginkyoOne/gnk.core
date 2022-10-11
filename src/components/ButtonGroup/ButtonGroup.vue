@@ -156,10 +156,12 @@ export default {
             </div>
 
             <div v-if="!!this.$slots.default" class="--buttons">
-                <div class="--buttons-glow"></div>
-                <slot>
-                </slot>
-                <div class="--buttons-highlight"></div>
+                <div v-if="this.mode=='tabbar'" class="--buttons-glow"></div>
+                <div class="--buttons-content">
+                    <slot>
+                    </slot>
+                </div>
+                <div v-if="this.mode=='tabbar'" class="--buttons-highlight"></div>
             </div>
 
             <div class="--ripple" />
@@ -264,12 +266,13 @@ export default {
 
     }
 
-    &>.--base>.--title, &>.--base>.--buttons{
+    &>.--base>.--title, &>.--base>.--buttons, &>.--base>.--buttons>.--buttons-content{
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
     }
+
 
     &>.--base>.--title{
         display: flex;
@@ -278,8 +281,11 @@ export default {
         margin-left: 5px;
         margin-right: 10px;
     }
-        
     &>.--base>.--buttons{
+        width: 100%;
+        height: 100%;
+    }
+    &>.--base>.--buttons>.--buttons-content{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -289,33 +295,29 @@ export default {
 
 
         &>[class*="gnkButton"]{
-            //&>.--base{
-                //padding-top: 5px;
-           // }
-
             &:is(:active,.--checked){
                 --translate-y : 0px;
             }
         }    
 
-        &>[class*="gnkButton"]:not(.--square){
+        &>[class*="gnkButton"]{
             margin: 0;
 
-            &:is(.gnkButton + .gnkButton):not(:last-child, :first-child){
+            &:is(.gnkButton + .gnkButton):not(:last-of-type, :first-of-type){
                 &>.--base{
                     border-left: 1px solid -color('BASE', 1, 0, 0, 2);
                     border-right: 1px solid -color('BASE', 1, 0, 0, -5);
                     border-radius: 0;
                 }
             }
-            &:is(:first-child):not(:last-child){
+            &:is(:first-of-type):not(:last-of-type){
                 &>.--base{
                     border-top-right-radius: 0;
                     border-bottom-right-radius: 0;
                     border-right: 1px solid -color('BASE', 1, 0, 0, -5);
                 }
             }
-            &:is(:last-child):not(:first-child){
+            &:is(:last-of-type):not(:first-of-type){
                 &>.--base{
                     border-top-left-radius: 0;
                     border-bottom-left-radius: 0;
@@ -336,9 +338,15 @@ export default {
         --border-size: var(--BORDER-SIZE);
         --shadow: var(--SHADOW);
 
-        &>.--base>.--buttons{
+        &>.--base>.--buttons>.--buttons-content{
             &>[class*="gnkButton"]{
+
+
                 --color: var(--color);
+
+                &>.--base{
+                    border: unset !important;
+                }
 
                 &:is(:active,.--checked){
                     --translate-y : 0px;
@@ -349,23 +357,25 @@ export default {
                     }
                 }
             }    
+        }
+        &>.--base>.--buttons{
             &>.--buttons-glow{
 
-                transition: all .25s cubic-bezier(.25,.1,.4,1.4);
-                position: absolute;
-                
-                height: 100%;
-                width: var(--buttons-highlight-width);
-                
-                top:0;
-                left: var(--buttons-highlight-left);
+            transition: all .25s cubic-bezier(.25,.1,.4,1.4);
+            position: absolute;
+            
+            height: 100%;
+            width: var(--buttons-highlight-width);
+            
+            top:0;
+            left: var(--buttons-highlight-left);
 
-                border-radius: 0 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS);
-                
-                background: radial-gradient(circle at top, var(--buttons-highlight-background-color) 0%, transparent 80%);
-                opacity: calc(var(--buttons-highlight-opacity) - .5); 
+            border-radius: 0 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS);
+            
+            background: radial-gradient(circle at top, var(--buttons-highlight-background-color) 0%, transparent 60%);
+            opacity: calc(var(--buttons-highlight-opacity) - .5); 
 
-                pointer-events: none;
+            pointer-events: none;
             }
             &>.--buttons-highlight{
 
@@ -387,6 +397,7 @@ export default {
                 pointer-events: none;
             }
         }
+        
     }
 
 
