@@ -7,24 +7,25 @@ export default {
     extends: gnkComponent,
     data() {
         return {
-            childElement: null,
+            childPage: undefined,
             transitionName: "",
             routeHistoryStartingPoint: '',
             routeHistory: [],
+            routeName: '',
             observer: null,
         }
     },
 
     props: {
-
+    
     },
 
     computed: {
         componentClassObject() {
             return {
                 '--level-0': true,
-                '--hide-footer': !!this.childElement?.$slots.footer,
-                '--hide-header': !!this.childElement?.$slots.header
+                '--hide-footer': !!this.childPage?.$slots.footer,
+                '--hide-header': !!this.childPage?.$slots.header
             }
         },
 
@@ -34,11 +35,13 @@ export default {
     },
     
     watch: {
-        childElement(newValue, oldValue) {
+        childPage(newValue, oldValue) {
             this.updateChildContentPadding()
         },
 
         async $route(to, from) {
+            this.store.currentRoute = to.name
+
             if (this.routeHistory.length > 35) {
                 this.routeHistory = this.routeHistory.slice(15)
             }
@@ -79,17 +82,18 @@ export default {
     methods: {
         registerChild(element){
             if (element?.$options?.name === 'gnkPage') {
-                this.childElement = element
+                this.childPage = undefined
+                this.childPage = element
             } 
         },
 
         updateChildContentPadding() {
-            if (!!this.childElement?.$slots.footer) return
+            if (!!this.childPage?.$slots.footer) return
 
             let { height: headerHeight } = this.componentElementClientRect(this.$refs.header)
             let { height: footerHeight } = this.componentElementClientRect(this.$refs.footer)
-            this.childElement.parentTopPadding = headerHeight
-            this.childElement.parentBottomPadding = footerHeight
+            this.childPage.parentTopPadding = headerHeight
+            this.childPage.parentBottomPadding = footerHeight
             
         }
 
@@ -100,6 +104,9 @@ export default {
             uiLevel: 0
         }
     },
+
+
+
 
 
 }
@@ -143,36 +150,38 @@ export default {
             </div>
             
             
-            <div ref="content" class="--content | grid col-12 row">
+            <div ref="content" class="--content | grid">
+                <div class="row">
 
-                <div v-if="!!this.$slots.sidebar" class="--content-sidebar | lg-hide-smaller col-4 overflow-vertical">
-                    <slot name="sidebar">
-                        overflow-vertical
-                    </slot>
-                </div>
-
-
-                <gnk-swipeManager
-                    @swipedLeft="this?.$router?.go(+1)"
-                    @swipedRight="this?.$router?.go(-1)"
-                    class="col-block grid"
-                    captureDirection="horizontal">
-
-                    <div class="--content-main | col-12">
-                        <slot>
-
-                            <router-view v-if="hasRouter" v-slot="{ Component }">
-                                <transition :name="transitionName || 'fade'">
-                                    <component :is="Component" />
-                                </transition>
-                            </router-view>
-
+                    <div v-if="!!this.$slots.sidebar" class="--content-sidebar | lg-hide-smaller col-4 overflow-vertical">
+                        <slot name="sidebar">
+                            overflow-vertical
                         </slot>
                     </div>
 
 
-                </gnk-swipeManager>
+                    <gnk-swipeManager
+                        @swipedLeft="this?.$router?.go(+1)"
+                        @swipedRight="this?.$router?.go(-1)"
+                        captureDirection="horizontal"
+                        class="col-block">
 
+                        <div class="--content-main">
+                            <slot>
+
+                                <router-view v-if="hasRouter" v-slot="{ Component }">
+                                    <transition :name="transitionName || 'fade'">
+                                        <component :is="Component" />
+                                    </transition>
+                                </router-view>
+
+                            </slot>
+                        </div>
+
+
+                    </gnk-swipeManager>
+
+                </div>
             </div>
             
             <div ref="footer" class="--footer">
@@ -280,20 +289,19 @@ export default {
         height: 100%;
         width: 100%;
 
-        overflow: hidden;
+        overflow: hidden
     }
 
     
-    &>.--base>.--content>.--sidebar{
+    &>.--base>.--content>.row>.--sidebar{
         height: 100%;
         width: fit-content;
         border-right: 1px solid -color('LEVE-2',.5);
         box-shadow: var(--SHADOW);
     }
 
-    &>.--base>.--content>.gnkSwipeManager>.--content-main {
+    &>.--base>.--content>.row>.gnkSwipeManager>.--content-main {
         height: 100% !important;
-        width: 100%;
         
         display: grid;
         grid-template: "main";
@@ -302,8 +310,6 @@ export default {
 
         isolation: isolate;
         overflow: hidden !important;
-
-        position: relative;
 
         &> * {
             grid-area: main; /* Transition: make sections overlap on same cell */

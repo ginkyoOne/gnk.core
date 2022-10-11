@@ -283,10 +283,8 @@ export default {
 
         //TOGGLE CHECK STATE
         onChecked(eventName, event) {
-
-            if(this?.href != '') window.open(this.href,(this.black ? "_blank" : "_self"));
-            if (this?.to !== '') this.$router.push(this.to)  
-
+            if (typeof this?.href != 'undefined' && this?.href != '') window.open(this.href, (this.black ? "_blank" : "_self"));
+            if (typeof this?.to !='undefined' && this?.to != '') this.$router.push(this.to)  
                 
             if (this?.type == 'toggle') {
 
@@ -354,8 +352,17 @@ export default {
         
     },
 
+    unmounted() {
+        //console.log('unmounted', this.componentName, this.componentId)
 
+        this.$el.parentNode.removeChild(this.$el)
+        if (typeof this.childButtons !== 'undefined') this.childButtons.length = 0
 
+    },
+
+    deactivated() {
+        console.log('deactivated', this.componentName, this.componentId)
+    },
 
 
 

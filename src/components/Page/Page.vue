@@ -47,14 +47,12 @@ export default {
             
             setCssVariable(this.$refs.content, '--padding-top', `${(this.parentTopPadding > 0 ? this.parentTopPadding : headerHeight)}px`)
             setCssVariable(this.$refs.content, '--padding-bottom', `${this.parentBottomPadding > 0 ? this.parentBottomPadding : footerHeight}px`)
-
-            console.log('this')
         }
     },
 
     mounted() { 
         this.updateContentPadding()
-    }
+    },
 
 
 }

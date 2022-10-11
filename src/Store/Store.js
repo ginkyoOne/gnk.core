@@ -12,6 +12,8 @@ const state = reactive({
 
 const ui = reactive({
     
+    currentRoute: '',
+
     //Dropdown Level
     //! starts at 8000
     //? {uid : '', level : 8000 }

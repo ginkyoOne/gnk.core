@@ -289,9 +289,9 @@ const _sfc_main$p = {
       });
     },
     onChecked(eventName, event) {
-      if ((this == null ? void 0 : this.href) != "")
+      if (typeof (this == null ? void 0 : this.href) != "undefined" && (this == null ? void 0 : this.href) != "")
         window.open(this.href, this.black ? "_blank" : "_self");
-      if ((this == null ? void 0 : this.to) !== "")
+      if (typeof (this == null ? void 0 : this.to) != "undefined" && (this == null ? void 0 : this.to) != "")
         this.$router.push(this.to);
       if ((this == null ? void 0 : this.type) == "toggle") {
         this.isolatedCheck = !this.isolatedCheck;
@@ -338,6 +338,14 @@ const _sfc_main$p = {
       this.updateContentPadding();
     if (typeof this.updateChildContentPadding != "undefined")
       this.updateChildContentPadding();
+  },
+  unmounted() {
+    this.$el.parentNode.removeChild(this.$el);
+    if (typeof this.childButtons !== "undefined")
+      this.childButtons.length = 0;
+  },
+  deactivated() {
+    console.log("deactivated", this.componentName, this.componentId);
   },
   provide() {
     return {
@@ -2435,8 +2443,6 @@ const _sfc_main$b = {
   },
   updated() {
     this.calculateTabbarSelection();
-  },
-  mounted() {
   }
 };
 const _hoisted_1$b = ["draggable", "disabled", "id"];
@@ -3067,7 +3073,7 @@ const _hoisted_10$1 = /* @__PURE__ */ createTextVNode(" Switch ");
 const _hoisted_11$1 = /* @__PURE__ */ createTextVNode(" Checkbox ");
 const _hoisted_12$1 = /* @__PURE__ */ createTextVNode(" Buttons ");
 const _hoisted_13$1 = /* @__PURE__ */ createTextVNode(" Cards ");
-const _hoisted_14 = /* @__PURE__ */ createTextVNode(" ProgressBar ");
+const _hoisted_14$1 = /* @__PURE__ */ createTextVNode(" ProgressBar ");
 const _hoisted_15 = /* @__PURE__ */ createTextVNode(" 404 ");
 function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_gnk_Chip = resolveComponent("gnk-Chip");
@@ -3160,7 +3166,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
             }),
             createVNode(_component_gnkListviewItem, { to: { name: "Progressbar" } }, {
               default: withCtx(() => [
-                _hoisted_14
+                _hoisted_14$1
               ]),
               _: 1
             }),
@@ -3279,10 +3285,11 @@ const _sfc_main$4 = {
   extends: _sfc_main$p,
   data() {
     return {
-      childElement: null,
+      childPage: void 0,
       transitionName: "",
       routeHistoryStartingPoint: "",
       routeHistory: [],
+      routeName: "",
       observer: null
     };
   },
@@ -3292,8 +3299,8 @@ const _sfc_main$4 = {
       var _a2, _b;
       return {
         "--level-0": true,
-        "--hide-footer": !!((_a2 = this.childElement) == null ? void 0 : _a2.$slots.footer),
-        "--hide-header": !!((_b = this.childElement) == null ? void 0 : _b.$slots.header)
+        "--hide-footer": !!((_a2 = this.childPage) == null ? void 0 : _a2.$slots.footer),
+        "--hide-header": !!((_b = this.childPage) == null ? void 0 : _b.$slots.header)
       };
     },
     hasRouter() {
@@ -3301,10 +3308,11 @@ const _sfc_main$4 = {
     }
   },
   watch: {
-    childElement(newValue, oldValue) {
+    childPage(newValue, oldValue) {
       this.updateChildContentPadding();
     },
     async $route(to, from) {
+      this.store.currentRoute = to.name;
       if (this.routeHistory.length > 35) {
         this.routeHistory = this.routeHistory.slice(15);
       }
@@ -3335,17 +3343,18 @@ const _sfc_main$4 = {
     registerChild(element) {
       var _a2;
       if (((_a2 = element == null ? void 0 : element.$options) == null ? void 0 : _a2.name) === "gnkPage") {
-        this.childElement = element;
+        this.childPage = void 0;
+        this.childPage = element;
       }
     },
     updateChildContentPadding() {
       var _a2;
-      if (!!((_a2 = this.childElement) == null ? void 0 : _a2.$slots.footer))
+      if (!!((_a2 = this.childPage) == null ? void 0 : _a2.$slots.footer))
         return;
       let { height: headerHeight } = this.componentElementClientRect(this.$refs.header);
       let { height: footerHeight } = this.componentElementClientRect(this.$refs.footer);
-      this.childElement.parentTopPadding = headerHeight;
-      this.childElement.parentBottomPadding = footerHeight;
+      this.childPage.parentTopPadding = headerHeight;
+      this.childPage.parentBottomPadding = footerHeight;
     }
   },
   provide() {
@@ -3370,15 +3379,16 @@ const _hoisted_7 = { class: "col-12" };
 const _hoisted_8 = { class: "--header-content" };
 const _hoisted_9 = {
   ref: "content",
-  class: "--content | grid col-12 row"
+  class: "--content | grid"
 };
-const _hoisted_10 = {
+const _hoisted_10 = { class: "row" };
+const _hoisted_11 = {
   key: 0,
   class: "--content-sidebar | lg-hide-smaller col-4 overflow-vertical"
 };
-const _hoisted_11 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
-const _hoisted_12 = { class: "--content-main | col-12" };
-const _hoisted_13 = {
+const _hoisted_12 = /* @__PURE__ */ createTextVNode(" overflow-vertical ");
+const _hoisted_13 = { class: "--content-main" };
+const _hoisted_14 = {
   ref: "footer",
   class: "--footer"
 };
@@ -3425,46 +3435,48 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
         ])
       ], 512),
       createElementVNode("div", _hoisted_9, [
-        !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_10, [
-          renderSlot(_ctx.$slots, "sidebar", {}, () => [
-            _hoisted_11
-          ])
-        ])) : createCommentVNode("", true),
-        createVNode(_component_gnk_swipeManager, {
-          onSwipedLeft: _cache[0] || (_cache[0] = ($event) => {
-            var _a2;
-            return (_a2 = this == null ? void 0 : this.$router) == null ? void 0 : _a2.go(1);
-          }),
-          onSwipedRight: _cache[1] || (_cache[1] = ($event) => {
-            var _a2;
-            return (_a2 = this == null ? void 0 : this.$router) == null ? void 0 : _a2.go(-1);
-          }),
-          class: "col-block grid",
-          captureDirection: "horizontal"
-        }, {
-          default: withCtx(() => [
-            createElementVNode("div", _hoisted_12, [
-              renderSlot(_ctx.$slots, "default", {}, () => [
-                $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
-                  default: withCtx(({ Component }) => [
-                    createVNode(Transition, {
-                      name: $data.transitionName || "fade"
-                    }, {
-                      default: withCtx(() => [
-                        (openBlock(), createBlock(resolveDynamicComponent(Component)))
-                      ]),
-                      _: 2
-                    }, 1032, ["name"])
-                  ]),
-                  _: 1
-                })) : createCommentVNode("", true)
-              ])
+        createElementVNode("div", _hoisted_10, [
+          !!this.$slots.sidebar ? (openBlock(), createElementBlock("div", _hoisted_11, [
+            renderSlot(_ctx.$slots, "sidebar", {}, () => [
+              _hoisted_12
             ])
-          ]),
-          _: 3
-        })
+          ])) : createCommentVNode("", true),
+          createVNode(_component_gnk_swipeManager, {
+            onSwipedLeft: _cache[0] || (_cache[0] = ($event) => {
+              var _a2;
+              return (_a2 = this == null ? void 0 : this.$router) == null ? void 0 : _a2.go(1);
+            }),
+            onSwipedRight: _cache[1] || (_cache[1] = ($event) => {
+              var _a2;
+              return (_a2 = this == null ? void 0 : this.$router) == null ? void 0 : _a2.go(-1);
+            }),
+            captureDirection: "horizontal",
+            class: "col-block"
+          }, {
+            default: withCtx(() => [
+              createElementVNode("div", _hoisted_13, [
+                renderSlot(_ctx.$slots, "default", {}, () => [
+                  $options.hasRouter ? (openBlock(), createBlock(_component_router_view, { key: 0 }, {
+                    default: withCtx(({ Component }) => [
+                      createVNode(Transition, {
+                        name: $data.transitionName || "fade"
+                      }, {
+                        default: withCtx(() => [
+                          (openBlock(), createBlock(resolveDynamicComponent(Component)))
+                        ]),
+                        _: 2
+                      }, 1032, ["name"])
+                    ]),
+                    _: 1
+                  })) : createCommentVNode("", true)
+                ])
+              ])
+            ]),
+            _: 3
+          })
+        ])
       ], 512),
-      createElementVNode("div", _hoisted_13, [
+      createElementVNode("div", _hoisted_14, [
         renderSlot(_ctx.$slots, "footer")
       ], 512)
     ])
@@ -3509,7 +3521,6 @@ const _sfc_main$3 = {
       let { height: footerHeight } = this.componentElementClientRect(this.$refs.footer);
       setCssVariable(this.$refs.content, "--padding-top", `${this.parentTopPadding > 0 ? this.parentTopPadding : headerHeight}px`);
       setCssVariable(this.$refs.content, "--padding-bottom", `${this.parentBottomPadding > 0 ? this.parentBottomPadding : footerHeight}px`);
-      console.log("this");
     }
   },
   mounted() {
@@ -4196,6 +4207,7 @@ const state = reactive({
   swipeCapturedBy: null
 });
 const ui = reactive({
+  currentRoute: "",
   dropDownLevel: [],
   dropDownStartingLevel: 8e3,
   registerDropdown(uid) {

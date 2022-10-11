@@ -1,4 +1,4 @@
-import{_ as r,r as n,c as S,w as t,o as V,b as c,a as o,t as u,d as i}from"./index.05d3d45d.js";const b={name:"switchPage",data(){return{selectedSwitch_base:[],selectedSwitch_size:"",selectedSwitch_style:[],selectedSwitch_animate:[],code:`
+import{_ as r,r as n,c as S,w as t,o as V,b as c,a as o,t as u,d as i}from"./index.eda4c342.js";const b={name:"switchPage",data(){return{selectedSwitch_base:[],selectedSwitch_size:"",selectedSwitch_style:[],selectedSwitch_animate:[],code:`
          #--code{
               margin: 10px 0px;
               padding: 10px;

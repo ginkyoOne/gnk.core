@@ -123,9 +123,7 @@ export default {
         this.calculateTabbarSelection()
     },
 
-    mounted() { 
-        
-    },
+
 
 
 }
