@@ -54,7 +54,7 @@ export default {
     computed: {
         componentClassObject() {
             return {
-                '--level-3': !this.hasStyle,
+                '--level-2': !this.hasStyle,
                 '--beingDragged': this.beingDragged && this.draggable
             }
         },
